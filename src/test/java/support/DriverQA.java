@@ -370,4 +370,47 @@ public class DriverQA {
         element.sendKeys(texto, Keys.TAB);
     }
 
+    public void moveToElement(String parValue, String... parType) {
+
+        WebElement element = findElem(parValue, parType);
+
+        try {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            waitSeconds(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void browserScroll(String direction, int coordinate) {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        try {
+            switch (direction) {
+                case "up":
+                    js.executeScript("window.scrollBy(0,-" + Integer.toString(coordinate) + ")");
+                    break;
+
+                case "down":
+                    js.executeScript("window.scrollBy(0," + Integer.toString(coordinate) + ")");
+                    break;
+
+                case "left":
+                    js.executeScript("window.scrollBy(-" + Integer.toString(coordinate) + ",0)");
+                    break;
+
+                case "right":
+                    js.executeScript("window.scrollBy(" + Integer.toString(coordinate) + ",0)");
+                    break;
+            }
+
+            waitSeconds(1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
