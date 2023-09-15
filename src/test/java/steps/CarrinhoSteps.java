@@ -16,22 +16,21 @@ public class CarrinhoSteps extends BaseSteps {
     }
 
     @Dado("^selecionar a opção \"([^\"]*)\"$")
-    public void selecionarAOpção(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void selecionarAOpção(String opcao) throws Throwable {
+        carrinhoPage.selecionarOpcaoForm(opcao);
     }
 
-    @Dado("^preencher os campos com os dados da linha Dependente$")
-    public void preencherOsCamposComOsDadosDaLinhaDependente() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    @Dado("^preencho os campos ddd \"([^\"]*)\", telefone \"([^\"]*)\", email \"([^\"]*)\" e cpf \"([^\"]*)\" no fluxo de \"([^\"]*)\"$")
+    public void preenchoOsCamposDddTelefoneEmailECpfNoFluxoDe(String ddd, String telefone, String email, String cpf, String fluxo) throws Throwable {
+        carrinhoPage.preencherDadosLinhaForm(ddd, telefone, email, cpf, fluxo);
     }
 
     @Quando("^clicar no botão \"([^\"]*)\"$")
     public void clicarNoBotão(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+        carrinhoPage.euQueroCarrinho();
     }
-
-    @Então("^validar que foi exibida uma mensagem de erro e que não é possível avançar com o pedido$")
-    public void validarQueFoiExibidaUmaMensagemDeErroEQueNãoÉPossívelAvançarComOPedido() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    @Então("^validar que foi exibida uma mensagem de erro \"([^\"]*)\"$")
+    public void validarQueFoiExibidaUmaMensagemDeErro(String mensagem) throws Throwable {
+        carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
     }
 }

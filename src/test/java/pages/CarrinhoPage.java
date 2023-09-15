@@ -33,7 +33,12 @@ public class CarrinhoPage {
     private String idCpfPortabilidadeForm = "cpfPortability";
     private String idDDDAquisicaoForm = "dddAquisicao";
     private String idTelefoneAquisicaoForm = "telephoneAcquisition";
+    private String idCpfAquisicaoForm = "cpfAcquisition";
     private String idEuQueroForm = "buttonCheckout";
+
+    // Mensagem erro
+    private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
+
 
     public void validarCarrinho() {
         driver.waitSeconds(1);
@@ -48,4 +53,51 @@ public class CarrinhoPage {
 
     }
 
+    public void selecionarOpcaoForm(String opcao) {
+        driver.waitElementToBeClickableAll(xpathAquisicaoForm, 5, "xpath");
+        switch (opcao) {
+            case "Quero uma linha nova da Claro":
+                driver.click(xpathAquisicaoForm, "xpath");
+                break;
+            case "Trazer meu número para Claro":
+                driver.click(xpathPortabilidadeForm, "xpath");
+                break;
+            case "Mudar meu plano da Claro":
+                driver.click(xpathMigracaoForm, "xpath");
+                break;
+        }
+
+    }
+
+    public void preencherDadosLinhaForm(String ddd, String telefone, String email, String cpf, String fluxo) {
+        driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
+        driver.sendKeys(email, idEmailForm);
+        switch (fluxo) {
+            case "migracao":
+                driver.waitSeconds(1);
+                driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
+                driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
+                break;
+            case "portabilidade":
+                driver.waitElementToBeClickableAll(idTelefonePortabilidadeForm, 1, "id");
+                driver.sendKeys(telefone, idTelefonePortabilidadeForm, "id");
+                driver.sendKeys(cpf, idCpfPortabilidadeForm, "id");
+                break;
+            case "aquisicao":
+                driver.waitElementToBeClickableAll(idDDDAquisicaoForm, 1, "id");
+                driver.clear(idDDDAquisicaoForm, "id");
+                driver.sendKeys(ddd, idDDDAquisicaoForm, "id");
+                driver.sendKeys(telefone, idTelefoneAquisicaoForm, "id");
+                driver.sendKeys(cpf, idCpfAquisicaoForm, "id");
+        }
+    }
+
+    public void euQueroCarrinho() {
+        driver.click(idEuQueroForm, "id");
+    }
+
+    public void validarMensagemBloqueioClienteDependente(String mensagem) {
+        Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
+        Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
+    }
 }

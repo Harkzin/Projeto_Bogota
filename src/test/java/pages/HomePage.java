@@ -16,7 +16,7 @@ public class HomePage {
     private String xpathGbBonus = "(//*[@class='portabilidade'])[2]";
     private String xpathEuQueroCardControle = "(//*[@data-automation='eu-quero'])[1]";
 
-    // Variaveis para validacao
+    // Variaveis para validacao posterior no carrinho
     private static String tituloCardHome = "";
     private static String gbPlanoCardHome = "";
     private static String gbBonusCardHome = "";
