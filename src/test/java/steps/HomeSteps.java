@@ -13,4 +13,9 @@ public class HomeSteps extends BaseSteps {
         homePage.acessarLojaHome();
     }
 
+    @Dado("^selecionar um Plano Controle do carrossel da Home clicando no botão \"([^\"]*)\" dele$")
+    public void selecionarUmPlanoControleDoCarrosselDaHomeClicandoNoBotãoDele(String arg1) throws Throwable {
+        homePage.selecionarCardControle();
+    }
+
 }

@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -370,4 +371,94 @@ public class DriverQA {
         element.sendKeys(texto, Keys.TAB);
     }
 
+    public void moveToElement(String parValue, String... parType) {
+
+        WebElement element = findElem(parValue, parType);
+
+        try {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            waitSeconds(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void browserScroll(String direction, int coordinate) {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        try {
+            switch (direction) {
+                case "up":
+                    js.executeScript("window.scrollBy(0,-" + Integer.toString(coordinate) + ")");
+                    break;
+
+                case "down":
+                    js.executeScript("window.scrollBy(0," + Integer.toString(coordinate) + ")");
+                    break;
+
+                case "left":
+                    js.executeScript("window.scrollBy(-" + Integer.toString(coordinate) + ",0)");
+                    break;
+
+                case "right":
+                    js.executeScript("window.scrollBy(" + Integer.toString(coordinate) + ",0)");
+                    break;
+            }
+
+            waitSeconds(1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, timeOut);
+            switch (parType) {
+                case "id":
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return true;
+                    break;
+                case "name":
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return true;
+                    break;
+                case "css":
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null) return true;
+                    break;
+                case "xpath":
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return true;
+                    break;
+                case "link":
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(parName))) != null) return true;
+                    break;
+                case "class":
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return true;
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        } catch (NoSuchElementException e) {
+            System.out.println("ERROR WAIT => " + e.toString());
+            return false;
+        }
+    }
+
+    public void actionSendKey(String texto, String parValue, String... parType) {
+        try {
+            WebElement element = findElem(parValue, parType);
+            element.click();
+            Actions action = new Actions(driver);
+            char[] digits = texto.toCharArray();
+            for (char digit : digits) {
+                String sDigit = Character.toString(digit);
+                action.sendKeys(sDigit).perform();
+                Thread.sleep(2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

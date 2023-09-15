@@ -11,7 +11,7 @@ Testar tudo sem fazer nenhum comentario
 mvn test verify
 
 Testar por ambiente
-mvn test -Dbrowser=chrome -Denv=DEV -Dcucumber.options="--tags @integrado"
+mvn test -Dbrowser=chrome -Denv=S5 -Dcucumber.options="--tags @regressivo"
 
 Trocar navegador
 mvn test -Dbrowser=firefox -Denv=DEV -Dcucumber.options="--tags @integrado"
