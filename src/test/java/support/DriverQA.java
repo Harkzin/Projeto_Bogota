@@ -49,9 +49,10 @@ public class DriverQA {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
                     optionsC.addArguments(Arrays.asList(
-                           "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "headless"));
+                           "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito"));
                     driver = new ChromeDriver(optionsC);
-                    driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().maximize();
+//                    driver.manage().window().setSize(new Dimension(1920, 1080));
 //                    driver.manage().window().setPosition(new Point(0, 312));
                 default:
                     break;
@@ -414,35 +415,32 @@ public class DriverQA {
 
     }
 
-    public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
+    public void waitElementToBeClickableAll(String parName, int timeOut, String parType) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeOut);
             switch (parType) {
                 case "id":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return;
                     break;
                 case "name":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return;
                     break;
                 case "css":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null) return;
                     break;
                 case "xpath":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return;
                     break;
                 case "link":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(parName))) != null) return;
                     break;
                 case "class":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return;
                     break;
                 default:
-                    return false;
             }
-            return false;
         } catch (NoSuchElementException e) {
             System.out.println("ERROR WAIT => " + e.toString());
-            return false;
         }
     }
 
@@ -461,4 +459,59 @@ public class DriverQA {
             e.printStackTrace();
         }
     }
+    public List<WebElement> findListElements(String parValue, String... parType) {
+        List<WebElement> element = findElements(parValue, parType);
+        return element;
+    }
+    public void sendKeysCampoMascara(String value, String parValue, String parType) {
+
+        try {
+            WebElement element = findListElements(parValue, parType).get(0);
+            char[] digits = value.toCharArray();
+            for (char digit : digits) {
+                String sDigit = Character.toString(digit);
+                element.sendKeys(sDigit);
+                Thread.sleep(20);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void sendTab(int repeticao, String texto) {
+        Actions actions = new Actions(driver);
+        for (int i = 0; i < repeticao; i++) {
+            waitSeconds(1);
+            actions.sendKeys(Keys.TAB, texto).build().perform();
+        }
+    }
+
+    public void sendKeyBoard(Keys keys) {
+            Actions actions = new Actions(driver);
+            actions.sendKeys(keys).build().perform();
+        }
+
+    public void actionClick(String parValue, String... parType) {
+        try {
+            Actions action = new Actions(driver);
+            WebElement element = findElem(parValue, parType);
+            action.moveToElement(element).click().build().perform();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void moveToElementJs(String parValue, String... parType) {
+
+        WebElement element = findElem(parValue, parType);
+
+        try {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            waitSeconds(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
+
+
