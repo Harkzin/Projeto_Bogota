@@ -39,6 +39,13 @@ public class CarrinhoPage {
     // Mensagem erro
     private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
 
+    // Clicar não concordo
+    private String xpathNaoConcordo = "//*[@data-multa-action='goStep2']";
+
+    //Clicar no Checkbox ok, entendi
+    private String xpathClicarOKEntendi = "//*[@data-multa-action='backHome']";
+
+
 
     public void validarCarrinho() {
         driver.waitSeconds(1);
@@ -100,4 +107,17 @@ public class CarrinhoPage {
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
     }
-}
+
+    public void ClicarNaoConcordo() {
+        driver.click(xpathNaoConcordo, "xpath");
+
+    }
+
+    public void clicarNoBotaoOkEntendi() {
+        driver.click(xpathClicarOKEntendi, "css");
+
+    }
+
+    }
+
+
