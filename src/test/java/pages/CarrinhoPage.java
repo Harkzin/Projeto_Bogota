@@ -1,10 +1,7 @@
 package pages;
 
-import com.google.common.collect.Table;
 import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
 import static pages.HomePage.*;
@@ -56,6 +53,8 @@ public class CarrinhoPage {
     private String xpathTxtComplemento = "//input[@data-automation='complemento']";
     private String xpathBtnContinuar = "//button[@data-automation='continuar']";
     private String xpathBtnContinuarPagamento = "//button[@title='Continuar']";
+    private String xpathEuQueroTHAB = "//a[@data-automation='eu-quero']";
+
 
     // Dados Pagamentos
     private String xpathContainerTermoDeAdesao = "//div[contains(@class, 'active')]//div[@class='mdn-Checkbox']";
@@ -65,7 +64,11 @@ public class CarrinhoPage {
     private String idConta = "faturaContaCorrenteText";
     private String xpathCCredito = "//*[@id='faturaPagamentoRecorrenteRadio']//label/p[text()='Não']";
     private String xpathChkTermosDeAdesao = "(//*[@class='mdn-Checkbox-label'])[2]";
-    private String xpathChkTermosDeAdesaoTHAB = "//label[@class='mdn-Checkbox-label']";
+    private String xpathChkTermosTHAB = "(//*[@class='mdn-Checkbox-label'])";
+
+    // Token
+    private String xpathInputToken = "//input[@data-automation='token']";
+
     private String xpathPrecoCarrinhoComparativo = "(//*[@id='hasPromotionalPricesMonetization'])[2]";
 
     public void validarCarrinho() {
@@ -86,13 +89,13 @@ public class CarrinhoPage {
         switch (opcao) {
             case "Quero uma linha nova da Claro":
                 driver.click(xpathAquisicaoForm, "xpath");
-                break;
+            break;
             case "Trazer meu número para Claro":
                 driver.click(xpathPortabilidadeForm, "xpath");
-                break;
+            break;
             case "Mudar meu plano da Claro":
                 driver.click(xpathMigracaoForm, "xpath");
-                break;
+            break;
         }
 
     }
@@ -124,13 +127,21 @@ public class CarrinhoPage {
         switch (botao) {
             case "Eu quero!":
                 driver.click(idEuQueroForm, "id");
-                break;
+            break;
             case "Continuar":
                 driver.click(xpathBtnContinuar, "xpath");
-                break;
+            break;
             case "Continuar pagamento":
                 driver.actionClick(xpathBtnContinuarPagamento, "xpath");
-                break;
+            break;
+            case "Eu quero! Controle Antecipado":
+                driver.waitSeconds(1);
+                driver.moveToElement(xpathEuQueroTHAB, "xpath");
+                driver.click(xpathEuQueroTHAB, "xpath");
+            break;
+
+
+
         }
     }
 
@@ -195,10 +206,31 @@ public class CarrinhoPage {
         driver.actionClick(xpathChkTermosDeAdesao, "xpath");
 
     }
-
-
+    public void marcarCheckboxTermoTHAB() {
+        driver.waitSeconds(10);
+        driver.moveToElement(xpathChkTermosTHAB, "xpath");
+        driver.waitSeconds(10);
+        driver.actionClick(xpathChkTermosTHAB, "xpath");
+    }
     public void selecionarTipoFatura(String fatura) {
         driver.waitSeconds(1);
         driver.click("div[class$=active] .tipoFatura label[for^='" + fatura + "']", "css");
+    }
+
+    public void paginaControleAntecipadoEExibida() {
+        driver.waitElementAll("controle-antecipado", "id");
+    }
+
+    public boolean PlanoControleAntecipadoExiste() {
+        driver.waitElementAll(".card-planos", "css");
+        return true;
+    }
+
+    public void paginaCustomizarFaturaTHABEExibida() {
+        driver.waitElementAll(".showCards", "css");
+    }
+
+    public void secaoTokenEExibida() {
+        driver.waitElementAll(xpathInputToken, "xpath");
     }
 }

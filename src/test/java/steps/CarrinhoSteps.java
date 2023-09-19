@@ -2,12 +2,18 @@ package steps;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.pt.*;
+import org.json.JSONException;
+import org.junit.Assert;
+import pages.APIPage;
 import pages.CarrinhoPage;
+import pages.PedidoTokenPage;
 import support.BaseSteps;
 
 public class CarrinhoSteps extends BaseSteps {
 
     CarrinhoPage carrinhoPage = new CarrinhoPage(driver);
+    APIPage apiPage = new APIPage();
+    PedidoTokenPage pedidoTokenPage = new PedidoTokenPage();
 
     @Dado("^validar que não há alterações no valor e/ou informações do Plano$")
     public void validarQueNãoHáAlteraçõesNoValorEOuInformaçõesDoPlano() throws Throwable {
@@ -38,16 +44,22 @@ public class CarrinhoSteps extends BaseSteps {
         switch (Pagina) {
             case "dados pessoais":
                 carrinhoPage.paginaDadosPessoaisEExibida();
-                break;
+            break;
             case "dados de endereco":
                 carrinhoPage.paginaDadosEnderecoEExibida();
-                break;
+            break;
             case "dados de pagamento":
                 carrinhoPage.paginaDadosPagamentoEExibida();
-                break;
-//            case "token":
-//                pedidoTokenPage.secaoTokenEExibida();
-//                break;
+            break;
+            case "Controle antecipado":
+                carrinhoPage.paginaControleAntecipadoEExibida();
+            break;
+            case "Customizar fatura":
+                carrinhoPage.paginaCustomizarFaturaTHABEExibida();
+            break;
+            case "token":
+                carrinhoPage.secaoTokenEExibida();
+            break;
 //            case "conclusao":
 //                pedidoConcluidoPage.secaoPedidoConcluidoEExibida();
 //                break;
@@ -78,33 +90,18 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.marcarCheckboxTermo();
     }
 
-    @Entao("^que sou redirecionado para a tela de \"([^\"]*)\"$")
-    public void queSouRedirecionadoParaATelaDe(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @E("^marco o checkbox de termos de aceite thab$")
+    public void marcoOCheckboxDeTermosDeAceiteThab() {
+        carrinhoPage.marcarCheckboxTermoTHAB();
     }
 
-    @Quando("^valido que foi ofertado plano de \"([^\"]*)\"$")
-    public void validoQueFoiOfertadoPlanoDe(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Quando("^valido que foi ofertado plano de Controle Antecipado$")
+    public void validoQueFoiOfertadoPlanoDe() {
+        Assert.assertTrue(carrinhoPage.PlanoControleAntecipadoExiste());
     }
-
-    @Entao("^clico no botão \"([^\"]*)\"$")
-    public void clicoNoBotão(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-    @Quando("^preencho o campo \"([^\"]*)\" com o TOKEN recebido$")
-    public void preenchoOCampoComOTOKENRecebido(String arg0) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
-    }
-
-
     @E("^selecionar a fatura \"([^\"]*)\"$")
     public void selecionarAFatura(String fatura) throws Throwable {
         carrinhoPage.selecionarTipoFatura(fatura);
     }
+
 }

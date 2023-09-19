@@ -19,19 +19,16 @@ Funcionalidade: Migracao THAB
     Quando clicar no botão "Continuar"
     Entao validar que é direcionado para pagina de "pagamento"
     Quando seleciono a forma de pagamento "Boleto"
-#    E selecionar a fatura "email"
-#    E selecionar a data de vencimento "4"
     E marco o checkbox de termos de aceite
     Quando clicar no botão "Continuar pagamento"
-    Entao que sou redirecionado para a tela de "Controle Antecipado"
-    Quando valido que foi ofertado plano de "Controle Antecipado"
-    Entao clico no botão "EU QUERO!"
-    Dado que sou redirecionado para a tela de "Customizar Fatura"
-    Quando seleciono a forma de pagamento "Boleto"
-    E marco o checkbox de termos de aceite
-    Entao clico no botão "Continuar"
-    Dado que sou redirecionado para a tela de "Token"
-    Quando preencho o campo "Código enviado Por SMS" com o TOKEN recebido
-    Entao clico no botão "Finalizar"
-    Dado que sou redirecionado para a tela de "Parabéns"
+    Entao validar que é direcionado para pagina de "Controle Antecipado"
+#    Quando valido que foi ofertado plano de Controle Antecipado
+    Quando clicar no botão "Eu quero! Controle Antecipado"
+    Entao validar que é direcionado para pagina de "Customizar Fatura"
+    E marco o checkbox de termos de aceite thab
+    Quando clicar no botão "Continuar pagamento"
+    Entao validar que é direcionado para pagina de "Token"
+    Quando preencho o campo Código enviado Por SMS com o TOKEN recebido
+    Entao clicar no botão "Finalizar"
+    Entao validar que é direcionado para pagina de "Parabéns"
     Entao validar que não há alterações no valor e/ou informações do Plano

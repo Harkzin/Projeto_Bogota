@@ -1,6 +1,10 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.restassured.response.Response;
+import org.apache.http.util.CharArrayBuffer;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -17,6 +21,8 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import static com.mongodb.client.model.Filters.eq;
+import static io.restassured.RestAssured.given;
+import static io.restassured.assertion.CookieMatcher.getCookies;
 
 public class DriverQA {
 
@@ -526,6 +532,50 @@ public class DriverQA {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public String getAccessToken(String url) throws JSONException {
+        String paramAuth = url + "/authorizationserver/oauth/token?client_id=claro_client&client_secret=cl4r0&grant_type=client_credentials";
+        String paramToken = url + "/clarowebservices/v2/claro/checkout/step/token";
+
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("grant_type", "client_credentials");
+        requestParams.put("client_secret", "cl4r0");
+        requestParams.put("client_id", "claro_client");
+
+        Response accessAuth =
+                given().
+                        body(requestParams).
+                        when().
+                        post(paramAuth).
+                        then().
+                        assertThat().statusCode(200).
+                        extract().response();
+
+        String auth = accessAuth.jsonPath().getString("access_token");
+
+        String requestBody = "{\n" +
+                "    \"cartGUID\":\"" + getCookies().substring(11) + "\"\n" +
+                "}";
+
+        Response returnToken =
+                given().
+                        header("Content-Type", "application/json").
+                        auth().oauth2(auth).
+                        body(requestBody).
+                        when().
+                        post(paramToken).
+                        then().
+                        assertThat().statusCode(200).
+                        extract().response();
+
+        return returnToken.jsonPath().getString("validateTokenTest");
+    }
+
+    public String getCookies() {
+        Cookie cookie = driver.manage().getCookieNamed("claro-cart");
+        int position = cookie.toString().indexOf(";");
+        return cookie.toString().substring(0, position);
     }
 }
 
