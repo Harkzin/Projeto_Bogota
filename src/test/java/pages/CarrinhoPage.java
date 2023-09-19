@@ -66,7 +66,7 @@ public class CarrinhoPage {
     private String xpathCCredito = "//*[@id='faturaPagamentoRecorrenteRadio']//label/p[text()='Não']";
     private String xpathChkTermosDeAdesao = "(//*[@class='mdn-Checkbox-label'])[2]";
     private String xpathChkTermosDeAdesaoTHAB = "//label[@class='mdn-Checkbox-label']";
-
+    private String xpathPrecoCarrinhoComparativo = "(//*[@id='hasPromotionalPricesMonetization'])[2]";
 
     public void validarCarrinho() {
         driver.waitSeconds(1);
@@ -168,9 +168,7 @@ public class CarrinhoPage {
 
     public void clicarFormaDePagamento(String formaPagamento) {
         //formaPagamento => Boleto || Debito
-        int valorDebitoAutomatico = Integer.parseInt(driver.getValueParam("(//*[@id='hasPromotionalPricesMonetization'])[2]", "data-rent-formatted-price-old", "xpath").substring(0, 5));
-        int valorBoleto = Integer.parseInt(driver.getValueParam("(//*[@id='hasPromotionalPricesMonetization'])[2]", "data-full-price-not-formatted", "xpath").substring(0, 5));
-        Assert.assertTrue(valorDebitoAutomatico < valorBoleto);
+        Assert.assertTrue(Float.parseFloat(driver.getValueParam(xpathPrecoCarrinhoComparativo, "data-parsed-formatted-price-old", "xpath")) > Float.parseFloat(driver.getValueParam(xpathPrecoCarrinhoComparativo, "data-full-price", "xpath")));
         System.out.println("Forma Pagamento: " + formaPagamento);
         if (formaPagamento.equals("Boleto")) {
             driver.waitSeconds(5);
@@ -184,9 +182,12 @@ public class CarrinhoPage {
             driver.sendKeys("11868576", idConta, "id");
         }
     }
+
     public void selecionarDataVencimento(String data) {
         driver.waitSeconds(5);
-        driver.click("//label[@data-automation='vencimento-" + data + "']", "xpath");    }
+        driver.click("//label[@data-automation='vencimento-" + data + "']", "xpath");
+    }
+
     public void marcarCheckboxTermo() {
         driver.waitSeconds(10);
         driver.moveToElement(xpathChkTermosDeAdesao, "xpath");

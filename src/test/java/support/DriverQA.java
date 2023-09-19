@@ -49,7 +49,7 @@ public class DriverQA {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
                     optionsC.addArguments(Arrays.asList(
-                           "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito"));
+                            "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito"));
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().maximize();
 //                    driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -189,7 +189,7 @@ public class DriverQA {
     public boolean elementExist(String parCss) {
         try {
             driver.findElement(By.cssSelector(parCss));
-        }catch (Exception e ){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -301,7 +301,7 @@ public class DriverQA {
     }
 
     public void waitElementXP(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, 120);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parXp)));
     }
 
@@ -459,10 +459,12 @@ public class DriverQA {
             e.printStackTrace();
         }
     }
+
     public List<WebElement> findListElements(String parValue, String... parType) {
         List<WebElement> element = findElements(parValue, parType);
         return element;
     }
+
     public void sendKeysCampoMascara(String value, String parValue, String parType) {
 
         try {
@@ -477,6 +479,7 @@ public class DriverQA {
             e.printStackTrace();
         }
     }
+
     public void sendTab(int repeticao, String texto) {
         Actions actions = new Actions(driver);
         for (int i = 0; i < repeticao; i++) {
@@ -486,9 +489,9 @@ public class DriverQA {
     }
 
     public void sendKeyBoard(Keys keys) {
-            Actions actions = new Actions(driver);
-            actions.sendKeys(keys).build().perform();
-        }
+        Actions actions = new Actions(driver);
+        actions.sendKeys(keys).build().perform();
+    }
 
     public void actionClick(String parValue, String... parType) {
         try {
@@ -515,6 +518,7 @@ public class DriverQA {
         }
 
     }
+
     public String getValueParam(String parValue, String campoDesejado, String parType) {
         try {
             WebElement element = findElem(parValue, parType);

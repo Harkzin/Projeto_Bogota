@@ -14,12 +14,9 @@ import support.BaseSteps;
 //				  "pretty"},
         monochrome = false,
         dryRun = false,
-        glue = {"steps","support"},
+        glue = {"steps", "support"},
         tags = {"~@ignore", "@migracaoControleTHAB"})
 
 public class RunnerTest extends BaseSteps {
 
 }
-
-
-
