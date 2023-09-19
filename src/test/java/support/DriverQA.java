@@ -494,7 +494,10 @@ public class DriverQA {
         try {
             Actions action = new Actions(driver);
             WebElement element = findElem(parValue, parType);
-            action.moveToElement(element).click().build().perform();
+            WebDriverWait wait = new WebDriverWait(driver, 60);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -511,6 +514,14 @@ public class DriverQA {
             e.printStackTrace();
         }
 
+    }
+    public String getValueParam(String parValue, String campoDesejado, String parType) {
+        try {
+            WebElement element = findElem(parValue, parType);
+            return element.getAttribute(campoDesejado);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
 

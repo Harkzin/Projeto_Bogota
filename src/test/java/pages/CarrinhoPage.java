@@ -64,7 +64,7 @@ public class CarrinhoPage {
     private String idAgencia = "faturaAgenciaText";
     private String idConta = "faturaContaCorrenteText";
     private String xpathCCredito = "//*[@id='faturaPagamentoRecorrenteRadio']//label/p[text()='Não']";
-    private String xpathChkTermosDeAdesao = "(//div[@class='terms-and-conditions-checkbox'])[2]";
+    private String xpathChkTermosDeAdesao = "(//*[@class='mdn-Checkbox-label'])[2]";
     private String xpathChkTermosDeAdesaoTHAB = "//label[@class='mdn-Checkbox-label']";
 
 
@@ -123,14 +123,14 @@ public class CarrinhoPage {
     public void euQueroCarrinho(@NotNull String botao) {
         switch (botao) {
             case "Eu quero!":
-            driver.click(idEuQueroForm, "id");
-            break;
+                driver.click(idEuQueroForm, "id");
+                break;
             case "Continuar":
                 driver.click(xpathBtnContinuar, "xpath");
-            break;
+                break;
             case "Continuar pagamento":
-                driver.click(xpathBtnContinuarPagamento, "xpath");
-            break;
+                driver.actionClick(xpathBtnContinuarPagamento, "xpath");
+                break;
         }
     }
 
@@ -168,6 +168,9 @@ public class CarrinhoPage {
 
     public void clicarFormaDePagamento(String formaPagamento) {
         //formaPagamento => Boleto || Debito
+        int valorDebitoAutomatico = Integer.parseInt(driver.getValueParam("(//*[@id='hasPromotionalPricesMonetization'])[2]", "data-rent-formatted-price-old", "xpath").substring(0, 5));
+        int valorBoleto = Integer.parseInt(driver.getValueParam("(//*[@id='hasPromotionalPricesMonetization'])[2]", "data-full-price-not-formatted", "xpath").substring(0, 5));
+        Assert.assertTrue(valorDebitoAutomatico < valorBoleto);
         System.out.println("Forma Pagamento: " + formaPagamento);
         if (formaPagamento.equals("Boleto")) {
             driver.waitSeconds(5);
@@ -175,7 +178,7 @@ public class CarrinhoPage {
         } else {
             driver.sendKeys("237 - BRADESCO", idBanco, "id");
             driver.waitSeconds(1);
-            driver.sendKeyBoard( Keys.ENTER);
+            driver.sendKeyBoard(Keys.ENTER);
             driver.waitSeconds(1);
             driver.sendKeys("6620", idAgencia, "id");
             driver.sendKeys("11868576", idConta, "id");
