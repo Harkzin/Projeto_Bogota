@@ -135,13 +135,8 @@ public class CarrinhoPage {
                 driver.actionClick(xpathBtnContinuarPagamento, "xpath");
             break;
             case "Eu quero! Controle Antecipado":
-                driver.waitSeconds(1);
-                driver.moveToElement(xpathEuQueroTHAB, "xpath");
-                driver.click(xpathEuQueroTHAB, "xpath");
+                driver.actionClick(xpathEuQueroTHAB, "xpath");
             break;
-
-
-
         }
     }
 

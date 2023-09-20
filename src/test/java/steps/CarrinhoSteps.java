@@ -4,16 +4,12 @@ import cucumber.api.PendingException;
 import cucumber.api.java.pt.*;
 import org.json.JSONException;
 import org.junit.Assert;
-import pages.APIPage;
 import pages.CarrinhoPage;
-import pages.PedidoTokenPage;
 import support.BaseSteps;
 
 public class CarrinhoSteps extends BaseSteps {
 
     CarrinhoPage carrinhoPage = new CarrinhoPage(driver);
-    APIPage apiPage = new APIPage();
-    PedidoTokenPage pedidoTokenPage = new PedidoTokenPage();
 
     @Dado("^validar que não há alterações no valor e/ou informações do Plano$")
     public void validarQueNãoHáAlteraçõesNoValorEOuInformaçõesDoPlano() throws Throwable {

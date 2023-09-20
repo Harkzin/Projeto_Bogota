@@ -2,6 +2,11 @@ package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.response.Response;
+import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 import org.apache.http.util.CharArrayBuffer;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -543,9 +548,18 @@ public class DriverQA {
         requestParams.put("client_secret", "cl4r0");
         requestParams.put("client_id", "claro_client");
 
+        Map<String, Object> jsonObjectMap = toMap(requestParams);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = objectMapper.writeValueAsString(jsonObjectMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Response accessAuth =
                 given().
-                        body(requestParams).
+                        body(jsonString).
                         when().
                         post(paramAuth).
                         then().
@@ -570,6 +584,16 @@ public class DriverQA {
                         extract().response();
 
         return returnToken.jsonPath().getString("validateTokenTest");
+    }
+
+    private static Map<String, Object> toMap(JSONObject json) throws JSONException {
+        Map<String, Object> map = new HashMap<>();
+        Iterator<String> keys = json.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            map.put(key, json.get(key));
+        }
+        return map;
     }
 
     public String getCookies() {
