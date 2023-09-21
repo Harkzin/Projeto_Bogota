@@ -1,13 +1,8 @@
 package support;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.response.Response;
-import java.io.IOException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import org.apache.http.util.CharArrayBuffer;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
@@ -20,14 +15,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.mongodb.client.model.Filters.eq;
 import static io.restassured.RestAssured.given;
-import static io.restassured.assertion.CookieMatcher.getCookies;
 
 public class DriverQA {
 
@@ -60,13 +53,13 @@ public class DriverQA {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
                     optionsC.addArguments(Arrays.asList(
-                            "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito"));
+                            "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "headless"));
                     driver = new ChromeDriver(optionsC);
-                    driver.manage().window().maximize();
-//                    driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().setSize(new Dimension(1920, 1080));
 //                    driver.manage().window().setPosition(new Point(0, 312));
                 default:
                     break;
+
             }
         }
         return title;
