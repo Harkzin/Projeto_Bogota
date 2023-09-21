@@ -11,12 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public class DriverQA {
 
@@ -48,13 +45,14 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    optionsC.addArguments(Arrays.asList(
-                           "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito"));
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage", "headless"));
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().maximize();
 //                    driver.manage().window().setPosition(new Point(0, 312));
                 default:
                     break;
+
             }
         }
         return title;
@@ -188,7 +186,7 @@ public class DriverQA {
     public boolean elementExist(String parCss) {
         try {
             driver.findElement(By.cssSelector(parCss));
-        }catch (Exception e ){
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -300,7 +298,7 @@ public class DriverQA {
     }
 
     public void waitElementXP(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, 120);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parXp)));
     }
 
@@ -425,7 +423,8 @@ public class DriverQA {
                     if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return true;
                     break;
                 case "css":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null) return true;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null)
+                        return true;
                     break;
                 case "xpath":
                     if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return true;
@@ -437,13 +436,11 @@ public class DriverQA {
                     if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return true;
                     break;
                 default:
-                    return false;
             }
-            return false;
         } catch (NoSuchElementException e) {
             System.out.println("ERROR WAIT => " + e.toString());
-            return false;
         }
+        return false;
     }
 
     public void actionSendKey(String texto, String parValue, String... parType) {
@@ -462,6 +459,87 @@ public class DriverQA {
         }
     }
 
+    public List<WebElement> findListElements(String parValue, String... parType) {
+        List<WebElement> element = findElements(parValue, parType);
+        return element;
+    }
+
+    public void sendKeysCampoMascara(String value, String parValue, String parType) {
+
+        try {
+            WebElement element = findListElements(parValue, parType).get(0);
+            char[] digits = value.toCharArray();
+            for (char digit : digits) {
+                String sDigit = Character.toString(digit);
+                element.sendKeys(sDigit);
+                Thread.sleep(20);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendTab(int repeticao, String texto) {
+        Actions actions = new Actions(driver);
+        for (int i = 0; i < repeticao; i++) {
+            waitSeconds(1);
+            actions.sendKeys(Keys.TAB, texto).build().perform();
+        }
+    }
+
+    public void sendKeyBoard(Keys keys) {
+        Actions actions = new Actions(driver);
+        actions.sendKeys(keys).build().perform();
+    }
+
+    public void actionClick(String parValue, String... parType) {
+        try {
+            Actions action = new Actions(driver);
+            WebElement element = findElem(parValue, parType);
+            WebDriverWait wait = new WebDriverWait(driver, 60);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void moveToElementJs(String parValue, String... parType) {
+
+        WebElement element = findElem(parValue, parType);
+
+        try {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            waitSeconds(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
+    public String getValueParam(String parValue, String campoDesejado, String parType) {
+        try {
+            WebElement element = findElem(parValue, parType);
+            return element.getAttribute(campoDesejado);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getCookies() {
+        Cookie cookie = driver.manage().getCookieNamed("claro-cart");
+        int position = cookie.toString().indexOf(";");
+        return cookie.toString().substring(0, position);
+    }
+
+    public boolean isVisible(String parValue, String parType) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 40);
+            WebElement element = findElem(parValue, parType);
+            return element.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
