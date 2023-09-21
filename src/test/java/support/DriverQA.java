@@ -49,7 +49,7 @@ public class DriverQA {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
                     optionsC.addArguments(Arrays.asList(
-                           "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "headless"));
+                           "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito"));
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
 //                    driver.manage().window().setPosition(new Point(0, 312));
@@ -461,4 +461,7 @@ public class DriverQA {
             e.printStackTrace();
         }
     }
-}
+
+
+    }
+

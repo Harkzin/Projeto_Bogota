@@ -1,10 +1,16 @@
 package pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.remote.ScreenshotException;
 import support.DriverQA;
 
 import static pages.HomePage.*;
 
 import org.junit.Assert;
+
+import java.io.File;
 
 public class CarrinhoPage {
 
@@ -45,7 +51,8 @@ public class CarrinhoPage {
     //Clicar no Checkbox ok, entendi
     private String xpathClicarOKEntendi = "//*[@data-multa-action='backHome']";
 
-
+    //Validar que foi direcionado para a Home
+    private String xpathValidarQueFoiDirecionadoParaAHome = "/html/body";
 
     public void validarCarrinho() {
         driver.waitSeconds(1);
@@ -113,11 +120,16 @@ public class CarrinhoPage {
 
     }
 
-    public void clicarNoBotaoOkEntendi() {
-        driver.click(xpathClicarOKEntendi, "css");
 
+
+    public void clicarNoCheckbox() {
+        driver.click(xpathClicarOKEntendi, "xpath");
     }
 
+    public void validarQueFoiDirecionadoParaAHome() {
+        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+
     }
+}
 
 

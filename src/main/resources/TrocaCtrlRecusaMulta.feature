@@ -16,8 +16,10 @@ Funcionalidade: Troca Controle - Recusa multa
     E preencho os campos ddd "", telefone "11947431002", email "claroteste61@gmail.com" e cpf "64526647861" no fluxo de "migracao"
     Quando clicar no botão "Eu quero!"
     E clicar "Não concordo"
-    Quando clicar no botão "Ok, entendi"
-    Então que acesso a Loja Online
+    Quando clicar no checkbox "Ok, entendi"
+    Então  validar que foi direcionado para a Home
+
+
 
 
 

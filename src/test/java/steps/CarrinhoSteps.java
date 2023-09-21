@@ -46,10 +46,18 @@ public class CarrinhoSteps extends BaseSteps {
 
     }
 
-   // @Quando("^clicar no botao “Ok, entendi”$")
-    //public void clicarNoBotaoOkEntendi(String arg0) throws Throwable {
-      //  carrinhoPage.clicarNoBotaoOkEntendi();
+
+    @Quando("^clicar no checkbox \"([^\"]*)\"$")
+    public void clicarNoCheckbox(String arg0) throws Throwable {
+        carrinhoPage.clicarNoCheckbox  ();
     }
 
+
+
+
+    @Então("^validar que foi direcionado para a Home$")
+    public void validarQueFoiDirecionadoParaAHome() {
+        carrinhoPage.validarQueFoiDirecionadoParaAHome();
+    }
 }
 
