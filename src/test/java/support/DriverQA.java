@@ -45,7 +45,7 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "headless", "--disable-dev-shm-usage"));
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage", "headless"));
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
                     driver.manage().window().maximize();
@@ -531,5 +531,15 @@ public class DriverQA {
         Cookie cookie = driver.manage().getCookieNamed("claro-cart");
         int position = cookie.toString().indexOf(";");
         return cookie.toString().substring(0, position);
+    }
+
+    public boolean isVisible(String parValue, String parType) {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 40);
+            WebElement element = findElem(parValue, parType);
+            return element.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

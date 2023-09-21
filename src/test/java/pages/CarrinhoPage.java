@@ -79,6 +79,9 @@ public class CarrinhoPage {
     //Validar que foi direcionado para a Home
     private String xpathValidarQueFoiDirecionadoParaAHome = "/html/body";
 
+    //Thab
+    //private String xpathBotaoFinalizarCarrinho = TO DO
+
     public void validarCarrinho() {
         driver.waitSeconds(1);
         String titulo = driver.getText(xpathTituloPlanoResumo, "xpath");
@@ -149,13 +152,16 @@ public class CarrinhoPage {
                 driver.actionClick(xpathNaoConcordo, "xpath");
                 break;
             case "Ok, entendi":
-                driver.actionSendKey(xpathClicarOKEntendi, "xpath");
+                driver.actionClick(xpathClicarOKEntendi, "xpath");
                 break;
+            case "Finalizar":
+//                driver.actionClick(xpathBotaoFinalizarCarrinho);
 
         }
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
+        Assert.assertTrue(driver.isVisible(xpathMsgErroBloqueioDependente, "xpath"));
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
     }
