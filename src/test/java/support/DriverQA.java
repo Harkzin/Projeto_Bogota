@@ -1,10 +1,6 @@
 package support;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.restassured.response.Response;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -52,10 +48,10 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    optionsC.addArguments(Arrays.asList(
-                            "disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "headless"));
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "headless", "--disable-dev-shm-usage"));
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().maximize();
 //                    driver.manage().window().setPosition(new Point(0, 312));
                 default:
                     break;
@@ -419,33 +415,35 @@ public class DriverQA {
 
     }
 
-    public void waitElementToBeClickableAll(String parName, int timeOut, String parType) {
+    public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
         try {
             WebDriverWait wait = new WebDriverWait(driver, timeOut);
             switch (parType) {
                 case "id":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return true;
                     break;
                 case "name":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return true;
                     break;
                 case "css":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null) return;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null)
+                        return true;
                     break;
                 case "xpath":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return true;
                     break;
                 case "link":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(parName))) != null) return;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(parName))) != null) return true;
                     break;
                 case "class":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return;
+                    if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return true;
                     break;
                 default:
             }
         } catch (NoSuchElementException e) {
             System.out.println("ERROR WAIT => " + e.toString());
         }
+        return false;
     }
 
     public void actionSendKey(String texto, String parValue, String... parType) {
@@ -530,63 +528,6 @@ public class DriverQA {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public String getAccessToken(String url) throws JSONException {
-        String paramAuth = url + "/authorizationserver/oauth/token?client_id=claro_client&client_secret=cl4r0&grant_type=client_credentials";
-        String paramToken = url + "/clarowebservices/v2/claro/checkout/step/token";
-
-        JSONObject requestParams = new JSONObject();
-        requestParams.put("grant_type", "client_credentials");
-        requestParams.put("client_secret", "cl4r0");
-        requestParams.put("client_id", "claro_client");
-
-        Map<String, Object> jsonObjectMap = toMap(requestParams);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = null;
-        try {
-            jsonString = objectMapper.writeValueAsString(jsonObjectMap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Response accessAuth =
-                given().
-                        body(jsonString).
-                        when().
-                        post(paramAuth).
-                        then().
-                        assertThat().statusCode(200).
-                        extract().response();
-
-        String auth = accessAuth.jsonPath().getString("access_token");
-
-        String requestBody = "{\n" +
-                "    \"cartGUID\":\"" + getCookies().substring(11) + "\"\n" +
-                "}";
-
-        Response returnToken =
-                given().
-                        header("Content-Type", "application/json").
-                        auth().oauth2(auth).
-                        body(requestBody).
-                        when().
-                        post(paramToken).
-                        then().
-                        assertThat().statusCode(200).
-                        extract().response();
-
-        return returnToken.jsonPath().getString("validateTokenTest");
-    }
-
-    private static Map<String, Object> toMap(JSONObject json) throws JSONException {
-        Map<String, Object> map = new HashMap<>();
-        Iterator<String> keys = json.keys();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            map.put(key, json.get(key));
-        }
-        return map;
     }
 
     public String getCookies() {
