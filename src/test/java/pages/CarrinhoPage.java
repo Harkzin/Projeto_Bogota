@@ -113,6 +113,7 @@ public class CarrinhoPage {
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
+
     }
 
     public void ClicarNaoConcordo() {
