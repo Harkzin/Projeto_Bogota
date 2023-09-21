@@ -1,19 +1,25 @@
 package support;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import groovy.json.internal.LazyMap;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
 public class RESTSupport {
 
+    protected static DriverQA driver = new DriverQA();
     private static Response response;
     private static String verificationProcessId;
     private static String solicitationId;
@@ -332,6 +338,63 @@ public class RESTSupport {
         System.out.println("pegou o UserID " +  userId);
         printLog(response.getBody().asString(),endpoint, json.toString());
         return response;
+    }
+
+    public String getAccessToken(String url) throws JSONException {
+        String paramAuth = url + "/authorizationserver/oauth/token?client_id=claro_client&client_secret=cl4r0&grant_type=client_credentials";
+        String paramToken = url + "/clarowebservices/v2/claro/checkout/step/token";
+
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("grant_type", "client_credentials");
+        requestParams.put("client_secret", "cl4r0");
+        requestParams.put("client_id", "claro_client");
+
+        Map<String, Object> jsonObjectMap = toMap(requestParams);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = objectMapper.writeValueAsString(jsonObjectMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Response accessAuth =
+                given().
+                        body(jsonString).
+                        when().
+                        post(paramAuth).
+                        then().
+                        assertThat().statusCode(200).
+                        extract().response();
+
+        String auth = accessAuth.jsonPath().getString("access_token");
+
+        String requestBody = "{\n" +
+                "    \"cartGUID\":\"" + driver.getCookies().substring(11) + "\"\n" +
+                "}";
+
+        Response returnToken =
+                given().
+                        header("Content-Type", "application/json").
+                        auth().oauth2(auth).
+                        body(requestBody).
+                        when().
+                        post(paramToken).
+                        then().
+                        assertThat().statusCode(200).
+                        extract().response();
+
+        return returnToken.jsonPath().getString("validateTokenTest");
+    }
+
+    private static Map<String, Object> toMap(JSONObject json) throws JSONException {
+        Map<String, Object> map = new HashMap<>();
+        Iterator<String> keys = json.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            map.put(key, json.get(key));
+        }
+        return map;
     }
 
 }

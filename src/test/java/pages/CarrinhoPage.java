@@ -1,16 +1,11 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.remote.ScreenshotException;
+import org.openqa.selenium.Keys;
 import support.DriverQA;
 
 import static pages.HomePage.*;
 
 import org.junit.Assert;
-
-import java.io.File;
 
 public class CarrinhoPage {
 
@@ -45,6 +40,36 @@ public class CarrinhoPage {
     // Mensagem erro
     private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
 
+    // Dados Pessoais
+    private String idFormDadosPessoais = "addressForm.personalInformation";
+    private String xpathTxtNome = "//input[@data-automation='nome-completo']";
+    private String xpathTxtDtNascimento = "//input[@data-automation='nascimento']";
+    private String xpathTxtNomeMae = "//input[@data-automation='nome-completo-mae']";
+
+    // Dados Endereco
+    private String idTxtCep = "postcode_deliveryAddress";
+    private String xpathTxtNumero = "//input[@data-automation='numero']";
+    private String xpathTxtComplemento = "//input[@data-automation='complemento']";
+    private String xpathBtnContinuar = "//button[@data-automation='continuar']";
+    private String xpathBtnContinuarPagamento = "//button[@title='Continuar']";
+    private String xpathEuQueroTHAB = "//a[@data-automation='eu-quero']";
+
+
+    // Dados Pagamentos
+    private String xpathContainerTermoDeAdesao = "//div[contains(@class, 'active')]//div[@class='mdn-Checkbox']";
+    private String xpathAbaBoleto = "//li[@data-automation='aba-boleto']";
+    private String idBanco = "faturaBancoSelect";
+    private String idAgencia = "faturaAgenciaText";
+    private String idConta = "faturaContaCorrenteText";
+    private String xpathCCredito = "//*[@id='faturaPagamentoRecorrenteRadio']//label/p[text()='Não']";
+    private String xpathChkTermosDeAdesao = "(//*[@class='mdn-Checkbox-label'])[2]";
+    private String xpathChkTermosTHAB = "(//*[@class='mdn-Checkbox-label'])";
+
+    // Token
+    private String xpathInputToken = "//input[@data-automation='token']";
+
+    private String xpathPrecoCarrinhoComparativo = "(//*[@id='hasPromotionalPricesMonetization'])[2]";
+
     // Clicar não concordo
     private String xpathNaoConcordo = "//*[@data-multa-action='goStep2']";
 
@@ -53,6 +78,9 @@ public class CarrinhoPage {
 
     //Validar que foi direcionado para a Home
     private String xpathValidarQueFoiDirecionadoParaAHome = "/html/body";
+
+    //Thab
+    //private String xpathBotaoFinalizarCarrinho = TO DO
 
     public void validarCarrinho() {
         driver.waitSeconds(1);
@@ -106,31 +134,128 @@ public class CarrinhoPage {
         }
     }
 
-    public void euQueroCarrinho() {
-        driver.click(idEuQueroForm, "id");
+    public void euQueroCarrinho(String botao) {
+        switch (botao) {
+            case "Eu quero!":
+                driver.actionClick(idEuQueroForm, "id");
+                break;
+            case "Continuar":
+                driver.actionClick(xpathBtnContinuar, "xpath");
+                break;
+            case "Continuar pagamento":
+                driver.actionClick(xpathBtnContinuarPagamento, "xpath");
+                break;
+            case "Eu quero! Controle Antecipado":
+                driver.actionClick(xpathEuQueroTHAB, "xpath");
+                break;
+            case "Não concordo":
+                driver.actionClick(xpathNaoConcordo, "xpath");
+                break;
+            case "Ok, entendi":
+                driver.actionClick(xpathClicarOKEntendi, "xpath");
+                break;
+            case "Finalizar":
+//                driver.actionClick(xpathBotaoFinalizarCarrinho);
+
+        }
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
+        Assert.assertTrue(driver.isVisible(xpathMsgErroBloqueioDependente, "xpath"));
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
 
     }
 
-    public void ClicarNaoConcordo() {
-        driver.click(xpathNaoConcordo, "xpath");
+    public void paginaDadosPessoaisEExibida() {
+        driver.waitElementAll(idFormDadosPessoais, "id");
+    }
+
+    public void paginaDadosEnderecoEExibida() {
+    }
+
+    public void paginaDadosPagamentoEExibida() {
+        driver.waitElementAll(xpathContainerTermoDeAdesao, "xpath");
+    }
+
+    public void camposDadosPessoais(String nomeCompleto, String dataNascimento, String nomeDaMae) {
+        driver.sendKeys(nomeCompleto, xpathTxtNome, "xpath");
+        driver.sendKeysCampoMascara(dataNascimento, xpathTxtDtNascimento, "xpath");
+        driver.sendKeys(nomeDaMae, xpathTxtNomeMae, "xpath");
+    }
+
+    public void camposEndereco(String cep, String numero, String complemento) {
+        driver.waitSeconds(1);
+        driver.sendKeysCampoMascara(cep, idTxtCep, "id");
+        driver.sendTab(2, "");
+        driver.waitSeconds(5);
+        driver.sendKeys(numero, xpathTxtNumero, "xpath");
+        driver.waitSeconds(1);
+        driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
+    }
+
+    public void clicarFormaDePagamento(String formaPagamento) {
+        //formaPagamento => Boleto || Debito
+        Assert.assertTrue(Float.parseFloat(driver.getValueParam(xpathPrecoCarrinhoComparativo, "data-parsed-formatted-price-old", "xpath")) > Float.parseFloat(driver.getValueParam(xpathPrecoCarrinhoComparativo, "data-full-price", "xpath")));
+        System.out.println("Forma Pagamento: " + formaPagamento);
+        if (formaPagamento.equals("Boleto")) {
+            driver.waitSeconds(5);
+            driver.click(xpathAbaBoleto, "xpath");
+        } else {
+            driver.sendKeys("237 - BRADESCO", idBanco, "id");
+            driver.waitSeconds(1);
+            driver.sendKeyBoard(Keys.ENTER);
+            driver.waitSeconds(1);
+            driver.sendKeys("6620", idAgencia, "id");
+            driver.sendKeys("11868576", idConta, "id");
+        }
+    }
+
+    public void selecionarDataVencimento(String data) {
+        driver.waitSeconds(5);
+        driver.click("//label[@data-automation='vencimento-" + data + "']", "xpath");
+    }
+
+    public void marcarCheckboxTermo() {
+        driver.waitSeconds(10);
+        driver.moveToElement(xpathChkTermosDeAdesao, "xpath");
+        driver.waitSeconds(10);
+        driver.actionClick(xpathChkTermosDeAdesao, "xpath");
 
     }
 
-
-
-    public void clicarNoCheckbox() {
-        driver.click(xpathClicarOKEntendi, "xpath");
+    public void marcarCheckboxTermoTHAB() {
+        driver.waitSeconds(10);
+        driver.moveToElement(xpathChkTermosTHAB, "xpath");
+        driver.waitSeconds(10);
+        driver.actionClick(xpathChkTermosTHAB, "xpath");
     }
 
-    public void validarQueFoiDirecionadoParaAHome() {
-        File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+    public void selecionarTipoFatura(String fatura) {
+        driver.waitSeconds(1);
+        driver.click("div[class$=active] .tipoFatura label[for^='" + fatura + "']", "css");
+    }
+
+    public void paginaControleAntecipadoEExibida() {
+        driver.waitElementAll("controle-antecipado", "id");
+    }
+
+    public boolean PlanoControleAntecipadoExiste() {
+        driver.waitElementAll(".card-planos", "css");
+        return true;
+    }
+
+    public void paginaCustomizarFaturaTHABEExibida() {
+        driver.waitElementAll(".showCards", "css");
+    }
+
+    public void secaoTokenEExibida() {
+        driver.waitElementAll(xpathInputToken, "xpath");
 
     }
-}
+        public void validarQueFoiDirecionadoParaAHome() {
+      //To do validar qualquer elemento da home
+            //Exemplo: Assert.assertEquals(texto qualquer da pagina inicial, driver.getText("seletor'", "tipo do seletor"));
 
-
+        }
+    }

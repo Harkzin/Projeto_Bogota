@@ -15,11 +15,6 @@ Funcionalidade: Troca Controle - Recusa multa
     E selecionar a opção "Mudar meu plano da Claro"
     E preencho os campos ddd "", telefone "11947431002", email "claroteste61@gmail.com" e cpf "64526647861" no fluxo de "migracao"
     Quando clicar no botão "Eu quero!"
-    E clicar "Não concordo"
-    Quando clicar no checkbox "Ok, entendi"
+    E clicar no botão "Não concordo"
+    Quando clicar no botão "Ok, entendi"
     Então  validar que foi direcionado para a Home
-
-
-
-
-
