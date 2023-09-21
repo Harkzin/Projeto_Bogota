@@ -452,7 +452,7 @@ public class DriverQA {
             for (char digit : digits) {
                 String sDigit = Character.toString(digit);
                 action.sendKeys(sDigit).perform();
-                Thread.sleep(2);
+                Thread.sleep(50);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -531,15 +531,5 @@ public class DriverQA {
         Cookie cookie = driver.manage().getCookieNamed("claro-cart");
         int position = cookie.toString().indexOf(";");
         return cookie.toString().substring(0, position);
-    }
-
-    public boolean isVisible(String parValue, String parType) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, 40);
-            WebElement element = findElem(parValue, parType);
-            return element.isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
     }
 }

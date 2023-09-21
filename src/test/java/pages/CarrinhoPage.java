@@ -83,7 +83,7 @@ public class CarrinhoPage {
     //private String xpathBotaoFinalizarCarrinho = TO DO
 
     public void validarCarrinho() {
-        driver.waitSeconds(1);
+        driver.waitElementXP(xpathTituloPlanoResumo);
         String titulo = driver.getText(xpathTituloPlanoResumo, "xpath");
         String gbPlano = driver.getText(xpathGbNoPlanoResumo, "xpath");
         String gbBonus = driver.getText(xpathGbDeBonusResumo, "xpath");
@@ -161,7 +161,7 @@ public class CarrinhoPage {
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
-        Assert.assertTrue(driver.isVisible(xpathMsgErroBloqueioDependente, "xpath"));
+        driver.waitElementXP(xpathMsgErroBloqueioDependente);
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
 
