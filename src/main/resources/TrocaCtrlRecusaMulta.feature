@@ -1,6 +1,4 @@
 #language: pt
-#author: Danilo dos Santos
-
 
 @regressivo
 Funcionalidade: Troca Controle - Recusa multa
@@ -8,7 +6,7 @@ Funcionalidade: Troca Controle - Recusa multa
   @troca
   @controle
   @TrocaCtrlRecusaMulta
-  Cenario: CT-<ct> Troca Controle Controle - <tipoTroca> Base PDP
+  Cenario: Troca Controle recusa multa
     Dado que acesso a Loja Online
     E selecionar um Plano Controle do carrossel da Home clicando no botão "Eu quero!" dele
     E validar que não há alterações no valor e/ou informações do Plano

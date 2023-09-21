@@ -31,4 +31,4 @@ Funcionalidade: Migracao THAB
     Quando preencho o campo Código enviado Por SMS com o TOKEN recebido
     Entao clicar no botão "Finalizar"
     Entao validar que é direcionado para pagina de "Parabéns"
-    Entao validar que não há alterações no valor e/ou informações do Plano
+    Entao validar que não há alterações no valor e/ou informações do Plano na tela de parabens
