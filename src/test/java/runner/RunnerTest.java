@@ -17,6 +17,6 @@ import support.BaseSteps;
         glue = {"steps", "support"},
         tags = {"~@ignore", "@regressivo"})
 
-public class RunnerTest extends BaseSteps {
+public class  RunnerTest extends BaseSteps {
 
 }

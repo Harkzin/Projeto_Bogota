@@ -4,6 +4,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.pt.*;
 import org.json.JSONException;
 import org.junit.Assert;
+
 import pages.CarrinhoPage;
 import support.BaseSteps;
 
@@ -30,6 +31,7 @@ public class CarrinhoSteps extends BaseSteps {
     public void clicarNoBotão(String botao) throws Throwable {
         carrinhoPage.euQueroCarrinho(botao);
     }
+
     @Então("^validar que foi exibida uma mensagem de erro \"([^\"]*)\"$")
     public void validarQueFoiExibidaUmaMensagemDeErro(String mensagem) throws Throwable {
         carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
@@ -40,22 +42,22 @@ public class CarrinhoSteps extends BaseSteps {
         switch (Pagina) {
             case "dados pessoais":
                 carrinhoPage.paginaDadosPessoaisEExibida();
-            break;
+                break;
             case "dados de endereco":
                 carrinhoPage.paginaDadosEnderecoEExibida();
-            break;
+                break;
             case "dados de pagamento":
                 carrinhoPage.paginaDadosPagamentoEExibida();
-            break;
+                break;
             case "Controle antecipado":
                 carrinhoPage.paginaControleAntecipadoEExibida();
-            break;
+                break;
             case "Customizar fatura":
                 carrinhoPage.paginaCustomizarFaturaTHABEExibida();
-            break;
+                break;
             case "token":
                 carrinhoPage.secaoTokenEExibida();
-            break;
+                break;
 //            case "conclusao":
 //                pedidoConcluidoPage.secaoPedidoConcluidoEExibida();
 //                break;
@@ -76,6 +78,7 @@ public class CarrinhoSteps extends BaseSteps {
     public void selecionoAFormaDePagamento(String formaPagamento) throws Throwable {
         carrinhoPage.clicarFormaDePagamento(formaPagamento);
     }
+
     @E("^selecionar a data de vencimento \"([^\"]*)\"$")
     public void selecionarADataDeVencimento(String data) throws Throwable {
         carrinhoPage.selecionarDataVencimento(data);
@@ -95,9 +98,16 @@ public class CarrinhoSteps extends BaseSteps {
     public void validoQueFoiOfertadoPlanoDe() {
         Assert.assertTrue(carrinhoPage.PlanoControleAntecipadoExiste());
     }
+
     @E("^selecionar a fatura \"([^\"]*)\"$")
     public void selecionarAFatura(String fatura) throws Throwable {
         carrinhoPage.selecionarTipoFatura(fatura);
     }
 
+    @Então("^validar que foi direcionado para a Home$")
+    public void validarQueFoiDirecionadoParaAHome() {
+        carrinhoPage.validarQueFoiDirecionadoParaAHome();
+    }
+
 }
+

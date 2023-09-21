@@ -1,6 +1,5 @@
 package pages;
 
-import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.Keys;
 import support.DriverQA;
 
@@ -71,6 +70,15 @@ public class CarrinhoPage {
 
     private String xpathPrecoCarrinhoComparativo = "(//*[@id='hasPromotionalPricesMonetization'])[2]";
 
+    // Clicar não concordo
+    private String xpathNaoConcordo = "//*[@data-multa-action='goStep2']";
+
+    //Clicar no Checkbox ok, entendi
+    private String xpathClicarOKEntendi = "//*[@data-multa-action='backHome']";
+
+    //Validar que foi direcionado para a Home
+    private String xpathValidarQueFoiDirecionadoParaAHome = "/html/body";
+
     public void validarCarrinho() {
         driver.waitSeconds(1);
         String titulo = driver.getText(xpathTituloPlanoResumo, "xpath");
@@ -89,13 +97,13 @@ public class CarrinhoPage {
         switch (opcao) {
             case "Quero uma linha nova da Claro":
                 driver.click(xpathAquisicaoForm, "xpath");
-            break;
+                break;
             case "Trazer meu número para Claro":
                 driver.click(xpathPortabilidadeForm, "xpath");
-            break;
+                break;
             case "Mudar meu plano da Claro":
                 driver.click(xpathMigracaoForm, "xpath");
-            break;
+                break;
         }
 
     }
@@ -123,20 +131,27 @@ public class CarrinhoPage {
         }
     }
 
-    public void euQueroCarrinho(@NotNull String botao) {
+    public void euQueroCarrinho(String botao) {
         switch (botao) {
             case "Eu quero!":
-                driver.click(idEuQueroForm, "id");
-            break;
+                driver.actionClick(idEuQueroForm, "id");
+                break;
             case "Continuar":
-                driver.click(xpathBtnContinuar, "xpath");
-            break;
+                driver.actionClick(xpathBtnContinuar, "xpath");
+                break;
             case "Continuar pagamento":
                 driver.actionClick(xpathBtnContinuarPagamento, "xpath");
-            break;
+                break;
             case "Eu quero! Controle Antecipado":
                 driver.actionClick(xpathEuQueroTHAB, "xpath");
-            break;
+                break;
+            case "Não concordo":
+                driver.actionClick(xpathNaoConcordo, "xpath");
+                break;
+            case "Ok, entendi":
+                driver.actionSendKey(xpathClicarOKEntendi, "xpath");
+                break;
+
         }
     }
 
@@ -201,12 +216,14 @@ public class CarrinhoPage {
         driver.actionClick(xpathChkTermosDeAdesao, "xpath");
 
     }
+
     public void marcarCheckboxTermoTHAB() {
         driver.waitSeconds(10);
         driver.moveToElement(xpathChkTermosTHAB, "xpath");
         driver.waitSeconds(10);
         driver.actionClick(xpathChkTermosTHAB, "xpath");
     }
+
     public void selecionarTipoFatura(String fatura) {
         driver.waitSeconds(1);
         driver.click("div[class$=active] .tipoFatura label[for^='" + fatura + "']", "css");
@@ -227,5 +244,11 @@ public class CarrinhoPage {
 
     public void secaoTokenEExibida() {
         driver.waitElementAll(xpathInputToken, "xpath");
+
     }
-}
+        public void validarQueFoiDirecionadoParaAHome() {
+      //To do validar qualquer elemento da home
+            //Exemplo: Assert.assertEquals(texto qualquer da pagina inicial, driver.getText("seletor'", "tipo do seletor"));
+
+        }
+    }
