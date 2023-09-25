@@ -32,13 +32,15 @@ public class CarrinhoPage {
     private String idCpfMigracaoForm = "cpf";
     private String idTelefonePortabilidadeForm = "telephonePortability";
     private String idCpfPortabilidadeForm = "cpfPortability";
-    private String idDDDAquisicaoForm = "dddAquisicao";
+    private String idDDDAquisicaoForm = "ddd";
     private String idTelefoneAquisicaoForm = "telephoneAcquisition";
     private String idCpfAquisicaoForm = "cpfAcquisition";
     private String idEuQueroForm = "buttonCheckout";
 
     // Mensagem erro
     private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
+
+    private String xpathMsgErroCEP = "//*[@id='postcode_deliveryAddress-error']";
 
     // Dados Pessoais
     private String idFormDadosPessoais = "addressForm.personalInformation";
@@ -112,10 +114,10 @@ public class CarrinhoPage {
     }
 
     public void preencherDadosLinhaForm(String ddd, String telefone, String email, String cpf, String fluxo) {
-        driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
-        driver.sendKeys(email, idEmailForm);
         switch (fluxo) {
             case "migracao":
+                driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
+                driver.sendKeys(email, idEmailForm);
                 driver.waitSeconds(1);
                 driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
                 driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
@@ -126,11 +128,13 @@ public class CarrinhoPage {
                 driver.sendKeys(cpf, idCpfPortabilidadeForm, "id");
                 break;
             case "aquisicao":
-                driver.waitElementToBeClickableAll(idDDDAquisicaoForm, 1, "id");
-                driver.clear(idDDDAquisicaoForm, "id");
-                driver.sendKeys(ddd, idDDDAquisicaoForm, "id");
-                driver.sendKeys(telefone, idTelefoneAquisicaoForm, "id");
-                driver.sendKeys(cpf, idCpfAquisicaoForm, "id");
+                driver.waitElementToBeClickableAll(idDDDAquisicaoForm, 5, "id");
+                driver.waitSeconds(1);
+//                driver.clear(idDDDAquisicaoForm, "id");
+//                driver.sendKeys(ddd, idDDDAquisicaoForm, "id");
+                driver.actionSendKey(telefone, idTelefoneAquisicaoForm, "id");
+                driver.sendKeys(email, idEmailForm, "id");
+                driver.actionSendKey(cpf, idCpfAquisicaoForm, "id");
         }
     }
 
@@ -164,6 +168,13 @@ public class CarrinhoPage {
         driver.waitElementXP(xpathMsgErroBloqueioDependente);
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
+
+    }
+
+    public void validarMensagemBloqueiocep(String mensagem) {
+        driver.waitElementXP(xpathMsgErroCEP);
+        Assert.assertEquals(mensagem, driver.getText(xpathMsgErroCEP, "xpath"));
+//        Assert.assertEquals("O CEP deve ser do mesmo estado (UF) do DDD escolhido", driver.getText(xpathMsgErroCEP, "xpath").substring(108, 139));
 
     }
 

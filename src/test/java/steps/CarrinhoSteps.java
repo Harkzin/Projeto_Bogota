@@ -37,6 +37,11 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
     }
 
+    @Então("^validar que foi exibida uma mensagem de erro do cep \"([^\"]*)\"$")
+    public void validarQueFoiExibidaUmaMensagemDeErroDoCep(String mensagem) throws Throwable {
+        carrinhoPage.validarMensagemBloqueiocep(mensagem);
+    }
+
     @Entao("^validar que é direcionado para pagina de \"([^\"]*)\"$")
     public void validarQueEDirecionadoParaPaginaDe(String Pagina) throws Throwable {
         switch (Pagina) {
