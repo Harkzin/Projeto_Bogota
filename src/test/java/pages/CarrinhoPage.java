@@ -77,8 +77,7 @@ public class CarrinhoPage {
     private String xpathClicarOKEntendi = "//*[@data-multa-action='backHome']";
 
     //Validar que foi direcionado para a Home
-    private String xpathValidarQueFoiDirecionadoParaAHome = "/html/body/main/div[4]/div/div[2]/div[2]/div/div/div[1]/h3";
-
+    private String idValidarQueFoiDirecionadoParaAHome = "body > main > div.main__inner-wrapper.mdn-u-flexGrow1 > div > div.yCmsContentSlot.row.no-margin > div:nth-child(4) > div > div > div.col-xs-12.col-md-3 > h3";
     //Thab
     //private String xpathBotaoFinalizarCarrinho = TO DO
 
@@ -254,8 +253,8 @@ public class CarrinhoPage {
 
     }
         public void validarQueFoiDirecionadoParaAHome() {
-
-            Assert.assertEquals("O básico para o dia a dia", driver.getText(xpathValidarQueFoiDirecionadoParaAHome, "xpath"));
+            driver.waitSeconds(10);
+            Assert.assertEquals("Para quem é ultra conectado", driver.getText(idValidarQueFoiDirecionadoParaAHome, "css"));
 
         }
     }
