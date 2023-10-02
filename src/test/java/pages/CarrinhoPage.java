@@ -79,8 +79,7 @@ public class CarrinhoPage {
     private String xpathClicarOKEntendi = "//*[@data-multa-action='backHome']";
 
     //Validar que foi direcionado para a Home
-    private String xpathValidarQueFoiDirecionadoParaAHome = "/html/body";
-
+    private String idValidarQueFoiDirecionadoParaAHome = "//h3[@class='mensagem-plano'][text()='O básico para o dia a dia']  ";
     //Thab
     //private String xpathBotaoFinalizarCarrinho = TO DO
 
@@ -265,8 +264,8 @@ public class CarrinhoPage {
 
     }
         public void validarQueFoiDirecionadoParaAHome() {
-      //To do validar qualquer elemento da home
-            //Exemplo: Assert.assertEquals(texto qualquer da pagina inicial, driver.getText("seletor'", "tipo do seletor"));
+            driver.waitSeconds(10);
+            Assert.assertEquals("O básico para o dia a dia", driver.getText(idValidarQueFoiDirecionadoParaAHome, "xpath"));
 
         }
     }
