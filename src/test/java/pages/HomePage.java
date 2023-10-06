@@ -10,17 +10,18 @@ public class HomePage {
     }
 
     // Card Controle
+    public static String xpathTituloControleHome = "//*[@class='mensagem-plano'][text()='O básico para o dia a dia']";
     private String xpathTituloCardControle = "(//*[@class='titulo-produto'])[1]";
     private String xpathPrecoCardControle = "(//*[@class='price'])[1]";
     private String xpathGbPlano = "(//*[@class='portabilidade'])[1]";
     private String xpathGbBonus = "(//*[@class='portabilidade'])[2]";
     private String xpathEuQueroCardControle = "(//*[@data-automation='eu-quero'])[1]";
 
-    // Variaveis para validacao posterior no carrinho
-    private static String tituloCardHome = "";
-    private static String gbPlanoCardHome = "";
-    private static String gbBonusCardHome = "";
-    private static String valorCardHome = "";
+    // Variaveis para validacao posterior no carrinho Controle
+    public static String tituloCardHome = "";
+    public static String gbPlanoCardHome = "";
+    public static String gbBonusCardHome = "";
+    public static String valorCardHome = "";
 
     public void acessarLojaHome() {
 
@@ -60,31 +61,14 @@ public class HomePage {
     }
 
     public void selecionarCardControle() {
-        driver.waitSeconds(2);
+        driver.waitElementAll(xpathTituloControleHome, "xpath");
         driver.moveToElement(xpathEuQueroCardControle, "xpath");
-        driver.waitSeconds(1);
+        driver.waitElementAll(xpathTituloCardControle, "xpath");
         tituloCardHome = driver.getText(xpathTituloCardControle, "xpath");
         gbPlanoCardHome = driver.getText(xpathGbPlano, "xpath");
         gbBonusCardHome = driver.getText(xpathGbBonus, "xpath");
         valorCardHome = driver.getText(xpathPrecoCardControle, "xpath");
         driver.click(xpathEuQueroCardControle, "xpath");
     }
-
-    public static String getValorPlanoHome() {
-        return valorCardHome;
-    }
-
-    public static String getTituloCardHome() {
-        return tituloCardHome;
-    }
-
-    public static String getGbPlanoCardHome() {
-        return gbPlanoCardHome;
-    }
-
-    public static String getGbBonusCardHome() {
-        return gbBonusCardHome;
-    }
-
 }
 

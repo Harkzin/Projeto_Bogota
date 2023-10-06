@@ -1,11 +1,7 @@
 package steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.pt.*;
-import org.json.JSONException;
-import org.junit.Assert;
-
-import pages.CarrinhoPage;
+import pages.*;
 import support.BaseSteps;
 
 public class CarrinhoSteps extends BaseSteps {
@@ -37,82 +33,9 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
     }
 
-    @Então("^validar que foi exibida uma mensagem de erro do cep \"([^\"]*)\"$")
-    public void validarQueFoiExibidaUmaMensagemDeErroDoCep(String mensagem) throws Throwable {
-        carrinhoPage.validarMensagemBloqueiocep(mensagem);
-    }
-
-    @Entao("^validar que é direcionado para pagina de \"([^\"]*)\"$")
-    public void validarQueEDirecionadoParaPaginaDe(String Pagina) throws Throwable {
-        switch (Pagina) {
-            case "dados pessoais":
-                carrinhoPage.paginaDadosPessoaisEExibida();
-                break;
-            case "dados de endereco":
-                carrinhoPage.paginaDadosEnderecoEExibida();
-                break;
-            case "dados de pagamento":
-                carrinhoPage.paginaDadosPagamentoEExibida();
-                break;
-            case "Controle antecipado":
-                carrinhoPage.paginaControleAntecipadoEExibida();
-                break;
-            case "Customizar fatura":
-                carrinhoPage.paginaCustomizarFaturaTHABEExibida();
-                break;
-            case "token":
-                carrinhoPage.secaoTokenEExibida();
-                break;
-//            case "conclusao":
-//                pedidoConcluidoPage.secaoPedidoConcluidoEExibida();
-//                break;
-        }
-    }
-
-    @E("^preencho os campos Nome Completo \"([^\"]*)\", Data De Nascimento \"([^\"]*)\" e Nome da Mãe \"([^\"]*)\"$")
-    public void preenchoOsCamposNomeCompletoDataDeNascimentoENomeDaMae(String nomeCompleto, String dataNascimento, String nomeDaMae) throws Throwable {
-        carrinhoPage.camposDadosPessoais(nomeCompleto, dataNascimento, nomeDaMae);
-    }
-
-    @E("^preencho os campos \"([^\"]*)\", \"([^\"]*)\" e \"([^\"]*)\" no endereço$")
-    public void preenchoOsCamposENoEndereço(String cep, String numero, String complemento) throws Throwable {
-        carrinhoPage.camposEndereco(cep, numero, complemento);
-    }
-
-    @Quando("^seleciono a forma de pagamento \"([^\"]*)\"$")
-    public void selecionoAFormaDePagamento(String formaPagamento) throws Throwable {
-        carrinhoPage.clicarFormaDePagamento(formaPagamento);
-    }
-
-    @E("^selecionar a data de vencimento \"([^\"]*)\"$")
-    public void selecionarADataDeVencimento(String data) throws Throwable {
-        carrinhoPage.selecionarDataVencimento(data);
-    }
-
-    @E("^marco o checkbox de termos de aceite$")
-    public void marcoOCheckboxDeTermosDeAceite() {
-        carrinhoPage.marcarCheckboxTermo();
-    }
-
-    @E("^marco o checkbox de termos de aceite thab$")
-    public void marcoOCheckboxDeTermosDeAceiteThab() {
-        carrinhoPage.marcarCheckboxTermoTHAB();
-    }
-
-    @Quando("^valido que foi ofertado plano de Controle Antecipado$")
-    public void validoQueFoiOfertadoPlanoDe() {
-        Assert.assertTrue(carrinhoPage.PlanoControleAntecipadoExiste());
-    }
-
-    @E("^selecionar a fatura \"([^\"]*)\"$")
-    public void selecionarAFatura(String fatura) throws Throwable {
-        carrinhoPage.selecionarTipoFatura(fatura);
-    }
-
     @Então("^validar que foi direcionado para a Home$")
     public void validarQueFoiDirecionadoParaAHome() {
         carrinhoPage.validarQueFoiDirecionadoParaAHome();
     }
-
 }
 

@@ -1,7 +1,7 @@
 #language: pt
 
 @regressivo
-Funcionalidade: Aquisicao pos
+Funcionalidade: Aquisicao Pos - Bloqueio Cliente Dependente
 
   @aquisicao
   @planoPos
@@ -13,8 +13,7 @@ Funcionalidade: Aquisicao pos
     E selecionar a opção "Quero uma linha nova da Claro"
     E preencho os campos ddd "11", telefone "11947438023", email "eutesteauto@outlook.com" e cpf "50357581091" no fluxo de "aquisicao"
     Quando clicar no botão "Eu quero!"
-    E preencher os dados pessoais: "AQS CONVENCIONAL", "09/10/1980", "Marta Silva"
-#    E aguardar o acesso a secao de "dados de endereco" do pedido
+    E preencho os campos Nome Completo "AQS CONVENCIONAL", Data De Nascimento "09/10/1980" e Nome da Mãe "Marta Silva"
     E preencho os campos "50030030", "65" e "apt 81" no endereço
     Quando clicar no botão "Continuar"
     Então validar que foi exibida uma mensagem de erro do cep "O CEP deve ser do mesmo estado (UF) do DDD escolhido"

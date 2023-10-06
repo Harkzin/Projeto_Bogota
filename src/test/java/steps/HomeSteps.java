@@ -17,5 +17,4 @@ public class HomeSteps extends BaseSteps {
     public void selecionarUmPlanoControleDoCarrosselDaHomeClicandoNoBotãoDele(String arg1) throws Throwable {
         homePage.selecionarCardControle();
     }
-
 }

@@ -1,6 +1,7 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.HomePage;
 
 import java.util.NoSuchElementException;
 import java.util.*;
@@ -45,8 +47,17 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage", "headless"));
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage"));
+//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage", "headless"));
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage"));
+
+//                    Map<String, Object> prefs = new HashMap<String, Object>();
+//                    Map<String, Object> profile = new HashMap<String, Object>();
+//                    Map<String, Object> contentSettings = new HashMap<String, Object>();
+//                    contentSettings.put("geolocation", 1);
+//                    profile.put("managed_default_content_settings", contentSettings);
+//                    prefs.put("profile", profile);
+//                    optionsC.setExperimentalOption("prefs", prefs);
+
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
                     driver.manage().window().maximize();
@@ -143,12 +154,18 @@ public class DriverQA {
         element.click();
     }
 
+    public void clickAction(String parValue, String... parType) {
+        WebElement element = findElem(parValue, parType);
+        Actions act = new Actions(driver);
+        act.click(element).perform();
+    }
+
     public void enter(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         element.submit();
     }
 
-    public boolean selectected(String parValue, String... parType) {
+    public boolean isSelected(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         return element.isSelected();
     }
@@ -177,6 +194,7 @@ public class DriverQA {
     public boolean isEnabled(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         return element.isEnabled();
+
     }
 
     public boolean isDisplayed(String parValue, String... parType) {
@@ -199,7 +217,7 @@ public class DriverQA {
         element.sendKeys(parText);
     }
 
-    public String getText(String parValue, String... parType) {
+    public String getText(String parValue, String parType) {
         WebElement element = findElem(parValue, parType);
         return element.getText();
     }
@@ -250,6 +268,10 @@ public class DriverQA {
 
     public void waitSeconds(int time) {
         driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+    }
+
+    public void waitMilliSeconds(int time) {
+        driver.manage().timeouts().implicitlyWait(time, TimeUnit.MILLISECONDS);
     }
 
     public void waitElementAll(String parName, String... parType) {
@@ -495,11 +517,23 @@ public class DriverQA {
 
     public void actionClick(String parValue, String... parType) {
         try {
-            Actions action = new Actions(driver);
             WebElement element = findElem(parValue, parType);
-            WebDriverWait wait = new WebDriverWait(driver, 60);
+            WebDriverWait wait = new WebDriverWait(driver, 30);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             wait.until(ExpectedConditions.elementToBeClickable(element));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void actionClickBoleto(String parValue, String... parType) {
+        try {
+            WebElement element = findElem(parValue, parType);
+            WebDriverWait wait = new WebDriverWait(driver, 30);
+//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parValue), "Boleto"));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         } catch (Exception e) {
             e.printStackTrace();
@@ -533,4 +567,75 @@ public class DriverQA {
         int position = cookie.toString().indexOf(";");
         return cookie.toString().substring(0, position);
     }
+
+    public void waitAttValorBoleto(String parId, String valorDebito, String plano) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        float numeroFloat = (plano.equals("Controle")) ? Float.parseFloat(valorDebito.replace(',', '.')) + 5.0f : Float.parseFloat(valorDebito.replace(',', '.')) + 10.0f;
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), Float.toString(numeroFloat).replace('.', ',')));
+    }
+
+    public boolean isEnabledDisplayed(String parValue, String parType) {
+        WebElement element = findElem(parValue, parType);
+        if (element.isEnabled() && element.isDisplayed()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isEnabledDisplayedSelected(String parValue, String parType) {
+        WebElement element = findElem(parValue, parType);
+        if (element.isEnabled() && element.isDisplayed() && element.isSelected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public String validaDataDeVencimento(String dtVencimento) {
+        int dataSelecionada = 0;
+        int dataNãoSelecionada = 0;
+        String txtDtVencimento = "";
+        waitElementToBeClickableAll(dtVencimento + 1, 10, "id");
+        for (int i = 1; i <= 6; i++) {
+            // Valida que os botoes da   data estao visiveis e interagiveis para boleto
+            Assert.assertTrue(isEnabledDisplayed(dtVencimento + i, "id") && isDisplayed(dtVencimento + i, "id"));
+            if (isSelected(dtVencimento + i)) {
+                dataSelecionada++;
+                txtDtVencimento = getText("//*[@for='" + dtVencimento + i + "']", "xpath");
+            } else {
+                dataNãoSelecionada++;
+            }
+        }
+
+        // Valida que ha 1 data selecionada e as outras 5 nao estao selecionadas para debito
+        Assert.assertEquals(dataSelecionada, 1);
+        Assert.assertEquals(dataNãoSelecionada, 5);
+        return txtDtVencimento;
+    }
+
+    public void validaFaturas(String whats, String email, String correios, String tipoFatura, int numInicial, int numFinal) {
+        for (int i = numInicial; i <= numFinal; i++) {
+            // Valida que os botoes de fatura wpp, email e correios estao visiveis e interagiveis
+            Assert.assertTrue(isEnabledDisplayed(tipoFatura + "[" + i + "]", "xpath"));
+        }
+        // Valida que o wpp esta selecionado e que o email e correio nao estao
+        Assert.assertTrue(isSelected(whats, "id"));
+        Assert.assertFalse(isSelected(email, "id")
+                && isSelected(correios, "id"));
+    }
+
+    public String mascararCpf(String cpf) {
+        return cpf.substring(0, 3) + "." +
+                cpf.substring(3, 6) + "." +
+                cpf.substring(6, 9) + "-" +
+                cpf.substring(9);
+    }
+
+    public String mascararTelefone(String telefone) {
+        return "(" + telefone.substring(0, 2) + ") " +
+                telefone.substring(2, 7) + "-" +
+                telefone.substring(7);
+    }
 }
+

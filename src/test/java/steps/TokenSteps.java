@@ -6,10 +6,10 @@ import support.BaseSteps;
 import support.RESTSupport;
 
 public class TokenSteps extends BaseSteps {
-
-    public static String token;
     TokenPage tokenPage = new TokenPage(driver);
     RESTSupport rest = new RESTSupport();
+
+    public static String token;
 
     @Quando("^preencho o campo Código enviado Por SMS com o TOKEN recebido$")
     public void preenchoOCampoCódigoEnviadoPorSMSComOTOKENRecebido() throws Throwable {
