@@ -1,5 +1,6 @@
 package steps;
 
+import cucumber.api.Scenario;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
 import pages.DadosPessoaisPage;
@@ -24,7 +25,7 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.camposDadosPessoais(nomeCompleto, dataNascimento, nomeDaMae);
     }
 
-    @E("^preencho os campos \"([^\"]*)\", \"([^\"]*)\" e \"([^\"]*)\" no endereço$")
+    @E("^preencho os campos \"([^\"]*)\", \"([^\"]*)\" e \"([^\"]*)\" no endereço")
     public void preenchoOsCamposENoEndereço(String cep, String numero, String complemento) throws Throwable {
         dadosPessoaisPage.camposEndereco(cep, numero, complemento);
     }

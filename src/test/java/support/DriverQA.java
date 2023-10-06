@@ -1,5 +1,6 @@
 package support;
 
+import cucumber.api.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -11,8 +12,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.HomePage;
 
+import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -636,6 +637,21 @@ public class DriverQA {
         return "(" + telefone.substring(0, 2) + ") " +
                 telefone.substring(2, 7) + "-" +
                 telefone.substring(7);
+    }
+
+    public String montaEnderecoValidacaoParabens(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
+        return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
+    }
+
+    public static String capitalizeFirstLetter(String text) {
+        String[] palavras = text.split("\\s+");  // Divide a frase em palavras
+        StringBuilder resultado = new StringBuilder();
+        for (String palavra : palavras) {
+            char primeiraLetra = Character.toUpperCase(palavra.charAt(0));
+            String restantePalavra = palavra.substring(1).toLowerCase();
+            resultado.append(primeiraLetra).append(restantePalavra).append(" ");
+        }
+        return resultado.toString().trim();
     }
 }
 

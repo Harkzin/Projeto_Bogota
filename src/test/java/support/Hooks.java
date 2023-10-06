@@ -6,8 +6,13 @@ import cucumber.api.java.Before;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class Hooks extends BaseSteps {
 
+    public static Collection<String> tagScenarios = new ArrayList<>();
 
     @After(order = 3)
     public void printScreen(Scenario scenario) throws InterruptedException {
@@ -21,9 +26,9 @@ public class Hooks extends BaseSteps {
         driver.quit();
     }
 
-    @Before(value = "@fecharNavegadorBefore", order = 2)
-    public void closeBrowserBefore() {
-        driver.quit();
+    @Before
+    public void getTags(Scenario scenario){
+        tagScenarios = scenario.getSourceTagNames();
     }
 
     @After("@fecharGuia")

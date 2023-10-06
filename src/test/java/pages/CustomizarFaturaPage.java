@@ -42,6 +42,7 @@ public class CustomizarFaturaPage {
     // Variavel para validacao no pedido
     public static String valorPedidoCarrinho;
     public static String formaPagamentoPedidoCarrinho;
+    public static String dataVencimentoFatura;
     public void marcarCheckboxTermo() {
         driver.actionClick(xpathChkTermosDeAdesao, "xpath");
     }
@@ -67,7 +68,7 @@ public class CustomizarFaturaPage {
         driver.validaFaturas(idButtonFaturaWhatsDebito, idButtonFaturaEmailDebito, idButtonFaturaCorreiosDebito, xpathTipoFatura, 1, 3);
 
         // Valida data de vencimento Debito
-        driver.validaDataDeVencimento(idDataDeVencimentoDebito);
+        dataVencimentoFatura = driver.validaDataDeVencimento(idDataDeVencimentoDebito);
 
         // Muda para boleto para posteriormente validar diferenca no valor de debito > boleto
         driver.clickAction(xpathAbaBoleto, "xpath");

@@ -1,7 +1,11 @@
 package pages;
 
+import cucumber.api.Scenario;
 import org.junit.Assert;
 import support.DriverQA;
+import support.Hooks;
+
+import java.util.Set;
 
 public class DadosPessoaisPage {
     private DriverQA driver;
@@ -21,8 +25,9 @@ public class DadosPessoaisPage {
     private String idTxtCep = "postcode_deliveryAddress";
     private String xpathTxtNumero = "//input[@data-automation='numero']";
     private String xpathTxtComplemento = "//input[@data-automation='complemento']";
-    private static String xpathTipoEntrega = "(//*[@for='shippingTypeOption1'])[1]";
-    private static String xpathTipoFrete = "(//*[@class='shipping-value'])[1]";
+    private String xpathTipoDeFreteConvencionalCarrinho = "(//*[@for='shippingTypeOption1'])[1]";
+    private String xpathTipoDeFreteExpressaCarrinho = "(//*[@for='shippingTypeOption1'])[2]";
+    private String xpathValorDoFreteConvencionalCarrinho = "(//*[@class='shipping-value'])[1]";
     public static String xpathBtnContinuar = "//button[@data-automation='continuar']";
     public static String xpathBtnContinuarPagamento = "//button[@title='Continuar']";
 
@@ -35,15 +40,16 @@ public class DadosPessoaisPage {
     public static String numeroEndCliente;
     public static String complementoCliente;
     public static String xpathEnderecoCliente = "(//*[@name='deliveryAddress.streetName'])[2]";
-    public static String xpathBairroCliente = "(//*[@name='deliveryAddress.neighbourhood'])[2]" ;
+    public static String xpathBairroCliente = "(//*[@name='deliveryAddress.neighbourhood'])[2]";
     public static String xpathUfCliente = "(//*[@name='deliveryAddress.stateCode'])[2]";
-    public static String xpathCidadeCliente = "(//*[@name='deliveryAddress.townCity'])[2]";;
+    public static String xpathCidadeCliente = "(//*[@name='deliveryAddress.townCity'])[2]";
+    ;
     public static String enderecoCliente;
     public static String bairroCliente;
     public static String ufCliente;
     public static String cidadeCliente;
-    public static String tipoEntrega;
-    public static String tipoFrete;
+    public static String tipoDeFreteCarrinho;
+    public static String valorDoFreteCarrinho;
 
     public void preencherNomeCompleto(String nomeCompleto) {
         if (driver.isDisplayed(xpathTxtNome, "xpath")) {
@@ -87,11 +93,16 @@ public class DadosPessoaisPage {
         driver.sendKeys(numero, xpathTxtNumero, "xpath");
         driver.waitElementToBeClickableAll(xpathTxtComplemento, 10, "xpath");
         driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
-//        tipoFrete = driver.getText(xpathTipoFrete);
-//        tipoEntrega = driver.getText(xpathTipoEntrega);
-        enderecoCliente = driver.getText(xpathEnderecoCliente, "xpath");
-        bairroCliente = driver.getText(xpathBairroCliente, "xpath");
-        ufCliente = driver.getText(xpathUfCliente, "xpath");
-        cidadeCliente = driver.getText(xpathCidadeCliente, "xpath");
+        if (Hooks.tagScenarios.contains("@entregaExpressa")) {
+            tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteExpressaCarrinho, "xpath").substring(0, 16);
+            valorDoFreteCarrinho = driver.getText(xpathTipoDeFreteExpressaCarrinho, "xpath").substring(32, 38);
+        } else {
+            tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteConvencionalCarrinho, "xpath");
+            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteConvencionalCarrinho, "xpath");
+        }
+        enderecoCliente = driver.getValue(xpathEnderecoCliente, "xpath");
+        bairroCliente = driver.getValue(xpathBairroCliente, "xpath");
+        ufCliente = driver.getValue(xpathUfCliente, "xpath");
+        cidadeCliente = driver.getValue(xpathCidadeCliente, "xpath");
     }
 }
