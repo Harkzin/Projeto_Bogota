@@ -6,7 +6,6 @@ import cucumber.api.java.Before;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,7 +20,7 @@ public class Hooks extends BaseSteps {
         scenario.embed(screenshot, "image/png");
     }
 
-    @After(value = "@fecharNavegador", order = 1)
+    @After(order = 1)
     public void closeBrowser() {
         driver.quit();
     }

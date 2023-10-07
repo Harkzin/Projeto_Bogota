@@ -2,7 +2,6 @@ package steps;
 
 import cucumber.api.java.pt.Entao;
 import pages.ParabensPage;
-import pages.TokenPage;
 import support.BaseSteps;
 
 public class ParabensSteps extends BaseSteps {

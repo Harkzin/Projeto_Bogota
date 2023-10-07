@@ -1,7 +1,7 @@
 #language: pt
 
 @regressivo
-Funcionalidade: Troca Controle
+Funcionalidade: Troca Controle - Bloqueio Cliente Dependente
 
   @troca
   @controle

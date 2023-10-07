@@ -35,6 +35,7 @@ public class CarrinhoPage {
     private String idCpfAquisicaoForm = "cpfAcquisition";
     private String idEuQueroForm = "buttonCheckout";
 
+    // Variaveis para validacao na tela de parabens
     public static String telefoneCliente;
     public static String cpfCliente;
 

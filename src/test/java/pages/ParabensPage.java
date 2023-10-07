@@ -1,9 +1,5 @@
 package pages;
 
-import cucumber.api.java.es.Dado;
-import cucumber.api.java.pt.Dados;
-import gherkin.lexer.Da;
-import org.codehaus.groovy.transform.SourceURIASTTransformation;
 import org.junit.Assert;
 import support.BaseSteps;
 import support.DriverQA;

@@ -2,7 +2,6 @@ package steps;
 
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Quando;
-import org.junit.Assert;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
 

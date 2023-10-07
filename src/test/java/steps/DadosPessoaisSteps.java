@@ -1,6 +1,5 @@
 package steps;
 
-import cucumber.api.Scenario;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
 import pages.DadosPessoaisPage;

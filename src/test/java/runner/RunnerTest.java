@@ -15,7 +15,7 @@ import support.BaseSteps;
         monochrome = false,
         dryRun = false,
         glue = {"steps", "support"},
-        tags = {"~@ignore", "@TrocaCtrlRecusaMulta"})
+        tags = {"~@ignore", "@regressivo"})
 
 public class  RunnerTest extends BaseSteps {
 

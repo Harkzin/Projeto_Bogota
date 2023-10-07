@@ -1,11 +1,8 @@
 package pages;
 
-import cucumber.api.Scenario;
 import org.junit.Assert;
 import support.DriverQA;
 import support.Hooks;
-
-import java.util.Set;
 
 public class DadosPessoaisPage {
     private DriverQA driver;

@@ -1,6 +1,5 @@
 package support;
 
-import cucumber.api.Scenario;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -13,7 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.lang.reflect.Array;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -48,16 +46,8 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage", "headless"));
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage"));
-
-//                    Map<String, Object> prefs = new HashMap<String, Object>();
-//                    Map<String, Object> profile = new HashMap<String, Object>();
-//                    Map<String, Object> contentSettings = new HashMap<String, Object>();
-//                    contentSettings.put("geolocation", 1);
-//                    profile.put("managed_default_content_settings", contentSettings);
-//                    prefs.put("profile", profile);
-//                    optionsC.setExperimentalOption("prefs", prefs);
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
+//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -528,19 +518,6 @@ public class DriverQA {
         }
     }
 
-    public void actionClickBoleto(String parValue, String... parType) {
-        try {
-            WebElement element = findElem(parValue, parType);
-            WebDriverWait wait = new WebDriverWait(driver, 30);
-//            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            wait.until(ExpectedConditions.elementToBeClickable(element));
-            wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parValue), "Boleto"));
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void moveToElementJs(String parValue, String... parType) {
 
         WebElement element = findElem(parValue, parType);
@@ -578,15 +555,6 @@ public class DriverQA {
     public boolean isEnabledDisplayed(String parValue, String parType) {
         WebElement element = findElem(parValue, parType);
         if (element.isEnabled() && element.isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isEnabledDisplayedSelected(String parValue, String parType) {
-        WebElement element = findElem(parValue, parType);
-        if (element.isEnabled() && element.isDisplayed() && element.isSelected()) {
             return true;
         } else {
             return false;

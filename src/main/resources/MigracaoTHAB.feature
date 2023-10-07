@@ -3,6 +3,7 @@
 @regressivo
 Funcionalidade: Migracao THAB
 
+  @migracao
   @migracaoPre
   @controle
   @migracaoControleTHAB
@@ -11,7 +12,7 @@ Funcionalidade: Migracao THAB
     E selecionar um Plano Controle do carrossel da Home clicando no botão "Eu quero!" dele
     E validar que não há alterações no valor e/ou informações do Plano
     E selecionar a opção "Mudar meu plano da Claro"
-    E preencho os campos ddd "", telefone "11970901243", email "claroqualidade3@gmail.com" e cpf "95252593078" no fluxo de "migracao"
+    E preencho os campos ddd "", telefone "11947438199", email "claroqualidade3@gmail.com" e cpf "24014561208" no fluxo de "migracao"
     Quando clicar no botão "Eu quero!"
     E preencho os campos Nome Completo "Isabelly Timberg", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
     E preencho os campos "01001001", "288" e "CASA" no endereço
