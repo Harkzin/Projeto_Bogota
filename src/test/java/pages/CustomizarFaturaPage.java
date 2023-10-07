@@ -16,7 +16,6 @@ public class CustomizarFaturaPage {
     }
 
     // Dados Pagamentos
-    private String xpathContainerTermoDeAdesao = "//div[contains(@class, 'active')]//div[@class='mdn-Checkbox']";
     private String xpathAbaBoleto = "//*[@id='boleto']";
     private String xpathAbaDebitoAutomatico = "//li[@data-automation='aba-debito-automatico']";
     private String xpathBanco = "//*[@id='bank']";
