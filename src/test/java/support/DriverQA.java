@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.DecimalFormat;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -46,8 +47,8 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage"));
+//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -140,14 +141,15 @@ public class DriverQA {
         return element;
     }
 
-    public void click(String parValue, String... parType) {
+    public void click(String parValue, String parType) {
         WebElement element = findElem(parValue, parType);
         element.click();
     }
 
-    public void clickAction(String parValue, String... parType) {
+    public void actionClick(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         Actions act = new Actions(driver);
+        act.moveToElement(element);
         act.click(element).perform();
     }
 
@@ -161,7 +163,7 @@ public class DriverQA {
         return element.isSelected();
     }
 
-    public void clear(String parValue, String... parType) {
+    public void clear(String parValue, String parType) {
         WebElement element = findElem(parValue, parType);
         element.clear();
     }
@@ -312,7 +314,7 @@ public class DriverQA {
     }
 
     public void waitElementXP(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 120);
+        WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parXp)));
     }
 
@@ -383,12 +385,13 @@ public class DriverQA {
         element.sendKeys(texto, Keys.TAB);
     }
 
-    public void moveToElement(String parValue, String... parType) {
+    public void moveToElementAction(String parValue, String... parType) {
 
         WebElement element = findElem(parValue, parType);
 
         try {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            Actions action = new Actions(driver);
+            action.moveToElement(element);
             waitSeconds(1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -506,7 +509,7 @@ public class DriverQA {
         actions.sendKeys(keys).build().perform();
     }
 
-    public void actionClick(String parValue, String... parType) {
+    public void JavaScriptClick(String parValue, String... parType) {
         try {
             WebElement element = findElem(parValue, parType);
             WebDriverWait wait = new WebDriverWait(driver, 30);
@@ -546,10 +549,16 @@ public class DriverQA {
         return cookie.toString().substring(0, position);
     }
 
-    public void waitAttValorBoleto(String parId, String valorDebito, String plano) {
+    public void waitAttValorBoleto(String parId, String valorDebito) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
-        float numeroFloat = (plano.equals("Controle")) ? Float.parseFloat(valorDebito.replace(',', '.')) + 5.0f : Float.parseFloat(valorDebito.replace(',', '.')) + 10.0f;
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), Float.toString(numeroFloat).replace('.', ',')));
+        float numeroFloat = (Hooks.tagScenarios.contains("@controle")) ? Float.parseFloat(valorDebito.replace(',', '.')) + 5.0f : Float.parseFloat(valorDebito.replace(',', '.')) + 10.0f;
+        DecimalFormat df = new DecimalFormat("#.##");
+        String numeroFormatado = df.format(numeroFloat);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), numeroFormatado.replace('.', ',')));
+    }
+    public void waitAttValorDebito(String parId, String valorDebito) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), valorDebito));
     }
 
     public boolean isEnabledDisplayed(String parValue, String parType) {
@@ -621,5 +630,7 @@ public class DriverQA {
         }
         return resultado.toString().trim();
     }
+
+
 }
 

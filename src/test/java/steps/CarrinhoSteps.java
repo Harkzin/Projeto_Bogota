@@ -8,22 +8,17 @@ public class CarrinhoSteps extends BaseSteps {
 
     CarrinhoPage carrinhoPage = new CarrinhoPage(driver);
 
-    @Dado("^validar que não há alterações no valor e/ou informações do Plano$")
+    @E("^validar que não há alterações no valor e/ou informações do Plano$")
     public void validarQueNãoHáAlteraçõesNoValorEOuInformaçõesDoPlano() throws Throwable {
         carrinhoPage.validarCarrinho();
     }
 
-    @Dado("^selecionar a opção \"([^\"]*)\"$")
-    public void selecionarAOpção(String opcao) throws Throwable {
-        carrinhoPage.selecionarOpcaoForm(opcao);
+    @E("^preencho os campos ddd \"([^\"]*)\", telefone \"([^\"]*)\", email \"([^\"]*)\" e cpf \"([^\"]*)\"")
+    public void preenchoOsCamposDddTelefoneEmailECpfNoFluxoDe(String ddd, String telefone, String email, String cpf) throws Throwable {
+        carrinhoPage.preencherDadosLinhaForm(ddd, telefone, email, cpf);
     }
 
-    @Dado("^preencho os campos ddd \"([^\"]*)\", telefone \"([^\"]*)\", email \"([^\"]*)\" e cpf \"([^\"]*)\" no fluxo de \"([^\"]*)\"$")
-    public void preenchoOsCamposDddTelefoneEmailECpfNoFluxoDe(String ddd, String telefone, String email, String cpf, String fluxo) throws Throwable {
-        carrinhoPage.preencherDadosLinhaForm(ddd, telefone, email, cpf, fluxo);
-    }
-
-    @Quando("^clicar no botão \"([^\"]*)\"$")
+    @E("^clicar no botão \"([^\"]*)\"$")
     public void clicarNoBotão(String botao) throws Throwable {
         carrinhoPage.euQueroCarrinho(botao);
     }

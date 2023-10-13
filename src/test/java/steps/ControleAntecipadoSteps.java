@@ -9,7 +9,7 @@ public class ControleAntecipadoSteps extends BaseSteps {
 
     ControleAntecipadoPage controleAntecipadoPage = new ControleAntecipadoPage(driver);
 
-    @Quando("^valido que foi ofertado plano de Controle Antecipado$")
+    @E("^valido que foi ofertado plano de Controle Antecipado$")
     public void validoQueFoiOfertadoPlanoDe() {
         controleAntecipadoPage.PlanoControleAntecipadoExiste();
     }

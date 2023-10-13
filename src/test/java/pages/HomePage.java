@@ -1,6 +1,7 @@
 package pages;
 
 import support.DriverQA;
+import support.Hooks;
 
 public class HomePage {
     private DriverQA driver;
@@ -11,11 +12,14 @@ public class HomePage {
 
     // Card Controle
     public static String xpathTituloControleHome = "//*[@class='mensagem-plano'][text()='O básico para o dia a dia']";
-    private String xpathTituloCardControle = "(//*[@class='titulo-produto'])[1]";
-    private String xpathPrecoCardControle = "(//*[@class='price'])[1]";
-    private String xpathGbPlano = "(//*[@class='portabilidade'])[1]";
-    private String xpathGbBonus = "(//*[@class='portabilidade'])[2]";
-    private String xpathEuQueroCardControle = "(//*[@data-automation='eu-quero'])[1]";
+    private String xpathTituloCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[@class='titulo-produto'])" : "(//*[@id='tab-3']//*[@class='titulo-produto'])";
+    private String xpathPrecoCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[@class='price'])" : "(//*[@id='tab-3']//*[@class='price'])";
+
+    private String xpathGbPlano = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[contains(text(), 'no Plano')])" : "(//*[@id='tab-3']//*[contains(text(), 'no Plano')])";
+    private String xpathGbBonus = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[contains(text(), 'de Bônus')])" : "(//*[@id='tab-3']//*[contains(text(), 'de Bônus')])";
+    private String xpathEuQueroCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//button[@data-automation='eu-quero'])" : "(//*[@id='tab-3']//button[@data-automation='eu-quero'])";
+
+    private String xpathProximoCarrossel = (Hooks.tagScenarios.contains("@controle")) ? "//*[@id='tab-1']//*[@data-automation='seta-carrossel-direita']" : "//*[@id='tab-3']//*[@data-automation='seta-carrossel-direita']";
 
     // Variaveis para validacao posterior no carrinho Controle
     public static String tituloCardHome = "";
@@ -60,15 +64,17 @@ public class HomePage {
         driver.openURL(url);
     }
 
-    public void selecionarCardControle() {
+    public void selecionarCardControle(String cardHome) {
         driver.waitElementAll(xpathTituloControleHome, "xpath");
-        driver.moveToElement(xpathEuQueroCardControle, "xpath");
-        driver.waitElementAll(xpathTituloCardControle, "xpath");
-        tituloCardHome = driver.getText(xpathTituloCardControle, "xpath");
-        gbPlanoCardHome = driver.getText(xpathGbPlano, "xpath");
-        gbBonusCardHome = driver.getText(xpathGbBonus, "xpath");
-        valorCardHome = driver.getText(xpathPrecoCardControle, "xpath");
-        driver.click(xpathEuQueroCardControle, "xpath");
+        if (Integer.parseInt(cardHome) > 3) {
+            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
+        }
+        driver.waitElementAll(xpathEuQueroCard + "[" + cardHome + "]", "xpath");
+        tituloCardHome = driver.getText(xpathTituloCard + "[" + cardHome + "]", "xpath");
+        valorCardHome = driver.getText(xpathPrecoCard + "[" + cardHome + "]", "xpath");
+        gbPlanoCardHome = (driver.findListElements(xpathGbPlano + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardHome + "]", "xpath");
+        gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardHome + "]", "xpath");
+        driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
     }
 }
 

@@ -3,6 +3,7 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import support.DriverQA;
+import support.Hooks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class CustomizarFaturaPage {
     private String idButtonFaturaCorreiosBoleto = "Correios6";
     private String idDataDeVencimentoDebito = "expireDateClaroDebitPayment_";
     private String idDataDeVencimentoBoleto = "expireDateClaroTicketPayment_";
-    private String xpathChkTermosDeAdesao = "(//*[@class='mdn-Checkbox-label'])[2]";
+    private String xpathChkTermosDeAdesao = (Hooks.tagScenarios.contains("@boleto")) ? "(//*[@class='mdn-Checkbox-label'])[2]" : "(//*[@class='mdn-Checkbox-label'])[1]";
     public static String xpathValorCarrinho = "(//*[@class='js-entry-price-plan js-revenue'])[2]";
 
     // Multa
@@ -42,11 +43,12 @@ public class CustomizarFaturaPage {
     public static String valorPedidoCarrinho;
     public static String formaPagamentoPedidoCarrinho;
     public static String dataVencimentoFatura;
+
     public void marcarCheckboxTermo() {
-        driver.actionClick(xpathChkTermosDeAdesao, "xpath");
+        driver.JavaScriptClick(xpathChkTermosDeAdesao, "xpath");
     }
 
-    public void clicarFormaDePagamento(String formaPagamento, String plano) {
+    public void clicarFormaDePagamento() {
         driver.waitElementXP(xpathValorCarrinho);
 
         // Salva o Valor do carrinho atual (Debito)
@@ -67,14 +69,17 @@ public class CustomizarFaturaPage {
         driver.validaFaturas(idButtonFaturaWhatsDebito, idButtonFaturaEmailDebito, idButtonFaturaCorreiosDebito, xpathTipoFatura, 1, 3);
 
         // Valida data de vencimento Debito
-        dataVencimentoFatura = driver.validaDataDeVencimento(idDataDeVencimentoDebito);
+        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@pre")) {
+            dataVencimentoFatura = driver.validaDataDeVencimento(idDataDeVencimentoDebito);
+        }
+
 
         // Muda para boleto para posteriormente validar diferenca no valor de debito > boleto
-        driver.clickAction(xpathAbaBoleto, "xpath");
+        driver.actionClick(xpathAbaBoleto, "xpath");
 
         // Metodo que valida que há alteracao no valor quando Debito automatico > Boleto
         // Regra de negócio: Plano controle R$5 de diferença e pós R$10
-        driver.waitAttValorBoleto(xpathValorCarrinho, valorDebito, plano);
+        driver.waitAttValorBoleto(xpathValorCarrinho, valorDebito);
 
         // Valida que o plano no resumo da compra foi alterado para boleto
         Assert.assertTrue(("Boleto".equals(driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath"))));
@@ -83,27 +88,30 @@ public class CustomizarFaturaPage {
         driver.validaFaturas(idButtonFaturaWhatsBoleto, idButtonFaturaEmailBoleto, idButtonFaturaCorreiosBoleto, xpathTipoFatura, 4, 6);
 
         // Valida data de vencimento boleto
-        driver.validaDataDeVencimento(idDataDeVencimentoBoleto);
+        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@pre")) {
+            driver.validaDataDeVencimento(idDataDeVencimentoBoleto);
+        }
 
-        if (formaPagamento.equals("Debito automatico")) {
+        if (Hooks.tagScenarios.contains("@debitoAutomatico")) {
             driver.click(xpathAbaDebitoAutomatico, "xpath");
-            driver.waitElementToBeClickableAll(xpathBanco, 5, "id");
-            driver.sendKeys("237 - BRADESCO", xpathBanco, "id");
+            driver.waitElementToBeClickableAll(xpathBanco, 10, "xpath");
+            driver.sendKeys("237 - BRADESCO", xpathBanco, "xpath");
             driver.waitMilliSeconds(100);
             driver.sendKeyBoard(Keys.ENTER);
             driver.waitMilliSeconds(100);
-            driver.sendKeys("6620", xpathAgencia, "id");
-            driver.sendKeys("11868576", xpathConta, "id");
+            driver.sendKeys("6620", xpathAgencia, "xpath");
+            driver.sendKeys("11868576", xpathConta, "xpath");
+            driver.waitAttValorDebito(xpathValorCarrinho, valorDebito);
         }
         valorPedidoCarrinho = driver.getText(xpathValorCarrinho, "xpath");
-        formaPagamentoPedidoCarrinho = driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath");
+        formaPagamentoPedidoCarrinho = Hooks.tagScenarios.contains("@debitoAutomatico") ? driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath").split(" ")[0] : driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath");
     }
 
     public void selecionarDataVencimento(String data) {
-        driver.actionClick("//label[@data-automation='vencimento-" + data + "']", "xpath");
+        driver.JavaScriptClick("//label[@data-automation='vencimento-" + data + "']", "xpath");
     }
 
     public void selecionarTipoFatura(String fatura) {
-        driver.actionClick("div[class$=active] .tipoFatura label[for^='" + fatura + "']", "css");
+        driver.JavaScriptClick("div[class$=active] .tipoFatura label[for^='" + fatura + "']", "css");
     }
 }

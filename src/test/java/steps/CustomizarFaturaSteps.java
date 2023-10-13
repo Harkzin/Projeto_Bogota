@@ -1,7 +1,6 @@
 package steps;
 
 import cucumber.api.java.pt.E;
-import cucumber.api.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
 
@@ -9,9 +8,9 @@ public class CustomizarFaturaSteps extends BaseSteps {
 
     CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driver);
 
-    @Quando("^seleciono a forma de pagamento \"([^\"]*)\" para plano \"([^\"]*)\"$")
-    public void selecionoAFormaDePagamentoParaPlano(String formaPagamento, String plano) throws Throwable {
-        customizarFaturaPage.clicarFormaDePagamento(formaPagamento, plano);
+    @E("^seleciono a forma de pagamento")
+    public void selecionoAFormaDePagamentoParaPlano() throws Throwable {
+        customizarFaturaPage.clicarFormaDePagamento();
     }
 
     @E("^marco o checkbox de termos de aceite$")

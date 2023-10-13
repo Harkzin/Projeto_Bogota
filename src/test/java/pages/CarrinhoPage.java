@@ -2,6 +2,7 @@ package pages;
 
 import support.DriverQA;
 import org.junit.Assert;
+import support.Hooks;
 
 public class CarrinhoPage {
     private DriverQA driver;
@@ -12,7 +13,7 @@ public class CarrinhoPage {
 
     //Resumo da compra
     private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isNotOrderConfPage'])[2]";
-    private String xpathGbNoPlanoResumo = "(//*[@class='modality']//p)[3]";
+    private String xpathGbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
     private String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
     private String xpathValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])[2]";
     public static String xpathMetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
@@ -45,75 +46,67 @@ public class CarrinhoPage {
     public void validarCarrinho() {
         driver.waitElementXP(xpathTituloPlanoResumo);
         Assert.assertTrue(HomePage.tituloCardHome.equals(driver.getText(xpathTituloPlanoResumo, "xpath")));
-        Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
-        Assert.assertTrue(HomePage.gbBonusCardHome.equals(driver.getText(xpathGbDeBonusResumo, "xpath")));
+        if (!HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
+            Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
+            Assert.assertTrue(HomePage.gbBonusCardHome.equals(driver.getText(xpathGbDeBonusResumo, "xpath")));
+        } else if (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
+            Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
+        }
         Assert.assertTrue(HomePage.valorCardHome.contains(driver.getText(xpathValorTotalResumo, "xpath")));
         Assert.assertTrue(("Fidelizado por 12 meses".equals(driver.getText(xpathFidelizadoResumo, "xpath"))));
         Assert.assertTrue(("Débito automático".equals(driver.getText(xpathMetodoPagamentoResumo, "xpath"))));
     }
 
-    public void selecionarOpcaoForm(String opcao) {
+    public void preencherDadosLinhaForm(String ddd, String telefone, String email, String cpf) {
+        // Valida se todos os campos de aquisicao, migracao e portabilidade estao visiveis e se sao selecionaveis
         driver.waitElementToBeClickableAll(xpathAquisicaoForm, 5, "xpath");
         Assert.assertTrue(driver.isDisplayed(xpathMigracaoForm, "xpath") && driver.isDisplayed(xpathPortabilidadeForm, "xpath") && driver.isDisplayed(xpathAquisicaoForm, "xpath"));
         Assert.assertFalse(driver.isSelected(xpathInputRadioMigracao, "xpath") && driver.isSelected(xpathInputRadioPortabilidade, "xpath") && driver.isSelected(xpathInputRadioAquisicao, "xpath"));
-        switch (opcao) {
-            case "Quero uma linha nova da Claro":
-                driver.click(xpathAquisicaoForm, "xpath");
-                break;
-            case "Trazer meu número para Claro":
-                driver.click(xpathPortabilidadeForm, "xpath");
-                break;
-            case "Mudar meu plano da Claro":
-                driver.click(xpathMigracaoForm, "xpath");
-                break;
-        }
-    }
 
-    public void preencherDadosLinhaForm(String ddd, String telefone, String email, String cpf, String fluxo) {
         telefoneCliente = telefone;
         cpfCliente = cpf;
-        switch (fluxo) {
-            case "migracao":
-                driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
-                driver.sendKeys(email, idEmailForm);
-                driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
-                driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
-                break;
-            case "portabilidade":
-                driver.waitElementToBeClickableAll(idTelefonePortabilidadeForm, 1, "id");
-                driver.sendKeys(telefone, idTelefonePortabilidadeForm, "id");
-                driver.sendKeys(cpf, idCpfPortabilidadeForm, "id");
-                break;
-            case "aquisicao":
-                driver.waitElementToBeClickableAll(idDDDAquisicaoForm, 5, "id");
-                driver.actionSendKey(telefone, idTelefoneAquisicaoForm, "id");
-                driver.sendKeys(email, idEmailForm, "id");
-                driver.actionSendKey(cpf, idCpfAquisicaoForm, "id");
+        if (Hooks.tagScenarios.contains("@migracao") || Hooks.tagScenarios.contains("@troca")) {
+            driver.click(xpathMigracaoForm, "xpath");
+            driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
+            driver.sendKeys(email, idEmailForm);
+            driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
+            driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
+        } else if (Hooks.tagScenarios.contains("@aquisicao")) {
+            driver.click(xpathAquisicaoForm, "xpath");
+            driver.waitElementToBeClickableAll(idDDDAquisicaoForm, 5, "id");
+            driver.actionSendKey(telefone, idTelefoneAquisicaoForm, "id");
+            driver.sendKeys(email, idEmailForm, "id");
+            driver.actionSendKey(cpf, idCpfAquisicaoForm, "id");
+        } else {
+            driver.click(xpathPortabilidadeForm, "xpath");
+            driver.waitElementToBeClickableAll(idTelefonePortabilidadeForm, 1, "id");
+            driver.sendKeys(telefone, idTelefonePortabilidadeForm, "id");
+            driver.sendKeys(cpf, idCpfPortabilidadeForm, "id");
         }
     }
 
     public void euQueroCarrinho(String botao) {
         switch (botao) {
             case "Eu quero!":
-                driver.actionClick(idEuQueroForm, "id");
+                driver.JavaScriptClick(idEuQueroForm, "id");
                 break;
             case "Continuar":
-                driver.actionClick(DadosPessoaisPage.xpathBtnContinuar, "xpath");
+                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuar, "xpath");
                 break;
             case "Continuar pagamento":
-                driver.actionClick(DadosPessoaisPage.xpathBtnContinuarPagamento, "xpath");
+                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuarPagamento, "xpath");
                 break;
             case "Eu quero! Controle Antecipado":
-                driver.actionClick(ControleAntecipadoPage.xpathEuQueroTHAB, "xpath");
+                driver.JavaScriptClick(ControleAntecipadoPage.xpathEuQueroTHAB, "xpath");
                 break;
             case "Não concordo":
-                driver.actionClick(CustomizarFaturaPage.xpathNaoConcordo, "xpath");
+                driver.JavaScriptClick(CustomizarFaturaPage.xpathNaoConcordo, "xpath");
                 break;
             case "Ok, entendi":
-                driver.actionClick(CustomizarFaturaPage.xpathClicarOKEntendi, "xpath");
+                driver.JavaScriptClick(CustomizarFaturaPage.xpathClicarOKEntendi, "xpath");
                 break;
             case "Finalizar":
-                driver.actionClick(TokenPage.xpathBotaoFinalizarCarrinho, "xpath");
+                driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "xpath");
         }
     }
 

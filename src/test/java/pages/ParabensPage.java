@@ -40,12 +40,14 @@ public class ParabensPage extends BaseSteps {
             Assert.assertTrue(driver.getText(xpathTipoDoFretePedido, "xpath").contains(DadosPessoaisPage.tipoDeFreteCarrinho));
             Assert.assertTrue(driver.getText(xpathValorDoFretePedido, "xpath").contains(Character.toUpperCase(DadosPessoaisPage.valorDoFreteCarrinho.charAt(6)) + DadosPessoaisPage.valorDoFreteCarrinho.substring(7)));
             Assert.assertTrue(driver.getText(xpathTelefonePedido, "xpath").contains(driver.mascararTelefone(CarrinhoPage.telefoneCliente)));
-        }else{
+        } else {
             Assert.assertTrue(driver.getText(xpathTelefonePedido, "xpath").contains(driver.mascararTelefone(CarrinhoPage.telefoneCliente)));
         }
         Assert.assertTrue(driver.getText(xpathValorPedido, "xpath").contains(CustomizarFaturaPage.valorPedidoCarrinho));
         Assert.assertTrue(driver.getText(xpathFormaPagamentoPedido, "xpath").contains(CustomizarFaturaPage.formaPagamentoPedidoCarrinho));
-        Assert.assertTrue(driver.getText(xpathDiaVencimentoFatura, "xpath").contains(CustomizarFaturaPage.dataVencimentoFatura));
-        Assert.assertTrue(driver.getText(xpathEnderecoDeEntregaPedido, "xpath").contains(driver.montaEnderecoValidacaoParabens(DadosPessoaisPage.enderecoCliente, DadosPessoaisPage.numeroEndCliente, DadosPessoaisPage.complementoCliente, DadosPessoaisPage.bairroCliente, DadosPessoaisPage.cidadeCliente, DadosPessoaisPage.ufCliente, DadosPessoaisPage.cepCliente)));
+        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@pre")) {
+            Assert.assertTrue(driver.getText(xpathDiaVencimentoFatura, "xpath").contains(CustomizarFaturaPage.dataVencimentoFatura));
+            Assert.assertTrue(driver.getText(xpathEnderecoDeEntregaPedido, "xpath").contains(driver.montaEnderecoValidacaoParabens(DadosPessoaisPage.enderecoCliente, DadosPessoaisPage.numeroEndCliente, DadosPessoaisPage.complementoCliente, DadosPessoaisPage.bairroCliente, DadosPessoaisPage.cidadeCliente, DadosPessoaisPage.ufCliente, DadosPessoaisPage.cepCliente)));
+        }
     }
 }

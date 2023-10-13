@@ -22,6 +22,8 @@ public class DadosPessoaisPage {
     private String idTxtCep = "postcode_deliveryAddress";
     private String xpathTxtNumero = "//input[@data-automation='numero']";
     private String xpathTxtComplemento = "//input[@data-automation='complemento']";
+
+    // colocar if ternario tipo de frete
     private String xpathTipoDeFreteConvencionalCarrinho = "(//*[@for='shippingTypeOption1'])[1]";
     private String xpathTipoDeFreteExpressaCarrinho = "(//*[@for='shippingTypeOption1'])[2]";
     private String xpathValorDoFreteConvencionalCarrinho = "(//*[@class='shipping-value'])[1]";

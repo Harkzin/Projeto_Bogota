@@ -18,6 +18,6 @@ public class ControleAntecipadoPage {
     }
 
     public void marcarCheckboxTermoTHAB() {
-        driver.actionClick(xpathChkTermosTHAB, "xpath");
+        driver.JavaScriptClick(xpathChkTermosTHAB, "xpath");
     }
 }
