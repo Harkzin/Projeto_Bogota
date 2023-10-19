@@ -45,7 +45,7 @@ public class ParabensPage extends BaseSteps {
         }
         Assert.assertTrue(driver.getText(xpathValorPedido, "xpath").contains(CustomizarFaturaPage.valorPedidoCarrinho));
         Assert.assertTrue(driver.getText(xpathFormaPagamentoPedido, "xpath").contains(CustomizarFaturaPage.formaPagamentoPedidoCarrinho));
-        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@pre")) {
+        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@migracaoPre")) {
             Assert.assertTrue(driver.getText(xpathDiaVencimentoFatura, "xpath").contains(CustomizarFaturaPage.dataVencimentoFatura));
             Assert.assertTrue(driver.getText(xpathEnderecoDeEntregaPedido, "xpath").contains(driver.montaEnderecoValidacaoParabens(DadosPessoaisPage.enderecoCliente, DadosPessoaisPage.numeroEndCliente, DadosPessoaisPage.complementoCliente, DadosPessoaisPage.bairroCliente, DadosPessoaisPage.cidadeCliente, DadosPessoaisPage.ufCliente, DadosPessoaisPage.cepCliente)));
         }

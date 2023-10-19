@@ -47,8 +47,8 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
+//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -514,6 +514,7 @@ public class DriverQA {
             WebElement element = findElem(parValue, parType);
             WebDriverWait wait = new WebDriverWait(driver, 30);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+            assert isDisplayed(parValue, parType);
             wait.until(ExpectedConditions.elementToBeClickable(element));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         } catch (Exception e) {
@@ -576,8 +577,8 @@ public class DriverQA {
         String txtDtVencimento = "";
         waitElementToBeClickableAll(dtVencimento + 1, 10, "id");
         for (int i = 1; i <= 6; i++) {
-            // Valida que os botoes da   data estao visiveis e interagiveis para boleto
-            Assert.assertTrue(isEnabledDisplayed(dtVencimento + i, "id") && isDisplayed(dtVencimento + i, "id"));
+            // Valida que os botoes da data de vencimento estao visiveis e interagiveis
+            Assert.assertTrue(isEnabledDisplayed(dtVencimento + i, "id"));
             if (isSelected(dtVencimento + i)) {
                 dataSelecionada++;
                 txtDtVencimento = getText("//*[@for='" + dtVencimento + i + "']", "xpath");
@@ -586,7 +587,7 @@ public class DriverQA {
             }
         }
 
-        // Valida que ha 1 data selecionada e as outras 5 nao estao selecionadas para debito
+        // Valida que ha 1 data selecionada e as outras 5 nao estao selecionadas
         Assert.assertEquals(dataSelecionada, 1);
         Assert.assertEquals(dataNãoSelecionada, 5);
         return txtDtVencimento;

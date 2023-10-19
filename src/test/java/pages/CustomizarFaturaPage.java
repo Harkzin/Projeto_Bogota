@@ -56,7 +56,7 @@ public class CustomizarFaturaPage {
         List<String> elementosFatura = new ArrayList<>();
         elementosFatura.addAll(Arrays.asList(xpathBanco, xpathAgencia, xpathConta));
         for (String str : elementosFatura) {
-            // Valida que banco, agencia, conta, tipo fatura whats, correios e email estao visiveis na tela para debito
+            // Valida que banco, agencia, conta estao visiveis na tela para debito
             Assert.assertTrue(driver.isDisplayed(str, "xpath"));
         }
 
@@ -69,10 +69,9 @@ public class CustomizarFaturaPage {
         driver.validaFaturas(idButtonFaturaWhatsDebito, idButtonFaturaEmailDebito, idButtonFaturaCorreiosDebito, xpathTipoFatura, 1, 3);
 
         // Valida data de vencimento Debito
-        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@pre")) {
+        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@migracaoPre")) {
             dataVencimentoFatura = driver.validaDataDeVencimento(idDataDeVencimentoDebito);
         }
-
 
         // Muda para boleto para posteriormente validar diferenca no valor de debito > boleto
         driver.actionClick(xpathAbaBoleto, "xpath");
@@ -88,7 +87,7 @@ public class CustomizarFaturaPage {
         driver.validaFaturas(idButtonFaturaWhatsBoleto, idButtonFaturaEmailBoleto, idButtonFaturaCorreiosBoleto, xpathTipoFatura, 4, 6);
 
         // Valida data de vencimento boleto
-        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@pre")) {
+        if (Hooks.tagScenarios.contains("@aquisicao") || Hooks.tagScenarios.contains("@portabilidade") || Hooks.tagScenarios.contains("@migracaoPre")) {
             driver.validaDataDeVencimento(idDataDeVencimentoBoleto);
         }
 

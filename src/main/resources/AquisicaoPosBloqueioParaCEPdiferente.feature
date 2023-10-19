@@ -1,12 +1,12 @@
 #language: pt
 
 @regressivo
-Funcionalidade: Aquisicao Pos - Bloqueio Cliente Dependente
+Funcionalidade: Aquisicao Pós - Bloqueio para CEP diferente da regionalização
 
   @pos
   @aquisicao
   @bloqueioCEPdiferente
-  Cenario: Bloqueio cliente Dependente
+  Cenario: Bloqueio para CEP diferente da regionalização
     Dado que acesso a Loja Online
     E selecionar o "3" plano do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e/ou informações do Plano
