@@ -514,8 +514,8 @@ public class DriverQA {
             WebElement element = findElem(parValue, parType);
             WebDriverWait wait = new WebDriverWait(driver, 30);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            assert isDisplayed(parValue, parType);
             wait.until(ExpectedConditions.elementToBeClickable(element));
+            wait.until(ExpectedConditions.visibilityOf(element));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         } catch (Exception e) {
             e.printStackTrace();
