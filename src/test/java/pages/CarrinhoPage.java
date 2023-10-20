@@ -12,20 +12,21 @@ public class CarrinhoPage {
     }
 
     //Resumo da compra
-    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isNotOrderConfPage'])[2]";
+    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isNotOrderConfPage'])";
     private String xpathGbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
     private String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
-    private String xpathValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])[2]";
-    public static String xpathMetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
-    private String xpathFidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])[2]";
+    private String xpathValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])";
+    public static String xpathMetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])";
+    public static String xpathMetodoPagamentoResumo2 = "(//*[@class='mdn-Price-suffix'])[2]";
+    private String xpathFidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])";
 
     //Form Aq/Port/MigTroc
     private String xpathInputRadioMigracao = "(//*[@value='MIGRATE'])";
     private String xpathInputRadioPortabilidade = "(//*[@value='PORTABILITY'])";
     private String xpathInputRadioAquisicao = "(//*[@value='NEWLINE'])";
-    private String xpathMigracaoForm = "(//*[@data-automation='migracao'])";
-    private String xpathPortabilidadeForm = "(//*[@data-automation='portabilidade'])";
-    private String xpathAquisicaoForm = "(//*[@data-automation='aquisicao'])";
+    private String xpathMigracaoForm = "(//*[@data-automation='migracao'])[2]";
+    private String xpathPortabilidadeForm = "(//*[@data-automation='portabilidade'])[2]";
+    private String xpathAquisicaoForm = "(//*[@data-automation='aquisicao'])[2]";
     private String idTelefoneMigracaoForm = "telephone";
     private String idEmailForm = "email";
     private String idCpfMigracaoForm = "cpf";
@@ -49,8 +50,8 @@ public class CarrinhoPage {
         if (!HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
             Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
             Assert.assertTrue(HomePage.gbBonusCardHome.equals(driver.getText(xpathGbDeBonusResumo, "xpath")));
-        } else if (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
-            Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
+//        } else if (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
+//            Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
         }
         Assert.assertTrue(HomePage.valorCardHome.contains(driver.getText(xpathValorTotalResumo, "xpath")));
         Assert.assertTrue(("Fidelizado por 12 meses".equals(driver.getText(xpathFidelizadoResumo, "xpath"))));

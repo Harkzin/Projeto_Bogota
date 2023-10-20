@@ -14,7 +14,7 @@ Funcionalidade: Migracao THAB
     E validar que não há alterações no valor e/ou informações do Plano
     E preencho os campos ddd "", telefone "11947437558", email "claroqualidade3@gmail.com" e cpf "80443078858"
     E clicar no botão "Eu quero!"
-    E preencho os campos Nome Completo "Isabelly Timberg", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
+    E preencho os campos Nome Completo "Ecommerce Cora Pre", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
     E preencho os campos "01001001", "288" e "CASA" no endereço
     E clicar no botão "Continuar"
     E seleciono a forma de pagamento

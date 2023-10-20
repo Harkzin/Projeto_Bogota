@@ -81,7 +81,7 @@ public class CustomizarFaturaPage {
         driver.waitAttValorBoleto(xpathValorCarrinho, valorDebito);
 
         // Valida que o plano no resumo da compra foi alterado para boleto
-        Assert.assertTrue(("Boleto".equals(driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath"))));
+        Assert.assertTrue(("Boleto".equals(driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo2, "xpath"))));
 
         // Valida que wpp esta selecionado e se o email e correios não, valida que os 3 tipos de fatura estao visiveis e sao interagiveis para boleto
         driver.validaFaturas(idButtonFaturaWhatsBoleto, idButtonFaturaEmailBoleto, idButtonFaturaCorreiosBoleto, xpathTipoFatura, 4, 6);
