@@ -20,10 +20,10 @@ public class Hooks extends BaseSteps {
         scenario.embed(screenshot, "image/png");
     }
 
-    @After(order = 1)
-    public void closeBrowser() {
-        driver.quit();
-    }
+//    @After(order = 1)
+//    public void closeBrowser() {
+//        driver.quit();
+//    }
 
     @Before
     public void getTags(Scenario scenario){
