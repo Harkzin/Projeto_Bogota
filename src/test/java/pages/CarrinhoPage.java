@@ -41,8 +41,21 @@ public class CarrinhoPage {
     public static String telefoneCliente;
     public static String cpfCliente;
 
-    // Mensagem erro Bloqueio Dependente
-    private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
+    // Token
+    private String xpathInputToken = "//input[@data-automation='token']";
+
+    private String xpathPrecoCarrinhoComparativo = "(//*[@id='hasPromotionalPricesMonetization'])[2]";
+
+    // Clicar não concordo
+    private String xpathNaoConcordo = "//*[@data-multa-action='goStep2']";
+
+    //Clicar no Checkbox ok, entendi
+    private String xpathClicarOKEntendi = "//*[@data-multa-action='backHome']";
+
+    //Validar que foi direcionado para a Home
+    private String idValidarQueFoiDirecionadoParaAHome = "//h3[@class='mensagem-plano'][text()='O básico para o dia a dia']  ";
+    //Thab
+    //private String xpathBotaoFinalizarCarrinho = TO DO
 
     public void validarCarrinho() {
         driver.waitElementXP(xpathTituloPlanoResumo);
@@ -117,7 +130,103 @@ public class CarrinhoPage {
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
     }
 
-    public void validarQueFoiDirecionadoParaAHome() {
-        Assert.assertEquals("O básico para o dia a dia", driver.getText(HomePage.xpathTituloControleHome, "xpath"));
+    public void validarMensagemBloqueiocep(String mensagem) {
+        driver.waitElementXP(xpathMsgErroCEP);
+        Assert.assertEquals(mensagem, driver.getText(xpathMsgErroCEP, "xpath"));
+//        Assert.assertEquals("O CEP deve ser do mesmo estado (UF) do DDD escolhido", driver.getText(xpathMsgErroCEP, "xpath").substring(108, 139));
+
+    }
+
+    public void paginaDadosPessoaisEExibida() {
+        driver.waitElementAll(idFormDadosPessoais, "id");
+    }
+
+    public void paginaDadosEnderecoEExibida() {
+    }
+
+    public void paginaDadosPagamentoEExibida() {
+        driver.waitElementAll(xpathContainerTermoDeAdesao, "xpath");
+    }
+
+    public void camposDadosPessoais(String nomeCompleto, String dataNascimento, String nomeDaMae) {
+        driver.sendKeys(nomeCompleto, xpathTxtNome, "xpath");
+        driver.sendKeysCampoMascara(dataNascimento, xpathTxtDtNascimento, "xpath");
+        driver.sendKeys(nomeDaMae, xpathTxtNomeMae, "xpath");
+    }
+
+    public void camposEndereco(String cep, String numero, String complemento) {
+        driver.waitSeconds(1);
+        driver.sendKeysCampoMascara(cep, idTxtCep, "id");
+        driver.sendTab(2, "");
+        driver.waitSeconds(5);
+        driver.sendKeys(numero, xpathTxtNumero, "xpath");
+        driver.waitSeconds(1);
+        driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
+    }
+
+    public void clicarFormaDePagamento(String formaPagamento) {
+        //formaPagamento => Boleto || Debito
+        Assert.assertTrue(Float.parseFloat(driver.getValueParam(xpathPrecoCarrinhoComparativo, "data-parsed-formatted-price-old", "xpath")) > Float.parseFloat(driver.getValueParam(xpathPrecoCarrinhoComparativo, "data-full-price", "xpath")));
+        System.out.println("Forma Pagamento: " + formaPagamento);
+        if (formaPagamento.equals("Boleto")) {
+            driver.waitSeconds(5);
+            driver.click(xpathAbaBoleto, "xpath");
+        } else {
+            driver.sendKeys("237 - BRADESCO", idBanco, "id");
+            driver.waitSeconds(1);
+            driver.sendKeyBoard(Keys.ENTER);
+            driver.waitSeconds(1);
+            driver.sendKeys("6620", idAgencia, "id");
+            driver.sendKeys("11868576", idConta, "id");
+        }
+    }
+
+    public void selecionarDataVencimento(String data) {
+        driver.waitSeconds(5);
+        driver.click("//label[@data-automation='vencimento-" + data + "']", "xpath");
+    }
+
+    public void marcarCheckboxTermo() {
+        driver.waitSeconds(10);
+        driver.moveToElement(xpathChkTermosDeAdesao, "xpath");
+        driver.waitSeconds(10);
+        driver.actionClick(xpathChkTermosDeAdesao, "xpath");
+
+    }
+
+    public void marcarCheckboxTermoTHAB() {
+        driver.waitSeconds(10);
+        driver.moveToElement(xpathChkTermosTHAB, "xpath");
+        driver.waitSeconds(10);
+        driver.actionClick(xpathChkTermosTHAB, "xpath");
+    }
+
+    public void selecionarTipoFatura(String fatura) {
+        driver.waitSeconds(1);
+        driver.click("div[class$=active] .tipoFatura label[for^='" + fatura + "']", "css");
+    }
+
+    public void paginaControleAntecipadoEExibida() {
+        driver.waitElementAll("controle-antecipado", "id");
+    }
+
+    public boolean PlanoControleAntecipadoExiste() {
+        driver.waitElementAll(".card-planos", "css");
+        return true;
+    }
+
+    public void paginaCustomizarFaturaTHABEExibida() {
+        driver.waitElementAll(".showCards", "css");
+    }
+
+    public void secaoTokenEExibida() {
+        driver.waitElementAll(xpathInputToken, "xpath");
+
+    }
+        public void validarQueFoiDirecionadoParaAHome() {
+            driver.waitSeconds(10);
+            Assert.assertEquals("O básico para o dia a dia", driver.getText(idValidarQueFoiDirecionadoParaAHome, "xpath"));
+
+        }
     }
 }
