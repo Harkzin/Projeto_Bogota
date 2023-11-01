@@ -1,34 +1,51 @@
 package pages;
 
-import cucumber.api.Scenario;
+import org.junit.Assert;
 import support.DriverQA;
+import support.Hooks;
 
 public class DadosPessoaisPage {
-    private Scenario cenario;
     private DriverQA driver;
 
-    public DadosPessoaisPage(DriverQA driver) {
-        this.driver = driver;
+    public DadosPessoaisPage(DriverQA stepDriver) {
+        driver = stepDriver;
     }
 
     // Dados Pessoais
     private String idFormDadosPessoais = "addressForm.personalInformation";
-
     private String xpathTxtNome = "//input[@data-automation='nome-completo']";
     private String xpathTxtDtNascimento = "//input[@data-automation='nascimento']";
     private String xpathTxtNomeMae = "//input[@data-automation='nome-completo-mae']";
     private String xpathSubmitContinuarDados = "//input[@data-automation='continuar']";
 
-    //Mensagens de Erro para Dados pessoais
+    // Dados Endereco
+    private String idTxtCep = "postcode_deliveryAddress";
+    private String xpathTxtNumero = "//input[@data-automation='numero']";
+    private String xpathTxtComplemento = "//input[@data-automation='complemento']";
+    private String xpathTipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? "(//*[@for='shippingTypeOption1'])[2]" : "(//*[@for='shippingTypeOption1'])[1]";
+    private String xpathValorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? "(//*[@for='shippingTypeOption1'])[2]" : "(//*[@class='shipping-value'])[1]";
+    public static String xpathBtnContinuar = "//button[@data-automation='continuar']";
+    public static String xpathBtnContinuarPagamento = "//button[@title='Continuar']";
 
+    // Variavel utilizada para validacao de cenario @bloqueioCEPdiferente
+    private String xpathMsgErroCEP = "//*[@id='postcode_deliveryAddress-error']";
 
-//    public void secaoDadosPessoaisEExibida() {
-//        Generico.printTelas(Hooks.report, "" + ThreadLocalStepDefinitionMatch.get().getStepName() + "", driver);
-//
-//        if (!driver.waitElementAllTimeOut(idFormDadosPessoais, "id", 25)) {
-//            driver.report(cenario, false, "Página de pedido não apresentada", true);
-//        }
-//    }
+    // Variaveis criadas para utilizacao de validacao na tela de parabens
+    public static String nomeCliente;
+    public static String cepCliente;
+    public static String numeroEndCliente;
+    public static String complementoCliente;
+    public static String xpathEnderecoCliente = "(//*[@name='deliveryAddress.streetName'])[2]";
+    public static String xpathBairroCliente = "(//*[@name='deliveryAddress.neighbourhood'])[2]";
+    public static String xpathUfCliente = "(//*[@name='deliveryAddress.stateCode'])[2]";
+    public static String xpathCidadeCliente = "(//*[@name='deliveryAddress.townCity'])[2]";
+    ;
+    public static String enderecoCliente;
+    public static String bairroCliente;
+    public static String ufCliente;
+    public static String cidadeCliente;
+    public static String tipoDeFreteCarrinho;
+    public static String valorDoFreteCarrinho;
 
     public void preencherNomeCompleto(String nomeCompleto) {
         if (driver.isDisplayed(xpathTxtNome, "xpath")) {
@@ -48,8 +65,35 @@ public class DadosPessoaisPage {
         }
     }
 
-//    public void clicarEmContinuarDadosPessoais() {
-//        Generico.printTelas(Hooks.report, "" + ThreadLocalStepDefinitionMatch.get().getStepName() + "", driver);
-//        driver.click(xpathSubmitContinuarDados, "xpath");
-//    }
+    public void validarMensagemBloqueiocep(String mensagem) {
+        driver.waitElementXP(xpathMsgErroCEP);
+        Assert.assertEquals(mensagem, driver.getText(xpathMsgErroCEP, "xpath"));
+    }
+
+    public void camposDadosPessoais(String nomeCompleto, String dataNascimento, String nomeDaMae) {
+        driver.waitElementAll(idFormDadosPessoais, "id");
+        driver.sendKeys(nomeCompleto, xpathTxtNome, "xpath");
+        driver.sendKeysCampoMascara(dataNascimento, xpathTxtDtNascimento, "xpath");
+        driver.sendKeys(nomeDaMae, xpathTxtNomeMae, "xpath");
+        nomeCliente = nomeCompleto;
+    }
+
+    public void camposEndereco(String cep, String numero, String complemento) {
+        cepCliente = cep;
+        numeroEndCliente = numero;
+        complementoCliente = complemento;
+        driver.waitElementToBeClickableAll(idTxtCep, 10, "id");
+        driver.sendKeysCampoMascara(cep, idTxtCep, "id");
+        driver.sendTab(2, "");
+        driver.waitElementToBeClickableAll(xpathTxtNumero, 15, "xpath");
+        driver.sendKeys(numero, xpathTxtNumero, "xpath");
+        driver.waitElementToBeClickableAll(xpathTxtComplemento, 10, "xpath");
+        driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
+        tipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(0, 16) : driver.getText(xpathTipoDeFreteCarrinho, "xpath");;
+        valorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38) : driver.getText(xpathValorDoFreteCarrinho, "xpath");;
+        enderecoCliente = driver.getValue(xpathEnderecoCliente, "xpath");
+        bairroCliente = driver.getValue(xpathBairroCliente, "xpath");
+        ufCliente = driver.getValue(xpathUfCliente, "xpath");
+        cidadeCliente = driver.getValue(xpathCidadeCliente, "xpath");
+    }
 }
