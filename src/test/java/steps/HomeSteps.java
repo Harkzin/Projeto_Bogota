@@ -1,7 +1,6 @@
 package steps;
 
 import cucumber.api.java.pt.Dado;
-import cucumber.api.java.pt.E;
 import pages.HomePage;
 import support.BaseSteps;
 
@@ -14,8 +13,9 @@ public class HomeSteps extends BaseSteps {
         homePage.acessarLojaHome();
     }
 
-    @E("^selecionar o \"([^\"]*)\" plano do carrossel da Home clicando no botão Eu quero! dele$")
-    public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoDele(String cardHome) throws Throwable {
-        homePage.selecionarCardControle(cardHome);
+    @Dado("^selecionar um Plano Controle do carrossel da Home clicando no botão \"([^\"]*)\" dele$")
+    public void selecionarUmPlanoControleDoCarrosselDaHomeClicandoNoBotãoDele(String arg1) throws Throwable {
+        homePage.selecionarCardControle();
     }
+
 }

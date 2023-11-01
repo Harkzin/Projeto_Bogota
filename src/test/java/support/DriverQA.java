@@ -1,7 +1,6 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -12,7 +11,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.text.DecimalFormat;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -47,9 +45,8 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
-
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage", "headless"));
+//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "incognito", "--disable-dev-shm-usage"));
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
                     driver.manage().window().maximize();
@@ -141,16 +138,9 @@ public class DriverQA {
         return element;
     }
 
-    public void click(String parValue, String parType) {
+    public void click(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         element.click();
-    }
-
-    public void actionClick(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        Actions act = new Actions(driver);
-        act.moveToElement(element);
-        act.click(element).perform();
     }
 
     public void enter(String parValue, String... parType) {
@@ -158,12 +148,12 @@ public class DriverQA {
         element.submit();
     }
 
-    public boolean isSelected(String parValue, String... parType) {
+    public boolean selectected(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         return element.isSelected();
     }
 
-    public void clear(String parValue, String parType) {
+    public void clear(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         element.clear();
     }
@@ -187,7 +177,6 @@ public class DriverQA {
     public boolean isEnabled(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         return element.isEnabled();
-
     }
 
     public boolean isDisplayed(String parValue, String... parType) {
@@ -210,7 +199,7 @@ public class DriverQA {
         element.sendKeys(parText);
     }
 
-    public String getText(String parValue, String parType) {
+    public String getText(String parValue, String... parType) {
         WebElement element = findElem(parValue, parType);
         return element.getText();
     }
@@ -263,10 +252,6 @@ public class DriverQA {
         driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
     }
 
-    public void waitMilliSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(time, TimeUnit.MILLISECONDS);
-    }
-
     public void waitElementAll(String parName, String... parType) {
         WebDriverWait wait = new WebDriverWait(driver, 60);
         String param2 = getAttributeType(parType);
@@ -314,7 +299,7 @@ public class DriverQA {
     }
 
     public void waitElementXP(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 15);
+        WebDriverWait wait = new WebDriverWait(driver, 120);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parXp)));
     }
 
@@ -385,13 +370,12 @@ public class DriverQA {
         element.sendKeys(texto, Keys.TAB);
     }
 
-    public void moveToElementAction(String parValue, String... parType) {
+    public void moveToElement(String parValue, String... parType) {
 
         WebElement element = findElem(parValue, parType);
 
         try {
-            Actions action = new Actions(driver);
-            action.moveToElement(element);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             waitSeconds(1);
         } catch (Exception e) {
             e.printStackTrace();
@@ -509,13 +493,13 @@ public class DriverQA {
         actions.sendKeys(keys).build().perform();
     }
 
-    public void JavaScriptClick(String parValue, String... parType) {
+    public void actionClick(String parValue, String... parType) {
         try {
+            Actions action = new Actions(driver);
             WebElement element = findElem(parValue, parType);
-            WebDriverWait wait = new WebDriverWait(driver, 30);
+            WebDriverWait wait = new WebDriverWait(driver, 60);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             wait.until(ExpectedConditions.elementToBeClickable(element));
-            wait.until(ExpectedConditions.visibilityOf(element));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         } catch (Exception e) {
             e.printStackTrace();
@@ -549,89 +533,4 @@ public class DriverQA {
         int position = cookie.toString().indexOf(";");
         return cookie.toString().substring(0, position);
     }
-
-    public void waitAttValorBoleto(String parId, String valorDebito) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        float numeroFloat = (Hooks.tagScenarios.contains("@controle")) ? Float.parseFloat(valorDebito.replace(',', '.')) + 5.0f : Float.parseFloat(valorDebito.replace(',', '.')) + 10.0f;
-        DecimalFormat df = new DecimalFormat("#.##");
-        String numeroFormatado = df.format(numeroFloat);
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), numeroFormatado.replace('.', ',')));
-    }
-    public void waitAttValorDebito(String parId, String valorDebito) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), valorDebito));
-    }
-
-    public boolean isEnabledDisplayed(String parValue, String parType) {
-        WebElement element = findElem(parValue, parType);
-        if (element.isEnabled() && element.isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public String validaDataDeVencimento(String dtVencimento) {
-        int dataSelecionada = 0;
-        int dataNãoSelecionada = 0;
-        String txtDtVencimento = "";
-        waitElementToBeClickableAll(dtVencimento + 1, 10, "id");
-        for (int i = 1; i <= 6; i++) {
-            // Valida que os botoes da data de vencimento estao visiveis e interagiveis
-            Assert.assertTrue(isEnabledDisplayed(dtVencimento + i, "id"));
-            if (isSelected(dtVencimento + i)) {
-                dataSelecionada++;
-                txtDtVencimento = getText("//*[@for='" + dtVencimento + i + "']", "xpath");
-            } else {
-                dataNãoSelecionada++;
-            }
-        }
-
-        // Valida que ha 1 data selecionada e as outras 5 nao estao selecionadas
-        Assert.assertEquals(dataSelecionada, 1);
-        Assert.assertEquals(dataNãoSelecionada, 5);
-        return txtDtVencimento;
-    }
-
-    public void validaFaturas(String whats, String email, String correios, String tipoFatura, int numInicial, int numFinal) {
-        for (int i = numInicial; i <= numFinal; i++) {
-            // Valida que os botoes de fatura wpp, email e correios estao visiveis e interagiveis
-            Assert.assertTrue(isEnabledDisplayed(tipoFatura + "[" + i + "]", "xpath"));
-        }
-        // Valida que o wpp esta selecionado e que o email e correio nao estao
-        Assert.assertTrue(isSelected(whats, "id"));
-        Assert.assertFalse(isSelected(email, "id")
-                && isSelected(correios, "id"));
-    }
-
-    public String mascararCpf(String cpf) {
-        return cpf.substring(0, 3) + "." +
-                cpf.substring(3, 6) + "." +
-                cpf.substring(6, 9) + "-" +
-                cpf.substring(9);
-    }
-
-    public String mascararTelefone(String telefone) {
-        return "(" + telefone.substring(0, 2) + ") " +
-                telefone.substring(2, 7) + "-" +
-                telefone.substring(7);
-    }
-
-    public String montaEnderecoValidacaoParabens(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
-        return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
-    }
-
-    public static String capitalizeFirstLetter(String text) {
-        String[] palavras = text.split("\\s+");  // Divide a frase em palavras
-        StringBuilder resultado = new StringBuilder();
-        for (String palavra : palavras) {
-            char primeiraLetra = Character.toUpperCase(palavra.charAt(0));
-            String restantePalavra = palavra.substring(1).toLowerCase();
-            resultado.append(primeiraLetra).append(restantePalavra).append(" ");
-        }
-        return resultado.toString().trim();
-    }
-
-
 }
-
