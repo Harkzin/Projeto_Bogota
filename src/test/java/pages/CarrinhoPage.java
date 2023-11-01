@@ -12,13 +12,13 @@ public class CarrinhoPage {
     }
 
     //Resumo da compra
-    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isNotOrderConfPage'])";
+    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isNotOrderConfPage'])[2]";
     private String xpathGbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
     private String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
     private String xpathValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])";
-    public static String xpathMetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])";
+    public static String xpathMetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
     public static String xpathMetodoPagamentoResumo2 = "(//*[@class='mdn-Price-suffix'])[2]";
-    private String xpathFidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])";
+    private String xpathFidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])[2]";
 
     //Form Aq/Port/MigTroc
     private String xpathInputRadioMigracao = "(//*[@value='MIGRATE'])";
