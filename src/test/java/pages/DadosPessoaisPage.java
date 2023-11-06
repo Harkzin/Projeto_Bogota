@@ -89,8 +89,18 @@ public class DadosPessoaisPage {
         driver.sendKeys(numero, xpathTxtNumero, "xpath");
         driver.waitElementToBeClickableAll(xpathTxtComplemento, 10, "xpath");
         driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
-        tipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(0, 16) : driver.getText(xpathTipoDeFreteCarrinho, "xpath");;
-        valorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38) : driver.getText(xpathValorDoFreteCarrinho, "xpath");;
+
+//        tipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(0, 16) : driver.getText(xpathTipoDeFreteCarrinho, "xpath");;
+//        valorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38) : driver.getText(xpathValorDoFreteCarrinho, "xpath");;
+
+        if (Hooks.tagScenarios.contains("@entregaExpressa")) {
+            tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath").substring(0, 16);
+            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38);
+        } else if (Hooks.tagScenarios.contains("@entregaConvencional")){
+            tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath");
+            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath");
+        }
+
         enderecoCliente = driver.getValue(xpathEnderecoCliente, "xpath");
         bairroCliente = driver.getValue(xpathBairroCliente, "xpath");
         ufCliente = driver.getValue(xpathUfCliente, "xpath");
