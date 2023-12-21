@@ -18,4 +18,9 @@ public class HomeSteps extends BaseSteps {
     public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoDele(String cardHome) throws Throwable {
         homePage.selecionarCardControle(cardHome);
     }
+
+    @Dado("^que acesso a URL parametrizada para a oferta de rentabilizacao$")
+    public void queAcessoAURLParametrizadaParaAOfertaDeRentabilizacao() {
+        homePage.acessarURLRentabilizacao();
+    }
 }

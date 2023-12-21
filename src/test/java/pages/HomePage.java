@@ -76,5 +76,10 @@ public class HomePage {
         gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardHome + "]", "xpath");
         driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
     }
+
+    public void acessarURLRentabilizacao() {
+        driver.openURL("https://accstorefront.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE");
+
+        }
 }
 
