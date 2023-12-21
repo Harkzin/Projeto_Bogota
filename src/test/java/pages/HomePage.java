@@ -1,5 +1,8 @@
 package pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import support.Hooks;
 
@@ -26,6 +29,11 @@ public class HomePage {
     public static String gbPlanoCardHome = "";
     public static String gbBonusCardHome = "";
     public static String valorCardHome = "";
+
+    // Menu Cliente Header
+
+    public static String campoTelefone  = "(//input[@name='telephone'])[1]";
+
 
     public void acessarLojaHome() {
 
@@ -75,6 +83,71 @@ public class HomePage {
         gbPlanoCardHome = (driver.findListElements(xpathGbPlano + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardHome + "]", "xpath");
         gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardHome + "]", "xpath");
         driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
+    }
+
+    public void preencherCampoSeuTelefoneHeader(String msisdn) {
+        driver.actionSendKey(msisdn, campoTelefone, "xpath");
+    }
+
+    public void validarClienteMeusPedidos(String cliente) {
+        String botaoOlaEcomm ="(//button[contains(text(), '"+ cliente +"')])[1]";
+        driver.findListElements(botaoOlaEcomm, "xpath");
+    }
+
+    public void tokenTemp() {
+        driver.createNewTab();
+        driver.changeTab("1");
+        driver.openURL("https://backoffice.cokecxf-commercec1-s5-public.model-t.cc.commerce.ondemand.com/backoffice/login.zul");
+        driver.waitSeconds(100);
+        driver.waitElementAll(nameTxtUsuario, "name");
+        String acessoBackoffice = "ecomplanos-backoffice";
+        driver.sendKeys(acessoBackoffice, nameTxtUsuario, "name");
+        driver.waitElementAll(nameTxtSenha, "name");
+        driver.sendKeys(acessoBackoffice, nameTxtSenha, "name");
+        driver.waitElementAll(xpathBtnIdioma, "xpath");
+        driver.click(xpathBtnIdioma, "xpath");
+        driver.waitElementAll(xpathIdioma, "xpath");
+        driver.click(xpathIdioma, "xpath");
+        driver.waitElementAll(xpathBtnIdioma, "xpath");
+        driver.sendKeyBoard(Keys.ENTER);
+
+        driver.waitElementAll(classMenu, "class");
+        driver.waitSeconds(1);
+        driver.sendKeysCampoMascara("clientes", filtroInputXpath, "xpath");
+
+        driver.waitSeconds(5);
+        String filtroXpath = "//tr[@aria-label='Clientes']";
+        driver.moveToElementJs(filtroXpath, "xpath");
+        driver.click(filtroXpath, "xpath");
+
+        driver.waitSeconds(5);
+        String xpathPesquisar = "//input[@placeholder='Digitar para pesquisar']";
+        driver.sendKeysCampoMascara("86447822824", xpathPesquisar, "xpath");
+        driver.sendKeyBoard(Keys.ENTER);
+
+        String xpathNomeCliente = "//span[contains(text(), 'ECOMMERCE CONTROLE CLUBE')]";
+        driver.click(xpathNomeCliente, "xpath");
+        driver.waitSeconds(3);
+
+        driver.waitSeconds(3);
+        String xpathMenuCliente = "//li[@title='Administração']";
+        while (!driver.isDisplayed(xpathMenuCliente, "xpath")) {
+            driver.click(xpathMenuCliente, "xpath");
+            driver.waitSeconds(1);
+        }
+        driver.waitElementAll(xpathMenuCliente, "xpath");
+        driver.click(xpathMenuCliente, "xpath");
+        driver.waitSeconds(2);
+
+        driver.moveToElementAction("(//input[@class='ye-input-text ye-com_hybris_cockpitng_editor_defaulttext z-textbox'])[22]", "xpath");
+        WebElement campoToken = driver.getDriver().findElement(By.xpath("(//input[@class='ye-input-text ye-com_hybris_cockpitng_editor_defaulttext z-textbox'])[22]"));
+        String token = campoToken.getAttribute("value");
+
+        driver.changeTab("0");
+        WebElement campoTokenDestino = driver.getDriver().findElement(By.xpath("(//input[@name='token'])[1]"));
+        campoTokenDestino.sendKeys(token);
+        driver.JavaScriptClick("(//button[@type='submit'])[4]", "xpath");
+
     }
 }
 

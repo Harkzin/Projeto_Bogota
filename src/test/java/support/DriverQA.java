@@ -633,5 +633,12 @@ public class DriverQA {
     }
 
 
+    public void changeTab(String numeroAba) {
+        try {
+            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+            driver.switchTo().window(tabs.get(Integer.parseInt(numeroAba)));
+        } catch (Exception e) {
+        }
+    }
 }
 
