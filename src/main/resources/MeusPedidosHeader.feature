@@ -13,7 +13,7 @@ Funcionalidade: Validar Meus Pedidos Header
     E validar que o botão Entrar foi alterado para o "Olá, Ecommerce"
     E clicar no botão "Olá, Ecommerce"
     E clicar no botão "Meus pedidos"
-    E preencho com o Token metodo temporario
+    E preencho com o Token
     E validar que foi direcionado para a página de Meus Pedidos
     E validar que foi exibido o Número do pedido, Data do pedido e o Status do(s) pedido(s) já realizado(s) anteriormente
     E acessar o pedido mais recente, clicando no Número do pedido dele

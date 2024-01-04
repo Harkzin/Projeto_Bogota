@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import support.Hooks;
 
+import static pages.BackofficePage.*;
+
 public class HomePage {
     private DriverQA driver;
 
@@ -37,7 +39,7 @@ public class HomePage {
 
     public void acessarLojaHome() {
 
-        String url = System.getProperty("env", "S5");
+        String url = System.getProperty("env", "S6");
         switch (url) {
             case "S1":
                 url = "https://accstorefront.cokecxf-commercec1-s1-public.model-t.cc.commerce.ondemand.com/";
@@ -53,6 +55,9 @@ public class HomePage {
                 break;
             case "S5":
                 url = "https://accstorefront.cokecxf-commercec1-s5-public.model-t.cc.commerce.ondemand.com/";
+                break;
+            case "S6":
+                url = "https://accstorefront.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/";
                 break;
             case "P1":
                 url = "https://accstorefront.cokecxf-commercec1-p1-public.model-t.cc.commerce.ondemand.com/";

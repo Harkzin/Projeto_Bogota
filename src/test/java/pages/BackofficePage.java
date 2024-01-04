@@ -10,13 +10,13 @@ public class BackofficePage extends BaseSteps {
     private static final String BASE_URL = "https://backoffice.cokecxf-commercec1-";
     private static final String LOGIN_URL_SUFFIX = "-public.model-t.cc.commerce.ondemand.com/backoffice/login.zul";
 
-    private static final String nameTxtUsuario = "j_username";
-    private static final String nameTxtSenha = "j_password";
-    private static final String xpathBtnLogin = "//button[@class='Conectar']";
-    private static final String xpathBtnIdioma = "//button[@class='languageSelectorBtn z-button']";
-    private static final String xpathIdioma = "(//div[@class='z-listcell-content'])[2]";
-    private static final String classMenu = "yw-navigationNode-level1";
-    private static final String filtroInputXpath = "//input[@placeholder='Filtrar árvore (Alt+Baixo para opções)']";
+    public static final String nameTxtUsuario = "j_username";
+    public static final String nameTxtSenha = "j_password";
+    public static final String xpathBtnLogin = "//button[@class='Conectar']";
+    public static final String xpathBtnIdioma = "//button[@class='languageSelectorBtn z-button']";
+    public static final String xpathIdioma = "(//div[@class='z-listcell-content'])[2]";
+    public static final String classMenu = "yw-navigationNode-level1";
+    public static final String filtroInputXpath = "//input[@placeholder='Filtrar árvore (Alt+Baixo para opções)']";
 
     public BackofficePage(DriverQA driver) {
         this.driver = driver;

@@ -30,7 +30,7 @@ public class HomeSteps extends BaseSteps {
         homePage.validarClienteMeusPedidos(cliente);
     }
 
-    @E("^preencho com o Token metodo temporario$")
+    @E("^preencho com o Token$")
     public void preenchoComOToken() {
         homePage.tokenTemp();
     }
