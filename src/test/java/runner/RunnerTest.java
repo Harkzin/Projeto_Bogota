@@ -15,7 +15,7 @@ import support.BaseSteps;
         monochrome = false,
         dryRun = false,
         glue = {"steps", "support"},
-        tags = {"~@ignore", "@migracaoControleTHAB"})
+        tags = {"~@ignore", "@validaMeusPedidos"})
 
 public class  RunnerTest extends BaseSteps {
 
