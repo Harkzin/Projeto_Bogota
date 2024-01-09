@@ -1,7 +1,12 @@
 package pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import support.Hooks;
+
+import static pages.BackofficePage.*;
 
 public class HomePage {
     private DriverQA driver;
@@ -26,6 +31,11 @@ public class HomePage {
     public static String gbPlanoCardHome = "";
     public static String gbBonusCardHome = "";
     public static String valorCardHome = "";
+
+    // Menu Cliente Header
+
+    public static String campoTelefone  = "(//input[@name='telephone'])[1]";
+
 
     public void acessarLojaHome() {
 
