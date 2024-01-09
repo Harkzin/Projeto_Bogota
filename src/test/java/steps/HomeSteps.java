@@ -20,6 +20,19 @@ public class HomeSteps extends BaseSteps {
         homePage.selecionarCardControle(cardHome);
     }
 
+    @E("^preencher o campo “Seu telefone Claro” com o msidn \"([^\"]*)\"$")
+    public void preencherOCampoSeuTelefoneClaroComOMsidn(String msisdn) throws Throwable {
+        homePage.preencherCampoSeuTelefoneHeader(msisdn);
+    }
+
+    @E("^validar que o botão Entrar foi alterado para o \"([^\"]*)\"$")
+    public void validarQueOBotãoEntrarFoiAlteradoParaO(String cliente) throws Throwable {
+        homePage.validarClienteMeusPedidos(cliente);
+    }
+
+    @E("^preencho com o Token$")
+    public void preenchoComOToken() {
+        homePage.tokenTemp();
     @Dado("^que acesso a URL parametrizada para a oferta de rentabilizacao$")
     public void queAcessoAURLParametrizadaParaAOfertaDeRentabilizacao() {
         homePage.acessarURLRentabilizacao();
