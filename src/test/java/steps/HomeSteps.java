@@ -14,22 +14,18 @@ public class HomeSteps extends BaseSteps {
     public void queAcessoALojaOnline() throws Throwable {
         homePage.acessarLojaHome();
     }
-
     @E("^selecionar o \"([^\"]*)\" plano do carrossel da Home clicando no botão Eu quero! dele$")
     public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoDele(String cardHome) throws Throwable {
         homePage.selecionarCardControle(cardHome);
     }
-
     @E("^preencher o campo “Seu telefone Claro” com o msidn \"([^\"]*)\"$")
     public void preencherOCampoSeuTelefoneClaroComOMsidn(String msisdn) throws Throwable {
         homePage.preencherCampoSeuTelefoneHeader(msisdn);
     }
-
     @E("^validar que o botão Entrar foi alterado para o \"([^\"]*)\"$")
     public void validarQueOBotãoEntrarFoiAlteradoParaO(String cliente) throws Throwable {
         homePage.validarClienteMeusPedidos(cliente);
     }
-
     @E("^preencho com o Token$")
     public void preenchoComOToken() {
         homePage.tokenTemp();

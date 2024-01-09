@@ -154,6 +154,5 @@ public class HomePage {
         WebElement campoTokenDestino = driver.getDriver().findElement(By.xpath("(//input[@name='token'])[1]"));
         campoTokenDestino.sendKeys(token);
         driver.JavaScriptClick("(//button[@type='submit'])[4]", "xpath");
-
     }
 }
