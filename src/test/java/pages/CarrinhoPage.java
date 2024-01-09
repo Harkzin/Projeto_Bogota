@@ -120,4 +120,13 @@ public class CarrinhoPage {
     public void validarQueFoiDirecionadoParaAHome() {
         Assert.assertEquals("O básico para o dia a dia", driver.getText(HomePage.xpathTituloControleHome, "xpath"));
     }
+
+    public void preencherDadosLinhaRent(String telefone, String email, String cpf) {
+        driver.waitElementToBeClickableAll(xpathMigracaoForm, 5, "xpath");
+        driver.click(xpathMigracaoForm, "xpath");
+        driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
+        driver.sendKeys(email, idEmailForm);
+        driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
+        driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
+    }
 }

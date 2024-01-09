@@ -1,5 +1,6 @@
 package steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.*;
 import pages.*;
 import support.BaseSteps;
@@ -31,6 +32,11 @@ public class CarrinhoSteps extends BaseSteps {
     @Então("^validar que foi direcionado para a Home$")
     public void validarQueFoiDirecionadoParaAHome() {
         carrinhoPage.validarQueFoiDirecionadoParaAHome();
+    }
+
+    @E("^preencho os campos telefone \"([^\"]*)\", email \"([^\"]*)\" e cpf \"([^\"]*)\"$")
+    public void preenchoOsCamposTelefoneEmailECpf(String telefone, String email, String cpf) throws Throwable {
+        carrinhoPage.preencherDadosLinhaRent(telefone, email, cpf);
     }
 }
 

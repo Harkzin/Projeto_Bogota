@@ -29,5 +29,8 @@ public class HomeSteps extends BaseSteps {
     @E("^preencho com o Token$")
     public void preenchoComOToken() {
         homePage.tokenTemp();
+    @Dado("^que acesso a URL parametrizada para a oferta de rentabilizacao$")
+    public void queAcessoAURLParametrizadaParaAOfertaDeRentabilizacao() {
+        homePage.acessarURLRentabilizacao();
     }
 }
