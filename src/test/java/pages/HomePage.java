@@ -15,8 +15,13 @@ public class HomePage {
         driver = stepDriver;
     }
 
+    //Overlay de abandono
+    public static String fecharModalBtn = "(//i[@class='mdn-Icon-fechar mdn-Icon--md'])[1]";
+
+
     // Card Controle
     public static String xpathTituloControleHome = "//*[@class='mensagem-plano'][text()='O básico para o dia a dia']";
+    public static String xpathTituloPosHome = "//*[@class='mensagem-plano'][text()='Para quem é ultra conectado']";
     private String xpathTituloCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[@class='titulo-produto'])" : "(//*[@id='tab-3']//*[@class='titulo-produto'])";
     private String xpathPrecoCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[@class='price'])" : "(//*[@id='tab-3']//*[@class='price'])";
 
@@ -33,13 +38,12 @@ public class HomePage {
     public static String valorCardHome = "";
 
     // Menu Cliente Header
-
     public static String campoTelefone  = "(//input[@name='telephone'])[1]";
 
 
     public void acessarLojaHome() {
 
-        String url = System.getProperty("env", "S6");
+        String url = System.getProperty("env", "S5");
         switch (url) {
             case "S1":
                 url = "https://accstorefront.cokecxf-commercec1-s1-public.model-t.cc.commerce.ondemand.com/";
@@ -75,10 +79,24 @@ public class HomePage {
                 throw new IllegalArgumentException("Ambiente inválido: " + url);
         }
         driver.openURL(url);
-    }
+        }
 
     public void selecionarCardControle(String cardHome) {
         driver.waitElementAll(xpathTituloControleHome, "xpath");
+        if (Integer.parseInt(cardHome) > 3) {
+            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
+        }
+        driver.waitElementAll(xpathEuQueroCard + "[" + cardHome + "]", "xpath");
+        tituloCardHome = driver.getText(xpathTituloCard + "[" + cardHome + "]", "xpath");
+        valorCardHome = driver.getText(xpathPrecoCard + "[" + cardHome + "]", "xpath");
+        gbPlanoCardHome = (driver.findListElements(xpathGbPlano + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardHome + "]", "xpath");
+        gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardHome + "]", "xpath");
+        driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
+    }
+
+
+    public void selecionarCardPos(String cardHome) {
+        driver.waitElementAll(xpathTituloPosHome, "xpath");
         if (Integer.parseInt(cardHome) > 3) {
             driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
         }
@@ -99,7 +117,7 @@ public class HomePage {
         driver.findListElements(botaoOlaEcomm, "xpath");
     }
     public void acessarURLRentabilizacao() {
-        driver.openURL("https://accstorefront.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE");
+        driver.openURL("https://api.cokecxf-commercec1-" + System.getProperty("env", "S6").toLowerCase() + "-public.model-t.cc.commerce.ondemand.com/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE");
     }
     public void tokenTemp() {
         driver.createNewTab();
