@@ -618,7 +618,7 @@ public class DriverQA {
     }
 
     public String montaEnderecoValidacaoParabens(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
-        return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
+        return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente.toUpperCase() + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
     }
 
     public static String capitalizeFirstLetter(String text) {

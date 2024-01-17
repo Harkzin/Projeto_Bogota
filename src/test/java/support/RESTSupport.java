@@ -357,7 +357,6 @@ public class RESTSupport {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         Response accessAuth =
                 given().
                         body(jsonString).
