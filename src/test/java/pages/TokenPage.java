@@ -14,7 +14,7 @@ public class TokenPage extends BaseSteps {
     }
 
     private String xpathInputToken = "//input[@data-automation='token']";
-    public static String xpathBotaoFinalizarCarrinho = "//button[@data-automation-='continuar']";
+    public static String xpathBotaoFinalizarCarrinho = "//button[@data-automation='continuar']";
 
     public void preencherToken() {
         driver.waitElementAll(xpathInputToken, "xpath");
