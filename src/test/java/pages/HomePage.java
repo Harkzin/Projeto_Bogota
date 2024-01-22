@@ -104,7 +104,7 @@ public class HomePage {
     public void tokenTemp() {
         driver.createNewTab();
         driver.changeTab("1");
-        driver.openURL("https://backoffice.cokecxf-commercec1-s5-public.model-t.cc.commerce.ondemand.com/backoffice/login.zul");
+        driver.openURL("https://backoffice.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/backoffice/login.zul");
         driver.waitSeconds(100);
         driver.waitElementAll(nameTxtUsuario, "name");
         String acessoBackoffice = "ecomplanos-backoffice";
@@ -146,6 +146,8 @@ public class HomePage {
         driver.click(xpathMenuCliente, "xpath");
         driver.waitSeconds(2);
 
+        driver.browserScroll("down", 800);
+        driver.actionClick("(//button[@title='Retrair'])[1]", "xpath");
         driver.moveToElementAction("(//input[@class='ye-input-text ye-com_hybris_cockpitng_editor_defaulttext z-textbox'])[22]", "xpath");
         WebElement campoToken = driver.getDriver().findElement(By.xpath("(//input[@class='ye-input-text ye-com_hybris_cockpitng_editor_defaulttext z-textbox'])[22]"));
         String token = campoToken.getAttribute("value");
