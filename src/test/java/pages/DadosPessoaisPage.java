@@ -95,10 +95,10 @@ public class DadosPessoaisPage {
 
         if (Hooks.tagScenarios.contains("@entregaExpressa")) {
             tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath").substring(0, 16);
-            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38);
+//            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38);
         } else if (Hooks.tagScenarios.contains("@entregaConvencional")){
             tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath");
-            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath");
+//            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath");
         }
 
         enderecoCliente = driver.getValue(xpathEnderecoCliente, "xpath");
