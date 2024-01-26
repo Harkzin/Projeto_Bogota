@@ -12,7 +12,7 @@ public class CarrinhoPage {
     }
 
     //Resumo da compra
-    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isNotOrderConfPage'])[2]";
+    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isOrderConfPage mdn-Heading mdn-Heading--sm'])[2]";
     private String xpathGbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
     private String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
     private String xpathValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])";

@@ -43,7 +43,7 @@ public class HomePage {
 
     public void acessarLojaHome() {
 
-        String url = System.getProperty("env", "S5");
+        String url = System.getProperty("env", "S6");
         switch (url) {
             case "S1":
                 url = "https://accstorefront.cokecxf-commercec1-s1-public.model-t.cc.commerce.ondemand.com/";
@@ -122,7 +122,7 @@ public class HomePage {
     public void tokenTemp() {
         driver.createNewTab();
         driver.changeTab("1");
-        driver.openURL("https://backoffice.cokecxf-commercec1-s5-public.model-t.cc.commerce.ondemand.com/backoffice/login.zul");
+        driver.openURL("https://backoffice.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/backoffice/login.zul");
         driver.waitSeconds(100);
         driver.waitElementAll(nameTxtUsuario, "name");
         String acessoBackoffice = "ecomplanos-backoffice";
