@@ -5,6 +5,7 @@ import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.E;
 import pages.HomePage;
 import support.BaseSteps;
+import support.Hooks;
 
 public class HomeSteps extends BaseSteps {
 
@@ -16,7 +17,12 @@ public class HomeSteps extends BaseSteps {
     }
     @E("^selecionar o \"([^\"]*)\" plano do carrossel da Home clicando no botão Eu quero! dele$")
     public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoDele(String cardHome) throws Throwable {
-        homePage.selecionarCardControle(cardHome);
+        if (Hooks.tagScenarios.contains("@controle")) {
+            homePage.selecionarCardControle(cardHome);
+
+        } else if (Hooks.tagScenarios.contains("@pos")) {
+            homePage.selecionarCardPos(cardHome);
+        }
     }
     @E("^preencher o campo “Seu telefone Claro” com o msidn \"([^\"]*)\"$")
     public void preencherOCampoSeuTelefoneClaroComOMsidn(String msisdn) throws Throwable {

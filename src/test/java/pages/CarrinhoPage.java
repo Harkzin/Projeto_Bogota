@@ -44,6 +44,9 @@ public class CarrinhoPage {
     // Mensagem erro Bloqueio Dependente
     private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
 
+    //Carrinho
+    public static String xpathTermosComboMulti = "//p[@class='terms-and-conditions-page-description']";
+
     public void validarCarrinho() {
         driver.waitElementXP(xpathTituloPlanoResumo);
         Assert.assertTrue(HomePage.tituloCardHome.equals(driver.getText(xpathTituloPlanoResumo, "xpath")));
@@ -108,6 +111,12 @@ public class CarrinhoPage {
                 break;
             case "Finalizar":
                 driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "xpath");
+            case "Entrar":
+                driver.JavaScriptClick(HomePage.xpathEntrarBtn, "xpath");
+                break;
+            case "Acessar":
+                driver.JavaScriptClick(HomePage.xpathAcessarBtn, "xpath");
+                break;
         }
     }
 
@@ -128,5 +137,9 @@ public class CarrinhoPage {
         driver.sendKeys(email, idEmailForm);
         driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
         driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
+    }
+
+    public void validarClienteCombo() {
+        Assert.assertEquals("Como você já é combo, seu bônus está garantido!\n"+"Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.", driver.getText(CarrinhoPage.xpathTermosComboMulti, "xpath"));
     }
 }
