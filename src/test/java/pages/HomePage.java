@@ -113,20 +113,6 @@ public class HomePage {
         driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
     }
 
-
-    public void selecionarCardPos(String cardHome) {
-        driver.waitElementAll(xpathTituloPosHome, "xpath");
-        if (Integer.parseInt(cardHome) > 3) {
-            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
-        }
-        driver.waitElementAll(xpathEuQueroCard + "[" + cardHome + "]", "xpath");
-        tituloCardHome = driver.getText(xpathTituloCard + "[" + cardHome + "]", "xpath");
-        valorCardHome = driver.getText(xpathPrecoCard + "[" + cardHome + "]", "xpath");
-        gbPlanoCardHome = (driver.findListElements(xpathGbPlano + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardHome + "]", "xpath");
-        gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardHome + "]", "xpath");
-        driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
-    }
-
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
         driver.waitSeconds(8);
         driver.actionSendKey(msisdn, campoTelefone, "xpath");
