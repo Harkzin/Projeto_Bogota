@@ -38,5 +38,10 @@ public class CarrinhoSteps extends BaseSteps {
     public void preenchoOsCamposTelefoneEmailECpf(String telefone, String email, String cpf) throws Throwable {
         carrinhoPage.preencherDadosLinhaRent(telefone, email, cpf);
     }
+
+    @E("^validar a mensagem de cliente combo multi$")
+    public void validarAMensagemDeClienteComboMulti() {
+        carrinhoPage.validarClienteCombo();
+    }
 }
 

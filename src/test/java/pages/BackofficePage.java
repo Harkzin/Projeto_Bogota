@@ -23,7 +23,7 @@ public class BackofficePage extends BaseSteps {
     }
 
     public void acessarTelaBKO() {
-        String environment = System.getProperty("env", "S5");
+        String environment = System.getProperty("env", "S6");
         String url = BASE_URL + environment + LOGIN_URL_SUFFIX;
         driver.openURL(url);
         driver.waitElementAll(nameTxtUsuario, "name");
