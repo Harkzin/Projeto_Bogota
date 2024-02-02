@@ -18,18 +18,23 @@ public class HomePage {
     //Overlay de abandono
     public static String fecharModalBtn = "(//i[@class='mdn-Icon-fechar mdn-Icon--md'])[1]";
 
+    //Botão Entrar Home
+    public static String xpathEntrarBtn = "//button[@data-uid='my-orders']";
+    public static String xpathAcessarBtn = "(//button[@type='submit'])[1]";
 
-    // Card Controle
+
+
+    // Card
     public static String xpathTituloControleHome = "//*[@class='mensagem-plano'][text()='O básico para o dia a dia']";
     public static String xpathTituloPosHome = "//*[@class='mensagem-plano'][text()='Para quem é ultra conectado']";
-    private String xpathTituloCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[@class='titulo-produto'])" : "(//*[@id='tab-3']//*[@class='titulo-produto'])";
-    private String xpathPrecoCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[@class='price'])" : "(//*[@id='tab-3']//*[@class='price'])";
+    private String xpathTituloCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*//*[@class='titulo-produto'])" : "(//*/*[@class='titulo-produto'])";
+    private String xpathPrecoCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*//*[@class='price'])" : "(//*/*[@class='price'])";
 
-    private String xpathGbPlano = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[contains(text(), 'no Plano')])" : "(//*[@id='tab-3']//*[contains(text(), 'no Plano')])";
-    private String xpathGbBonus = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//*[contains(text(), 'de Bônus')])" : "(//*[@id='tab-3']//*[contains(text(), 'de Bônus')])";
-    private String xpathEuQueroCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@id='tab-1']//button[@data-automation='eu-quero'])" : "(//*[@id='tab-3']//button[@data-automation='eu-quero'])";
+    private String xpathGbPlano = (Hooks.tagScenarios.contains("@controle")) ? "(//*[contains(text(), 'no Plano')])" : "(//*/*[contains(text(), 'no Plano')])";
+    private String xpathGbBonus = (Hooks.tagScenarios.contains("@controle")) ? "(//*[contains(text(), 'de Bônus')])" : "(//*/*[contains(text(), 'de Bônus')])";
+    private String xpathEuQueroCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*//button[@data-automation='eu-quero'])" : "(//*/button[@data-automation='eu-quero'])";
 
-    private String xpathProximoCarrossel = (Hooks.tagScenarios.contains("@controle")) ? "//*[@id='tab-1']//*[@data-automation='seta-carrossel-direita']" : "//*[@id='tab-3']//*[@data-automation='seta-carrossel-direita']";
+    private String xpathProximoCarrossel = (Hooks.tagScenarios.contains("@controle")) ? "//*[@data-automation='seta-carrossel-direita']" : "//*/*[@data-automation='seta-carrossel-direita']";
 
     // Variaveis para validacao posterior no carrinho Controle
     public static String tituloCardHome = "";
@@ -85,6 +90,20 @@ public class HomePage {
         driver.waitElementAll(xpathTituloControleHome, "xpath");
         if (Integer.parseInt(cardHome) > 3) {
             driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
+            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
+        }
+        driver.waitElementAll(xpathEuQueroCard + "[" + cardHome + "]", "xpath");
+        tituloCardHome = driver.getText(xpathTituloCard + "[" + cardHome + "]", "xpath");
+        valorCardHome = driver.getText(xpathPrecoCard + "[" + cardHome + "]", "xpath");
+        gbPlanoCardHome = (driver.findListElements(xpathGbPlano + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardHome + "]", "xpath");
+        gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardHome + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardHome + "]", "xpath");
+        driver.JavaScriptClick(xpathEuQueroCard + "[" + cardHome + "]","xpath");
+    }
+
+    public void selecionarCardPos(String cardHome) {
+        driver.waitElementAll(xpathTituloPosHome, "xpath");
+        if (Integer.parseInt(cardHome) > 3) {
+            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
         }
         driver.waitElementAll(xpathEuQueroCard + "[" + cardHome + "]", "xpath");
         tituloCardHome = driver.getText(xpathTituloCard + "[" + cardHome + "]", "xpath");
@@ -109,6 +128,7 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
+        driver.waitSeconds(8);
         driver.actionSendKey(msisdn, campoTelefone, "xpath");
     }
 

@@ -111,6 +111,12 @@ public class CarrinhoPage {
                 break;
             case "Finalizar":
                 driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "xpath");
+            case "Entrar":
+                driver.JavaScriptClick(HomePage.xpathEntrarBtn, "xpath");
+                break;
+            case "Acessar":
+                driver.JavaScriptClick(HomePage.xpathAcessarBtn, "xpath");
+                break;
         }
     }
 
