@@ -13,7 +13,7 @@ Funcionalidade: Migração de Plano Controle - PDP
     E clicar na PLP do plano
     E selecionar o "1" plano do carrossel da PLP clicando no botão Eu quero! dele
     E validar que não há alterações no valor e/ou informações do Plano
-    E preencho os campos ddd "", telefone "11947621133", email "claroqualidade3@gmail.com" e cpf "470.603.078-18"
+    E preencho os campos ddd "", telefone "11947621004", email "claroqualidade3@gmail.com" e cpf "160.758.002-04"
     E clicar no botão "Eu quero!"
     E preencho os campos Nome Completo "Ecomm Pre Bitencourt", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
     E preencho os campos "01001001", "288" e "CASA" no endereço
