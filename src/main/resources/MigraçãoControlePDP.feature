@@ -10,7 +10,8 @@ Funcionalidade: Migração de Plano Controle - PDP
   @migracaoControlePDPDA
   Cenario: Migração de Plano Controle - PDP
     Dado que acesso a Loja Online
-    E selecionar o "1" plano do carrossel da Home clicando no botão Eu quero! dele
+    E clicar na PLP do plano
+    E selecionar o "1" plano do carrossel da PLP clicando no botão Eu quero! dele
     E validar que não há alterações no valor e/ou informações do Plano
     E preencho os campos ddd "", telefone "11947621133", email "claroqualidade3@gmail.com" e cpf "470.603.078-18"
     E clicar no botão "Eu quero!"

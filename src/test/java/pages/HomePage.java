@@ -42,8 +42,11 @@ public class HomePage {
     public static String gbBonusCardHome = "";
     public static String valorCardHome = "";
 
-    // Menu Cliente Header
+    // Menu Header
     public static String campoTelefone  = "(//input[@name='telephone'])[1]";
+
+    public static String PLPControleHomeMenu = "//a[@title='Controle']";
+    public static String PLPPosHomeMenu = "//a[@title='Pós']";
 
 
     public void acessarLojaHome() {
@@ -180,5 +183,13 @@ public class HomePage {
         WebElement campoTokenDestino = driver.getDriver().findElement(By.xpath("(//input[@name='token'])[1]"));
         campoTokenDestino.sendKeys(token);
         driver.JavaScriptClick("(//button[@type='submit'])[4]", "xpath");
+    }
+
+    public void clicarPLP() {
+        if (Hooks.tagScenarios.contains("@controle")) {
+            driver.JavaScriptClick(PLPControleHomeMenu, "xpath");
+        } else if (Hooks.tagScenarios.contains("@pos")) {
+            driver.JavaScriptClick(PLPPosHomeMenu, "xpath");
+        }
     }
 }

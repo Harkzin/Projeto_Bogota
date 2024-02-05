@@ -39,4 +39,9 @@ public class HomeSteps extends BaseSteps {
     public void queAcessoAURLParametrizadaParaAOfertaDeRentabilizacao() {
         homePage.acessarURLRentabilizacao();
     }
+
+    @E("^clicar na PLP do plano$")
+    public void clicarNaPLP() throws Throwable {
+        homePage.clicarPLP();
+    }
 }
