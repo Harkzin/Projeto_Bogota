@@ -44,4 +44,9 @@ public class HomeSteps extends BaseSteps {
     public void clicarNaPLP() throws Throwable {
         homePage.clicarPLP();
     }
+
+    @E("^selecionar o \"([^\"]*)\" plano do carrossel da Home clicando no botão Mais detalhes dele$")
+    public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoMaisDetalhesDele(String cardPDP) throws Throwable {
+        homePage.selecionarPDPCard(cardPDP);
+    }
 }
