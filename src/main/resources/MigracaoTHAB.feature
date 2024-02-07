@@ -10,9 +10,9 @@ Funcionalidade: Migracao THAB
   @migracaoControleTHAB
   Cenario: Migracao cliente THAB
     Dado que acesso a Loja Online
-    E selecionar o "4" plano do carrossel da Home clicando no botão Eu quero! dele
+    E selecionar o "5" plano do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e/ou informações do Plano
-    E preencho os campos ddd "", telefone "11939340073", email "claroqualidade3@gmail.com" e cpf "204.707.172-03"
+    E preencho os campos ddd "", telefone "11947620163", email "claroqualidade3@gmail.com" e cpf "673.206.142-94"
     E clicar no botão "Eu quero!"
     E preencho os campos Nome Completo "Ecomm Pre Bitencourt", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
     E preencho os campos "01001001", "288" e "CASA" no endereço

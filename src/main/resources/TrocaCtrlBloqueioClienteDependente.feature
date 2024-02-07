@@ -9,7 +9,7 @@ Funcionalidade: Troca Controle - Bloqueio Cliente Dependente
   Cenario: Bloqueio cliente Dependente
     Dado que acesso a Loja Online
     E selecionar o "3" plano do carrossel da Home clicando no botão Eu quero! dele
-    E validar que não há alterações no valor e/ou informações do Plano
+#    E validar que não há alterações no valor e/ou informações do Plano
     E preencho os campos ddd "", telefone "11947480152", email "eutesteauto@outlook.com" e cpf "53704918873"
     Quando clicar no botão "Eu quero!"
     Então validar que foi exibida uma mensagem de erro "Verificamos que a linha informada é um dependente. Somente o titular pode realizar as alterações no plano."

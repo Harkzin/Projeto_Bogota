@@ -21,6 +21,8 @@ public class HomePage {
     //Botão Entrar Home
     public static String xpathEntrarBtn = "//button[@data-uid='my-orders']";
     public static String xpathAcessarBtn = "(//button[@type='submit'])[1]";
+    public static String xpathOlaEcommerceBtn = "(//button[contains(text(),'11947190768')])[1]";
+    public static String xpathMeusPedidosBtn = "(//button[contains(text(),'Meus pedidos')])[1]";
 
 
     // Card
@@ -32,6 +34,7 @@ public class HomePage {
     private String xpathGbPlano = (Hooks.tagScenarios.contains("@controle")) ? "(//*[contains(text(), 'no Plano')])" : "(//*/*[contains(text(), 'no Plano')])";
     private String xpathGbBonus = (Hooks.tagScenarios.contains("@controle")) ? "(//*[contains(text(), 'de Bônus')])" : "(//*/*[contains(text(), 'de Bônus')])";
     private String xpathEuQueroCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*//button[@data-automation='eu-quero'])" : "(//*/button[@data-automation='eu-quero'])";
+    private String xpathMaisDetalhesCard = (Hooks.tagScenarios.contains("@controle")) ? "(//*[@data-automation='mais-detalhes'])" : "(//*/[@data-automation='mais-detalhes'])";
 
     private String xpathProximoCarrossel = (Hooks.tagScenarios.contains("@controle")) ? "//*[@data-automation='seta-carrossel-direita']" : "//*/*[@data-automation='seta-carrossel-direita']";
 
@@ -126,7 +129,7 @@ public class HomePage {
     }
 
     public void acessarURLRentabilizacao() {
-        driver.openURL("https://api.cokecxf-commercec1-" + System.getProperty("env", "S6").toLowerCase() + "-public.model-t.cc.commerce.ondemand.com/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE");
+        driver.openURL("https://accstorefront.cokecxf-commercec1-" + System.getProperty("env", "S6").toLowerCase() + "-public.model-t.cc.commerce.ondemand.com/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE");
     }
 
     public void tokenTemp() {
@@ -174,13 +177,14 @@ public class HomePage {
         driver.click(xpathMenuCliente, "xpath");
         driver.waitSeconds(2);
 
-        driver.browserScroll("down", 800);
         driver.actionClick("(//button[@title='Retrair'])[1]", "xpath");
+        driver.browserScroll("down",800 );
         driver.moveToElementAction("(//input[@class='ye-input-text ye-com_hybris_cockpitng_editor_defaulttext z-textbox'])[22]", "xpath");
         WebElement campoToken = driver.getDriver().findElement(By.xpath("(//input[@class='ye-input-text ye-com_hybris_cockpitng_editor_defaulttext z-textbox'])[22]"));
         String token = campoToken.getAttribute("value");
 
         driver.changeTab("0");
+        driver.browserScroll("up", 800);
         WebElement campoTokenDestino = driver.getDriver().findElement(By.xpath("(//input[@name='token'])[1]"));
         campoTokenDestino.sendKeys(token);
         driver.JavaScriptClick("(//button[@type='submit'])[4]", "xpath");
@@ -205,6 +209,6 @@ public class HomePage {
         valorCardHome = driver.getText(xpathPrecoCard + "[" + cardPDP + "]", "xpath");
         gbPlanoCardHome = (driver.findListElements(xpathGbPlano + "[" + cardPDP + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardPDP + "]", "xpath");
         gbBonusCardHome = (driver.findListElements(xpathGbBonus + "[" + cardPDP + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardPDP + "]", "xpath");
-        driver.JavaScriptClick(xpathEuQueroCard + "[" + cardPDP + "]", "xpath");
+        driver.JavaScriptClick(xpathMaisDetalhesCard + "[" + cardPDP + "]", "xpath");
     }
 }

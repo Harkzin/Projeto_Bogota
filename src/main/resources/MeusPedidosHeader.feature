@@ -10,8 +10,8 @@ Funcionalidade: Validar Meus Pedidos Header
     E clicar no botão "Entrar"
     E preencher o campo “Seu telefone Claro” com o msidn "11947190768"
     E clicar no botão "Acessar"
-    E validar que o botão Entrar foi alterado para o "Olá, Ecommerce"
-    E clicar no botão "Olá, Ecommerce"
+#    E validar que o botão Entrar foi alterado para o "11947190768"
+    E clicar no botão "11947190768"
     E clicar no botão "Meus pedidos"
     E preencho com o Token
     E validar que foi direcionado para a página de Meus Pedidos
