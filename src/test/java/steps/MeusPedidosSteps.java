@@ -1,7 +1,7 @@
 package steps;
 
-import cucumber.api.java.pt.E;
-import cucumber.api.java.pt.Entao;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
 import pages.MeusPedidosPage;
 import support.BaseSteps;
 
@@ -24,7 +24,7 @@ public class MeusPedidosSteps extends BaseSteps {
         meusPedidosPage.acessarPedidoMaisRecente();
     }
 
-    @Entao("^validar que foi direcionado para a página de acompanhamento de pedido$")
+    @Então("^validar que foi direcionado para a página de acompanhamento de pedido$")
     public void validarQueFoiDirecionadoParaAPaginaDeAcompanhamento() {
         meusPedidosPage.validarPaginaDePedido();
     }

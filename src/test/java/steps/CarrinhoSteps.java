@@ -1,7 +1,7 @@
 package steps;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.pt.*;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
 import pages.*;
 import support.BaseSteps;
 

@@ -1,6 +1,6 @@
 package steps;
 
-import cucumber.api.java.pt.E;
+import io.cucumber.java.pt.E;
 import pages.TokenPage;
 import support.BaseSteps;
 import support.RESTSupport;
