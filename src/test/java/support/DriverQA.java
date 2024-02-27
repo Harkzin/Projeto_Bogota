@@ -38,7 +38,7 @@ public class DriverQA {
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
                     FirefoxOptions options = new FirefoxOptions();
-                    //options.addPreference(FirefoxDriver.MARIONETTE, true);
+                    //options.addPreference(FirefoxDriver.MARIONETTE, true); Refactor
                     driver = new FirefoxDriver(options);
                     driver.manage().window().setPosition(new Point(0, 0));
                     driver.manage().window().setSize(new Dimension(1366, 768));
@@ -259,11 +259,11 @@ public class DriverQA {
     }
 
     public void waitSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(ofSeconds(time));
     }
 
     public void waitMilliSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(time, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().implicitlyWait(ofSeconds(time));
     }
 
     public void waitElementAll(String parName, String... parType) {

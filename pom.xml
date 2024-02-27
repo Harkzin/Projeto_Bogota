@@ -36,13 +36,14 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20180130</version>
+            <version>20240205</version>
         </dependency>
 
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>3.1.0</version>
+            <version>5.4.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

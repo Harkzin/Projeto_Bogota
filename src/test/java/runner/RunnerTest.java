@@ -10,11 +10,8 @@ import support.BaseSteps;
 @CucumberOptions(
         features = "src/main/resources/features",
         glue = {"steps", "support"},
-        plugin = {"json:target/reports/CucumberReport.json"},
+        plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
-        stepNotifications = false,
-        tags = "@bloqueioCEPdiferente")
+        tags = "@regressivo")
 
-public class  RunnerTest extends BaseSteps {
-    //mvn clean test "-Denv=S6" "-Dcucumber.filter.tags=@bloqueioCEPdiferente"
-}
+public class  RunnerTest extends BaseSteps { }
