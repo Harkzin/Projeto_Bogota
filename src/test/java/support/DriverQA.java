@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.DecimalFormat;
+import static java.time.Duration.ofSeconds;
 import java.util.NoSuchElementException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -35,28 +36,26 @@ public class DriverQA {
         if (title == "ERROR") {
             switch (parBrowser) {
                 case "firefox":
-
                     WebDriverManager.firefoxdriver().setup();
                     FirefoxOptions options = new FirefoxOptions();
-                    options.addPreference(FirefoxDriver.MARIONETTE, true);
+                    //options.addPreference(FirefoxDriver.MARIONETTE, true); Refactor
                     driver = new FirefoxDriver(options);
                     driver.manage().window().setPosition(new Point(0, 0));
                     driver.manage().window().setSize(new Dimension(1366, 768));
-
                     break;
+
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
                     optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
+                    //optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
                     driver.manage().window().maximize();
-//                    driver.manage().window().setPosition(new Point(0, 312));
+
                 default:
                     break;
-
             }
         }
         return title;
@@ -260,15 +259,15 @@ public class DriverQA {
     }
 
     public void waitSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(ofSeconds(time));
     }
 
     public void waitMilliSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(time, TimeUnit.MILLISECONDS);
+        driver.manage().timeouts().implicitlyWait(ofSeconds(time));
     }
 
     public void waitElementAll(String parName, String... parType) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         String param2 = getAttributeType(parType);
         try {
             switch (param2) {
@@ -298,59 +297,59 @@ public class DriverQA {
     }
 
     public void waitElement(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(parId)));
     }
 
     public void waitElementMotherId(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(parId)));
     }
 
     public void waitElementCSS(String parCss) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(parCss)));
         driver.getWindowHandles();
     }
 
     public void waitElementXP(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 15);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(15));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parXp)));
     }
 
     public void waitElementTobeClickable(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.elementToBeClickable(By.id(parId)));
     }
 
     public void waitElementCSSTobeClickable(String parCss) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parCss)));
     }
 
     public void waitElementClassTobeClickable(String parClass) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.elementToBeClickable(By.className(parClass)));
     }
 
     public void waitElementXPTobeClickable(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parXp)));
     }
 
     public void waitElementNotVisible(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(parId)));
     }
 
     public void waitElementNotVisibleCSS(String parCss) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(parCss)));
         driver.getWindowHandles();
     }
 
     public void waitElementNotVisibleXP(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, 60);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(parXp)));
     }
 
@@ -431,7 +430,7 @@ public class DriverQA {
 
     public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, timeOut);
+            WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeOut));
             switch (parType) {
                 case "id":
                     if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return true;
@@ -512,7 +511,7 @@ public class DriverQA {
     public void JavaScriptClick(String parValue, String... parType) {
         try {
             WebElement element = findElem(parValue, parType);
-            WebDriverWait wait = new WebDriverWait(driver, 30);
+            WebDriverWait wait = new WebDriverWait(driver, ofSeconds(30));
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             wait.until(ExpectedConditions.elementToBeClickable(element));
             wait.until(ExpectedConditions.visibilityOf(element));
@@ -551,14 +550,14 @@ public class DriverQA {
     }
 
     public void waitAttValorBoleto(String parId, String valorDebito) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
         float numeroFloat = (Hooks.tagScenarios.contains("@controle")) ? Float.parseFloat(valorDebito.replace(',', '.')) + 5.0f : Float.parseFloat(valorDebito.replace(',', '.')) + 10.0f;
         DecimalFormat df = new DecimalFormat("#.##");
         String numeroFormatado = df.format(numeroFloat);
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), numeroFormatado.replace('.', ',')));
     }
     public void waitAttValorDebito(String parId, String valorDebito) {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), valorDebito));
     }
 

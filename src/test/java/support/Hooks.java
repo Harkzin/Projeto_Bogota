@@ -1,8 +1,8 @@
 package support;
 
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
@@ -17,7 +17,7 @@ public class Hooks extends BaseSteps {
     public void printScreen(Scenario scenario) throws InterruptedException {
         Thread.sleep(1000);
         byte[] screenshot = (((TakesScreenshot) driver.getDriver()).getScreenshotAs(OutputType.BYTES));
-        scenario.embed(screenshot, "image/png");
+        scenario.attach(screenshot, "image/png", "screenshot");
     }
 
     @After(order = 1)

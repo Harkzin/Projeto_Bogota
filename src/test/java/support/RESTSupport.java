@@ -1,11 +1,11 @@
 package support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import groovy.json.internal.LazyMap;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.groovy.json.internal.LazyMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -1,6 +1,6 @@
 package steps;
 
-import cucumber.api.java.pt.E;
+import io.cucumber.java.pt.E;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
 
