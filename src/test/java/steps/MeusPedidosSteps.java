@@ -1,7 +1,7 @@
 package steps;
 
-import cucumber.api.java.pt.E;
-import cucumber.api.java.pt.Entao;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
 import pages.MeusPedidosPage;
 import support.BaseSteps;
 

@@ -1,6 +1,5 @@
 package steps;
 
-import cucumber.api.java.pt.E;
 import pages.PLPPage;
 import support.BaseSteps;
 

@@ -1,8 +1,7 @@
 package steps;
 
-import cucumber.api.PendingException;
-import cucumber.api.java.pt.Dado;
-import cucumber.api.java.pt.E;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.E;
 import pages.HomePage;
 import support.BaseSteps;
 import support.Hooks;

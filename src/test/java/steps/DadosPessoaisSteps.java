@@ -1,7 +1,7 @@
 package steps;
 
-import cucumber.api.java.pt.E;
-import cucumber.api.java.pt.Então;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
 import pages.DadosPessoaisPage;
 import support.BaseSteps;
 

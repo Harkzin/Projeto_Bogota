@@ -1,7 +1,6 @@
 package steps;
 
-import cucumber.api.java.pt.E;
-import cucumber.api.java.pt.Quando;
+import io.cucumber.java.pt.E;
 import pages.ControleAntecipadoPage;
 import support.BaseSteps;
 

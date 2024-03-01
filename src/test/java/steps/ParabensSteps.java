@@ -1,6 +1,6 @@
 package steps;
 
-import cucumber.api.java.pt.Entao;
+import io.cucumber.java.pt.Entao;
 import pages.ParabensPage;
 import support.BaseSteps;
 
