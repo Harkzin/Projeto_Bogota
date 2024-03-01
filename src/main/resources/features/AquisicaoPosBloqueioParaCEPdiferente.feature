@@ -9,7 +9,7 @@ Funcionalidade: Aquisicao Pós - Bloqueio para CEP diferente da regionalização
   Cenario: Bloqueio para CEP diferente da regionalização
     Dado que acesso a Loja Online
     E selecionar o "3" plano do carrossel da Home clicando no botão Eu quero! dele
-#    E validar que não há alterações no valor e/ou informações do Plano
+    E validar que não há alterações no valor e/ou informações do Plano
     E preencho os campos ddd "11", telefone "11947438023", email "eutesteauto@outlook.com" e cpf "50357581091"
     E clicar no botão "Eu quero!"
     E preencho os campos Nome Completo "AQS CONVENCIONAL", Data De Nascimento "09/10/1980" e Nome da Mãe "Marta Silva"

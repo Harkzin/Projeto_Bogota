@@ -1,11 +1,16 @@
 package steps;
 
-import pages.PLPPage;
+import io.cucumber.java.pt.E;
+import pages.PDPPage;
 import support.BaseSteps;
 
 public class PDPSteps extends BaseSteps {
 
-    PLPPage pdpPage = new PLPPage(driver);
+    PDPPage pdpPage = new PDPPage(driver);
 
+    @E("validar que é direcionado para a PDP do plano e clicar no botão Eu quero!")
+    public void validarQueEDirecionadoParaAPDPDoPlanoEClicarNoBotãoEuQuero() {
+        pdpPage.EuQueroPDP();
+    }
 
 }
