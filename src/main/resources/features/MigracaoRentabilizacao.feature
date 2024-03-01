@@ -12,7 +12,7 @@ Funcionalidade: Migracao Controle URL parametrizada para a oferta de rentabiliza
 
   Cenario: Migracao Controle Rentabilizacao Débito automático
     Dado que acesso a URL parametrizada para a oferta de rentabilizacao
-    E preencho os campos telefone "11947489780", email "claroqualidade3@gmail.com" e cpf "548.238.267-28"
+    E preencho os campos telefone "11947621662", email "claroqualidade3@gmail.com" e cpf "748.664.363-44"
     E clicar no botão "Eu quero!"
     E preencho os campos Nome Completo "Ecomm Pre Fagundes", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
     E preencho os campos "01001001", "288" e "CASA" no endereço

@@ -117,6 +117,13 @@ public class CarrinhoPage {
             case "Acessar":
                 driver.JavaScriptClick(HomePage.xpathAcessarBtn, "xpath");
                 break;
+            case "11947190768":
+                driver.JavaScriptClick(HomePage.xpathOlaEcommerceBtn, "xpath");
+                break;
+            case "Meus pedidos":
+                driver.JavaScriptClick(HomePage.xpathMeusPedidosBtn, "xpath");
+                break;
+
         }
     }
 

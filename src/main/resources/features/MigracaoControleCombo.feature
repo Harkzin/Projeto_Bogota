@@ -12,7 +12,7 @@ Funcionalidade: Migracao Controle para Pos Combo Multi
     Dado que acesso a Loja Online
     E selecionar o "1" plano do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e/ou informações do Plano
-    E preencho os campos ddd "", telefone "11947620195", email "claroqualidade3@gmail.com" e cpf "187.994.711-08"
+    E preencho os campos ddd "", telefone "11947620656", email "claroqualidade3@gmail.com" e cpf "330.568.571-98"
     E clicar no botão "Eu quero!"
     E validar a mensagem de cliente combo multi
     E marco o checkbox de termos de aceite thab

@@ -1,18 +1,19 @@
 #language: pt
 
 @regressivo
-Funcionalidade: Migracao THAB
+Funcionalidade: Migração de Plano Controle - PDP
 
   @controle
   @migracao
   @migracaoPre
-  @boleto
-  @migracaoControleTHAB
-  Cenario: Migracao cliente THAB
+  @debitoAutomatico
+  @migracaoControlePDPDA
+  Cenario: Migração de Plano Controle - PDP
     Dado que acesso a Loja Online
-    E selecionar o "5" plano do carrossel da Home clicando no botão Eu quero! dele
+    E selecionar o "1" plano do carrossel da Home clicando no botão Mais detalhes dele
+    E validar que é direcionado para a PDP do plano e clicar no botão Eu quero!
     E validar que não há alterações no valor e/ou informações do Plano
-    E preencho os campos ddd "", telefone "11947620163", email "claroqualidade3@gmail.com" e cpf "673.206.142-94"
+    E preencho os campos ddd "", telefone "11947486000", email "claroqualidade3@gmail.com" e cpf "94516280884"
     E clicar no botão "Eu quero!"
     E preencho os campos Nome Completo "Ecomm Pre Bitencourt", Data De Nascimento "20/02/2000" e Nome da Mãe "Marta Silva"
     E preencho os campos "01001001", "288" e "CASA" no endereço
@@ -20,10 +21,4 @@ Funcionalidade: Migracao THAB
     E seleciono a forma de pagamento
     E marco o checkbox de termos de aceite
     E clicar no botão "Continuar pagamento"
-    E valido que foi ofertado plano de Controle Antecipado
-    E clicar no botão "Eu quero! Controle Antecipado"
-    E marco o checkbox de termos de aceite thab
-    E clicar no botão "Continuar pagamento"
-    E preencho o campo Código enviado Por SMS com o TOKEN recebido
-    Quando clicar no botão "Finalizar"
     Entao validar que não há alterações no valor e/ou informações do Plano na tela de parabens
