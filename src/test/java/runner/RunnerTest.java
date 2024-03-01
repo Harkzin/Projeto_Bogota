@@ -1,22 +1,17 @@
 package runner;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.SnippetType;
-import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.CucumberOptions.SnippetType;
 import support.BaseSteps;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {"src"},
-        snippets = SnippetType.CAMELCASE,
-        plugin = {"json:target/reports/CucumberReport.json"},
-//				  "pretty"},
-        monochrome = false,
-        dryRun = false,
+        features = "src/main/resources/features",
         glue = {"steps", "support"},
-        tags = {"~@ignore", "@regressivo"})
+        plugin = {"pretty", "json:target/reports/CucumberReport.json"},
+        snippets = SnippetType.CAMELCASE,
+        tags = "@regressivo")
 
-public class  RunnerTest extends BaseSteps {
-
-}
+public class  RunnerTest extends BaseSteps { }

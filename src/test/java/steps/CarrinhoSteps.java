@@ -1,6 +1,7 @@
 package steps;
 
-import io.cucumber.java.pt.*;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
 import pages.*;
 import support.BaseSteps;
 
