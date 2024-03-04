@@ -16,10 +16,8 @@ import java.text.DecimalFormat;
 import static java.time.Duration.ofSeconds;
 import java.util.NoSuchElementException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class DriverQA {
-
     private static WebDriver driver;
 
     public WebDriver getDriver() {
@@ -69,11 +67,6 @@ public class DriverQA {
             type = parType[0];
         }
         return type;
-    }
-
-    public void windowPosition() {
-        System.out.println("Window position X coordinates Is -> " + driver.manage().window().getPosition().getX());
-        System.out.println("Window position Y coordinates Is -> " + driver.manage().window().getPosition().getY());
     }
 
     private WebElement findElem(String parValue, String... parType) {
@@ -425,7 +418,6 @@ public class DriverQA {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
@@ -481,7 +473,6 @@ public class DriverQA {
     }
 
     public void sendKeysCampoMascara(String value, String parValue, String parType) {
-
         try {
             WebElement element = findListElements(parValue, parType).get(0);
             char[] digits = value.toCharArray();
@@ -522,7 +513,6 @@ public class DriverQA {
     }
 
     public void moveToElementJs(String parValue, String... parType) {
-
         WebElement element = findElem(parValue, parType);
 
         try {
@@ -531,7 +521,6 @@ public class DriverQA {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getValueParam(String parValue, String campoDesejado, String parType) {
@@ -556,6 +545,7 @@ public class DriverQA {
         String numeroFormatado = df.format(numeroFloat);
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), numeroFormatado.replace('.', ',')));
     }
+
     public void waitAttValorDebito(String parId, String valorDebito) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), valorDebito));
@@ -643,6 +633,4 @@ public class DriverQA {
         } catch (Exception e) {
         }
     }
-
 }
-

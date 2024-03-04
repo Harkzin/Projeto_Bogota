@@ -3,11 +3,11 @@ package steps;
 import io.cucumber.java.pt.E;
 import pages.TokenPage;
 import support.BaseSteps;
-import support.RESTSupport;
+import support.RestAPI;
 
 public class TokenSteps extends BaseSteps {
     TokenPage tokenPage = new TokenPage(driver);
-    RESTSupport rest = new RESTSupport();
+    RestAPI rest = new RestAPI();
 
     public static String token;
 
