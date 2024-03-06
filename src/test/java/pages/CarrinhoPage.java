@@ -123,7 +123,6 @@ public class CarrinhoPage {
             case "Meus pedidos":
                 driver.JavaScriptClick(HomePage.xpathMeusPedidosBtn, "xpath");
                 break;
-
         }
     }
 
@@ -147,6 +146,6 @@ public class CarrinhoPage {
     }
 
     public void validarClienteCombo() {
-        Assert.assertEquals("Como você já é combo, seu bônus está garantido!\n"+"Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.", driver.getText(CarrinhoPage.xpathTermosComboMulti, "xpath"));
+        Assert.assertEquals("Como você já é combo, seu bônus está garantido!\n" + "Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.", driver.getText(CarrinhoPage.xpathTermosComboMulti, "xpath"));
     }
 }

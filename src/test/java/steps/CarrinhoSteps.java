@@ -44,4 +44,3 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validarClienteCombo();
     }
 }
-

@@ -5,6 +5,7 @@ import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,7 +25,7 @@ public class Hooks extends BaseSteps {
     }
 
     @Before
-    public void getTags(Scenario scenario){
+    public void getTags(Scenario scenario) {
         tagScenarios = scenario.getSourceTagNames();
     }
 

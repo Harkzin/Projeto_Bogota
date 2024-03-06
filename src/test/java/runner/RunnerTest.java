@@ -14,4 +14,5 @@ import support.BaseSteps;
         snippets = SnippetType.CAMELCASE,
         tags = "@regressivo")
 
-public class  RunnerTest extends BaseSteps { }
+public class RunnerTest extends BaseSteps {
+}
