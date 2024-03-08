@@ -13,10 +13,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.DecimalFormat;
+
 import static java.time.Duration.ofSeconds;
+
 import java.util.NoSuchElementException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class DriverQA {
 
@@ -48,7 +49,7 @@ public class DriverQA {
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
                     optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-                    //optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
+//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -556,6 +557,7 @@ public class DriverQA {
         String numeroFormatado = df.format(numeroFloat);
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), numeroFormatado.replace('.', ',')));
     }
+
     public void waitAttValorDebito(String parId, String valorDebito) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), valorDebito));
@@ -618,6 +620,10 @@ public class DriverQA {
 
     public String montaEnderecoValidacaoParabens(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
         return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente.toUpperCase() + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
+    }
+
+    public String montaEnderecoValidacaoEmail(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
+        return enderecoCliente + " " + numeroEndCliente + " " + complementoCliente + ", " + bairroCliente + ","  + cepCliente + ", " + cidadeCliente + ", " + ufCliente.replace("BR-", "").toLowerCase();
     }
 
     public static String capitalizeFirstLetter(String text) {
