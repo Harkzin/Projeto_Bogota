@@ -3,18 +3,20 @@ package pages;
 import org.json.JSONException;
 import org.junit.Assert;
 import support.DriverQA;
-import support.RESTSupport;
+
+import static support.RestAPI.getMessageFirstId;
+import static support.RestAPI.getPedidoEnderecoNome;
+import static support.RestAPI.purgeInbox;
 
 public class EmailPage {
-
-    private DriverQA driver;
+    private final DriverQA driver;
 
     public EmailPage(DriverQA stepDriver) {
         driver = stepDriver;
     }
 
     public void validarEmail() throws JSONException, InterruptedException {
-        String messageId = RESTSupport.getMessageFirstId();
+        String messageId = getMessageFirstId();
         String endereco = driver.montaEnderecoValidacaoEmail(DadosPessoaisPage.enderecoCliente,
                 DadosPessoaisPage.numeroEndCliente,
                 DadosPessoaisPage.complementoCliente,
@@ -23,12 +25,10 @@ public class EmailPage {
                 DadosPessoaisPage.ufCliente,
                 DadosPessoaisPage.cepCliente);
 
-        String response = RESTSupport.getPedidoEnderecoNome(messageId);
+        String response = getPedidoEnderecoNome(messageId);
         Assert.assertTrue(response.contains(DadosPessoaisPage.nomeCliente));
         Assert.assertTrue(response.contains(ParabensPage.pedidoParabens));
         Assert.assertTrue(response.contains(endereco));
-        RESTSupport.purgeInbox(messageId);
-
+        purgeInbox(messageId);
     }
-
 }

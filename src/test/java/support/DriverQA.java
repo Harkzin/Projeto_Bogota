@@ -20,7 +20,6 @@ import java.util.NoSuchElementException;
 import java.util.*;
 
 public class DriverQA {
-
     private static WebDriver driver;
 
     public WebDriver getDriver() {
@@ -48,8 +47,9 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
+
                     optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-//                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
+                    //optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -70,11 +70,6 @@ public class DriverQA {
             type = parType[0];
         }
         return type;
-    }
-
-    public void windowPosition() {
-        System.out.println("Window position X coordinates Is -> " + driver.manage().window().getPosition().getX());
-        System.out.println("Window position Y coordinates Is -> " + driver.manage().window().getPosition().getY());
     }
 
     private WebElement findElem(String parValue, String... parType) {
@@ -426,7 +421,6 @@ public class DriverQA {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
@@ -482,7 +476,6 @@ public class DriverQA {
     }
 
     public void sendKeysCampoMascara(String value, String parValue, String parType) {
-
         try {
             WebElement element = findListElements(parValue, parType).get(0);
             char[] digits = value.toCharArray();
@@ -523,7 +516,6 @@ public class DriverQA {
     }
 
     public void moveToElementJs(String parValue, String... parType) {
-
         WebElement element = findElem(parValue, parType);
 
         try {
@@ -532,7 +524,6 @@ public class DriverQA {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getValueParam(String parValue, String campoDesejado, String parType) {
@@ -649,6 +640,4 @@ public class DriverQA {
         } catch (Exception e) {
         }
     }
-
 }
-

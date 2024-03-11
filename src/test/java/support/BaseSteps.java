@@ -2,6 +2,7 @@ package support;
 
 public class BaseSteps {
     protected static DriverQA driver = new DriverQA();
+
     public BaseSteps() {
         String browser = System.getProperty("browser", "chrome");
         switch (browser) {
