@@ -8,7 +8,7 @@ Funcionalidade: Troca Controle - Bloqueio Cliente Dependente
   @bloqueioClienteDependente
   Cenario: Bloqueio cliente Dependente
     Dado que acesso a Loja Online
-    E selecionar o "3" plano do carrossel da Home clicando no botão Eu quero! dele
+    E selecionar o plano de id "17216" do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e/ou informações do Plano
     E preencho os campos ddd "", telefone "11947480152", email "eutesteauto@outlook.com" e cpf "53704918873"
     Quando clicar no botão "Eu quero!"
