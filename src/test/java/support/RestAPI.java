@@ -33,18 +33,18 @@ public final class RestAPI {
     public static String getCpf() throws IOException, InterruptedException {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.4devs.com.br/ferramentas_online.php"))
-                .timeout(ofSeconds(5))
+                .timeout(ofSeconds(10))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString("acao=gerar_cpf&pontuacao=N&cpf_estado=SP"))
                 .build();
 
-        return clientHttp.send(getCpfRequest, HttpResponse.BodyHandlers.ofString()).body();
+        return clientHttp.send(getCpfRequest, HttpResponse.BodyHandlers.ofString()).body(); //Retorna um CPF como String.
     }
 
     public static boolean checkCpfDiretrix(String cpf) throws IOException, InterruptedException {
         final HttpRequest diretrixTokenRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://api-lab.claro.com.br/oauth2/v1/token"))
-                .timeout(ofSeconds(5))
+                .timeout(ofSeconds(10))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("X-Client-Auth", "Basic MWxKR1dqdkhsVzEzWkdmT0pxUVlHQ3JFTlRNY0x3Vno6QVowTTF3aVA5cFJSWGplTg==")
                 .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials"))
@@ -56,7 +56,7 @@ public final class RestAPI {
 
         final HttpRequest diretrixRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://api-lab.claro.com.br/customers/v1/profiles/historical"))
-                .timeout(ofSeconds(7))
+                .timeout(ofSeconds(10))
                 .header("X-Client-Auth", "Bearer " + token)
                 .header("X-QueryString", "documentnumber=" + cpf)
                 .GET()
@@ -65,7 +65,7 @@ public final class RestAPI {
         HttpResponse<String> response = clientHttp.send(diretrixRequest, HttpResponse.BodyHandlers.ofString());
         JsonNode node = objMapper.readTree(response.body());
 
-        return response.statusCode() != 422 || !node.at("/error").get("detailedMessage").asText().equalsIgnoreCase("CPF não encontrado");
+        return response.statusCode() != 422 || !node.at("/error").get("detailedMessage").asText().equalsIgnoreCase("CPF não encontrado"); //CPF na Diretrix? = true, fora da Diretrix? = false, para testes deve ser false.
     }
 
     private static final DriverQA driver = new DriverQA();

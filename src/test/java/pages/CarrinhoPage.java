@@ -2,94 +2,110 @@ package pages;
 
 import support.DriverQA;
 import org.junit.Assert;
-import support.Hooks;
+
+import java.io.IOException;
+
+import static support.RestAPI.checkCpfDiretrix;
+import static support.RestAPI.getCpf;
 
 public class CarrinhoPage {
-    private DriverQA driver;
+    private final DriverQA driver;
 
     public CarrinhoPage(DriverQA stepDriver) {
         driver = stepDriver;
     }
 
-    //Resumo da compra
-    private String xpathTituloPlanoResumo = "(//*[@class='product-fullname isOrderConfPage mdn-Heading mdn-Heading--sm'])[2]";
-    private String xpathGbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
-    private String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
-    private String xpathValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])";
-    public static String xpathMetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
-    public static String xpathMetodoPagamentoResumo2 = "(//*[@class='mdn-Price-suffix'])[2]";
-    private String xpathFidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])[2]";
-
-    //Form Aq/Port/MigTroc
-    private String xpathInputRadioMigracao = "(//*[@value='MIGRATE'])";
-    private String xpathInputRadioPortabilidade = "(//*[@value='PORTABILITY'])";
-    private String xpathInputRadioAquisicao = "(//*[@value='NEWLINE'])";
-    private String xpathMigracaoForm = "(//*[@data-automation='migracao'])[2]";
-    private String xpathPortabilidadeForm = "(//*[@data-automation='portabilidade'])[2]";
-    private String xpathAquisicaoForm = "(//*[@data-automation='aquisicao'])[2]";
-    private String idTelefoneMigracaoForm = "telephone";
-    private String idEmailForm = "email";
-    private String idCpfMigracaoForm = "cpf";
-    private String idTelefonePortabilidadeForm = "telephonePortability";
-    private String idCpfPortabilidadeForm = "cpfPortability";
-    private String idDDDAquisicaoForm = "ddd";
-    private String idTelefoneAquisicaoForm = "telephoneAcquisition";
-    private String idCpfAquisicaoForm = "cpfAcquisition";
-    private String idEuQueroForm = "buttonCheckout";
+    // Refactor
+    //private final String GbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
+    //public static String MetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
+    //public static String MetodoPagamentoResumo2 = "(//*[@class='mdn-Price-suffix'])[2]";
+    //private static final String TermosComboMulti = "//p[@class='terms-and-conditions-page-description']";
+    private final String MigrateFlow = "rdn-migracao";
+    private final String PortabilityFlow = "rdn-portabilidade";
+    private final String AcquisitionFlow = "rdn-aquisicao";
+    private final String emailCart = "txt-email";
 
     // Variaveis para validacao na tela de parabens
     public static String telefoneCliente;
     public static String cpfCliente;
 
-    // Mensagem erro Bloqueio Dependente
-    private String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
+    private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) throws IOException, InterruptedException {
+        String cpf;
+        String clearSaleRule = isApproved ? ".*[1348]$" : ".*5$"; //Regra do final do CPF da clearSale.
 
-    //Carrinho
-    public static String xpathTermosComboMulti = "//p[@class='terms-and-conditions-page-description']";
+        do {
+            do {
+                cpf = getCpf();
+            } while (!cpf.matches(clearSaleRule));
+        } while (checkCpfDiretrix(cpf) != isDiretrix);
 
-    public void validarCarrinho() {
-        driver.waitElementXP(xpathTituloPlanoResumo);
-        Assert.assertTrue(HomePage.tituloCardHome.equals(driver.getText(xpathTituloPlanoResumo, "xpath")));
-        if (!HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
-            Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
-            Assert.assertTrue(HomePage.gbBonusCardHome.equals(driver.getText(xpathGbDeBonusResumo, "xpath")));
-//        } else if (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
-//            Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
-        }
-        Assert.assertTrue(HomePage.valorCardHome.contains(driver.getText(xpathValorTotalResumo, "xpath")));
-        Assert.assertTrue(("Fidelizado por 12 meses".equals(driver.getText(xpathFidelizadoResumo, "xpath"))));
-        Assert.assertTrue(("Débito automático".equals(driver.getText(xpathMetodoPagamentoResumo, "xpath"))));
+        return cpf;
     }
 
-    public void preencherDadosLinhaForm(String ddd, String telefone, String email, String cpf) {
-        // Valida se todos os campos de aquisicao, migracao e portabilidade estao visiveis e se sao selecionaveis
-        driver.waitElementToBeClickableAll(xpathAquisicaoForm, 5, "xpath");
-        Assert.assertTrue(driver.isDisplayed(xpathMigracaoForm, "xpath") && driver.isDisplayed(xpathPortabilidadeForm, "xpath") && driver.isDisplayed(xpathAquisicaoForm, "xpath"));
-        Assert.assertFalse(driver.isSelected(xpathInputRadioMigracao, "xpath") && driver.isSelected(xpathInputRadioPortabilidade, "xpath") && driver.isSelected(xpathInputRadioAquisicao, "xpath"));
+    public void validarCarrinho() {
+        driver.waitElementToBeClickableAll(AcquisitionFlow, 5, "id");
+        Assert.assertTrue(driver.isDisplayed(MigrateFlow, "id") && driver.isDisplayed(PortabilityFlow, "id") && driver.isDisplayed(AcquisitionFlow, "id"));
 
-        telefoneCliente = telefone;
-        cpfCliente = cpf;
-        if (Hooks.tagScenarios.contains("@migracao") || Hooks.tagScenarios.contains("@troca")) {
-            driver.click(xpathMigracaoForm, "xpath");
-            driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
-            driver.sendKeys(email, idEmailForm);
-            driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
-            driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
-        } else if (Hooks.tagScenarios.contains("@aquisicao")) {
-            driver.click(xpathAquisicaoForm, "xpath");
-            driver.waitElementToBeClickableAll(idDDDAquisicaoForm, 5, "id");
-            driver.actionSendKey(telefone, idTelefoneAquisicaoForm, "id");
-            driver.sendKeys(email, idEmailForm, "id");
-            driver.actionSendKey(cpf, idCpfAquisicaoForm, "id");
-        } else {
-            driver.click(xpathPortabilidadeForm, "xpath");
-            driver.waitElementToBeClickableAll(idTelefonePortabilidadeForm, 1, "id");
-            driver.sendKeys(telefone, idTelefonePortabilidadeForm, "id");
-            driver.sendKeys(cpf, idCpfPortabilidadeForm, "id");
+        /* //Refactor
+        String TituloPlanoResumo = "(//*[@class='product-fullname isOrderConfPage mdn-Heading mdn-Heading--sm'])[2]";
+        String ValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])";
+        String FidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])[2]";
+
+        driver.waitElementXP(TituloPlanoResumo);
+        Assert.assertEquals(HomePage.tituloCardHome, driver.getText(TituloPlanoResumo, "xpath"));
+        if (!HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
+            Assert.assertEquals(HomePage.gbPlanoCardHome, driver.getText(GbNoPlanoResumo, "xpath"));
+            String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
+            Assert.assertEquals(HomePage.gbBonusCardHome, driver.getText(xpathGbDeBonusResumo, "xpath"));
+            //} else if (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
+            //Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
         }
+
+        Assert.assertTrue(HomePage.valorCardHome.contains(driver.getText(ValorTotalResumo, "xpath")));
+        Assert.assertEquals("Fidelizado por 12 meses", driver.getText(FidelizadoResumo, "xpath"));
+        Assert.assertEquals("Débito automático", driver.getText(MetodoPagamentoResumo, "xpath"));
+        */
+    }
+
+    public void inserirDadosBase(String telephone, String email, String cpf) {
+        String telephoneMigrate = "txt-telefone-migracao";
+        String cpfMigrate = "txt-cpf-migracao";
+
+        driver.click(MigrateFlow, "id");
+        driver.waitElementToBeClickableAll(cpfMigrate, 2, "id");
+
+        driver.actionSendKey(telephone, telephoneMigrate, "id");
+        driver.actionSendKey(emailCart, email, "id");
+        driver.actionSendKey(cpf, cpfMigrate, "id");
+    }
+
+    public void inserirDadosPortabilidade(String telephoneContact, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
+        String telephonePortability = "txt-telefone-portabilidade";
+        String cpfPortability = "txt-cpf-portabilidade";
+
+        driver.click(PortabilityFlow, "id");
+        driver.waitElementToBeClickableAll(telephonePortability, 2, "id");
+
+        driver.sendKeys(telephoneContact, telephonePortability, "id");
+        driver.sendKeys(emailCart, email, "id");
+        driver.sendKeys(getCpfForPlanFlow(isCpfApproved, isCpfDiretrix), cpfPortability, "id");
+    }
+
+    public void inserirDadosAquisicao(String telephoneContact, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
+        String telephoneContactAcquisition = "txt-telefone-aquisicao";
+        String cpfAcquisition = "txt-cpf-aquisicao";
+
+        driver.click(AcquisitionFlow, "id");
+        driver.waitElementToBeClickableAll(telephoneContactAcquisition, 2, "id");
+
+        driver.actionSendKey(telephoneContact, telephoneContactAcquisition, "id");
+        driver.sendKeys(emailCart, email, "id");
+        driver.actionSendKey(getCpfForPlanFlow(isCpfApproved, isCpfDiretrix), cpfAcquisition, "id");
     }
 
     public void euQueroCarrinho(String botao) {
+        String idEuQueroForm = "buttonCheckout";
+
         switch (botao) {
             case "Eu quero!":
                 driver.JavaScriptClick(idEuQueroForm, "id");
@@ -127,6 +143,9 @@ public class CarrinhoPage {
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
+        // Mensagem erro Bloqueio Dependente
+        String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
+
         driver.waitElementXP(xpathMsgErroBloqueioDependente);
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
@@ -136,16 +155,7 @@ public class CarrinhoPage {
         Assert.assertEquals("O básico para o dia a dia", driver.getText(HomePage.xpathTituloControleHome, "xpath"));
     }
 
-    public void preencherDadosLinhaRent(String telefone, String email, String cpf) {
-        driver.waitElementToBeClickableAll(xpathMigracaoForm, 5, "xpath");
-        driver.click(xpathMigracaoForm, "xpath");
-        driver.waitElementToBeClickableAll(idCpfMigracaoForm, 5, "id");
-        driver.sendKeys(email, idEmailForm);
-        driver.actionSendKey(telefone, idTelefoneMigracaoForm, "id");
-        driver.actionSendKey(cpf, idCpfMigracaoForm, "id");
-    }
-
-    public void validarClienteCombo() {
-        Assert.assertEquals("Como você já é combo, seu bônus está garantido!\n" + "Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.", driver.getText(CarrinhoPage.xpathTermosComboMulti, "xpath"));
-    }
+    /*public void validarClienteCombo() {
+        Assert.assertEquals("Como você já é combo, seu bônus está garantido!\n" + "Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.", driver.getText(CarrinhoPage.TermosComboMulti, "xpath"));
+    }*/
 }

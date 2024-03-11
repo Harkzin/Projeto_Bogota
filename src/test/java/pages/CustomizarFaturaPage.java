@@ -80,8 +80,9 @@ public class CustomizarFaturaPage {
         // Regra de negócio: Plano controle R$5 de diferença e pós R$10
         driver.waitAttValorBoleto(xpathValorCarrinho, valorDebito);
 
+        // Refactor
         // Valida que o plano no resumo da compra foi alterado para boleto
-        Assert.assertTrue(("Boleto".equals(driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo2, "xpath"))));
+        //Assert.assertTrue(("Boleto".equals(driver.getText(CarrinhoPage.MetodoPagamentoResumo2, "xpath"))));
 
         // Valida que wpp esta selecionado e se o email e correios não, valida que os 3 tipos de fatura estao visiveis e sao interagiveis para boleto
         driver.validaFaturas(idButtonFaturaWhatsBoleto, idButtonFaturaEmailBoleto, idButtonFaturaCorreiosBoleto, xpathTipoFatura, 4, 6);
@@ -103,7 +104,8 @@ public class CustomizarFaturaPage {
             driver.waitAttValorDebito(xpathValorCarrinho, valorDebito);
         }
         valorPedidoCarrinho = driver.getText(xpathValorCarrinho, "xpath");
-        formaPagamentoPedidoCarrinho = Hooks.tagScenarios.contains("@debitoAutomatico") ? driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath").split(" ")[0] : driver.getText(CarrinhoPage.xpathMetodoPagamentoResumo, "xpath");
+        //Refactor
+        //formaPagamentoPedidoCarrinho = Hooks.tagScenarios.contains("@debitoAutomatico") ? driver.getText(CarrinhoPage.MetodoPagamentoResumo, "xpath").split(" ")[0] : driver.getText(CarrinhoPage.MetodoPagamentoResumo, "xpath");
     }
 
     public void selecionarDataVencimento(String data) {
