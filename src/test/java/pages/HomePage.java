@@ -19,10 +19,10 @@ public class HomePage {
     public static String fecharModalBtn = "(//i[@class='mdn-Icon-fechar mdn-Icon--md'])[1]";
 
     //Botão Entrar Home
-    public static String entrarBtn = "//button[@data-uid='my-orders']";
-    public static String acessarBtn = "(//button[@type='submit'])[1]";
-    public static String olaEcommerceBtn = "(//button[contains(text(),'11947190768')])[1]";
-    public static String meusPedidosBtn = "(//button[contains(text(),'Meus pedidos')])[1]";
+    public static String EntrarBtn = "//button[@data-uid='my-orders']";
+    public static String AcessarBtn = "(//button[@type='submit'])[1]";
+    public static String OlaEcommerceBtn = "(//button[contains(text(),'11947190768')])[1]";
+    public static String MeusPedidosBtn = "(//button[contains(text(),'Meus pedidos')])[1]";
 
 
 //     Refactor

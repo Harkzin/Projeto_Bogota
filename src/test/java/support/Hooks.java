@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class Hooks extends BaseSteps {
-
     public static Collection<String> tagScenarios = new ArrayList<>();
 
     @After(order = 3)
@@ -26,7 +25,7 @@ public class Hooks extends BaseSteps {
     }
 
     @Before
-    public void getTags(Scenario scenario){
+    public void getTags(Scenario scenario) {
         tagScenarios = scenario.getSourceTagNames();
     }
 

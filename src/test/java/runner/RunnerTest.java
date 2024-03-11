@@ -12,6 +12,7 @@ import support.BaseSteps;
         glue = {"steps", "support"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
-        tags = "@regressivo")
+        tags = "@migracaoControlecomboMulti")
 
-public class  RunnerTest extends BaseSteps { }
+public class RunnerTest extends BaseSteps {
+}
