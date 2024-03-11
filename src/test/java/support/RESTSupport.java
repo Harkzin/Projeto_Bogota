@@ -6,6 +6,7 @@ import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.groovy.json.internal.LazyMap;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +16,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.get;
 
 public class RESTSupport {
 
@@ -27,25 +29,25 @@ public class RESTSupport {
     private static String userId;
     private static ArrayList<String> op;
 
-    public static String getUserId(){
+    public static String getUserId() {
         return userId;
     }
 
     public static String getxAuthToken() {
-		return xAuthToken;
-	}
+        return xAuthToken;
+    }
 
-	public static Response getResponse() {
+    public static Response getResponse() {
         return response;
     }
-	
-	public static String getSolicitation() {
-		return solicitationId;
-	}
 
-	public static String getVerificationProcessId() {
-		return verificationProcessId;
-	}
+    public static String getSolicitation() {
+        return solicitationId;
+    }
+
+    public static String getVerificationProcessId() {
+        return verificationProcessId;
+    }
 
     private static void setResponse(Response response) {
         RESTSupport.response = response;
@@ -54,9 +56,9 @@ public class RESTSupport {
     private static RequestSpecification buildBaseRequestSpecification() {
 
         RequestSpecification rs = given()
-        .when()
-        .contentType(ContentType.JSON)
-        .accept(ContentType.JSON);
+                .when()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON);
         return rs;
     }
 
@@ -79,18 +81,18 @@ public class RESTSupport {
                 .then()
                 .statusCode(statusCode)
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint,"");
+        printLog(response.getBody().asString(), endpoint, "");
         setResponse(response);
     }
 
     public static Response executeGet(String endpoint, LazyMap json) {
         response = buildBaseRequestSpecification()
-        		.headers(json)
+                .headers(json)
                 .accept("*/*")
                 .get(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint,"");
+        printLog(response.getBody().asString(), endpoint, "");
         return response;
     }
 
@@ -98,55 +100,56 @@ public class RESTSupport {
         System.out.println("JSON -> " + json.toString());
 
         response = buildBaseRequestSpecification()
-        		.body(json)
+                .body(json)
                 .post(endpoint)
                 .then()
                 .statusCode(statusCode)
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
     public static Response executePost(String endpoint, LazyMap json) {
         System.out.println("JSON -> " + json.toString());
         response = buildBaseRequestSpecification()
-        		.body(json)
-                .post(endpoint)
-                .then()
-                .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
-        return response;
-    }
-    public static Response executePost(String endpoint, LazyMap json, LazyMap json1) {
-        System.out.println("JSON -> " + json.toString());
-
-        response = buildBaseRequestSpecification()
-        	    .headers(json1)
                 .body(json)
                 .post(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
-    
+
+    public static Response executePost(String endpoint, LazyMap json, LazyMap json1) {
+        System.out.println("JSON -> " + json.toString());
+
+        response = buildBaseRequestSpecification()
+                .headers(json1)
+                .body(json)
+                .post(endpoint)
+                .then()
+                .extract().response();
+        printLog(response.getBody().asString(), endpoint, json.toString());
+        return response;
+    }
+
     public static Response executePost(String endpoint, String json, LazyMap json1) {
 //        System.out.println("JSON -> " + json.toString());
 
         response = buildBaseRequestSpecification()
-        	    .headers(json1)
+                .headers(json1)
                 .body(json)
                 .post(endpoint)
                 .then()
                 .extract().response();
         xAuthToken = response.getHeader("X-Auth-Token");
-        
+
         System.out.println("Token:\n" + xAuthToken);
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
-        
+
     }
-    
+
     public static Response executePut(String endpoint, LazyMap json) {
         System.out.println("JSON -> " + json.toString());
 
@@ -155,7 +158,7 @@ public class RESTSupport {
                 .put(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
@@ -165,7 +168,7 @@ public class RESTSupport {
                 .delete(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, "");
+        printLog(response.getBody().asString(), endpoint, "");
         return response;
     }
 
@@ -174,7 +177,7 @@ public class RESTSupport {
                 .options(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint,"");
+        printLog(response.getBody().asString(), endpoint, "");
         return response;
     }
 
@@ -186,10 +189,10 @@ public class RESTSupport {
                 .patch(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
-    
+
     public static Response executePatch(String endpoint, LazyMap json) {
         System.out.println("JSON -> " + json.toString());
 
@@ -198,40 +201,40 @@ public class RESTSupport {
                 .patch(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
     public static Response executePatch(String endpoint, String json, LazyMap json1) {
 //      System.out.println("JSON -> " + json.toString());
 
-      response = buildBaseRequestSpecification()
-      	      .headers(json1)
-              .body(json)
-              .patch(endpoint)
-              .then()
-              .extract().response();
-      xAuthToken = response.getHeader("X-Auth-Token");
-      
-      System.out.println("Token:\n" + xAuthToken);
-      printLog(response.getBody().asString(),endpoint, json.toString());
-      return response;
-    
+        response = buildBaseRequestSpecification()
+                .headers(json1)
+                .body(json)
+                .patch(endpoint)
+                .then()
+                .extract().response();
+        xAuthToken = response.getHeader("X-Auth-Token");
+
+        System.out.println("Token:\n" + xAuthToken);
+        printLog(response.getBody().asString(), endpoint, json.toString());
+        return response;
+
     }
 
-    private static void printLog(String response, String url, String json){
+    private static void printLog(String response, String url, String json) {
         System.out.println("");
         System.out.println("====================================");
         System.out.println("");
-        System.out.println("Endpoint => "+ url);
+        System.out.println("Endpoint => " + url);
         System.out.println("");
         System.out.println("Body - Request => " + json);
         System.out.println("");
-        System.out.println("Response => "+ response);
+        System.out.println("Response => " + response);
     }
 
     public static Integer getResponseCode() {
-    	return response.getStatusCode();
+        return response.getStatusCode();
     }
 
     public static Object key(String field) {
@@ -239,89 +242,88 @@ public class RESTSupport {
     }
 
 
-    
     public static Object opFromFlow(String field) {
-		String op = "";
-		ArrayList<HashMap<String,String>> test = response.jsonPath().get("flow");
-		for (HashMap<String,String> tes : test) {
-			if(tes.get("target").equals(field)){ 
-				op = tes.get("op");
-			}
-		}
+        String op = "";
+        ArrayList<HashMap<String, String>> test = response.jsonPath().get("flow");
+        for (HashMap<String, String> tes : test) {
+            if (tes.get("target").equals(field)) {
+                op = tes.get("op");
+            }
+        }
         return op;
     }
-    
+
     public static Response executePost(String endpoint, String json) {
         System.out.println("JSON -> " + json.toString());
         response = buildBaseRequestSpecification()
-        		.body(json)
+                .body(json)
                 .post(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
 
-	public static void executePostToken(String url, String op, String jsonFormat, LazyMap fieldsHeader) {
-		System.out.println("JSON -> " + jsonFormat);
-		
+    public static void executePostToken(String url, String op, String jsonFormat, LazyMap fieldsHeader) {
+        System.out.println("JSON -> " + jsonFormat);
+
         response = buildBaseRequestSpecification()
-        	    .headers("X-Auth-Token", xAuthToken)
-        	    .headers("op", op)
+                .headers("X-Auth-Token", xAuthToken)
+                .headers("op", op)
                 .body(jsonFormat)
                 .post(url)
                 .then()
                 .extract().response();
 //        System.out.println("X-Auth-Token:\n" + xAuthToken);
 //        System.out.println("op:\n" + op);
-        printLog(response.getBody().asString(),url, jsonFormat.toString());
-		
-		
-	}
+        printLog(response.getBody().asString(), url, jsonFormat.toString());
 
-	public static Response executePostGetProspectId(String endpoint, String json, LazyMap json1) {
+
+    }
+
+    public static Response executePostGetProspectId(String endpoint, String json, LazyMap json1) {
         System.out.println("JSON -> " + json.toString());
 
         response = buildBaseRequestSpecification()
-        	    .headers(json1)
+                .headers(json1)
                 .body(json)
                 .post(endpoint)
                 .then()
                 .extract().response();
         solicitationId = response.path("data.prospect_id");
-        System.out.println("pegou o ID do solicitation que eh: " +  solicitationId);
+        System.out.println("pegou o ID do solicitation que eh: " + solicitationId);
 //        printLog(response.getBody().asString(),endpoint, json.toString());
         return response;
     }
-	
-	public static Response executePostGetVerificationProcessId(String endpoint, String json, LazyMap json1) {
+
+    public static Response executePostGetVerificationProcessId(String endpoint, String json, LazyMap json1) {
 //        System.out.println("JSON -> " + json.toString());
 
         response = buildBaseRequestSpecification()
-        	    .headers(json1)
+                .headers(json1)
                 .body(json)
                 .post(endpoint)
                 .then()
                 .extract().response();
         verificationProcessId = response.path("data.verification_process_id");
-        System.out.println("pegou o ID do verification que eh: " +  verificationProcessId);
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        System.out.println("pegou o ID do verification que eh: " + verificationProcessId);
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
-	public static Response executePostSolicitation(String endpoint, String json, LazyMap json1) {
+    public static Response executePostSolicitation(String endpoint, String json, LazyMap json1) {
 //        System.out.println("JSON -> " + json.toString());
-        System.out.println("Antes de executar o Solicitation " +  solicitationId);
+        System.out.println("Antes de executar o Solicitation " + solicitationId);
 //        resultadoSolicitation = "{\"data\":{\"solicitation_id\":\""+solicitationId+"\",\"solicitation_type\":\"openAccount\",\"channel_id\":\"A\",\"prospect_id\":[\""+solicitationId+"\"],\"accepted_terms_ids\":[\"HABEAS_1.0\"]}}";
-       
+
         response = buildBaseRequestSpecification()
-        	    .headers(json1)
+                .headers(json1)
                 .body(json)
                 .post(endpoint)
                 .then()
                 .extract().response();
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
@@ -335,8 +337,8 @@ public class RESTSupport {
                 .then()
                 .extract().response();
         userId = response.path("data.id");
-        System.out.println("pegou o UserID " +  userId);
-        printLog(response.getBody().asString(),endpoint, json.toString());
+        System.out.println("pegou o UserID " + userId);
+        printLog(response.getBody().asString(), endpoint, json.toString());
         return response;
     }
 
@@ -394,6 +396,25 @@ public class RESTSupport {
             map.put(key, json.get(key));
         }
         return map;
+    }
+
+    public static String getMessageFirstId() throws JSONException, InterruptedException {
+        Thread.sleep(30000);
+        Response response = get("https://mailsac.com/api/addresses/clordertest@mailsac.com/messages/?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
+        JSONArray jsonArray = new JSONArray(response.getBody().asString());
+        JSONObject jsonObject = jsonArray.getJSONObject(0);
+        String idMessage = jsonObject.getString("_id");
+        return idMessage;
+    }
+
+
+    public static void purgeInbox(String messageId) throws JSONException {
+        delete("https://mailsac.com/api/addresses/clordertest@mailsac.com/messages/" + messageId + "?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
+    }
+
+    public static String getPedidoEnderecoNome(String messageId) throws JSONException {
+        Response response = get("https://mailsac.com/api/text/clordertest@mailsac.com/" + messageId + "?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
+        return response.getBody().asString();
     }
 
 }
