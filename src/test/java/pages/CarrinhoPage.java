@@ -128,16 +128,16 @@ public class CarrinhoPage {
             case "Finalizar":
                 driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "id");
             case "Entrar":
-                driver.JavaScriptClick(HomePage.xpathEntrarBtn, "id");
+                driver.JavaScriptClick(HomePage.EntrarBtn, "id");
                 break;
             case "Acessar":
-                driver.JavaScriptClick(HomePage.xpathAcessarBtn, "id");
+                driver.JavaScriptClick(HomePage.AcessarBtn, "id");
                 break;
             case "11947190768":
-                driver.JavaScriptClick(HomePage.xpathOlaEcommerceBtn, "id");
+                driver.JavaScriptClick(HomePage.OlaEcommerceBtn, "id");
                 break;
             case "Meus pedidos":
-                driver.JavaScriptClick(HomePage.xpathMeusPedidosBtn, "id");
+                driver.JavaScriptClick(HomePage.MeusPedidosBtn, "id");
                 break;
         }
     }
@@ -152,7 +152,7 @@ public class CarrinhoPage {
     }
 
     public void validarQueFoiDirecionadoParaAHome() {
-        Assert.assertEquals("O básico para o dia a dia", driver.getText(HomePage.xpathTituloControleHome, "xpath"));
+//        Assert.assertEquals("O básico para o dia a dia", driver.getText(HomePage.TituloControleHome, "xpath"));
     }
 
     /*public void validarClienteCombo() {

@@ -10,7 +10,7 @@ Funcionalidade: Migracao THAB
   @migracaoControleTHAB
   Cenario: Migracao cliente THAB
     Dado que acesso a Loja Online
-    E selecionar o "5" plano do carrossel da Home clicando no botão Eu quero! dele
+    E selecionar o plano de id "17216" do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e nas informações do Plano
     E preencho os campos Telefone com DDD "11947620163", E-mail "claroqualidade3@gmail.com" e CPF "673.206.142-94"
     E clicar no botão "Eu quero!"

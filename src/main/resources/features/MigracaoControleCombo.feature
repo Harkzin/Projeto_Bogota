@@ -10,7 +10,7 @@ Funcionalidade: Migracao Controle para Pos Combo Multi
   @migracaoControlecomboMulti
   Cenario: Migracao Controle para Pos Combo Multi
     Dado que acesso a Loja Online
-    E selecionar o "1" plano do carrossel da Home clicando no botão Eu quero! dele
+    E selecionar o plano de id "17270" do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e nas informações do Plano
     E preencho os campos Telefone com DDD "11947620656", E-mail "claroqualidade3@gmail.com" e CPF "330.568.571-98"
     E clicar no botão "Eu quero!"
