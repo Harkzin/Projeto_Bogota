@@ -2,8 +2,7 @@ package support;
 
 import io.restassured.response.Response;
 
-import static io.restassured.RestAssured.given;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +19,8 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.io.IOException;
 
+import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.get;
 import static java.time.Duration.ofSeconds;
 
 public final class RestAPI {
@@ -124,5 +125,23 @@ public final class RestAPI {
             map.put(key, json.get(key));
         }
         return map;
+    }
+
+    public static String getMessageFirstId() throws JSONException, InterruptedException {
+        Thread.sleep(30000);
+        Response response = get("https://mailsac.com/api/addresses/clordertest@mailsac.com/messages/?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
+        JSONArray jsonArray = new JSONArray(response.getBody().asString());
+        JSONObject jsonObject = jsonArray.getJSONObject(0);
+        String idMessage = jsonObject.getString("_id");
+        return idMessage;
+    }
+
+    public static void purgeInbox(String messageId) throws JSONException {
+        delete("https://mailsac.com/api/addresses/clordertest@mailsac.com/messages/" + messageId + "?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
+    }
+
+    public static String getPedidoEnderecoNome(String messageId) throws JSONException {
+        Response response = get("https://mailsac.com/api/text/clordertest@mailsac.com/" + messageId + "?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
+        return response.getBody().asString();
     }
 }

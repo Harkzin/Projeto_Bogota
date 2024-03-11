@@ -20,10 +20,10 @@ public class CarrinhoPage {
     //public static String MetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
     //public static String MetodoPagamentoResumo2 = "(//*[@class='mdn-Price-suffix'])[2]";
     //private static final String TermosComboMulti = "//p[@class='terms-and-conditions-page-description']";
-    private final String MigrateFlow = "rdn-migracao";
-    private final String PortabilityFlow = "rdn-portabilidade";
-    private final String AcquisitionFlow = "rdn-aquisicao";
-    private final String emailCart = "txt-email";
+    private final String FluxoMigracao = "rdn-migracao";
+    private final String FluxoPortabilidade = "rdn-portabilidade";
+    private final String FluxoAquisicao = "rdn-aquisicao";
+    private final String emailCarrinho = "txt-email";
 
     // Variaveis para validacao na tela de parabens
     public static String telefoneCliente;
@@ -43,8 +43,8 @@ public class CarrinhoPage {
     }
 
     public void validarCarrinho() {
-        driver.waitElementToBeClickableAll(AcquisitionFlow, 5, "id");
-        Assert.assertTrue(driver.isDisplayed(MigrateFlow, "id") && driver.isDisplayed(PortabilityFlow, "id") && driver.isDisplayed(AcquisitionFlow, "id"));
+        driver.waitElementToBeClickableAll(FluxoAquisicao, 5, "id");
+        Assert.assertTrue(driver.isDisplayed(FluxoMigracao, "id") && driver.isDisplayed(FluxoPortabilidade, "id") && driver.isDisplayed(FluxoAquisicao, "id"));
 
         /* //Refactor
         String TituloPlanoResumo = "(//*[@class='product-fullname isOrderConfPage mdn-Heading mdn-Heading--sm'])[2]";
@@ -67,40 +67,40 @@ public class CarrinhoPage {
         */
     }
 
-    public void inserirDadosBase(String telephone, String email, String cpf) {
-        String telephoneMigrate = "txt-telefone-migracao";
-        String cpfMigrate = "txt-cpf-migracao";
+    public void inserirDadosBase(String telefone, String email, String cpf) {
+        String telefoneMigracao = "txt-telefone-migracao";
+        String cpfMigracao = "txt-cpf-migracao";
 
-        driver.click(MigrateFlow, "id");
-        driver.waitElementToBeClickableAll(cpfMigrate, 2, "id");
+        driver.click(FluxoMigracao, "id");
+        driver.waitElementToBeClickableAll(cpfMigracao, 2, "id");
 
-        driver.actionSendKey(telephone, telephoneMigrate, "id");
-        driver.actionSendKey(emailCart, email, "id");
-        driver.actionSendKey(cpf, cpfMigrate, "id");
+        driver.actionSendKey(telefone, telefoneMigracao, "id");
+        driver.actionSendKey(emailCarrinho, email, "id");
+        driver.actionSendKey(cpf, cpfMigracao, "id");
     }
 
-    public void inserirDadosPortabilidade(String telephoneContact, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
-        String telephonePortability = "txt-telefone-portabilidade";
-        String cpfPortability = "txt-cpf-portabilidade";
+    public void inserirDadosPortabilidade(String telefoneContato, String email, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
+        String telefonePortabilidade = "txt-telefone-portabilidade";
+        String cpfPortabilidade = "txt-cpf-portabilidade";
 
-        driver.click(PortabilityFlow, "id");
-        driver.waitElementToBeClickableAll(telephonePortability, 2, "id");
+        driver.click(FluxoPortabilidade, "id");
+        driver.waitElementToBeClickableAll(telefonePortabilidade, 2, "id");
 
-        driver.sendKeys(telephoneContact, telephonePortability, "id");
-        driver.sendKeys(emailCart, email, "id");
-        driver.sendKeys(getCpfForPlanFlow(isCpfApproved, isCpfDiretrix), cpfPortability, "id");
+        driver.sendKeys(telefoneContato, telefonePortabilidade, "id");
+        driver.sendKeys(emailCarrinho, email, "id");
+        driver.sendKeys(getCpfForPlanFlow(cpfAprovado, cpfDiretrix), cpfPortabilidade, "id");
     }
 
-    public void inserirDadosAquisicao(String telephoneContact, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
-        String telephoneContactAcquisition = "txt-telefone-aquisicao";
-        String cpfAcquisition = "txt-cpf-aquisicao";
+    public void inserirDadosAquisicao(String telefoneContato, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
+        String telefoneContatoAquisicao = "txt-telefone-aquisicao";
+        String cpfAquisicao = "txt-cpf-aquisicao";
 
-        driver.click(AcquisitionFlow, "id");
-        driver.waitElementToBeClickableAll(telephoneContactAcquisition, 2, "id");
+        driver.click(FluxoAquisicao, "id");
+        driver.waitElementToBeClickableAll(telefoneContatoAquisicao, 2, "id");
 
-        driver.actionSendKey(telephoneContact, telephoneContactAcquisition, "id");
-        driver.sendKeys(emailCart, email, "id");
-        driver.actionSendKey(getCpfForPlanFlow(isCpfApproved, isCpfDiretrix), cpfAcquisition, "id");
+        driver.actionSendKey(telefoneContato, telefoneContatoAquisicao, "id");
+        driver.sendKeys(emailCarrinho, email, "id");
+        driver.actionSendKey(getCpfForPlanFlow(isCpfApproved, isCpfDiretrix), cpfAquisicao, "id");
     }
 
     public void euQueroCarrinho(String botao) {
@@ -111,33 +111,33 @@ public class CarrinhoPage {
                 driver.JavaScriptClick(idEuQueroForm, "id");
                 break;
             case "Continuar":
-                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuar, "xpath");
+                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuar, "id");
                 break;
             case "Continuar pagamento":
-                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuarPagamento, "xpath");
+                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuarPagamento, "id");
                 break;
             case "Eu quero! Controle Antecipado":
-                driver.JavaScriptClick(ControleAntecipadoPage.xpathEuQueroTHAB, "xpath");
+                driver.JavaScriptClick(ControleAntecipadoPage.xpathEuQueroTHAB, "id");
                 break;
             case "Não concordo":
-                driver.JavaScriptClick(CustomizarFaturaPage.xpathNaoConcordo, "xpath");
+                driver.JavaScriptClick(CustomizarFaturaPage.xpathNaoConcordo, "id");
                 break;
             case "Ok, entendi":
-                driver.JavaScriptClick(CustomizarFaturaPage.xpathClicarOKEntendi, "xpath");
+                driver.JavaScriptClick(CustomizarFaturaPage.xpathClicarOKEntendi, "id");
                 break;
             case "Finalizar":
-                driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "xpath");
+                driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "id");
             case "Entrar":
-                driver.JavaScriptClick(HomePage.xpathEntrarBtn, "xpath");
+                driver.JavaScriptClick(HomePage.xpathEntrarBtn, "id");
                 break;
             case "Acessar":
-                driver.JavaScriptClick(HomePage.xpathAcessarBtn, "xpath");
+                driver.JavaScriptClick(HomePage.xpathAcessarBtn, "id");
                 break;
             case "11947190768":
-                driver.JavaScriptClick(HomePage.xpathOlaEcommerceBtn, "xpath");
+                driver.JavaScriptClick(HomePage.xpathOlaEcommerceBtn, "id");
                 break;
             case "Meus pedidos":
-                driver.JavaScriptClick(HomePage.xpathMeusPedidosBtn, "xpath");
+                driver.JavaScriptClick(HomePage.xpathMeusPedidosBtn, "id");
                 break;
         }
     }

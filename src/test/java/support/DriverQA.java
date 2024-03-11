@@ -47,8 +47,9 @@ public class DriverQA {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
                     ChromeOptions optionsC = new ChromeOptions();
-                    //optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
+
+                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
+                    //optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
 
                     driver = new ChromeDriver(optionsC);
                     driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -610,6 +611,10 @@ public class DriverQA {
 
     public String montaEnderecoValidacaoParabens(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
         return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente.toUpperCase() + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
+    }
+
+    public String montaEnderecoValidacaoEmail(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
+        return enderecoCliente + " " + numeroEndCliente + " " + complementoCliente + ", " + bairroCliente + ","  + cepCliente + ", " + cidadeCliente + ", " + ufCliente.replace("BR-", "").toLowerCase();
     }
 
     public static String capitalizeFirstLetter(String text) {
