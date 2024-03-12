@@ -43,7 +43,7 @@ public class CarrinhoPage {
     }
 
     public void validarCarrinho() {
-        driver.waitElementToBeClickableAll(FluxoAquisicao, 5, "id");
+//        driver.waitElementToBeClickableAll(FluxoAquisicao, 5, "id");
         Assert.assertTrue(driver.isDisplayed(FluxoMigracao, "id") && driver.isDisplayed(FluxoPortabilidade, "id") && driver.isDisplayed(FluxoAquisicao, "id"));
 
         /* //Refactor
@@ -111,19 +111,19 @@ public class CarrinhoPage {
                 driver.JavaScriptClick(idEuQueroForm, "id");
                 break;
             case "Continuar":
-                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuar, "id");
+                driver.JavaScriptClick(DadosPessoaisPage.BtnContinuar, "id");
                 break;
             case "Continuar pagamento":
-                driver.JavaScriptClick(DadosPessoaisPage.xpathBtnContinuarPagamento, "id");
+                driver.JavaScriptClick(DadosPessoaisPage.BtnContinuarPagamento, "id");
                 break;
             case "Eu quero! Controle Antecipado":
                 driver.JavaScriptClick(ControleAntecipadoPage.xpathEuQueroTHAB, "id");
                 break;
             case "Não concordo":
-                driver.JavaScriptClick(CustomizarFaturaPage.xpathNaoConcordo, "id");
+                driver.JavaScriptClick(CustomizarFaturaPage.NaoConcordo, "id");
                 break;
             case "Ok, entendi":
-                driver.JavaScriptClick(CustomizarFaturaPage.xpathClicarOKEntendi, "id");
+                driver.JavaScriptClick(CustomizarFaturaPage.ClicarOKEntendi, "id");
                 break;
             case "Finalizar":
                 driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "id");
