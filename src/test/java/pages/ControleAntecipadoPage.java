@@ -9,15 +9,14 @@ public class ControleAntecipadoPage {
         driver = stepDriver;
     }
 
-    private String idTituloControleAntecipado = "controle-antecipado";
-    public static String xpathEuQueroTHAB = "//a[@data-automation='eu-quero']";
-    private String xpathChkTermosTHAB = "(//*[@class='mdn-Checkbox-label'])";
+    private String TituloControleAntecipado = "controle-antecipado";
+    private String ChkTermos = "chk-termos";
 
     public void PlanoControleAntecipadoExiste() {
-        driver.waitElement(idTituloControleAntecipado, "id");
+        driver.waitElement(TituloControleAntecipado, "id");
     }
 
     public void marcarCheckboxTermoTHAB() {
-        driver.JavaScriptClick(xpathChkTermosTHAB, "xpath");
+        driver.JavaScriptClick(ChkTermos, "id");
     }
 }

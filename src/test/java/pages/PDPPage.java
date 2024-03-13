@@ -11,9 +11,9 @@ public class PDPPage {
         driver = stepDriver;
     }
 
-    public void EuQueroPDP() {
+    public void EuQueroPDP(String idPlano) {
         String xpathPDP = "//p[@class='product-page-product-description h4']";
         Assert.assertEquals("Plano Claro Controle - O básico para o dia a dia", driver.getText(xpathPDP, "xpath"));
-        driver.JavaScriptClick("(//button[@data-automation='eu-quero'])[2]", "xpath");
+        driver.JavaScriptClick("btn-eu-quero-" + idPlano + "", "id");
     }
 }

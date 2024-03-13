@@ -8,9 +8,9 @@ public class PDPSteps extends BaseSteps {
 
     PDPPage pdpPage = new PDPPage(driver);
 
-    @E("validar que é direcionado para a PDP do plano e clicar no botão Eu quero!")
-    public void validarQueEDirecionadoParaAPDPDoPlanoEClicarNoBotãoEuQuero() {
-        pdpPage.EuQueroPDP();
+    @E("validar que é direcionado para a PDP do plano de id {string} e clicar no botão Eu quero!")
+    public void validarQueEDirecionadoParaAPDPDoPlanoEClicarNoBotãoEuQuero(String idPlano) {
+        pdpPage.EuQueroPDP(idPlano);
     }
 
 }

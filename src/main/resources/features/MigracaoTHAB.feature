@@ -21,7 +21,7 @@ Funcionalidade: Migracao THAB
     E marco o checkbox de termos de aceite
     E clicar no botão "Continuar pagamento"
     E valido que foi ofertado plano de Controle Antecipado
-    E clicar no botão "Eu quero! Controle Antecipado"
+    E clicar no botão "Eu quero!"
     E marco o checkbox de termos de aceite thab
     E clicar no botão "Continuar pagamento"
     E preencho o campo Código enviado Por SMS com o TOKEN recebido

@@ -130,17 +130,9 @@ public class HomePage {
     }
 
     // CONTINUAR PDP MAIS DETALHES
-    public void selecionarPDPCard(String cardPDP) {
-        if (Integer.parseInt(cardPDP) > 3) {
-            driver.JavaScriptClick(proximoCarrossel, "id");
-            driver.JavaScriptClick(proximoCarrossel, "id");
-        }
-        driver.waitElement(euQueroCard + "[" + cardPDP + "]", "xpath");
-        tituloCardHome = driver.getText(tituloCard + "[" + cardPDP + "]", "xpath");
-        valorCardHome = driver.getText(precoCard + "[" + cardPDP + "]", "xpath");
-        gbPlanoCardHome = (driver.findListElements(gbPlano + "[" + cardPDP + "]", "xpath").isEmpty()) ? "" : driver.getText(gbPlano + "[" + cardPDP + "]", "xpath");
-        gbBonusCardHome = (driver.findListElements(gbBonus + "[" + cardPDP + "]", "xpath").isEmpty()) ? "" : driver.getText(gbBonus + "[" + cardPDP + "]", "xpath");
-        driver.JavaScriptClick(maisDetalhesCard + "[" + cardPDP + "]", "xpath");
+    public void selecionarPDPCard(String idPlano) {
+        driver.waitElement("txt-mais-detalhes-" + idPlano + "", "id");
+        driver.JavaScriptClick("txt-mais-detalhes-" + idPlano + "", "id");
     }
 
     public void selecionarCardHome(String idPlano) {

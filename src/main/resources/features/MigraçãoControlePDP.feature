@@ -10,8 +10,8 @@ Funcionalidade: Migração de Plano Controle - PDP
   @migracaoControlePDPDA
   Cenario: Migração de Plano Controle - PDP
     Dado que acesso a Loja Online
-    E selecionar o plano de id "17216" do carrossel da Home clicando no botão Eu quero! dele
-    E validar que é direcionado para a PDP do plano e clicar no botão Eu quero!
+    E selecionar o plano de id "17216" do carrossel da Home clicando no botão Mais detalhes dele
+    E validar que é direcionado para a PDP do plano de id "17216" e clicar no botão Eu quero!
     E validar que não há alterações no valor e nas informações do Plano
     E preencho os campos Telefone com DDD "11947486000", E-mail "claroqualidade3@gmail.com" e CPF "94516280884"
     E clicar no botão "Eu quero!"

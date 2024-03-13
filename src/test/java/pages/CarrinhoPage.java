@@ -116,9 +116,6 @@ public class CarrinhoPage {
             case "Continuar pagamento":
                 driver.JavaScriptClick(DadosPessoaisPage.BtnContinuarPagamento, "id");
                 break;
-            case "Eu quero! Controle Antecipado":
-                driver.JavaScriptClick(ControleAntecipadoPage.xpathEuQueroTHAB, "id");
-                break;
             case "Não concordo":
                 driver.JavaScriptClick(CustomizarFaturaPage.NaoConcordo, "id");
                 break;

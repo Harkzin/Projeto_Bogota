@@ -40,9 +40,9 @@ public class HomeSteps extends BaseSteps {
         homePage.clicarPLP();
     }
 
-    @E("selecionar o {string} plano do carrossel da Home clicando no botão Mais detalhes dele")
-    public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoMaisDetalhesDele(String cardPDP) throws Throwable {
-        homePage.selecionarPDPCard(cardPDP);
+    @E("selecionar o plano de id {string} do carrossel da Home clicando no botão Mais detalhes dele")
+    public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoMaisDetalhesDele(String idPlano) throws Throwable {
+        homePage.selecionarPDPCard(idPlano);
     }
 
     @E("selecionar o plano de id {string} do carrossel da Home clicando no botão Eu quero! dele")
