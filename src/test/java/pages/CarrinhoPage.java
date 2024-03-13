@@ -110,7 +110,7 @@ public class CarrinhoPage {
                 driver.JavaScriptClick(CustomizarFaturaPage.xpathClicarOKEntendi, "xpath");
                 break;
             case "Finalizar":
-                driver.JavaScriptClick(TokenPage.xpathBotaoFinalizarCarrinho, "xpath");
+                driver.JavaScriptClick(TokenPage.BotaoFinalizarCarrinho, "id");
             case "Entrar":
                 driver.JavaScriptClick(HomePage.xpathEntrarBtn, "xpath");
                 break;
