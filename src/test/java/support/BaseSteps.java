@@ -7,13 +7,13 @@ public class BaseSteps {
         String browser = System.getProperty("browser", "chrome");
         switch (browser) {
             case "chrome":
-                browser = driver.start("chrome");
+                driver.setupDriver("chrome");
                 break;
             case "firefox":
-                browser = driver.start("firefox");
+                driver.setupDriver("firefox");
                 break;
             default:
-                throw new IllegalArgumentException("Navegador inválido: " + browser);
+                throw new IllegalArgumentException("Invalid browser: " + browser);
         }
     }
 }

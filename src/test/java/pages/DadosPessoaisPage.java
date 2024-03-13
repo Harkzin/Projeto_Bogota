@@ -49,32 +49,32 @@ public class DadosPessoaisPage {
 
     public void preencherNomeCompleto(String nomeCompleto) {
         if (driver.isDisplayed(xpathTxtNome, "xpath")) {
-            driver.actionSendKey(nomeCompleto, xpathTxtNome, "xpath");
+            driver.sendKeys(xpathTxtNome, "xpath", nomeCompleto);
         }
     }
 
     public void preencherDataNascimento(String dataNascimento) {
         if (driver.isDisplayed(xpathTxtDtNascimento, "xpath")) {
-            driver.actionSendKey(dataNascimento, xpathTxtDtNascimento, "xpath");
+            driver.sendKeys(xpathTxtDtNascimento, "xpath", dataNascimento);
         }
     }
 
     public void preencherNomeDaMae(String nomeDaMae) {
         if (driver.isDisplayed(xpathTxtNomeMae, "xpath")) {
-            driver.actionSendKey(nomeDaMae, xpathTxtNomeMae, "xpath");
+            driver.sendKeys(xpathTxtNomeMae, "xpath", nomeDaMae);
         }
     }
 
     public void validarMensagemBloqueiocep(String mensagem) {
-        driver.waitElementXP(xpathMsgErroCEP);
+        driver.waitElement(xpathMsgErroCEP, "id");
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroCEP, "xpath"));
     }
 
     public void camposDadosPessoais(String nomeCompleto, String dataNascimento, String nomeDaMae) {
-        driver.waitElementAll(idFormDadosPessoais, "id");
-        driver.sendKeys(nomeCompleto, xpathTxtNome, "xpath");
+        driver.waitElement(idFormDadosPessoais, "id");
+        driver.sendKeys(xpathTxtNome, "xpath", nomeCompleto);
         driver.sendKeysCampoMascara(dataNascimento, xpathTxtDtNascimento, "xpath");
-        driver.sendKeys(nomeDaMae, xpathTxtNomeMae, "xpath");
+        driver.sendKeys(xpathTxtNomeMae, "xpath", nomeDaMae);
         nomeCliente = nomeCompleto;
     }
 
@@ -82,13 +82,13 @@ public class DadosPessoaisPage {
         cepCliente = cep;
         numeroEndCliente = numero;
         complementoCliente = complemento;
-        driver.waitElementToBeClickableAll(idTxtCep, 10, "id");
+        driver.waitElementToBeClickable(idTxtCep, "id", 10);
         driver.sendKeysCampoMascara(cep, idTxtCep, "id");
         driver.sendTab(2, "");
-        driver.waitElementToBeClickableAll(xpathTxtNumero, 15, "xpath");
-        driver.sendKeys(numero, xpathTxtNumero, "xpath");
-        driver.waitElementToBeClickableAll(xpathTxtComplemento, 10, "xpath");
-        driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
+        driver.waitElementToBeClickable(xpathTxtNumero, "xpath", 15);
+        driver.sendKeys(xpathTxtNumero, "xpath", numero);
+        driver.waitElementToBeClickable(xpathTxtComplemento, "xpath", 10);
+        driver.sendKeys(xpathTxtComplemento, "xpath", complemento);
 
 //        tipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(0, 16) : driver.getText(xpathTipoDeFreteCarrinho, "xpath");;
 //        valorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38) : driver.getText(xpathValorDoFreteCarrinho, "xpath");;
@@ -96,7 +96,7 @@ public class DadosPessoaisPage {
         if (Hooks.tagScenarios.contains("@entregaExpressa")) {
             tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath").substring(0, 16);
 //            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38);
-        } else if (Hooks.tagScenarios.contains("@entregaConvencional")){
+        } else if (Hooks.tagScenarios.contains("@entregaConvencional")) {
             tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath");
 //            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath");
         }

@@ -8,7 +8,7 @@ Funcionalidade: Validar Meus Pedidos Header
   Cenario: Validar Meus Pedidos Header
     Dado que acesso a Loja Online
     E clicar no botão "Entrar"
-    E preencher o campo “Seu telefone Claro” com o msidn "11947190768"
+    E preencher o campo Seu telefone Claro com o msidn "11947190768"
     E clicar no botão "Acessar"
     E validar que o botão Entrar foi alterado para o "11947190768"
     E clicar no botão "11947190768"

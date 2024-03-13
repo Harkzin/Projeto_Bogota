@@ -7,7 +7,7 @@ import static steps.TokenSteps.token;
 
 public class TokenPage extends BaseSteps {
 
-    private DriverQA driver;
+    private final DriverQA driver;
 
     public TokenPage(DriverQA stepDriver) {
         driver = stepDriver;
@@ -17,7 +17,7 @@ public class TokenPage extends BaseSteps {
     public static String xpathBotaoFinalizarCarrinho = "//button[@data-automation='continuar']";
 
     public void preencherToken() {
-        driver.waitElementAll(xpathInputToken, "xpath");
-        driver.sendKeys(token, xpathInputToken, "xpath");
+        driver.waitElement(xpathInputToken, "xpath");
+        driver.sendKeys(xpathInputToken, "xpath", token);
     }
 }

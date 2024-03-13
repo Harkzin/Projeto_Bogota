@@ -4,10 +4,12 @@ import support.DriverQA;
 import support.Hooks;
 
 public class PLPPage {
-    private DriverQA driver;
+    private final DriverQA driver;
+
     public PLPPage(DriverQA stepDriver) {
         driver = stepDriver;
     }
+
     // Card
     public static String xpathTituloControlePLP = "//*[@class='mdn-Heading mdn-Heading--lg'][text()='O plano básico para o dia a dia!']";
     public static String xpathTituloPosHome = "//*[@class='mensagem-plano'][text()='Para quem é ultra conectado']";
@@ -25,21 +27,19 @@ public class PLPPage {
     public static String gbPlanocardPLP = "";
     public static String gbBonuscardPLP = "";
     public static String valorcardPLP = "";
-    
-    public void selecionarCardControle (String cardPLP){
 
-            driver.waitElementAll(xpathTituloControlePLP, "xpath");
-            if (Integer.parseInt(cardPLP) > 3) {
-                driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
-                driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
-            }
-            driver.waitElementAll(xpathEuQueroCard + "[" + cardPLP + "]", "xpath");
-            titulocardPLP = driver.getText(xpathTituloCard + "[" + cardPLP + "]", "xpath");
-            valorcardPLP = driver.getText(xpathPrecoCard + "[" + cardPLP + "]", "xpath");
-            gbPlanocardPLP = (driver.findListElements(xpathGbPlano + "[" + cardPLP + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardPLP + "]", "xpath");
-            gbBonuscardPLP = (driver.findListElements(xpathGbBonus + "[" + cardPLP + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardPLP + "]", "xpath");
-            driver.JavaScriptClick(xpathEuQueroCard + "[" + cardPLP + "]", "xpath");
+    public void selecionarCardControle(String cardPLP) {
 
-
+        driver.waitElement(xpathTituloControlePLP, "xpath");
+        if (Integer.parseInt(cardPLP) > 3) {
+            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
+            driver.JavaScriptClick(xpathProximoCarrossel, "xpath");
         }
+        driver.waitElement(xpathEuQueroCard + "[" + cardPLP + "]", "xpath");
+        titulocardPLP = driver.getText(xpathTituloCard + "[" + cardPLP + "]", "xpath");
+        valorcardPLP = driver.getText(xpathPrecoCard + "[" + cardPLP + "]", "xpath");
+        gbPlanocardPLP = (driver.findListElements(xpathGbPlano + "[" + cardPLP + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbPlano + "[" + cardPLP + "]", "xpath");
+        gbBonuscardPLP = (driver.findListElements(xpathGbBonus + "[" + cardPLP + "]", "xpath").isEmpty()) ? "" : driver.getText(xpathGbBonus + "[" + cardPLP + "]", "xpath");
+        driver.JavaScriptClick(xpathEuQueroCard + "[" + cardPLP + "]", "xpath");
     }
+}

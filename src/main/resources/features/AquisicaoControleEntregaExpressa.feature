@@ -10,7 +10,7 @@ Funcionalidade: Aquisição Controle - Entrega expressa
   @aqsEntregaExpressa
   Cenario: Aquisição Controle - Entrega expressa
     Dado que acesso a Loja Online
-    E selecionar o "3" plano do carrossel da Home clicando no botão Eu quero! dele
+    E selecionar o plano de id "17218" do carrossel da Home clicando no botão Eu quero! dele
     E validar que não há alterações no valor e nas informações do Plano
     E preencho os campos Celular de contato "11999999988", E-mail "clordertest@mailsac.com" e CPF [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
     E clicar no botão "Eu quero!"
