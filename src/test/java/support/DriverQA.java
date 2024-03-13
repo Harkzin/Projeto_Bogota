@@ -1,7 +1,7 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.Assert;
+import io.github.bonigarcia.wdm.managers.FirefoxDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,15 +9,13 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
-
-import java.util.NoSuchElementException;
-import java.util.*;
 
 public class DriverQA {
     private static WebDriver driver;
@@ -26,145 +24,145 @@ public class DriverQA {
         return driver;
     }
 
-    public String start(String parBrowser) {
+    public void setupDriver(String browser) {
+        String headless = System.getProperty("headless", "true");
+
         String title = "";
         try {
             title = driver.getTitle();
         } catch (Exception e) {
             title = "ERROR";
         }
-        if (title == "ERROR") {
-            switch (parBrowser) {
+        if (title.equals("ERROR")) {
+            switch (browser) {
                 case "firefox":
-                    WebDriverManager.firefoxdriver().setup();
-                    FirefoxOptions options = new FirefoxOptions();
-                    //options.addPreference(FirefoxDriver.MARIONETTE, true); Refactor
-                    driver = new FirefoxDriver(options);
-                    driver.manage().window().setPosition(new Point(0, 0));
-                    driver.manage().window().setSize(new Dimension(1366, 768));
+                    WebDriverManager.firefoxdriver().clearDriverCache().setup();
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    if (headless.equals("true")) {
+                        firefoxOptions.addArguments("--headless");
+                    }
+                    firefoxOptions.addArguments("--private");
+                    driver = new FirefoxDriver(firefoxOptions);
                     break;
-
                 case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions optionsC = new ChromeOptions();
-
-                    optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*", "headless"));
-                    //optionsC.addArguments(Arrays.asList("disable-infobars", "ignore-certificate-errors", "disable-popup-blocking", "disable-notifications", "no-sandbox", "--incognito", "--disable-dev-shm-usage", "--remote-allow-origins=*"));
-
-                    driver = new ChromeDriver(optionsC);
-                    driver.manage().window().setSize(new Dimension(1920, 1080));
-                    driver.manage().window().maximize();
-
+                    WebDriverManager.chromedriver().clearDriverCache().setup();
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    if (headless.equals("true")) {
+                        chromeOptions.addArguments("--headless");
+                    }
+                    chromeOptions.addArguments("--incognito");
+                    chromeOptions.addArguments("--no-default-browser-check");
+                    chromeOptions.addArguments("--disable-default-apps");
+                    chromeOptions.addArguments("--disable-extensions");
+                    chromeOptions.addArguments("--disable-notifications");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
+                    chromeOptions.addArguments("--deny-permission-prompts");
+                    driver = new ChromeDriver(chromeOptions);
+                    break;
                 default:
-                    break;
+                    throw new IllegalArgumentException("Invalid browser: " + browser);
             }
+
+            //driver.manage().window().setSize(new Dimension(1920, 1080));
+            driver.manage().timeouts().implicitlyWait(ofSeconds(15));
+            driver.manage().window().maximize();
         }
-        return title;
     }
 
-    private String getAttributeType(String... parType) {
-        String type;
-        if (parType.length == 0) {
-            type = "id";
-        } else {
-            type = parType[0];
-        }
-        return type;
-    }
+    public WebElement findElement(String selectorValue, String selectorType) {
+        WebElement element;
 
-    private WebElement findElem(String parValue, String... parType) {
-        String param2 = getAttributeType(parType);
-        WebElement element = null;
-
-        try {
-            switch (param2) {
-                case "id":
-                    element = driver.findElement(By.id(parValue));
-                    break;
-                case "name":
-                    element = driver.findElement(By.name(parValue));
-                    break;
-                case "css":
-                    element = driver.findElement(By.cssSelector(parValue));
-                    break;
-                case "xpath":
-                    element = driver.findElement(By.xpath(parValue));
-                    break;
-                case "link":
-                    element = driver.findElement(By.linkText(parValue));
-                    break;
-                case "partialLink":
-                    element = driver.findElement(By.partialLinkText(parValue));
-                case "class":
-                    element = driver.findElement(By.className(parValue));
-            }
-        } catch (NoSuchElementException e) {
-            element = null;
+        switch (selectorType) {
+            case "id":
+                element = driver.findElement(By.id(selectorValue));
+                break;
+            case "linkt":
+                element = driver.findElement(By.linkText(selectorValue));
+                break;
+            case "partialLink":
+                element = driver.findElement(By.partialLinkText(selectorValue));
+                break;
+            case "name":
+                element = driver.findElement(By.name(selectorValue));
+                break;
+            case "tag":
+                element = driver.findElement(By.tagName(selectorValue));
+                break;
+            case "xpath":
+                element = driver.findElement(By.xpath(selectorValue));
+                break;
+            case "class":
+                element = driver.findElement(By.className(selectorValue));
+                break;
+            case "css":
+                element = driver.findElement(By.cssSelector(selectorValue));
+                break;
+            default:
+                throw new InvalidArgumentException("Invalid selector type: " + selectorType);
         }
+
         return element;
     }
 
-    private List<WebElement> findElements(String parValue, String... parType) {
-        String param2 = getAttributeType(parType);
-        List<WebElement> element = null;
+    public List<WebElement> findElements(String selectorValue, String selectorType) {
+        List<WebElement> elements;
 
-        try {
-            switch (param2) {
-                case "id":
-                    element = driver.findElements(By.id(parValue));
-                    break;
-                case "name":
-                    element = driver.findElements(By.name(parValue));
-                    break;
-                case "css":
-                    element = driver.findElements(By.cssSelector(parValue));
-                    break;
-                case "xpath":
-                    element = driver.findElements(By.xpath(parValue));
-                    break;
-                case "link":
-                    element = driver.findElements(By.linkText(parValue));
-                    break;
-                case "partialLink":
-                    element = driver.findElements(By.partialLinkText(parValue));
-                case "class":
-                    element = driver.findElements(By.className(parValue));
-            }
-        } catch (NoSuchElementException e) {
-            element = null;
+        switch (selectorType) {
+            case "id":
+                elements = driver.findElements(By.id(selectorValue));
+                break;
+            case "link":
+                elements = driver.findElements(By.linkText(selectorValue));
+                break;
+            case "partialLink":
+                elements = driver.findElements(By.partialLinkText(selectorValue));
+                break;
+            case "name":
+                elements = driver.findElements(By.name(selectorValue));
+                break;
+            case "tag":
+                elements = driver.findElements(By.tagName(selectorValue));
+                break;
+            case "xpath":
+                elements = driver.findElements(By.xpath(selectorValue));
+                break;
+            case "class":
+                elements = driver.findElements(By.className(selectorValue));
+                break;
+            case "css":
+                elements = driver.findElements(By.cssSelector(selectorValue));
+                break;
+            default:
+                throw new InvalidArgumentException("Invalid selector type: " + selectorType);
         }
-        return element;
+
+        return elements;
     }
 
-    public void click(String parValue, String parType) {
-        WebElement element = findElem(parValue, parType);
+    public void click(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
         element.click();
     }
 
-    public void actionClick(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
+    public void actionClick(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
         Actions act = new Actions(driver);
         act.moveToElement(element);
         act.click(element).perform();
     }
 
-    public void enter(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
+    public void submit(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
         element.submit();
     }
 
-    public boolean isSelected(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        return element.isSelected();
-    }
-
-    public void clear(String parValue, String parType) {
-        WebElement element = findElem(parValue, parType);
+    public void clear(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
         element.clear();
     }
 
-    public void openURL(String parUrl) {
-        driver.get(parUrl);
+    public void openURL(String url) {
+        driver.get(url);
     }
 
     public void quit() {
@@ -179,73 +177,6 @@ public class DriverQA {
         driver.navigate().refresh();
     }
 
-    public boolean isEnabled(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        return element.isEnabled();
-
-    }
-
-    public boolean isDisplayed(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        return element.isDisplayed();
-    }
-
-    public boolean elementExist(String parCss) {
-        try {
-            driver.findElement(By.cssSelector(parCss));
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    public void sendKeys(String parText, String parName, String... parType) {
-        WebElement element = findElem(parName, parType);
-        //element.clear();
-        element.sendKeys(parText);
-    }
-
-    public String getText(String parValue, String parType) {
-        WebElement element = findElem(parValue, parType);
-        return element.getText();
-    }
-
-    public String getValue(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        return element.getAttribute("value");
-    }
-
-    public String getValueParam(String parValue, String campoDesejado, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        return element.getAttribute(campoDesejado);
-    }
-
-    public String getValueElement(String campoDesejado, WebElement elemento) {
-        return elemento.getAttribute(campoDesejado);
-    }
-
-    public void clickByAttributeCss(String listElements, String attribute, String attributeValue) {
-        List<WebElement> elements = driver.findElements(By.cssSelector(listElements));
-        for (WebElement element : elements) {
-            if (element.getAttribute(attributeValue).equalsIgnoreCase(attribute)) {
-                element.click();
-                break;
-            }
-        }
-    }
-
-    public void selectByIndex(Integer parIndex, String parName, String... parType) {
-        WebElement element = findElem(parName, parType);
-        Select dropdown = new Select(element);
-        dropdown.selectByIndex(parIndex);
-    }
-
-    public void selectByText(String parText, String parName, String... parType) {
-        WebElement element = findElem(parName, parType);
-        Select dropdown = new Select(element);
-        dropdown.selectByVisibleText(parText);
-    }
-
     public String getCurrentURL() {
         return driver.getCurrentUrl();
     }
@@ -254,83 +185,89 @@ public class DriverQA {
         return driver.getTitle();
     }
 
+    public boolean isEnabled(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
+        return element.isEnabled();
+    }
+
+    public boolean isDisplayed(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
+        return element.isDisplayed();
+    }
+
+    public boolean isSelected(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
+        return element.isSelected();
+    }
+
+    public void sendKeys(String selectorValue, String selectorType, String text) {
+        WebElement element = findElement(selectorValue, selectorType);
+        element.sendKeys(text);
+    }
+
+    public void actionSendKey(String selectorValue, String selectorType, String text) throws InterruptedException {
+        WebElement element = findElement(selectorValue, selectorType);
+        element.click();
+        Actions action = new Actions(driver);
+        char[] digits = text.toCharArray();
+        for (char digit : digits) {
+            String sDigit = Character.toString(digit);
+            action.sendKeys(sDigit).perform();
+            Thread.sleep(50);
+        }
+    }
+
+    public String getText(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
+        return element.getText();
+    }
+
+    public String getValue(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
+        return element.getAttribute("value");
+    }
+
+    public String getValueParam(String selectorValue, String selectorType, String attribute) {
+        WebElement element = findElement(selectorValue, selectorType);
+        return element.getAttribute(attribute);
+    }
+
     public void waitSeconds(int time) {
         driver.manage().timeouts().implicitlyWait(ofSeconds(time));
     }
 
     public void waitMilliSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(ofSeconds(time));
+        driver.manage().timeouts().implicitlyWait(ofMillis(time));
     }
 
-    public void waitElementAll(String parName, String... parType) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        String param2 = getAttributeType(parType);
-        try {
-            switch (param2) {
-                case "id":
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(parName)));
-                    break;
-                case "name":
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(parName)));
-                    break;
-                case "css":
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(parName)));
-                    break;
-                case "xpath":
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parName)));
-                    break;
-                case "link":
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(parName)));
-                    break;
-
-                case "class":
-                    wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(parName)));
-                    break;
-            }
-        } catch (NoSuchElementException e) {
-            System.out.println("ERROR WAIT => " + e.toString());
-        }
-    }
-
-    public void waitElement(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(parId)));
-    }
-
-    public void waitElementMotherId(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(parId)));
-    }
-
-    public void waitElementCSS(String parCss) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(parCss)));
-        driver.getWindowHandles();
-    }
-
-    public void waitElementXP(String parXp) {
+    public void waitElement(String selectorValue, String selectorType) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(15));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(parXp)));
-    }
 
-    public void waitElementTobeClickable(String parId) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        wait.until(ExpectedConditions.elementToBeClickable(By.id(parId)));
-    }
-
-    public void waitElementCSSTobeClickable(String parCss) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parCss)));
-    }
-
-    public void waitElementClassTobeClickable(String parClass) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        wait.until(ExpectedConditions.elementToBeClickable(By.className(parClass)));
-    }
-
-    public void waitElementXPTobeClickable(String parXp) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parXp)));
+        switch (selectorType) {
+            case "id":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(selectorValue)));
+                break;
+            case "link":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(selectorValue)));
+                break;
+            case "partialLink":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText(selectorValue)));
+                break;
+            case "name":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(selectorValue)));
+                break;
+            case "xpath":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(selectorValue)));
+                break;
+            case "class":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(selectorValue)));
+                break;
+            case "css":
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selectorValue)));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid selector type: " + selectorType);
+        }
     }
 
     public void waitElementNotVisible(String parId) {
@@ -349,12 +286,8 @@ public class DriverQA {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(parXp)));
     }
 
-    public void switchTo(String... parValue) {
-        if (parValue.length == 0) {
-            driver.switchTo().defaultContent();
-        } else {
-            driver.switchTo().window(String.valueOf(parValue));
-        }
+    public void switchToWindow(String value) {
+        driver.switchTo().window(String.valueOf(value));
     }
 
     public void switchToFrameId(String parId) {
@@ -365,25 +298,8 @@ public class DriverQA {
         driver.switchTo().defaultContent();
     }
 
-    public void ChooseOkOnNextConfirmation() {
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
-    }
-
-    public void ChooseCancelOnNextConfirmation() {
-        Alert alert = driver.switchTo().alert();
-        alert.dismiss();
-    }
-
-    public void sendKeysTab(String texto, String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
-        element.sendKeys(texto, Keys.TAB);
-    }
-
-    public void moveToElementAction(String parValue, String... parType) {
-
-        WebElement element = findElem(parValue, parType);
-
+    public void moveToElementAction(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
         try {
             Actions action = new Actions(driver);
             action.moveToElement(element);
@@ -394,25 +310,23 @@ public class DriverQA {
     }
 
     public void browserScroll(String direction, int coordinate) {
-
         JavascriptExecutor js = (JavascriptExecutor) driver;
-
         try {
             switch (direction) {
                 case "up":
-                    js.executeScript("window.scrollBy(0,-" + Integer.toString(coordinate) + ")");
+                    js.executeScript("window.scrollBy(0,-" + coordinate + ")");
                     break;
 
                 case "down":
-                    js.executeScript("window.scrollBy(0," + Integer.toString(coordinate) + ")");
+                    js.executeScript("window.scrollBy(0," + coordinate + ")");
                     break;
 
                 case "left":
-                    js.executeScript("window.scrollBy(-" + Integer.toString(coordinate) + ",0)");
+                    js.executeScript("window.scrollBy(-" + coordinate + ",0)");
                     break;
 
                 case "right":
-                    js.executeScript("window.scrollBy(" + Integer.toString(coordinate) + ",0)");
+                    js.executeScript("window.scrollBy(" + coordinate + ",0)");
                     break;
             }
 
@@ -423,61 +337,39 @@ public class DriverQA {
         }
     }
 
-    public boolean waitElementToBeClickableAll(String parName, int timeOut, String parType) {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeOut));
-            switch (parType) {
-                case "id":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.id(parName))) != null) return true;
-                    break;
-                case "name":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.name(parName))) != null) return true;
-                    break;
-                case "css":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(parName))) != null)
-                        return true;
-                    break;
-                case "xpath":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(parName))) != null) return true;
-                    break;
-                case "link":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(parName))) != null) return true;
-                    break;
-                case "class":
-                    if (wait.until(ExpectedConditions.elementToBeClickable(By.className(parName))) != null) return true;
-                    break;
-                default:
-            }
-        } catch (NoSuchElementException e) {
-            System.out.println("ERROR WAIT => " + e.toString());
-        }
-        return false;
-    }
-
-    public void actionSendKey(String texto, String parValue, String... parType) {
-        try {
-            WebElement element = findElem(parValue, parType);
-            element.click();
-            Actions action = new Actions(driver);
-            char[] digits = texto.toCharArray();
-            for (char digit : digits) {
-                String sDigit = Character.toString(digit);
-                action.sendKeys(sDigit).perform();
-                Thread.sleep(50);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void waitElementToBeClickable(String selectorValue, String selectorType, int timeOut) {
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeOut));
+        switch (selectorType) {
+            case "id":
+                if (wait.until(ExpectedConditions.elementToBeClickable(By.id(selectorValue))) != null) return;
+                break;
+            case "name":
+                if (wait.until(ExpectedConditions.elementToBeClickable(By.name(selectorValue))) != null) return;
+                break;
+            case "css":
+                if (wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(selectorValue))) != null) return;
+                break;
+            case "xpath":
+                if (wait.until(ExpectedConditions.elementToBeClickable(By.xpath(selectorValue))) != null) return;
+                break;
+            case "link":
+                if (wait.until(ExpectedConditions.elementToBeClickable(By.linkText(selectorValue))) != null) return;
+                break;
+            case "class":
+                if (wait.until(ExpectedConditions.elementToBeClickable(By.className(selectorValue))) != null) return;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid selector type: " + selectorType);
         }
     }
 
-    public List<WebElement> findListElements(String parValue, String... parType) {
-        List<WebElement> element = findElements(parValue, parType);
-        return element;
+    public List<WebElement> findListElements(String selectorValue, String selectorType) {
+        return findElements(selectorValue, selectorType);
     }
 
-    public void sendKeysCampoMascara(String value, String parValue, String parType) {
+    public void sendKeysCampoMascara(String value, String selectorValue, String selectorType) {
         try {
-            WebElement element = findListElements(parValue, parType).get(0);
+            WebElement element = findListElements(selectorValue, selectorType).get(0);
             char[] digits = value.toCharArray();
             for (char digit : digits) {
                 String sDigit = Character.toString(digit);
@@ -502,21 +394,18 @@ public class DriverQA {
         actions.sendKeys(keys).build().perform();
     }
 
-    public void JavaScriptClick(String parValue, String... parType) {
+    public void JavaScriptClick(String selectorValue, String selectorType) {
         try {
-            WebElement element = findElem(parValue, parType);
-            WebDriverWait wait = new WebDriverWait(driver, ofSeconds(30));
+            WebElement element = findElement(selectorValue, selectorType);
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            wait.until(ExpectedConditions.elementToBeClickable(element));
-            wait.until(ExpectedConditions.visibilityOf(element));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void moveToElementJs(String parValue, String... parType) {
-        WebElement element = findElem(parValue, parType);
+    public void moveToElementJs(String selectorValue, String selectorType) {
+        WebElement element = findElement(selectorValue, selectorType);
 
         try {
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
@@ -526,106 +415,15 @@ public class DriverQA {
         }
     }
 
-    public String getValueParam(String parValue, String campoDesejado, String parType) {
-        try {
-            WebElement element = findElem(parValue, parType);
-            return element.getAttribute(campoDesejado);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public String getCookies() {
         Cookie cookie = driver.manage().getCookieNamed("claro-cart");
         int position = cookie.toString().indexOf(";");
         return cookie.toString().substring(0, position);
     }
 
-    public void waitAttValorBoleto(String parId, String valorDebito) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
-        float numeroFloat = (Hooks.tagScenarios.contains("@controle")) ? Float.parseFloat(valorDebito.replace(',', '.')) + 5.0f : Float.parseFloat(valorDebito.replace(',', '.')) + 10.0f;
-        DecimalFormat df = new DecimalFormat("#.##");
-        String numeroFormatado = df.format(numeroFloat);
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), numeroFormatado.replace('.', ',')));
-    }
-
-    public void waitAttValorDebito(String parId, String valorDebito) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(10));
-        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath(parId), valorDebito));
-    }
-
     public boolean isEnabledDisplayed(String parValue, String parType) {
-        WebElement element = findElem(parValue, parType);
-        if (element.isEnabled() && element.isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public String validaDataDeVencimento(String dtVencimento) {
-        int dataSelecionada = 0;
-        int dataNãoSelecionada = 0;
-        String txtDtVencimento = "";
-        waitElementToBeClickableAll(dtVencimento + 1, 10, "id");
-        for (int i = 1; i <= 6; i++) {
-            // Valida que os botoes da data de vencimento estao visiveis e interagiveis
-            Assert.assertTrue(isEnabledDisplayed(dtVencimento + i, "id"));
-            if (isSelected(dtVencimento + i)) {
-                dataSelecionada++;
-                txtDtVencimento = getText("//*[@for='" + dtVencimento + i + "']", "xpath");
-            } else {
-                dataNãoSelecionada++;
-            }
-        }
-
-        // Valida que ha 1 data selecionada e as outras 5 nao estao selecionadas
-        Assert.assertEquals(dataSelecionada, 1);
-        Assert.assertEquals(dataNãoSelecionada, 5);
-        return txtDtVencimento;
-    }
-
-    public void validaFaturas(String whats, String email, String correios, String tipoFatura, int numInicial, int numFinal) {
-        for (int i = numInicial; i <= numFinal; i++) {
-            // Valida que os botoes de fatura wpp, email e correios estao visiveis e interagiveis
-            Assert.assertTrue(isEnabledDisplayed(tipoFatura + "[" + i + "]", "xpath"));
-        }
-        // Valida que o wpp esta selecionado e que o email e correio nao estao
-        Assert.assertTrue(isSelected(whats, "id"));
-        Assert.assertFalse(isSelected(email, "id")
-                && isSelected(correios, "id"));
-    }
-
-    public String mascararCpf(String cpf) {
-        return cpf.substring(0, 3) + "." +
-                cpf.substring(3, 6) + "." +
-                cpf.substring(6, 9) + "-" +
-                cpf.substring(9);
-    }
-
-    public String mascararTelefone(String telefone) {
-        return "(" + telefone.substring(0, 2) + ") " +
-                telefone.substring(2, 7) + "-" +
-                telefone.substring(7);
-    }
-
-    public String montaEnderecoValidacaoParabens(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
-        return enderecoCliente + ", " + numeroEndCliente + " - " + complementoCliente.toUpperCase() + " - " + bairroCliente + " - " + cidadeCliente + " " + ufCliente.substring(3) + " CEP " + cepCliente.substring(0, 5) + "-" + cepCliente.substring(5);
-    }
-
-    public String montaEnderecoValidacaoEmail(String enderecoCliente, String numeroEndCliente, String complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
-        return enderecoCliente + " " + numeroEndCliente + " " + complementoCliente + ", " + bairroCliente + ","  + cepCliente + ", " + cidadeCliente + ", " + ufCliente.replace("BR-", "").toLowerCase();
-    }
-
-    public static String capitalizeFirstLetter(String text) {
-        String[] palavras = text.split("\\s+");  // Divide a frase em palavras
-        StringBuilder resultado = new StringBuilder();
-        for (String palavra : palavras) {
-            char primeiraLetra = Character.toUpperCase(palavra.charAt(0));
-            String restantePalavra = palavra.substring(1).toLowerCase();
-            resultado.append(primeiraLetra).append(restantePalavra).append(" ");
-        }
-        return resultado.toString().trim();
+        WebElement element = findElement(parValue, parType);
+        return element.isEnabled() && element.isDisplayed();
     }
 
     public void createNewTab() {
@@ -635,9 +433,9 @@ public class DriverQA {
 
     public void changeTab(String numeroAba) {
         try {
-            ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
             driver.switchTo().window(tabs.get(Integer.parseInt(numeroAba)));
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

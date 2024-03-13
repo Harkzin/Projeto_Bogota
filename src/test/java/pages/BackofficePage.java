@@ -26,22 +26,22 @@ public class BackofficePage extends BaseSteps {
         String environment = System.getProperty("env", "S6");
         String url = BASE_URL + environment + LOGIN_URL_SUFFIX;
         driver.openURL(url);
-        driver.waitElementAll(nameTxtUsuario, "name");
+        driver.waitElement(nameTxtUsuario, "name");
         driver.waitSeconds(10);
         String acessoBackoffice = "ecomplanos-backoffice";
-        driver.sendKeys(acessoBackoffice, nameTxtUsuario, "name");
-        driver.waitElementAll(nameTxtSenha, "name");
-        driver.sendKeys(acessoBackoffice, nameTxtSenha, "name");
-        driver.waitElementAll(xpathBtnIdioma, "xpath");
+        driver.sendKeys(nameTxtUsuario, "name", acessoBackoffice);
+        driver.waitElement(nameTxtSenha, "name");
+        driver.sendKeys(nameTxtSenha, "name", acessoBackoffice);
+        driver.waitElement(xpathBtnIdioma, "xpath");
         driver.click(xpathBtnIdioma, "xpath");
-        driver.waitElementAll(xpathIdioma, "xpath");
+        driver.waitElement(xpathIdioma, "xpath");
         driver.click(xpathIdioma, "xpath");
-        driver.waitElementAll(xpathBtnIdioma, "xpath");
+        driver.waitElement(xpathBtnIdioma, "xpath");
         driver.sendKeyBoard(Keys.ENTER);
     }
 
     public void preencherFiltro(String filtro) {
-        driver.waitElementAll(classMenu, "class");
+        driver.waitElement(classMenu, "class");
         driver.waitSeconds(1);
         driver.sendKeysCampoMascara(filtro, filtroInputXpath, "xpath");
     }
@@ -75,18 +75,18 @@ public class BackofficePage extends BaseSteps {
             driver.click(xpathMenuCliente, "xpath");
             driver.waitSeconds(1);
         }
-        driver.waitElementAll(xpathMenuCliente, "xpath");
+        driver.waitElement(xpathMenuCliente, "xpath");
         driver.click(xpathMenuCliente, "xpath");
         driver.waitSeconds(2);
     }
 
     public void telefonePedidoPropriedade(String telefone) {
-        driver.getValueParam("((//input[@value='" + telefone + "'])[2]", "value", "xpath");
+        driver.getValueParam("((//input[@value='" + telefone + "'])[2]", "xpath", "value");
     }
 
     public String valorCampoBKO(String campo) {
         driver.moveToElementJs("//div[text()='Comum']", "xpath");
         driver.waitSeconds(1);
-        return driver.getValueParam("//span[text()='" + campo + "']/../../div//span/input", "value", "xpath");
+        return driver.getValueParam("//span[text()='" + campo + "']/../../div//span/input", "xpath", "value");
     }
 }

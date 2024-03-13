@@ -12,6 +12,11 @@ import java.util.Collection;
 public class Hooks extends BaseSteps {
     public static Collection<String> tagScenarios = new ArrayList<>();
 
+    @Before
+    public void getTags(Scenario scenario) {
+        tagScenarios = scenario.getSourceTagNames();
+    }
+
     @After(order = 3)
     public void printScreen(Scenario scenario) throws InterruptedException {
         Thread.sleep(1000);
@@ -22,15 +27,5 @@ public class Hooks extends BaseSteps {
     @After(order = 1)
     public void closeBrowser() {
         driver.quit();
-    }
-
-    @Before
-    public void getTags(Scenario scenario) {
-        tagScenarios = scenario.getSourceTagNames();
-    }
-
-    @After("@fecharGuia")
-    public void fecharGuia() {
-        driver.close();
     }
 }

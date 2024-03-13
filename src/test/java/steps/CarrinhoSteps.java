@@ -17,18 +17,18 @@ public class CarrinhoSteps extends BaseSteps {
     }
 
     @E("preencho os campos Telefone com DDD {string}, E-mail {string} e CPF {string}")
-    public void preencherCamposCarrinhoBase(String telefone, String email, String cpf) {
+    public void preencherCamposCarrinhoBase(String telefone, String email, String cpf) throws InterruptedException {
         carrinhoPage.inserirDadosBase(telefone, email, cpf);
     }
 
     @E("preencho os campos Telefone a ser portado com DDD {string}, E-mail {string} e CPF [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
-    public void preencherCamposCarrinhoPortabilidade(String telefone, String email, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
-        carrinhoPage.inserirDadosPortabilidade(telefone, email, cpfAprovado, cpfDiretrix);
+    public void preencherCamposCarrinhoPortabilidade(String telefone, String email, String cpfAprovado, String cpfDiretrix) throws IOException, InterruptedException {
+        carrinhoPage.inserirDadosPortabilidade(telefone, email, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
     }
 
     @E("preencho os campos Celular de contato {string}, E-mail {string} e CPF [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
-    public void preencherCamposCarrinhoAquisicao(String telefoneContato, String email, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
-        carrinhoPage.inserirDadosAquisicao(telefoneContato, email, cpfAprovado, cpfDiretrix);
+    public void preencherCamposCarrinhoAquisicao(String telefoneContato, String email, String cpfAprovado, String cpfDiretrix) throws IOException, InterruptedException {
+        carrinhoPage.inserirDadosAquisicao(telefoneContato, email, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
     }
 
     @E("clicar no botão {string}")

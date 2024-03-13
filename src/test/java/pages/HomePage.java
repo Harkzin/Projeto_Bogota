@@ -1,15 +1,10 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import support.Hooks;
 
-import static pages.BackofficePage.*;
-
 public class HomePage {
-    private DriverQA driver;
+    private final DriverQA driver;
 
     public HomePage(DriverQA stepDriver) {
         driver = stepDriver;
@@ -24,8 +19,7 @@ public class HomePage {
     public static String OlaEcommerceBtn = "(//button[contains(text(),'11947190768')])[1]";
     public static String MeusPedidosBtn = "(//button[contains(text(),'Meus pedidos')])[1]";
 
-
-//     Refactor
+    //     Refactor
 //    public static String tituloControleHome = "//*[@class='mensagem-plano'][text()='O básico para o dia a dia']";
 //    public static String tituloPosHome = "//*[@class='mensagem-plano'][text()='Para quem é ultra conectado']";
 //
@@ -53,9 +47,7 @@ public class HomePage {
     public static String PLPControleHomeMenu = "//a[@title='Controle']";
     public static String PLPPosHomeMenu = "//a[@title='Pós']";
 
-
     public void acessarLojaHome() {
-
         String url = System.getProperty("env", "S6");
         switch (url) {
             case "S1":
@@ -63,9 +55,6 @@ public class HomePage {
                 break;
             case "S2":
                 url = "https://accstorefront.cokecxf-commercec1-s2-public.model-t.cc.commerce.ondemand.com/";
-                break;
-            case "S3":
-                url = "https://accstorefront.cokecxf-commercec1-s3-public.model-t.cc.commerce.ondemand.com/";
                 break;
             case "S4":
                 url = "https://accstorefront.cokecxf-commercec1-s4-public.model-t.cc.commerce.ondemand.com/";
@@ -76,17 +65,14 @@ public class HomePage {
             case "S6":
                 url = "https://accstorefront.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/";
                 break;
-            case "P1":
-                url = "https://accstorefront.cokecxf-commercec1-p1-public.model-t.cc.commerce.ondemand.com/";
-                break;
-            case "STG":
-                url = "https://planoscelular-stg.claro.com.br/claro/pt/Cat%C3%A1logo-de-Planos/Confira-nossos-Planos/";
-                break;
             case "D1":
                 url = "https://accstorefront.cokecxf-commercec1-d1-public.model-t.cc.commerce.ondemand.com/";
                 break;
             case "D2":
                 url = "https://accstorefront.cokecxf-commercec1-d2-public.model-t.cc.commerce.ondemand.com/";
+                break;
+            case "D3":
+                url = "https://accstorefront.cokecxf-commercec1-d3-public.model-t.cc.commerce.ondemand.com/";
                 break;
             default:
                 throw new IllegalArgumentException("Ambiente inválido: " + url);
@@ -96,39 +82,39 @@ public class HomePage {
 
     public void selecionarCardControle(String cardHome) {
         String TituloControleHome = "";
-        driver.waitElementAll(TituloControleHome, "id");
+        driver.waitElement(TituloControleHome, "id");
         if (Integer.parseInt(cardHome) > 3) {
-            driver.JavaScriptClick(proximoCarrossel);
-            driver.JavaScriptClick(proximoCarrossel);
+            driver.JavaScriptClick(proximoCarrossel, "id");
+            driver.JavaScriptClick(proximoCarrossel, "id");
         }
-        driver.waitElementAll(euQueroCard + "[" + cardHome + "]", "xpath");
+        driver.waitElement(euQueroCard + "[" + cardHome + "]", "xpath");
         tituloCardHome = driver.getText(tituloCard + "[" + cardHome + "]", "id");
         valorCardHome = driver.getText(precoCard + "[" + cardHome + "]", "id");
-        gbPlanoCardHome = (driver.findListElements(gbPlano + "[" + cardHome + "]").isEmpty()) ? "" : driver.getText(gbPlano + "[" + cardHome + "]", "id");
-        gbBonusCardHome = (driver.findListElements(gbBonus + "[" + cardHome + "]").isEmpty()) ? "" : driver.getText(gbBonus + "[" + cardHome + "]", "id");
+        gbPlanoCardHome = (driver.findListElements(gbPlano + "[" + cardHome + "]", "id").isEmpty()) ? "" : driver.getText(gbPlano + "[" + cardHome + "]", "id");
+        gbBonusCardHome = (driver.findListElements(gbBonus + "[" + cardHome + "]", "id").isEmpty()) ? "" : driver.getText(gbBonus + "[" + cardHome + "]", "id");
         driver.JavaScriptClick(euQueroCard + "[" + cardHome + "]", "xpath");
     }
 
     public void selecionarCardPos(String cardHome) {
         if (Integer.parseInt(cardHome) > 3) {
-            driver.JavaScriptClick(proximoCarrossel);
+            driver.JavaScriptClick(proximoCarrossel, "id");
         }
-        driver.waitElementAll(euQueroCard + "[" + cardHome + "]");
+        driver.waitElement(euQueroCard + "[" + cardHome + "]", "id");
         tituloCardHome = driver.getText(tituloCard + "[" + cardHome + "]", "id");
         valorCardHome = driver.getText(precoCard + "[" + cardHome + "]", "id");
         gbPlanoCardHome = (driver.findListElements(gbPlano + "[" + cardHome + "]", "id").isEmpty()) ? "" : driver.getText(gbPlano + "[" + cardHome + "]", "id");
         gbBonusCardHome = (driver.findListElements(gbBonus + "[" + cardHome + "]", "id").isEmpty()) ? "" : driver.getText(gbBonus + "[" + cardHome + "]", "id");
-        driver.JavaScriptClick(euQueroCard + "[" + cardHome + "]");
+        driver.JavaScriptClick(euQueroCard + "[" + cardHome + "]", "id");
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
         driver.waitSeconds(8);
-        driver.actionSendKey(msisdn, campoTelefone);
+        driver.sendKeys(campoTelefone, "id", msisdn);
     }
 
     public void validarClienteMeusPedidos(String cliente) {
         String botaoOlaEcomm = "(//button[contains(text(), '" + cliente + "')])[1]";
-        driver.findListElements(botaoOlaEcomm);
+        driver.findListElements(botaoOlaEcomm, "id");
     }
 
     public void acessarURLRentabilizacao() {
@@ -142,13 +128,14 @@ public class HomePage {
             driver.JavaScriptClick(PLPPosHomeMenu, "xpath");
         }
     }
-// CONTINUAR PDP MAIS DETALHES
+
+    // CONTINUAR PDP MAIS DETALHES
     public void selecionarPDPCard(String cardPDP) {
         if (Integer.parseInt(cardPDP) > 3) {
             driver.JavaScriptClick(proximoCarrossel, "id");
             driver.JavaScriptClick(proximoCarrossel, "id");
         }
-        driver.waitElementAll(euQueroCard + "[" + cardPDP + "]", "xpath");
+        driver.waitElement(euQueroCard + "[" + cardPDP + "]", "xpath");
         tituloCardHome = driver.getText(tituloCard + "[" + cardPDP + "]", "xpath");
         valorCardHome = driver.getText(precoCard + "[" + cardPDP + "]", "xpath");
         gbPlanoCardHome = (driver.findListElements(gbPlano + "[" + cardPDP + "]", "xpath").isEmpty()) ? "" : driver.getText(gbPlano + "[" + cardPDP + "]", "xpath");
@@ -157,6 +144,6 @@ public class HomePage {
     }
 
     public void selecionarCardHome(String idPlano) {
-        driver.JavaScriptClick( "btn-eu-quero-" + idPlano + "", "id");
+        driver.JavaScriptClick("btn-eu-quero-" + idPlano + "", "id");
     }
 }

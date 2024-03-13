@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import support.DriverQA;
 import org.junit.Assert;
 
@@ -43,7 +44,6 @@ public class CarrinhoPage {
     }
 
     public void validarCarrinho() {
-//        driver.waitElementToBeClickableAll(FluxoAquisicao, 5, "id");
         Assert.assertTrue(driver.isDisplayed(FluxoMigracao, "id") && driver.isDisplayed(FluxoPortabilidade, "id") && driver.isDisplayed(FluxoAquisicao, "id"));
 
         /* //Refactor
@@ -67,16 +67,16 @@ public class CarrinhoPage {
         */
     }
 
-    public void inserirDadosBase(String telefone, String email, String cpf) {
+    public void inserirDadosBase(String telefone, String email, String cpf) throws InterruptedException {
         String telefoneMigracao = "txt-telefone-migracao";
         String cpfMigracao = "txt-cpf-migracao";
 
         driver.click(FluxoMigracao, "id");
-        driver.waitElementToBeClickableAll(cpfMigracao, 2, "id");
+        driver.waitElementToBeClickable(cpfMigracao, "id", 2);
 
-        driver.actionSendKey(telefone, telefoneMigracao, "id");
-        driver.actionSendKey(emailCarrinho, email, "id");
-        driver.actionSendKey(cpf, cpfMigracao, "id");
+        driver.actionSendKey(telefoneMigracao, "id", telefone);
+        driver.actionSendKey(emailCarrinho, "id", email);
+        driver.actionSendKey(cpfMigracao, "id", cpf);
     }
 
     public void inserirDadosPortabilidade(String telefoneContato, String email, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
@@ -84,11 +84,11 @@ public class CarrinhoPage {
         String cpfPortabilidade = "txt-cpf-portabilidade";
 
         driver.click(FluxoPortabilidade, "id");
-        driver.waitElementToBeClickableAll(telefonePortabilidade, 2, "id");
+        driver.waitElementToBeClickable(telefonePortabilidade, "id", 2);
 
-        driver.sendKeys(telefoneContato, telefonePortabilidade, "id");
-        driver.sendKeys(emailCarrinho, email, "id");
-        driver.sendKeys(getCpfForPlanFlow(cpfAprovado, cpfDiretrix), cpfPortabilidade, "id");
+        driver.actionSendKey(telefonePortabilidade, "id", telefoneContato);
+        driver.actionSendKey(emailCarrinho, "id", email);
+        driver.actionSendKey(cpfPortabilidade, "id", getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
     public void inserirDadosAquisicao(String telefoneContato, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
@@ -96,11 +96,11 @@ public class CarrinhoPage {
         String cpfAquisicao = "txt-cpf-aquisicao";
 
         driver.click(FluxoAquisicao, "id");
-        driver.waitElementToBeClickableAll(telefoneContatoAquisicao, 2, "id");
+        driver.waitElementToBeClickable(telefoneContatoAquisicao, "id", 2);
 
-        driver.actionSendKey(telefoneContato, telefoneContatoAquisicao, "id");
-        driver.sendKeys(emailCarrinho, email, "id");
-        driver.actionSendKey(getCpfForPlanFlow(isCpfApproved, isCpfDiretrix), cpfAquisicao, "id");
+        driver.actionSendKey(telefoneContatoAquisicao, "id", telefoneContato);
+        driver.actionSendKey(emailCarrinho, "id", email);
+        driver.actionSendKey(cpfAquisicao, "id", getCpfForPlanFlow(isCpfApproved, isCpfDiretrix));
     }
 
     public void euQueroCarrinho(String botao) {
@@ -146,7 +146,7 @@ public class CarrinhoPage {
         // Mensagem erro Bloqueio Dependente
         String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
 
-        driver.waitElementXP(xpathMsgErroBloqueioDependente);
+        driver.waitElement(xpathMsgErroBloqueioDependente, "id");
         Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
         Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
     }

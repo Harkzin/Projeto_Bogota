@@ -14,7 +14,7 @@ public class ControleAntecipadoPage {
     private String xpathChkTermosTHAB = "(//*[@class='mdn-Checkbox-label'])";
 
     public void PlanoControleAntecipadoExiste() {
-        driver.waitElementAll(idTituloControleAntecipado, "id");
+        driver.waitElement(idTituloControleAntecipado, "id");
     }
 
     public void marcarCheckboxTermoTHAB() {

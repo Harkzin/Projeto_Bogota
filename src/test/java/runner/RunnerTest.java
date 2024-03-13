@@ -4,7 +4,6 @@ import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType;
-import support.BaseSteps;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
@@ -12,7 +11,7 @@ import support.BaseSteps;
         glue = {"steps", "support"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
-        tags = "@TrocaCtrlRecusaMulta")
+        tags = "@bloqueioCEPdiferente")
 
-public class RunnerTest extends BaseSteps {
+public class RunnerTest {
 }

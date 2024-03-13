@@ -15,9 +15,14 @@ public class EmailPage {
         driver = stepDriver;
     }
 
+    public String montaEnderecoValidacaoEmail(String enderecoCliente, String numeroEndCliente, String
+            complementoCliente, String bairroCliente, String cidadeCliente, String ufCliente, String cepCliente) {
+        return enderecoCliente + " " + numeroEndCliente + " " + complementoCliente + ", " + bairroCliente + "," + cepCliente + ", " + cidadeCliente + ", " + ufCliente.replace("BR-", "").toLowerCase();
+    }
+
     public void validarEmail() throws JSONException, InterruptedException {
         String messageId = getMessageFirstId();
-        String endereco = driver.montaEnderecoValidacaoEmail(DadosPessoaisPage.enderecoCliente,
+        String endereco = montaEnderecoValidacaoEmail(DadosPessoaisPage.enderecoCliente,
                 DadosPessoaisPage.numeroEndCliente,
                 DadosPessoaisPage.complementoCliente,
                 DadosPessoaisPage.bairroCliente,
