@@ -13,11 +13,11 @@ public class TokenPage extends BaseSteps {
         driver = stepDriver;
     }
 
-    private String xpathInputToken = "//input[@data-automation='token']";
-    public static String xpathBotaoFinalizarCarrinho = "//button[@data-automation='continuar']";
+    private String InputToken = "txt-token";
+    public static String BotaoFinalizarCarrinho = "btn-continuar-token";
 
     public void preencherToken() {
-        driver.waitElementAll(xpathInputToken, "xpath");
-        driver.sendKeys(token, xpathInputToken, "xpath");
+        driver.waitElementAll(InputToken, "id");
+        driver.sendKeys(token, InputToken, "id");
     }
 }
