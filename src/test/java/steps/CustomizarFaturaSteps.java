@@ -1,30 +1,45 @@
 package steps;
 
 import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
 
 public class CustomizarFaturaSteps extends BaseSteps {
+    CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA);
 
-    CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driver);
-
-    @E("^seleciono a forma de pagamento")
-    public void selecionoAFormaDePagamentoParaPlano() throws Throwable {
-        customizarFaturaPage.clicarFormaDePagamento();
+    @Entao("é direcionado para a tela de Customizar Fatura")
+    public void validarCustomizarFatura() {
+        customizarFaturaPage.validarPaginaCustomizarFatura();
     }
 
-    @E("^marco o checkbox de termos de aceite$")
-    public void marcoOCheckboxDeTermosDeAceite() {
-        customizarFaturaPage.marcarCheckboxTermo();
+    @E("seleciona a forma de pagamento: {string}")
+    public void selecionarPagamentoBoleto(String pagamento) {
+        if (pagamento.equals("Débito")) {
+            customizarFaturaPage.selecionarDebito();
+        } else {
+            customizarFaturaPage.selecionarBoleto();
+        }
     }
 
-    @E("^selecionar a data de vencimento \"([^\"]*)\"$")
-    public void selecionarADataDeVencimento(String data) throws Throwable {
+    @E("seleciona o método de recebimento da fatura: {string}")
+    public void selecionarRecebimentoFatura(String fatura) {
+        customizarFaturaPage.selecionarTipoFatura(fatura);
+    }
+
+    @E("selecionar a data de vencimento {string}")
+    public void selecionarDataDeVencimento(String data) {
         customizarFaturaPage.selecionarDataVencimento(data);
     }
 
-    @E("^selecionar a fatura \"([^\"]*)\"$")
-    public void selecionarAFatura(String fatura) throws Throwable {
-        customizarFaturaPage.selecionarTipoFatura(fatura);
+    @E("marca o checkbox de termos de aceite")
+    public void marcarTermosDeAceite() {
+        customizarFaturaPage.aceitarTermos();
+    }
+
+    @Quando("o usuário clicar no botão Continuar da tela de Customizar Fatura")
+    public void clicarContinuar() {
+        customizarFaturaPage.clicarContinuar();
     }
 }

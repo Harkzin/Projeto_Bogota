@@ -7,7 +7,7 @@ import support.BaseSteps;
 import static support.RestAPI.getAccessToken;
 
 public class TokenSteps extends BaseSteps {
-    TokenPage tokenPage = new TokenPage(driver);
+    TokenPage tokenPage = new TokenPage(driverQA);
 
     public static String token;
 

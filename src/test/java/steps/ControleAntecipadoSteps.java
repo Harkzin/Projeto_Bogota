@@ -6,7 +6,7 @@ import support.BaseSteps;
 
 public class ControleAntecipadoSteps extends BaseSteps {
 
-    ControleAntecipadoPage controleAntecipadoPage = new ControleAntecipadoPage(driver);
+    ControleAntecipadoPage controleAntecipadoPage = new ControleAntecipadoPage(driverQA);
 
     @E("^valido que foi ofertado plano de Controle Antecipado$")
     public void validoQueFoiOfertadoPlanoDe() {

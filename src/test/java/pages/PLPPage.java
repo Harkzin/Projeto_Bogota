@@ -1,7 +1,6 @@
 package pages;
 
 import support.DriverQA;
-import support.Hooks;
 
 public class PLPPage {
     private final DriverQA driver;
@@ -16,8 +15,8 @@ public class PLPPage {
 
     public void selecionarCardControle(String idPlano) {
 
-        driver.waitElement(xpathTituloControlePLP, "xpath");
-        driver.waitElement("btn-eu-quero-" + idPlano + "", "id");
+        //driver.waitElementVisibility(xpathTituloControlePLP, "xpath");
+        //driver.waitElementVisibility("btn-eu-quero-" + idPlano + "", "id");
         driver.JavaScriptClick("btn-eu-quero-" + idPlano + "", "id");
     }
 }

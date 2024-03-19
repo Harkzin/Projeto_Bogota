@@ -9,7 +9,7 @@ import pages.BackofficePage;
 import support.BaseSteps;
 
 public class BackofficeSteps extends BaseSteps {
-    BackofficePage backofficePage = new BackofficePage(driver);
+    BackofficePage backofficePage = new BackofficePage(driverQA);
 
     @Dado("^que ao acessar o backoffice")
     public void queAoAcessarBackoffice() {

@@ -1,6 +1,5 @@
 package pages;
 
-import org.openqa.selenium.By;
 import support.DriverQA;
 import org.junit.Assert;
 
@@ -10,25 +9,17 @@ import static support.RestAPI.checkCpfDiretrix;
 import static support.RestAPI.getCpf;
 
 public class CarrinhoPage {
-    private final DriverQA driver;
+    private final DriverQA driverQA;
 
     public CarrinhoPage(DriverQA stepDriver) {
-        driver = stepDriver;
+        driverQA = stepDriver;
     }
 
-    // Refactor
-    //private final String GbNoPlanoResumo = (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) ? "(//*[@class='modality']//p)[2]" : "(//*[@class='modality']//p)[3]";
-    //public static String MetodoPagamentoResumo = "(//*[@class='mdn-Price-suffix'])[2]";
-    //public static String MetodoPagamentoResumo2 = "(//*[@class='mdn-Price-suffix'])[2]";
-    //private static final String TermosComboMulti = "//p[@class='terms-and-conditions-page-description']";
-    private final String FluxoMigracao = "rdn-migracao";
-    private final String FluxoPortabilidade = "rdn-portabilidade";
-    private final String FluxoAquisicao = "rdn-aquisicao";
-    private final String emailCarrinho = "txt-email";
-
-    // Variaveis para validacao na tela de parabens
-    public static String telefoneCliente;
-    public static String cpfCliente;
+    private final String fluxoMigracao = "rdn-migracao";
+    private final String fluxoPortabilidade = "rdn-portabilidade";
+    private final String fluxoAquisicao = "rdn-aquisicao";
+    public static String telefoneCliente; //Refactor
+    public static String cpfCliente; //Refactor
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) throws IOException, InterruptedException {
         String cpf;
@@ -43,116 +34,64 @@ public class CarrinhoPage {
         return cpf;
     }
 
-    public void validarCarrinho() {
-        Assert.assertTrue(driver.isDisplayed(FluxoMigracao, "id") && driver.isDisplayed(FluxoPortabilidade, "id") && driver.isDisplayed(FluxoAquisicao, "id"));
+    public void validarPaginaCarrinho() {
+        driverQA.waitPageLoad("/cart", 10);
 
-        /* //Refactor
-        String TituloPlanoResumo = "(//*[@class='product-fullname isOrderConfPage mdn-Heading mdn-Heading--sm'])[2]";
-        String ValorTotalResumo = "(//*[@class='js-entry-price-plan js-revenue'])";
-        String FidelizadoResumo = "(//*[@class='mdn-Price-suffix hidden-xs hidden-sm'])[2]";
-
-        driver.waitElementXP(TituloPlanoResumo);
-        Assert.assertEquals(HomePage.tituloCardHome, driver.getText(TituloPlanoResumo, "xpath"));
-        if (!HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
-            Assert.assertEquals(HomePage.gbPlanoCardHome, driver.getText(GbNoPlanoResumo, "xpath"));
-            String xpathGbDeBonusResumo = "(//*[@class='modality']//p)[4]";
-            Assert.assertEquals(HomePage.gbBonusCardHome, driver.getText(xpathGbDeBonusResumo, "xpath"));
-            //} else if (HomePage.gbBonusCardHome.isEmpty() && !HomePage.gbPlanoCardHome.isEmpty()) {
-            //Assert.assertTrue(HomePage.gbPlanoCardHome.equals(driver.getText(xpathGbNoPlanoResumo, "xpath")));
-        }
-
-        Assert.assertTrue(HomePage.valorCardHome.contains(driver.getText(ValorTotalResumo, "xpath")));
-        Assert.assertEquals("Fidelizado por 12 meses", driver.getText(FidelizadoResumo, "xpath"));
-        Assert.assertEquals("Débito automático", driver.getText(MetodoPagamentoResumo, "xpath"));
-        */
+        Assert.assertNotNull(driverQA.findElement(fluxoMigracao, "id"));
+        Assert.assertNotNull(driverQA.findElement(fluxoPortabilidade, "id"));
+        Assert.assertNotNull(driverQA.findElement(fluxoAquisicao, "id"));
     }
 
-    public void inserirDadosBase(String telefone, String email, String cpf) throws InterruptedException {
+    public void selecionaFluxo(String fluxo) {
+        switch (fluxo) {
+            case "Migração":
+                driverQA.JavaScriptClick(fluxoMigracao, "id");
+                break;
+            case "Portabilidade":
+                driverQA.JavaScriptClick(fluxoPortabilidade, "id");
+                break;
+            case "Aquisição":
+                driverQA.JavaScriptClick(fluxoAquisicao, "id");
+        }
+    }
+
+    public void inserirDadosBase(String telefone, String cpf) {
         String telefoneMigracao = "txt-telefone-migracao";
         String cpfMigracao = "txt-cpf-migracao";
 
-        driver.click(FluxoMigracao, "id");
-        driver.waitElementToBeClickable(cpfMigracao, "id", 2);
-
-        driver.actionSendKey(telefoneMigracao, "id", telefone);
-        driver.actionSendKey(emailCarrinho, "id", email);
-        driver.actionSendKey(cpfMigracao, "id", cpf);
+        driverQA.actionSendKeys(telefoneMigracao, "id", telefone);
+        driverQA.actionSendKeys(cpfMigracao, "id", cpf);
     }
 
-    public void inserirDadosPortabilidade(String telefoneContato, String email, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
+    public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
         String telefonePortabilidade = "txt-telefone-portabilidade";
         String cpfPortabilidade = "txt-cpf-portabilidade";
 
-        driver.click(FluxoPortabilidade, "id");
-        driver.waitElementToBeClickable(telefonePortabilidade, "id", 2);
-
-        driver.actionSendKey(telefonePortabilidade, "id", telefoneContato);
-        driver.actionSendKey(emailCarrinho, "id", email);
-        driver.actionSendKey(cpfPortabilidade, "id", getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverQA.actionSendKeys(telefonePortabilidade, "id", telefone);
+        driverQA.actionSendKeys(cpfPortabilidade, "id", getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public void inserirDadosAquisicao(String telefoneContato, String email, boolean isCpfApproved, boolean isCpfDiretrix) throws IOException, InterruptedException {
+    public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
         String telefoneContatoAquisicao = "txt-telefone-aquisicao";
         String cpfAquisicao = "txt-cpf-aquisicao";
 
-        driver.click(FluxoAquisicao, "id");
-        driver.waitElementToBeClickable(telefoneContatoAquisicao, "id", 2);
-
-        driver.actionSendKey(telefoneContatoAquisicao, "id", telefoneContato);
-        driver.actionSendKey(emailCarrinho, "id", email);
-        driver.actionSendKey(cpfAquisicao, "id", getCpfForPlanFlow(isCpfApproved, isCpfDiretrix));
+        driverQA.actionSendKeys(telefoneContatoAquisicao, "id", telefoneContato);
+        driverQA.actionSendKeys(cpfAquisicao, "id", getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public void euQueroCarrinho(String botao) {
-        String idEuQueroForm = "buttonCheckout";
+    public void inserirEmail(String email) {
+        driverQA.actionSendKeys("txt-email", "id", email);
+    }
 
-        switch (botao) {
-            case "Eu quero!":
-                driver.JavaScriptClick(idEuQueroForm, "id");
-                break;
-            case "Continuar":
-                driver.JavaScriptClick(DadosPessoaisPage.BtnContinuar, "id");
-                break;
-            case "Continuar pagamento":
-                driver.JavaScriptClick(DadosPessoaisPage.BtnContinuarPagamento, "id");
-                break;
-            case "Não concordo":
-                driver.JavaScriptClick(CustomizarFaturaPage.NaoConcordo, "id");
-                break;
-            case "Ok, entendi":
-                driver.JavaScriptClick(CustomizarFaturaPage.ClicarOKEntendi, "id");
-                break;
-            case "Finalizar":
-                driver.JavaScriptClick(TokenPage.BotaoFinalizarCarrinho, "id");
-            case "Entrar":
-                driver.JavaScriptClick(HomePage.EntrarBtn, "id");
-                break;
-            case "Acessar":
-                driver.JavaScriptClick(HomePage.AcessarBtn, "id");
-                break;
-            case "11947190768":
-                driver.JavaScriptClick(HomePage.OlaEcommerceBtn, "id");
-                break;
-            case "Meus pedidos":
-                driver.JavaScriptClick(HomePage.MeusPedidosBtn, "id");
-                break;
-        }
+    public void clicarEuQuero() {
+        driverQA.JavaScriptClick("btn-eu-quero", "id");
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
-        // Mensagem erro Bloqueio Dependente
         String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
 
-        driver.waitElement(xpathMsgErroBloqueioDependente, "id");
-        Assert.assertEquals(mensagem, driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
-        Assert.assertEquals("Favor informar a linha titular.", driver.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
+        //driverQA.waitElementVisibility(xpathMsgErroBloqueioDependente, "id");
+        Assert.assertEquals(mensagem, driverQA.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
+        Assert.assertEquals("Favor informar a linha titular.", driverQA.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
     }
-
-    public void validarQueFoiDirecionadoParaAHome() {
-//        Assert.assertEquals("O básico para o dia a dia", driver.getText(HomePage.TituloControleHome, "xpath"));
-    }
-
-    /*public void validarClienteCombo() {
-        Assert.assertEquals("Como você já é combo, seu bônus está garantido!\n" + "Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.", driver.getText(CarrinhoPage.TermosComboMulti, "xpath"));
-    }*/
 }

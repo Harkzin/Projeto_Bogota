@@ -26,22 +26,22 @@ public class BackofficePage extends BaseSteps {
         String environment = System.getProperty("env", "S6");
         String url = BASE_URL + environment + LOGIN_URL_SUFFIX;
         driver.openURL(url);
-        driver.waitElement(nameTxtUsuario, "name");
+        //driver.waitElementVisibility(nameTxtUsuario, "name");
         driver.waitSeconds(10);
         String acessoBackoffice = "ecomplanos-backoffice";
         driver.sendKeys(nameTxtUsuario, "name", acessoBackoffice);
-        driver.waitElement(nameTxtSenha, "name");
+        //driver.waitElementVisibility(nameTxtSenha, "name");
         driver.sendKeys(nameTxtSenha, "name", acessoBackoffice);
-        driver.waitElement(xpathBtnIdioma, "xpath");
+        //driver.waitElementVisibility(xpathBtnIdioma, "xpath");
         driver.click(xpathBtnIdioma, "xpath");
-        driver.waitElement(xpathIdioma, "xpath");
+        //driver.waitElementVisibility(xpathIdioma, "xpath");
         driver.click(xpathIdioma, "xpath");
-        driver.waitElement(xpathBtnIdioma, "xpath");
+        //driver.waitElementVisibility(xpathBtnIdioma, "xpath");
         driver.sendKeyBoard(Keys.ENTER);
     }
 
     public void preencherFiltro(String filtro) {
-        driver.waitElement(classMenu, "class");
+        //driver.waitElementVisibility(classMenu, "class");
         driver.waitSeconds(1);
         driver.sendKeysCampoMascara(filtro, filtroInputXpath, "xpath");
     }
@@ -75,7 +75,7 @@ public class BackofficePage extends BaseSteps {
             driver.click(xpathMenuCliente, "xpath");
             driver.waitSeconds(1);
         }
-        driver.waitElement(xpathMenuCliente, "xpath");
+        //driver.waitElementVisibility(xpathMenuCliente, "xpath");
         driver.click(xpathMenuCliente, "xpath");
         driver.waitSeconds(2);
     }

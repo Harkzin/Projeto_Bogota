@@ -7,7 +7,7 @@ import support.BaseSteps;
 
 public class MeusPedidosSteps extends BaseSteps {
 
-    MeusPedidosPage meusPedidosPage = new MeusPedidosPage(driver);
+    MeusPedidosPage meusPedidosPage = new MeusPedidosPage(driverQA);
 
     @E("^validar que foi direcionado para a página de Meus Pedidos$")
     public void validaMeusPedidos() {

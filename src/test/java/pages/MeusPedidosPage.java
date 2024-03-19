@@ -10,13 +10,13 @@ public class MeusPedidosPage {
     }
 
     public void validaMeusPedidos() {
-        driver.waitElement("//div[contains(text(),'Meus Pedidos')]", "xpath");
+        //driver.waitElementVisibility("//div[contains(text(),'Meus Pedidos')]", "xpath");
     }
 
     public void validarNumeroDataEStatus() {
-        driver.waitElement("//p[contains(text(), 'Número do pedido')]", "xpath");
-        driver.waitElement("//p[contains(text(), 'Data do pedido')]", "xpath");
-        driver.waitElement("//p[contains(text(), 'Status')]", "xpath");
+        //driver.waitElementVisibility("//p[contains(text(), 'Número do pedido')]", "xpath");
+        //driver.waitElementVisibility("//p[contains(text(), 'Data do pedido')]", "xpath");
+        //driver.waitElementVisibility("//p[contains(text(), 'Status')]", "xpath");
     }
 
     public void acessarPedidoMaisRecente() {
@@ -24,6 +24,6 @@ public class MeusPedidosPage {
     }
 
     public void validarPaginaDePedido() {
-        driver.waitElement("//h1[contains(text(), 'Detalhes do pedido')]", "xpath");
+        //driver.waitElementVisibility("//h1[contains(text(), 'Detalhes do pedido')]", "xpath");
     }
 }

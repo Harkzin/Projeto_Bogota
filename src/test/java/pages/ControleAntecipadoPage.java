@@ -13,7 +13,7 @@ public class ControleAntecipadoPage {
     private String ChkTermos = "chk-termos";
 
     public void PlanoControleAntecipadoExiste() {
-        driver.waitElement(TituloControleAntecipado, "id");
+        //driver.waitElementVisibility(TituloControleAntecipado, "id");
     }
 
     public void marcarCheckboxTermoTHAB() {

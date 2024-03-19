@@ -34,7 +34,7 @@ public final class RestAPI {
     public static String getCpf() throws IOException, InterruptedException {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.4devs.com.br/ferramentas_online.php"))
-                .timeout(ofSeconds(10))
+                .timeout(ofSeconds(15))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString("acao=gerar_cpf&pontuacao=N&cpf_estado=SP"))
                 .build();
@@ -45,7 +45,7 @@ public final class RestAPI {
     public static boolean checkCpfDiretrix(String cpf) throws IOException, InterruptedException {
         final HttpRequest diretrixTokenRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://api-lab.claro.com.br/oauth2/v1/token"))
-                .timeout(ofSeconds(10))
+                .timeout(ofSeconds(15))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("X-Client-Auth", "Basic MWxKR1dqdkhsVzEzWkdmT0pxUVlHQ3JFTlRNY0x3Vno6QVowTTF3aVA5cFJSWGplTg==")
                 .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials"))
@@ -57,7 +57,7 @@ public final class RestAPI {
 
         final HttpRequest diretrixRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://api-lab.claro.com.br/customers/v1/profiles/historical"))
-                .timeout(ofSeconds(10))
+                .timeout(ofSeconds(15))
                 .header("X-Client-Auth", "Bearer " + token)
                 .header("X-QueryString", "documentnumber=" + cpf)
                 .GET()

@@ -1,7 +1,6 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.github.bonigarcia.wdm.managers.FirefoxDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,36 +72,39 @@ public class DriverQA {
     public WebElement findElement(String selectorValue, String selectorType) {
         WebElement element;
 
-        switch (selectorType) {
-            case "id":
-                element = driver.findElement(By.id(selectorValue));
-                break;
-            case "linkt":
-                element = driver.findElement(By.linkText(selectorValue));
-                break;
-            case "partialLink":
-                element = driver.findElement(By.partialLinkText(selectorValue));
-                break;
-            case "name":
-                element = driver.findElement(By.name(selectorValue));
-                break;
-            case "tag":
-                element = driver.findElement(By.tagName(selectorValue));
-                break;
-            case "xpath":
-                element = driver.findElement(By.xpath(selectorValue));
-                break;
-            case "class":
-                element = driver.findElement(By.className(selectorValue));
-                break;
-            case "css":
-                element = driver.findElement(By.cssSelector(selectorValue));
-                break;
-            default:
-                throw new InvalidArgumentException("Invalid selector type: " + selectorType);
+        try {
+            switch (selectorType) {
+                case "id":
+                    element = driver.findElement(By.id(selectorValue));
+                    break;
+                case "linkt":
+                    element = driver.findElement(By.linkText(selectorValue));
+                    break;
+                case "partialLink":
+                    element = driver.findElement(By.partialLinkText(selectorValue));
+                    break;
+                case "name":
+                    element = driver.findElement(By.name(selectorValue));
+                    break;
+                case "tag":
+                    element = driver.findElement(By.tagName(selectorValue));
+                    break;
+                case "xpath":
+                    element = driver.findElement(By.xpath(selectorValue));
+                    break;
+                case "class":
+                    element = driver.findElement(By.className(selectorValue));
+                    break;
+                case "css":
+                    element = driver.findElement(By.cssSelector(selectorValue));
+                    break;
+                default:
+                    throw new InvalidArgumentException("Invalid selector type: " + selectorType);
+            }
+            return element;
+        } catch (Exception e) {
+            return null;
         }
-
-        return element;
     }
 
     public List<WebElement> findElements(String selectorValue, String selectorType) {
@@ -202,19 +205,15 @@ public class DriverQA {
 
     public void sendKeys(String selectorValue, String selectorType, String text) {
         WebElement element = findElement(selectorValue, selectorType);
+        element.click();
         element.sendKeys(text);
     }
 
-    public void actionSendKey(String selectorValue, String selectorType, String text) throws InterruptedException {
+    public void actionSendKeys(String selectorValue, String selectorType, String text) {
         WebElement element = findElement(selectorValue, selectorType);
         element.click();
         Actions action = new Actions(driver);
-        char[] digits = text.toCharArray();
-        for (char digit : digits) {
-            String sDigit = Character.toString(digit);
-            action.sendKeys(sDigit).perform();
-            Thread.sleep(50);
-        }
+        text.chars().forEach(c -> action.sendKeys(String.valueOf((char) c)).pause(Duration.ofMillis(50)).perform());
     }
 
     public String getText(String selectorValue, String selectorType) {
@@ -240,8 +239,8 @@ public class DriverQA {
         driver.manage().timeouts().implicitlyWait(ofMillis(time));
     }
 
-    public void waitElement(String selectorValue, String selectorType) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(15));
+    public void waitElementVisibility(String selectorValue, String selectorType, int timeoutSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
 
         switch (selectorType) {
             case "id":
@@ -268,6 +267,12 @@ public class DriverQA {
             default:
                 throw new IllegalArgumentException("Invalid selector type: " + selectorType);
         }
+    }
+
+    public void waitElementVisibility(WebElement element, int timeoutSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
+
+        wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public void waitElementNotVisible(String parId) {
@@ -395,13 +400,14 @@ public class DriverQA {
     }
 
     public void JavaScriptClick(String selectorValue, String selectorType) {
-        try {
-            WebElement element = findElement(selectorValue, selectorType);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        WebElement element = findElement(selectorValue, selectorType);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);
+    }
+
+    public void JavaScriptClick(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);
     }
 
     public void moveToElementJs(String selectorValue, String selectorType) {
@@ -421,21 +427,10 @@ public class DriverQA {
         return cookie.toString().substring(0, position);
     }
 
-    public boolean isEnabledDisplayed(String parValue, String parType) {
-        WebElement element = findElement(parValue, parType);
-        return element.isEnabled() && element.isDisplayed();
-    }
+    public void waitPageLoad(String urlFraction, Integer timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        wait.until(ExpectedConditions.urlContains(urlFraction));
 
-    public void createNewTab() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.open()");
-    }
-
-    public void changeTab(String numeroAba) {
-        try {
-            ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
-            driver.switchTo().window(tabs.get(Integer.parseInt(numeroAba)));
-        } catch (Exception ignored) {
-        }
+        wait.until(driver -> "complete".equals(((JavascriptExecutor) driver).executeScript("return document.readyState")));
     }
 }

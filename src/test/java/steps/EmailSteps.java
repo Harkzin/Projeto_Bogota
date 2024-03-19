@@ -6,7 +6,7 @@ import support.BaseSteps;
 
 public class EmailSteps extends BaseSteps {
 
-    EmailPage emailPage = new EmailPage(driver);
+    EmailPage emailPage = new EmailPage(driverQA);
 
     @Entao("^validar email$")
     public void validarEmail() throws Throwable {

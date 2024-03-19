@@ -17,7 +17,7 @@ public class TokenPage extends BaseSteps {
     public static String BotaoFinalizarCarrinho = "btn-continuar-token";
 
     public void preencherToken() {
-        driver.waitElement(InputToken, "id");
+        //driver.waitElementVisibility(InputToken, "id");
         driver.sendKeys(InputToken, "id", token);
     }
 }

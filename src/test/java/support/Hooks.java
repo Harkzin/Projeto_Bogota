@@ -20,12 +20,12 @@ public class Hooks extends BaseSteps {
     @After(order = 3)
     public void printScreen(Scenario scenario) throws InterruptedException {
         Thread.sleep(1000);
-        byte[] screenshot = (((TakesScreenshot) driver.getDriver()).getScreenshotAs(OutputType.BYTES));
+        byte[] screenshot = (((TakesScreenshot) driverQA.getDriver()).getScreenshotAs(OutputType.BYTES));
         scenario.attach(screenshot, "image/png", "screenshot");
     }
 
     @After(order = 1)
     public void closeBrowser() {
-        driver.quit();
+        driverQA.quit();
     }
 }

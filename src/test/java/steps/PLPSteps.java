@@ -6,7 +6,7 @@ import support.BaseSteps;
 
 public class PLPSteps extends BaseSteps {
 
-    PLPPage plpPage = new PLPPage(driver);
+    PLPPage plpPage = new PLPPage(driverQA);
 
     @E("^selecionar o \"([^\"]*)\" plano do carrossel da PLP clicando no botão Eu quero! dele$")
     public void selecionarOPlanoDoCarrosselDaPLPClicandoNoBotãoEuQueroDele(String cardPLP) throws Throwable {
