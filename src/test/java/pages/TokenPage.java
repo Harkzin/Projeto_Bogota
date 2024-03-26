@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.Assert;
 import support.BaseSteps;
 import support.DriverQA;
 
@@ -13,11 +14,19 @@ public class TokenPage extends BaseSteps {
         driver = stepDriver;
     }
 
-    private String InputToken = "txt-token";
-    public static String BotaoFinalizarCarrinho = "btn-continuar-token";
+    public static String inputToken = "txt-token";
+
+    public void validarPaginaSMS() {
+        driverQA.waitPageLoad("claro/pt/checkout/multi/summary/view", 10);
+
+        Assert.assertNotNull(driverQA.findElement(inputToken, "id"));
+    }
 
     public void preencherToken() {
-        //driver.waitElementVisibility(InputToken, "id");
-        driver.sendKeys(InputToken, "id", token);
+        driver.sendKeys(inputToken, "id", token);
+    }
+
+    public void clicaBtnFinalizar() {
+        driverQA.JavaScriptClick("btn-continuar", "id");
     }
 }

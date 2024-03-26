@@ -7,11 +7,16 @@ Funcionalidade: Troca Controle - Recusa multa
   @troca
   @TrocaCtrlRecusaMulta
   Cenario: Troca Controle recusa multa
-    Dado que acesso a Loja Online
-    E selecionar o plano de id "17216" do carrossel da Home clicando no botão Eu quero! dele
-    E validar que não há alterações no valor e nas informações do Plano
-    E preencho os campos Telefone com DDD "11947431002", E-mail "claroteste61@gmail.com" e CPF "64526647861"
-    E clicar no botão "Eu quero!"
-    E clicar no botão "Não concordo"
-    Quando clicar no botão "Ok, entendi"
-    Então  validar que foi direcionado para a Home
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o plano de id "17216" do carrossel da Home
+    Então é direcionado para a tela de Carrinho
+    E não deve haver alterações no valor e nas informações do Plano
+    E seleciona o fluxo "Migração"
+    E preenche os campos: Telefone com DDD "11947626673", E-mail "clordertest@mailsac.com" e CPF "48064730813"
+
+    Quando o usuário clicar no botão Eu quero! do Carrinho
+    Então é direcionado pra tela de Customizar Fatua, com alerta de multa
+    E clicar no botão [Não concordo]
+
+    Quando clicar no botão [Ok, entendi]
+    Então validar que foi direcionado para a Home

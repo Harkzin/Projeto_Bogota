@@ -37,4 +37,9 @@ public class HomePage {
     public void selecionarPlanoHome(String idPlano) {
         driverQA.JavaScriptClick("btn-eu-quero-" + idPlano, "id");
     }
+
+    public void clicaBotaoEntrar() {
+//        driverQA.JavaScriptClick("btn-entrar", "id");
+        driverQA.JavaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-main-action mdn-Button mdn-Button--iconText mdn-Button--primaryInverse mdn-Button--sm  gtm-link-event']", "xpath");
+    }
 }

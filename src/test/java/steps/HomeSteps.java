@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.HomePage;
 import support.BaseSteps;
@@ -47,5 +48,15 @@ public class HomeSteps extends BaseSteps {
     @E("selecionar o plano de id {string} do carrossel da Home clicando no botão Mais detalhes dele")
     public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoMaisDetalhesDele(String idPlano) {
         homePage.selecionarPDPCard(idPlano);
+    }
+
+    @Quando("o usuário clicar no botão: [Entrar]")
+    public void clicaNoBotaoEntrar() {
+        homePage.clicaBotaoEntrar();
+    }
+
+    @Então("validar que foi direcionado para a Home")
+    public void validarQueFoiDirecionadoParaAHome() {
+
     }
 }

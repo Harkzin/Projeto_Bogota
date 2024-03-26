@@ -7,9 +7,12 @@ Funcionalidade: Troca Controle - Bloqueio Cliente Dependente
   @troca
   @bloqueioClienteDependente
   Cenario: Bloqueio cliente Dependente
-    Dado que acesso a Loja Online
-    E selecionar o plano de id "17216" do carrossel da Home clicando no botão Eu quero! dele
-    E validar que não há alterações no valor e nas informações do Plano
-    E preencho os campos Telefone com DDD "11947480152", E-mail "eutesteauto@outlook.com" e CPF "53704918873"
-    Quando clicar no botão "Eu quero!"
-    Então validar que foi exibida uma mensagem de erro "Verificamos que a linha informada é um dependente. Somente o titular pode realizar as alterações no plano."
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o plano de id "17218" do carrossel da Home
+    Então é direcionado para a tela de Carrinho
+    E não deve haver alterações no valor e nas informações do Plano
+    E seleciona o fluxo "Migração"
+    E preenche os campos: Telefone com DDD "11947626685", E-mail "clordertest@mailsac.com" e CPF "48064730813"
+
+    Quando o usuário clicar no botão Eu quero! do Carrinho
+    E será exibida a mensagem de erro: "Verificamos que a linha informada é um dependente. Somente o titular pode realizar as alterações no plano."

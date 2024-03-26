@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
@@ -38,8 +39,20 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.aceitarTermos();
     }
 
-    @Quando("o usuário clicar no botão Continuar da tela de Customizar Fatura")
+    @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura")
     public void clicarContinuar() {
         customizarFaturaPage.clicarContinuar();
+    }
+
+    @E("clicar no botão [Ok, entendi]")
+    public void oUsuarioClicaNoBotaoOkEntendi() { customizarFaturaPage.clickOkEntendi();
+    }
+
+    @E("clicar no botão [Não concordo]")
+    public void oUsuarioClicaNoBotaoNaoConcordo() { customizarFaturaPage.clickNaoConcordo();
+    }
+
+    @Então("é direcionado para a tela de Cliente Combo")
+    public void direcionadoParaATelaDeClienteCombo() { customizarFaturaPage.direcionadoParaCombo();
     }
 }

@@ -39,18 +39,18 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.inserirEmail(email);
     }
 
-    @Então("validar que foi exibida uma mensagem de erro {string}")
-    public void validarQueFoiExibidaUmaMensagemDeErro(String mensagem) {
+
+
+    @Então("será exibida a mensagem de erro: {string}")
+    public void validaQueFoiExibidaUmaMensagemDeErro(String mensagem) {
         carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
-    }
-
-    @Então("validar que foi direcionado para a Home")
-    public void validarQueFoiDirecionadoParaAHome() {
-
     }
 
     @Quando("o usuário clicar no botão Eu quero! do Carrinho")
     public void clicarEuQuero() {
         carrinhoPage.clicarEuQuero();
     }
+
+    @Então("é direcionado pra tela de Customizar Fatua, com alerta de multa")
+    public void direcionadoPraTelaDeMulta() { carrinhoPage.direcionadoParaMulta();}
 }

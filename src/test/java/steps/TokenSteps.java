@@ -1,6 +1,8 @@
 package steps;
 
 import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
 import pages.TokenPage;
 import support.BaseSteps;
 
@@ -11,9 +13,19 @@ public class TokenSteps extends BaseSteps {
 
     public static String token;
 
-    @E("^preencho o campo Código enviado Por SMS com o TOKEN recebido$")
-    public void preenchoOCampoCódigoEnviadoPorSMSComOTOKENRecebido() throws Throwable {
+    @E("preenche o campo [Código enviado Por SMS] com o token recebido")
+    public void preenchoOCampoCódigoEnviadoPorSMSComOTOKENRecebido() {
         token = getAccessToken("https://api.cokecxf-commercec1-" + System.getProperty("env", "S6").toLowerCase() + "-public.model-t.cc.commerce.ondemand.com");
         tokenPage.preencherToken();
+    }
+
+    @Entao("é direcionado para a tela de SMS")
+    public void eDirecionadoParaATelaDeToken() {
+        tokenPage.validarPaginaSMS();
+    }
+
+    @Quando("o usuário clicar no botão [Continuar] da tela de SMS")
+    public void oUsuarioClicarNoBotaoContinuarDaTelaDeToken() {
+        tokenPage.clicaBtnFinalizar();
     }
 }

@@ -7,6 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 
 import support.DriverQA;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CustomizarFaturaPage {
     private final DriverQA driverQA;
 
@@ -77,5 +80,28 @@ public class CustomizarFaturaPage {
 
     public void clicarContinuar() {
         driverQA.JavaScriptClick("btn-continuar", "id");
+    }
+
+    public void clickOkEntendi() {driverQA.JavaScriptClick("btn-ok-entendi", "id");
+    }
+
+    public void clickNaoConcordo() {driverQA.JavaScriptClick("btn-nao-concordo", "id");
+    }
+
+    public void direcionadoParaCombo() {
+        driverQA.waitPageLoad("/claro/pt/checkout/multi/terms-and-conditions", 10);
+
+        WebElement body = driverQA.findElement("body", "tag");
+        String textoComboMulti = body.getText();
+
+        Pattern padrao = Pattern.compile("Parabéns, [A-Z]+!\\s+Como você já é combo, seu bônus está garantido!\\s+Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.");
+
+        Matcher matcher = padrao.matcher(textoComboMulti);
+
+        if (matcher.find()) {
+            System.out.println("O texto foi encontrado: " + matcher.group());
+        } else {
+            System.out.println("O texto não foi encontrado.");
+        }
     }
 }

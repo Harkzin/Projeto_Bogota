@@ -9,14 +9,22 @@ Funcionalidade: Migracao Controle para Pos Combo Multi
   @boleto
   @migracaoControlecomboMulti
   Cenario: Migracao Controle para Pos Combo Multi
-    Dado que acesso a Loja Online
-    E selecionar o plano de id "17270" do carrossel da Home clicando no botão Eu quero! dele
-    E validar que não há alterações no valor e nas informações do Plano
-    E preencho os campos Telefone com DDD "11947620656", E-mail "claroqualidade3@gmail.com" e CPF "330.568.571-98"
-    E clicar no botão "Eu quero!"
-    E validar a mensagem de cliente combo multi
-    E marco o checkbox de termos de aceite thab
-    E clicar no botão "Continuar pagamento"
-    E preencho o campo Código enviado Por SMS com o TOKEN recebido
-    Quando clicar no botão "Finalizar"
-    Entao validar que não há alterações no valor e/ou informações do Plano na tela de parabens
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o plano de id "17216" do carrossel da Home
+    Então é direcionado para a tela de Carrinho
+    E não deve haver alterações no valor e nas informações do Plano
+    E seleciona o fluxo "Migração"
+    E preenche os campos: Telefone com DDD "11947627466", E-mail "clordertest@mailsac.com" e CPF "33637686058"
+
+    Quando o usuário clicar no botão Eu quero! do Carrinho
+    Então é direcionado para a tela de Cliente Combo
+    E marca o checkbox de termos de aceite
+
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura
+    Entao é direcionado para a tela de SMS
+    E preenche o campo [Código enviado Por SMS] com o token recebido
+
+    Quando o usuário clicar no botão [Continuar] da tela de SMS
+    Entao é direcionado para a tela de Parabéns
+    E não deve haver alterações no valor e nas informações do Plano
+    E os dados do pedido estão corretos

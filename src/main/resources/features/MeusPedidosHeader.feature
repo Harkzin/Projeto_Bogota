@@ -6,15 +6,28 @@ Funcionalidade: Validar Meus Pedidos Header
   @home
   @validaMeusPedidos
   Cenario: Validar Meus Pedidos Header
-    Dado que acesso a Loja Online
-    E clicar no botão "Entrar"
-    E preencher o campo Seu telefone Claro com o msidn "11947190768"
-    E clicar no botão "Acessar"
-    E validar que o botão Entrar foi alterado para o "11947190768"
-    E clicar no botão "11947190768"
-    E clicar no botão "Meus pedidos"
-    E preencho com o Token
-    E validar que foi direcionado para a página de Meus Pedidos
+    Dado que o usuário acesse a Loja Online
+    Quando o usuário clicar no botão: [Entrar]
+    Entao é direcionado para a tela de Login
+
+    Quando o usuário clicar na opção: [Acompanhar pedidos]
+    Entao é direcionado para a tela de acompanhamento do usuário
+
+    Quando o usuário clicar na opção: [Acompanhar Meus Pedidos]
+    Então  é direcionado para a tela de Pedidos
+    E preenche o campo: [CPF] da página de login de Pedidos
+
+    Quando o usuário clica no botão: [Continuar]
+    Então é direcionado para a tela de Token da tela de Meus pedidos
+    E seleciona a forma de recebimento do token: [E-mail]
+    E é direcionado para a tela de token
+
+    Quando o usuário clicar no botão: [Continuar]
+    Então preenche o campo Código Token
+
+    Quando o usuário clicar no botão: [Continuar]
+    Então é direcionado para a tela: Meus Pedidos
+
     E validar que foi exibido o Número do pedido, Data do pedido e o Status do(s) pedido(s) já realizado(s) anteriormente
     E acessar o pedido mais recente, clicando no Número do pedido dele
-    Entao validar que foi direcionado para a página de acompanhamento de pedido
+    E validar que foi direcionado para a página de acompanhamento de pedido

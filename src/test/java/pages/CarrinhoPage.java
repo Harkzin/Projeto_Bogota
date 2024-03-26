@@ -1,9 +1,13 @@
 package pages;
 
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import support.DriverQA;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static support.RestAPI.checkCpfDiretrix;
 import static support.RestAPI.getCpf;
@@ -88,10 +92,25 @@ public class CarrinhoPage {
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
-        String xpathMsgErroBloqueioDependente = "(//*[@id='cboxLoadedContent'])";
-
-        //driverQA.waitElementVisibility(xpathMsgErroBloqueioDependente, "id");
-        Assert.assertEquals(mensagem, driverQA.getText(xpathMsgErroBloqueioDependente, "xpath").substring(0, 106));
-        Assert.assertEquals("Favor informar a linha titular.", driverQA.getText(xpathMsgErroBloqueioDependente, "xpath").substring(108, 139));
+        String msgErroBloqueioDependente = "cboxLoadedContent";
+        Assert.assertEquals(mensagem, driverQA.getText(msgErroBloqueioDependente, "id").substring(0, 106));
+        Assert.assertEquals("Favor informar a linha titular.", driverQA.getText(msgErroBloqueioDependente, "id").substring(108, 139));
     }
-}
+
+    public void direcionadoParaMulta() {
+        WebElement tituloMulta = driverQA.findElement( "(//p[@class='mdn-Subtitle--md strong mdn-u-marginBottom--xs'])[1]", "xpath");
+        String tituloTexto = tituloMulta.getText();
+
+        String regex = "R\\$ \\d{1,3},\\d{2}";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(tituloTexto);
+        String valorMulta = "";
+        if (matcher.find()) { valorMulta = matcher.group(0); }
+        Assert.assertTrue(tituloTexto.contains("Identificamos que a alteração de plano gerará uma multa contratual no valor de " + valorMulta));
+
+        WebElement subtituloElement = driverQA.findElement( "(//p[@class='mdn-Subtitle--xs'])[1]", "xpath");
+        String subtituloTexto = subtituloElement.getText();
+        Assert.assertEquals(subtituloTexto, "Caso queira seguir com a contratação deste plano, a multa será cobrada de uma única vez, em sua próxima fatura.");
+
+    }
+    }
