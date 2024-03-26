@@ -26,6 +26,6 @@ public class Hooks extends BaseSteps {
 
     @After(order = 1)
     public void closeBrowser() {
-        driverQA.quit();
+        driverQA.getDriver().quit();
     }
 }

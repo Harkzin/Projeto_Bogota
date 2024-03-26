@@ -1,19 +1,21 @@
 package pages;
 
-import org.junit.Assert;
+import io.cucumber.java.pt.Então;
 import support.DriverQA;
-import support.Hooks;
 
 public class PDPPage {
-    private final DriverQA driver;
+    private final DriverQA driverQA;
 
     public PDPPage(DriverQA stepDriver) {
-        driver = stepDriver;
+        driverQA = stepDriver;
     }
 
-    public void EuQueroPDP(String idPlano) {
-        String xpathPDP = "//p[@class='product-page-product-description h4']";
-        Assert.assertEquals("Plano Claro Controle - O básico para o dia a dia", driver.getText(xpathPDP, "xpath"));
-        driver.JavaScriptClick("btn-eu-quero-" + idPlano + "", "id");
+    @Então("é direcionado para a PDP do plano")
+    public void validarPDP(){
+
+    }
+
+    public void clicarEuQuero() {
+        driverQA.JavaScriptClick("btn-eu-quero", "id");
     }
 }

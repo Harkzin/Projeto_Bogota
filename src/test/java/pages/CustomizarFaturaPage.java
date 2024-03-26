@@ -20,24 +20,24 @@ public class CustomizarFaturaPage {
     private final String NaoConcordo = "//*[@data-multa-action='goStep2']";
     private final String ClicarOKEntendi = "//*[@data-multa-action='backHome']";
 
-    private void validaCamposDebito() {
+    private void validarCamposDebito() {
         Select selectBanco = new Select(driverQA.findElement("slc-banco", "id"));
         Assert.assertEquals(selectBanco.getFirstSelectedOption().getText(), "Banco");
 
         WebElement agencia = driverQA.findElement("slc-agencia", "id");
         Assert.assertEquals(agencia.getAttribute("value"), "");
-        //Assert.assertEquals(agencia.getAttribute("disabled"), "disabled");
+        Assert.assertFalse(agencia.isEnabled());
 
         WebElement conta = driverQA.findElement("slc-conta", "id");
         Assert.assertEquals(conta.getAttribute("value"), "");
-        //Assert.assertEquals(conta.getAttribute("disabled"), "disabled");
+        Assert.assertFalse(conta.isEnabled());
     }
 
     public void validarPaginaCustomizarFatura() {
         driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
 
         if (driverQA.findElement(pagamentoDebito, "id").findElement(By.tagName("input")).isSelected()) {
-            validaCamposDebito();
+            validarCamposDebito();
         }
     }
 
@@ -46,7 +46,7 @@ public class CustomizarFaturaPage {
         driverQA.JavaScriptClick(pagamentoDebitoElement.findElement(By.tagName("div")));
         Assert.assertTrue(pagamentoDebitoElement.findElement(By.tagName("input")).isSelected());
 
-        validaCamposDebito();
+        validarCamposDebito();
     }
 
     public void selecionarBoleto() {
@@ -67,7 +67,7 @@ public class CustomizarFaturaPage {
     }
 
     public void aceitarTermos() {
-        String termos = (driverQA.findElement(pagamentoDebito, "id").findElement(By.tagName("input")).isSelected()) ? "chk-termos-debit" : "chk-termos-ticket";
+        String termos = (driverQA.findElement(pagamentoDebito, "id").findElement(By.tagName("input")).isSelected()) ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment";
 
         WebElement termosElement = driverQA.findElement(termos, "id");
         driverQA.JavaScriptClick(termosElement);

@@ -1,18 +1,24 @@
 #language: pt
 
-@regressivo
-Funcionalidade: Aquisicao Pós - Bloqueio para CEP diferente da regionalização
+@Regressivo
+Funcionalidade: Cenário de erro - Aquisição Pós - Bloqueio para CEP diferente da regionalização
 
-  @pos
-  @aquisicao
-  @bloqueioCEPdiferente
+  @Aquisicao
+  @Pos
+  @AquisicaoPosBloqueioCepDiferente
   Cenario: Bloqueio para CEP diferente da regionalização
-    Dado que acesso a Loja Online
-    E selecionar o plano de id "17270" do carrossel da Home clicando no botão Eu quero! dele
-    E validar que não há alterações no valor e nas informações do Plano
-    E preencho os campos Celular de contato "11999999988", E-mail "eutesteauto@outlook.com" e CPF [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
-    E clicar no botão "Eu quero!"
-    E preencho os campos Nome Completo "AQS CONVENCIONAL", Data De Nascimento "09/10/1980" e Nome da Mãe "Marta Silva"
-    E preencho os campos "50030030", "65" e "apt 81" no endereço
-    Quando clicar no botão "Continuar"
-    Então validar que foi exibida uma mensagem de erro do cep "O CEP deve ser do mesmo estado (UF) do DDD escolhido"
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o plano de id "17218" do carrossel da Home
+    Então é direcionado para a tela de Carrinho
+    E não deve haver alterações no valor e nas informações do Plano
+    E seleciona o fluxo "Aquisição"
+    E preenche os campos: Celular de contato "11999999988", E-mail "clordertest@mailsac.com" e CPF [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+
+    Quando o usuário clicar no botão Eu quero! do Carrinho
+    Então é direcionado para a tela de Dados Pessoais
+    E não deve haver alterações no valor e nas informações do Plano
+    E preenche os campos de informações pessoais: Nome Completo "ECOMMAUT AQSBLOQUEIOCEP", Data De Nascimento "01011991" e Nome da Mãe "Marta Silva"
+    E preenche os campos de endereço: CEP "21060070", Número "65" e Complemento "AP202"
+
+    Quando o usuário clicar no botão Continuar da tela de Dados Pessoais
+    Então será exibida a mensagem de erro e não será possível continuar: "O CEP deve ser do mesmo estado (UF) do DDD escolhido"

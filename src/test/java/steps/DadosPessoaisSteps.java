@@ -10,7 +10,7 @@ public class DadosPessoaisSteps extends BaseSteps {
     DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
 
     @Então("é direcionado para a tela de Dados Pessoais")
-    public void validarDadosPessoais(){
+    public void validarPaginaDadosPessoais() {
         dadosPessoaisPage.validarPaginaDadosPessoais();
     }
 
@@ -20,12 +20,13 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.inserirDataNascimento(data);
         dadosPessoaisPage.inserirNomeMae(nomeMae);
     }
-    @Então("validar que foi exibida uma mensagem de erro do cep {string}")
-    public void validarQueFoiExibidaUmaMensagemDeErroDoCep(String mensagem) {
-        dadosPessoaisPage.validarMensagemBloqueiocep(mensagem);
+
+    @Então("será exibida a mensagem de erro e não será possível continuar: {string}")
+    public void validarMensagemDeErroDoCep(String mensagem) {
+        dadosPessoaisPage.validarMensagemBloqueioCep(mensagem);
     }
 
-    @E("preenche os campos de endereço: CEP {string}, Número {string} e Complemento {string}")
+    @E("preenche os campos de endereço: [CEP] com um CEP de entrega {string}, [Número] {string} e [Complemento] {string}")
     public void preencheCamposEndereco(String cep, String numero, String complemento) {
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);

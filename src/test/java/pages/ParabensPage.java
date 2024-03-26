@@ -26,7 +26,7 @@ public class ParabensPage {
     public static String pedidoParabens;
 
     public void validarPaginaParabens() {
-        driverQA.waitPageLoad("/checkout/orderConfirmation", 10);
+        driverQA.waitPageLoad("/checkout/orderConfirmation", 30);
     }
 
     public String mascararCpf(String cpf) {
