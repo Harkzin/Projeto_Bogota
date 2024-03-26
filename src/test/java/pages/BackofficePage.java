@@ -25,7 +25,7 @@ public class BackofficePage extends BaseSteps {
     public void acessarTelaBKO() {
         String environment = System.getProperty("env", "S6");
         String url = BASE_URL + environment + LOGIN_URL_SUFFIX;
-        driver.openURL(url);
+        driver.getDriver().get(url);
         //driver.waitElementVisibility(nameTxtUsuario, "name");
         driver.waitSeconds(10);
         String acessoBackoffice = "ecomplanos-backoffice";

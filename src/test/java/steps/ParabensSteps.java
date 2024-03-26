@@ -9,7 +9,7 @@ public class ParabensSteps extends BaseSteps {
     ParabensPage parabensPage = new ParabensPage(driverQA);
 
     @Então("é direcionado para a tela de Parabéns")
-    public void validarParabens() {
+    public void validarPaginaParabens() {
         parabensPage.validarPaginaParabens();
     }
 

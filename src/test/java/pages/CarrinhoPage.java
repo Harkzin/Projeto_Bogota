@@ -22,8 +22,6 @@ public class CarrinhoPage {
     private final String fluxoMigracao = "rdn-migracao";
     private final String fluxoPortabilidade = "rdn-portabilidade";
     private final String fluxoAquisicao = "rdn-aquisicao";
-    public static String telefoneCliente; //Refactor
-    public static String cpfCliente; //Refactor
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) throws IOException, InterruptedException {
         String cpf;
@@ -46,9 +44,9 @@ public class CarrinhoPage {
         Assert.assertNotNull(driverQA.findElement(fluxoAquisicao, "id"));
     }
 
-    public void selecionaFluxo(String fluxo) {
+    public void selecionarFluxo(String fluxo) {
         switch (fluxo) {
-            case "Migração":
+            case "Migração/Troca":
                 driverQA.JavaScriptClick(fluxoMigracao, "id");
                 break;
             case "Portabilidade":
@@ -57,6 +55,10 @@ public class CarrinhoPage {
             case "Aquisição":
                 driverQA.JavaScriptClick(fluxoAquisicao, "id");
         }
+    }
+
+    public void acessarUrlCarrinho(String url) {
+        driverQA.getDriver().get(url);
     }
 
     public void inserirDadosBase(String telefone, String cpf) {

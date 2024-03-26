@@ -11,7 +11,7 @@ public class CustomizarFaturaSteps extends BaseSteps {
     CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA);
 
     @Entao("é direcionado para a tela de Customizar Fatura")
-    public void validarCustomizarFatura() {
+    public void validarPagiaCustomizarFatura() {
         customizarFaturaPage.validarPaginaCustomizarFatura();
     }
 

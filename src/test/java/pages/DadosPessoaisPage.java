@@ -2,9 +2,10 @@ package pages;
 
 import org.junit.Assert;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
-import support.Hooks;
 
 public class DadosPessoaisPage {
     private final DriverQA driverQA;
@@ -12,8 +13,22 @@ public class DadosPessoaisPage {
     public DadosPessoaisPage(DriverQA stepDriver) {
         driverQA = stepDriver;
     }
-    private final String numero = "txt-numero-endereco-entrega";
-    private final String complemento = "txt-complemento-endereco-entrega";
+
+    public enum CEP {
+        CONVECIONAL("01001001"),
+        EXPRESSA_AQUISICAO("01001000"),
+        EXPRESSA_PORTABILIDADE("01001010");
+
+        private final String cep;
+
+        private CEP(final String cep) {
+            this.cep = cep;
+        }
+
+        public String getCEP() {
+            return cep;
+        }
+    }
 
     // Variaveis criadas para utilizacao de validacao na tela de parabens
     public static String nomeCliente;
@@ -41,7 +56,18 @@ public class DadosPessoaisPage {
         driverQA.actionSendKeys("txt-nome-mae", "id", nomeMae);
     }
 
-    public void inserirCep(String cep) {
+    public void inserirCep(String tipoEntrega) {
+        final String cep;
+        final boolean expressa;
+
+        if (tipoEntrega.equals("convencional")) {
+            cep = "01001001";
+            expressa = false;
+        } else { //expressa
+            cep = ((JavascriptExecutor) driverQA.getDriver()).executeScript("return ACC.processType").toString().equals("ACQUISITION") ? "01001000" : "01001010"; //expressa aquisição ou expressa port
+            expressa = true;
+        }
+
         driverQA.actionSendKeys("txt-cep-endereco-entrega", "id", cep);
 
         WebElement enderecoElement = driverQA.findElement("txt-endereco-endereco-entrega", "id");
@@ -51,18 +77,37 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals(driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals(driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
 
-        cepCliente = cep; //Refactor
+        WebElement enderecoCobrancaElement = driverQA.findElement("endereco-cobranca_checkbox", "id");
+        WebElement enderecoCobrancaParentElement = enderecoCobrancaElement.findElement(By.xpath("../../..")); //div pai do pai do pai do checkbox
+
+        if (!expressa) {
+            Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommom", "id").isSelected());
+            Assert.assertTrue(driverQA.findElement("rdn-convencional", "id").isSelected());
+            Assert.assertFalse(enderecoCobrancaParentElement.isDisplayed());
+        } else {
+            Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommomExpress", "id").isSelected());
+            Assert.assertTrue(driverQA.findElement("rdn-entrega-expressa", "id").isSelected());
+
+            Assert.assertTrue(enderecoCobrancaParentElement.isDisplayed());
+            Assert.assertTrue(enderecoCobrancaElement.isSelected());
+        }
     }
 
     public void inserirDadosEndereco(String numero, String complemento) {
-        driverQA.actionSendKeys(this.numero, "id", numero);
-        driverQA.actionSendKeys(this.complemento, "id", complemento);
+        WebElement numeroElement = driverQA.findElement("txt-numero-endereco-entrega", "id");
+        WebElement complementoElement = driverQA.findElement("txt-complemento-endereco-entrega", "id");
+
+        Assert.assertEquals(numeroElement.getAttribute("value"), "");
+        Assert.assertEquals(complementoElement.getAttribute("value"), "");
+
+        driverQA.actionSendKeys(numeroElement, numero);
+        driverQA.actionSendKeys(complementoElement, complemento);
     }
 
-    public void validarMensagemBloqueiocep(String mensagem) {
+    public void validarMensagemBloqueioCep(String mensagem) {
         String msgErroCEP = "//*[@id='postcode_deliveryAddress-error']";
-        //driverQA.waitElementVisibility(msgErroCEP, "xpath");
-        Assert.assertEquals(mensagem, driverQA.getText(msgErroCEP, "id"));
+
+        Assert.assertEquals(mensagem, driverQA.findElement(msgErroCEP, "id").getText());
     }
 
     public void clicarContinuar() {

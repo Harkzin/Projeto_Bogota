@@ -11,10 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.Duration.ofMillis;
 import static java.time.Duration.ofSeconds;
 
 public class DriverQA {
@@ -154,40 +152,6 @@ public class DriverQA {
         act.click(element).perform();
     }
 
-    public void submit(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        element.submit();
-    }
-
-    public void clear(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        element.clear();
-    }
-
-    public void openURL(String url) {
-        driver.get(url);
-    }
-
-    public void quit() {
-        driver.quit();
-    }
-
-    public void close() {
-        driver.close();
-    }
-
-    public void refresh() {
-        driver.navigate().refresh();
-    }
-
-    public String getCurrentURL() {
-        return driver.getCurrentUrl();
-    }
-
-    public String getTitle() {
-        return driver.getTitle();
-    }
-
     public boolean isEnabled(String selectorValue, String selectorType) {
         WebElement element = findElement(selectorValue, selectorType);
         return element.isEnabled();
@@ -196,11 +160,6 @@ public class DriverQA {
     public boolean isDisplayed(String selectorValue, String selectorType) {
         WebElement element = findElement(selectorValue, selectorType);
         return element.isDisplayed();
-    }
-
-    public boolean isSelected(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        return element.isSelected();
     }
 
     public void sendKeys(String selectorValue, String selectorType, String text) {
@@ -216,14 +175,15 @@ public class DriverQA {
         text.chars().forEach(c -> action.sendKeys(String.valueOf((char) c)).pause(Duration.ofMillis(50)).perform());
     }
 
+    public void actionSendKeys(WebElement element, String text) {
+        element.click();
+        Actions action = new Actions(driver);
+        text.chars().forEach(c -> action.sendKeys(String.valueOf((char) c)).pause(Duration.ofMillis(50)).perform());
+    }
+
     public String getText(String selectorValue, String selectorType) {
         WebElement element = findElement(selectorValue, selectorType);
         return element.getText();
-    }
-
-    public String getValue(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        return element.getAttribute("value");
     }
 
     public String getValueParam(String selectorValue, String selectorType, String attribute) {
@@ -233,10 +193,6 @@ public class DriverQA {
 
     public void waitSeconds(int time) {
         driver.manage().timeouts().implicitlyWait(ofSeconds(time));
-    }
-
-    public void waitMilliSeconds(int time) {
-        driver.manage().timeouts().implicitlyWait(ofMillis(time));
     }
 
     public void waitElementVisibility(String selectorValue, String selectorType, int timeoutSeconds) {
@@ -289,29 +245,6 @@ public class DriverQA {
     public void waitElementNotVisibleXP(String parXp) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(60));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(parXp)));
-    }
-
-    public void switchToWindow(String value) {
-        driver.switchTo().window(String.valueOf(value));
-    }
-
-    public void switchToFrameId(String parId) {
-        driver.switchTo().frame(driver.findElement(By.id(parId)));
-    }
-
-    public void switchToDefaultContent() {
-        driver.switchTo().defaultContent();
-    }
-
-    public void moveToElementAction(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        try {
-            Actions action = new Actions(driver);
-            action.moveToElement(element);
-            waitSeconds(1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void browserScroll(String direction, int coordinate) {
@@ -368,13 +301,9 @@ public class DriverQA {
         }
     }
 
-    public List<WebElement> findListElements(String selectorValue, String selectorType) {
-        return findElements(selectorValue, selectorType);
-    }
-
     public void sendKeysCampoMascara(String value, String selectorValue, String selectorType) {
         try {
-            WebElement element = findListElements(selectorValue, selectorType).get(0);
+            WebElement element = findElement(selectorValue, selectorType);
             char[] digits = value.toCharArray();
             for (char digit : digits) {
                 String sDigit = Character.toString(digit);
