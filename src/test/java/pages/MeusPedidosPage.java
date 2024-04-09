@@ -19,10 +19,6 @@ public class MeusPedidosPage {
         //driver.waitElementVisibility("//p[contains(text(), 'Status')]", "xpath");
     }
 
-    public void acessarPedidoMaisRecente() {
-        driver.JavaScriptClick("(//a[@class='order-table-code color-bf-light'])[1]", "xpath");
-    }
-
     public void validarPaginaDePedido() {
         //driver.waitElementVisibility("//h1[contains(text(), 'Detalhes do pedido')]", "xpath");
     }

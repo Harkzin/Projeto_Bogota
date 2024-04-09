@@ -45,13 +45,12 @@ public class HomeSteps extends BaseSteps {
         homePage.acessarPDP(idPlano);
     }
 
-    @Quando("o usuário clicar no botão: [Entrar]")
+    @Quando("o usuário clicar no botão [Entrar] do header")
     public void clicaNoBotaoEntrar() {
         homePage.clicaBotaoEntrar();
     }
-
     @Então("validar que foi direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
-
+        homePage.validarHomePage();
     }
 }

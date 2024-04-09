@@ -2,13 +2,10 @@ package pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
 import support.DriverQA;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CustomizarFaturaPage {
     private final DriverQA driverQA;
@@ -17,11 +14,7 @@ public class CustomizarFaturaPage {
         driverQA = stepDriver;
     }
 
-    private final String pagamentoDebito = "btn-aba-debito-automatico";
-
-    // Multa
-    private final String NaoConcordo = "//*[@data-multa-action='goStep2']";
-    private final String ClicarOKEntendi = "//*[@data-multa-action='backHome']";
+    private final String pagamentoDebito = "tab-debito-automatico";
 
     private void validarCamposDebito() {
         Select selectBanco = new Select(driverQA.findElement("slc-banco", "id"));
@@ -53,7 +46,7 @@ public class CustomizarFaturaPage {
     }
 
     public void selecionarBoleto() {
-        WebElement pagamentoBoletoElement = driverQA.findElement("btn-aba-boleto", "id");
+        WebElement pagamentoBoletoElement = driverQA.findElement("tab-boleto", "id");
         driverQA.JavaScriptClick(pagamentoBoletoElement.findElement(By.tagName("div")));
 
         Assert.assertTrue(pagamentoBoletoElement.findElement(By.tagName("input")).isSelected());
@@ -82,26 +75,23 @@ public class CustomizarFaturaPage {
         driverQA.JavaScriptClick("btn-continuar", "id");
     }
 
-    public void clickOkEntendi() {driverQA.JavaScriptClick("btn-ok-entendi", "id");
+    public void clickOkEntendi() {
+        driverQA.JavaScriptClick("btn-multa-entendi", "id");
     }
 
-    public void clickNaoConcordo() {driverQA.JavaScriptClick("btn-nao-concordo", "id");
+    public void clickNaoConcordo() {
+        driverQA.JavaScriptClick("btn-multa-nao-concordo", "id");
     }
 
-    public void direcionadoParaCombo() {
-        driverQA.waitPageLoad("/claro/pt/checkout/multi/terms-and-conditions", 10);
+    public void direcionadoParaMulta() {
+        driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
 
-        WebElement body = driverQA.findElement("body", "tag");
-        String textoComboMulti = body.getText();
+        Assert.assertNotNull(driverQA.findElement("txt-mensagem-multa", "id"));
+    }
 
-        Pattern padrao = Pattern.compile("Parabéns, [A-Z]+!\\s+Como você já é combo, seu bônus está garantido!\\s+Para sua comodidade, sua data de vencimento e forma de pagamento continuam a mesma.");
+    public void direcionadoParaTHAB() {
+        driverQA.waitPageLoad("checkout/multi/payment-method/add", 10);
 
-        Matcher matcher = padrao.matcher(textoComboMulti);
-
-        if (matcher.find()) {
-            System.out.println("O texto foi encontrado: " + matcher.group());
-        } else {
-            System.out.println("O texto não foi encontrado.");
-        }
+//        Assert.assertNotNull(driverQA.findElement("txt-controle-antecipado", "id"));
     }
 }

@@ -7,27 +7,21 @@ Funcionalidade: Validar Meus Pedidos Header
   @validaMeusPedidos
   Cenario: Validar Meus Pedidos Header
     Dado que o usuário acesse a Loja Online
-    Quando o usuário clicar no botão: [Entrar]
-    Entao é direcionado para a tela de Login
+    Quando o usuário clicar no botão [Entrar] do header
+    Entao é direcionado para a tela de opções da área logada
 
-    Quando o usuário clicar na opção: [Acompanhar pedidos]
-    Entao é direcionado para a tela de acompanhamento do usuário
+    Quando o usuário clicar na opção [Acompanhar pedidos]
+    Entao é direcionado para a tela de login com CPF
+    E preenche o campo [CPF] "74338520698"
 
-    Quando o usuário clicar na opção: [Acompanhar Meus Pedidos]
-    Então  é direcionado para a tela de Pedidos
-    E preenche o campo: [CPF] da página de login de Pedidos
+    Quando o usuário clicar no botão [Continuar]
+    Então é direcionado para a tela de opções de token
 
-    Quando o usuário clica no botão: [Continuar]
-    Então é direcionado para a tela de Token da tela de Meus pedidos
-    E seleciona a forma de recebimento do token: [E-mail]
-    E é direcionado para a tela de token
+    Quando selecionar a opção [Receber código por e-mail]
+    Então é direcionado para a tela de token por email
+    E preenche o campo [Digite o código recebido] com o código recebido
 
-    Quando o usuário clicar no botão: [Continuar]
-    Então preenche o campo Código Token
-
-    Quando o usuário clicar no botão: [Continuar]
-    Então é direcionado para a tela: Meus Pedidos
-
-    E validar que foi exibido o Número do pedido, Data do pedido e o Status do(s) pedido(s) já realizado(s) anteriormente
+    Quando o usuário clicar no botão [Continuar]
+    Então é direcionado para a tela Meus Pedidos
     E acessar o pedido mais recente, clicando no Número do pedido dele
-    E validar que foi direcionado para a página de acompanhamento de pedido
+    E validar que foi direcionado para a página de Detalhes de pedido

@@ -57,6 +57,14 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.clicarEuQuero();
     }
 
-    @Então("é direcionado pra tela de Customizar Fatua, com alerta de multa")
-    public void direcionadoPraTelaDeMulta() { carrinhoPage.direcionadoParaMulta();}
+    @Então("é direcionado para a tela de THAB")
+    public void eDirecionadoParaATelaDeTHAB() {
+        carrinhoPage.direcionadoParaTHAB();
+    }
+
+    @Quando("seleciona o plano de controle antecipado ofertado, clicando no botão [Eu Quero!] dele")
+    public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {
+//        carrinhoPage.clicarEuQuero();
+        carrinhoPage.clicarEuQueroTHAB();
+    }
 }

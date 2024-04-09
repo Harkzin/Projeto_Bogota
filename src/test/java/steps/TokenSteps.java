@@ -24,8 +24,8 @@ public class TokenSteps extends BaseSteps {
         tokenPage.validarPaginaSMS();
     }
 
-    @Quando("o usuário clicar no botão [Continuar] da tela de SMS")
-    public void oUsuarioClicarNoBotaoContinuarDaTelaDeToken() {
+    @Quando("o usuário clicar no botão [Finalizar] da tela de SMS")
+    public void oUsuarioClicarNoBotaoFinalizarDaTelaDeToken() {
         tokenPage.clicaBtnFinalizar();
     }
 }

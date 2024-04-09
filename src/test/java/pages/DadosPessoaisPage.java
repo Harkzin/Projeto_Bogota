@@ -56,7 +56,7 @@ public class DadosPessoaisPage {
         driverQA.actionSendKeys("txt-nome-mae", "id", nomeMae);
     }
 
-    public void inserirCep(String tipoEntrega) {
+    public void inserirCep(String tipoEntrega, boolean fluxoPre) {
         final String cep;
         final boolean expressa;
 
@@ -77,14 +77,15 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals(driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals(driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
 
-        WebElement enderecoCobrancaElement = driverQA.findElement("endereco-cobranca_checkbox", "id");
-        WebElement enderecoCobrancaParentElement = enderecoCobrancaElement.findElement(By.xpath("../../..")); //div pai do pai do pai do checkbox
+        if (!fluxoPre) {
+            WebElement enderecoCobrancaElement = driverQA.findElement("endereco-cobranca_checkbox", "id");
+            WebElement enderecoCobrancaParentElement = enderecoCobrancaElement.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
 
-        if (!expressa) {
-            Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommom", "id").isSelected());
-            Assert.assertTrue(driverQA.findElement("rdn-convencional", "id").isSelected());
-            Assert.assertFalse(enderecoCobrancaParentElement.isDisplayed());
-        } else {
+            if (!expressa) {
+                Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommom", "id").isSelected());
+                Assert.assertTrue(driverQA.findElement("rdn-convencional", "id").isSelected());
+                Assert.assertFalse(enderecoCobrancaParentElement.isDisplayed());
+            }
             Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommomExpress", "id").isSelected());
             Assert.assertTrue(driverQA.findElement("rdn-entrega-expressa", "id").isSelected());
 

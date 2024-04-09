@@ -28,12 +28,18 @@ public class DadosPessoaisSteps extends BaseSteps {
 
     @E("preenche os campos de endereço: [CEP] com um CEP de entrega {string}, [Número] {string} e [Complemento] {string}")
     public void preencheCamposEndereco(String cep, String numero, String complemento) {
-        dadosPessoaisPage.inserirCep(cep);
+        dadosPessoaisPage.inserirCep(cep, false);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 
     @Quando("o usuário clicar no botão Continuar da tela de Dados Pessoais")
     public void clicarContinuar() {
         dadosPessoaisPage.clicarContinuar();
+    }
+
+    @E("preenche os campos de endereço: [CEP] {string}, [Número] {string} e [Complemento] {string}")
+    public void preencheOsCamposDeEndereçoCEPNumeroEComplemento(String cep, String numero, String complemento) {
+        dadosPessoaisPage.inserirCep(cep, true);
+        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 }

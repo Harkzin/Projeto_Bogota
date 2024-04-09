@@ -27,6 +27,6 @@ public class TokenPage extends BaseSteps {
     }
 
     public void clicaBtnFinalizar() {
-        driverQA.JavaScriptClick("btn-continuar", "id");
+        driverQA.JavaScriptClick("btn-finalizar", "id");
     }
 }

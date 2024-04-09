@@ -45,14 +45,22 @@ public class CustomizarFaturaSteps extends BaseSteps {
     }
 
     @E("clicar no botão [Ok, entendi]")
-    public void oUsuarioClicaNoBotaoOkEntendi() { customizarFaturaPage.clickOkEntendi();
+    public void oUsuarioClicaNoBotaoOkEntendi() {
+        customizarFaturaPage.clickOkEntendi();
     }
 
     @E("clicar no botão [Não concordo]")
-    public void oUsuarioClicaNoBotaoNaoConcordo() { customizarFaturaPage.clickNaoConcordo();
+    public void oUsuarioClicaNoBotaoNaoConcordo() {
+        customizarFaturaPage.clickNaoConcordo();
     }
 
-    @Então("é direcionado para a tela de Cliente Combo")
-    public void direcionadoParaATelaDeClienteCombo() { customizarFaturaPage.direcionadoParaCombo();
+    @Então("é direcionado pra tela de Customizar Fatura, com alerta de multa")
+    public void direcionadoPraTelaDeMulta() {
+        customizarFaturaPage.direcionadoParaMulta();
+    }
+
+    @Então("é direcionado para a tela de fatura Cliente THAB")
+    public void eDirecionadoParaATelaDeFaturaClienteTHAB() {
+        customizarFaturaPage.direcionadoParaTHAB();
     }
 }

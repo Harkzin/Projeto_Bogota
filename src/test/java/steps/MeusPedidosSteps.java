@@ -19,11 +19,6 @@ public class MeusPedidosSteps extends BaseSteps {
         meusPedidosPage.validarNumeroDataEStatus();
     }
 
-    @E("^acessar o pedido mais recente, clicando no Número do pedido dele$")
-    public void acessarOPedidoMaisRecente() {
-        meusPedidosPage.acessarPedidoMaisRecente();
-    }
-
     @Então("^validar que foi direcionado para a página de acompanhamento de pedido$")
     public void validarQueFoiDirecionadoParaAPaginaDeAcompanhamento() {
         meusPedidosPage.validarPaginaDePedido();

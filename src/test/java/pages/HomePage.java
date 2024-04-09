@@ -38,4 +38,8 @@ public class HomePage {
 //        driverQA.JavaScriptClick("btn-entrar", "id");
         driverQA.JavaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-main-action mdn-Button mdn-Button--iconText mdn-Button--primaryInverse mdn-Button--sm  gtm-link-event']", "xpath");
     }
+
+    public void validarHomePage() {
+        driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
+    }
 }
