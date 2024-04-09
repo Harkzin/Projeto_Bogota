@@ -49,7 +49,7 @@ public class HomeSteps extends BaseSteps {
     public void clicaNoBotaoEntrar() {
         homePage.clicaBotaoEntrar();
     }
-    @Então("validar que foi direcionado para a Home")
+    @Então("é direcionado que foi direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
     }

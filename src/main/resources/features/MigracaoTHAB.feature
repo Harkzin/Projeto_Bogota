@@ -40,7 +40,7 @@ Funcionalidade: Migracao THAB
     E seleciona o método de recebimento da fatura: "E-mail"
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de SMS
     E preenche o campo [Código enviado Por SMS] com o token recebido
 

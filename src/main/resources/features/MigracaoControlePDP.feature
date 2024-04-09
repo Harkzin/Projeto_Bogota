@@ -27,22 +27,25 @@ Funcionalidade: Migração de Plano Controle - PDP - Cliente Boleto para Débito
 
     Quando o usuário clicar no botão Eu quero! da PDP
     Então é direcionado para a tela de Carrinho
-    E não deve haver alterações no valor e nas informações do Plano
+      Mas não deve haver alterações no valor e nas informações do Plano
     E seleciona o fluxo "Migração/Troca"
     E preenche os campos: [Telefone com DDD] "11947486000", [E-mail] "claroqualidade3@gmail.com" e [CPF] "94516280884"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
-    E não deve haver alterações no valor e nas informações do Plano
+      Mas não deve haver alterações no valor e nas informações do Plano
+      E não deve ser exibido as opções de pagamento
+      E não deve ser exibido os meios de recebimento da fatura
+      E não deve ser exibido as datas de vencimento
     E seleciona a forma de pagamento: "Débito"
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de SMS
     E não deve haver alterações no valor e nas informações do Plano
-    E preenche o campo [Código enviado Por SMS] com o Token recebido
+    E preenche o campo [Código enviado Por SMS] com o token recebido
 
-    Quando o usuário clicar no botão [Continuar] da tela de SMS
+    Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao é direcionado para a tela de Parabéns
     E não deve haver alterações no valor e nas informações do Plano
     E os dados do pedido estão corretos

@@ -6,10 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -67,64 +63,6 @@ public final class RestAPI {
         JsonNode node = objMapper.readTree(response.body());
 
         return response.statusCode() != 422 || !node.at("/error").get("detailedMessage").asText().equalsIgnoreCase("CPF não encontrado"); //CPF na Diretrix? = true, fora da Diretrix? = false, para testes deve ser false.
-    }
-
-    private static final DriverQA driver = new DriverQA();
-
-    public static String getAccessToken(String url) throws JSONException {
-        String paramAuth = url + "/authorizationserver/oauth/token?client_id=claro_client&client_secret=cl4r0&grant_type=client_credentials";
-        String paramToken = url + "/clarowebservices/v2/claro/checkout/step/token";
-
-        JSONObject requestParams = new JSONObject();
-        requestParams.put("grant_type", "client_credentials");
-        requestParams.put("client_secret", "cl4r0");
-        requestParams.put("client_id", "claro_client");
-
-        Map<String, Object> jsonObjectMap = toMap(requestParams);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = null;
-        try {
-            jsonString = objectMapper.writeValueAsString(jsonObjectMap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Response accessAuth =
-                given().
-                        body(jsonString).
-                        when().
-                        post(paramAuth).
-                        then().
-                        assertThat().statusCode(200).
-                        extract().response();
-
-        String auth = accessAuth.jsonPath().getString("access_token");
-
-        String requestBody = "{\n" +
-                "    \"cartGUID\":\"" + driver.getCookies().substring(11) + "\"\n" +
-                "}";
-
-        Response returnToken =
-                given().
-                        header("Content-Type", "application/json").
-                        auth().oauth2(auth).
-                        body(requestBody).
-                        when().
-                        post(paramToken).
-                        then().
-                        assertThat().statusCode(200).
-                        extract().response();
-
-        return returnToken.jsonPath().getString("validateTokenTest");
-    }
-
-    private static Map<String, Object> toMap(JSONObject json) throws JSONException {
-        Map<String, Object> map = new HashMap<>();
-        Iterator<String> keys = json.keys();
-        while (keys.hasNext()) {
-            String key = keys.next();
-            map.put(key, json.get(key));
-        }
-        return map;
     }
 
     public static String getMessageFirstId() throws JSONException, InterruptedException {

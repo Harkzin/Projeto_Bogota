@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
@@ -43,7 +44,7 @@ public class DriverQA {
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case "chrome":
-                    WebDriverManager.chromedriver().clearDriverCache().setup();
+                    WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
                     if (headless.equals("true")) {
                         chromeOptions.addArguments("--headless");
@@ -62,7 +63,6 @@ public class DriverQA {
             }
 
             //driver.manage().window().setSize(new Dimension(1920, 1080));
-            driver.manage().timeouts().implicitlyWait(ofSeconds(15));
             driver.manage().window().maximize();
         }
     }
@@ -169,15 +169,12 @@ public class DriverQA {
     }
 
     public void actionSendKeys(String selectorValue, String selectorType, String text) {
-        WebElement element = findElement(selectorValue, selectorType);
-        element.click();
-        Actions action = new Actions(driver);
-        text.chars().forEach(c -> action.sendKeys(String.valueOf((char) c)).pause(Duration.ofMillis(50)).perform());
+        actionSendKeys(findElement(selectorValue, selectorType), text);
     }
 
     public void actionSendKeys(WebElement element, String text) {
-        element.click();
         Actions action = new Actions(driver);
+        action.click(element);
         text.chars().forEach(c -> action.sendKeys(String.valueOf((char) c)).pause(Duration.ofMillis(50)).perform());
     }
 
@@ -329,9 +326,7 @@ public class DriverQA {
     }
 
     public void JavaScriptClick(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);
+        JavaScriptClick(findElement(selectorValue, selectorType));
     }
 
     public void JavaScriptClick(WebElement element) {

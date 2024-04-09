@@ -17,7 +17,7 @@ public class Hooks extends BaseSteps {
         tagScenarios = scenario.getSourceTagNames();
     }
 
-    @After(order = 3)
+    @After(order = 2)
     public void printScreen(Scenario scenario) throws InterruptedException {
         Thread.sleep(1000);
         byte[] screenshot = (((TakesScreenshot) driverQA.getDriver()).getScreenshotAs(OutputType.BYTES));

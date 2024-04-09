@@ -1,6 +1,6 @@
 package steps;
 
-import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.ComumPage;
 import pages.DadosPessoaisPage;
@@ -10,7 +10,7 @@ public class ComumSteps extends BaseSteps {
     ComumPage comumPage = new ComumPage(driverQA);
     DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
 
-    @E("não deve haver alterações no valor e nas informações do Plano")
+    @Mas("não deve haver alterações no valor e nas informações do Plano")
     public void validarResumoDaCompra() {
 
     }

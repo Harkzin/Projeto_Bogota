@@ -19,4 +19,4 @@ Funcionalidade: Troca Controle - Recusa multa
     E clicar no botão [Não concordo]
 
     Quando clicar no botão [Ok, entendi]
-    Então validar que foi direcionado para a Home
+    Então é direcionado que foi direcionado para a Home
