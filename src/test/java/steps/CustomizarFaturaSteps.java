@@ -15,7 +15,37 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.validarPaginaCustomizarFatura();
     }
 
-    @E("seleciona a forma de pagamento: {string}")
+    @E("deve ser exibido as opções de pagamento")
+    public void exibePagamento() {
+        customizarFaturaPage.validarMeiosPagamento(true);
+    }
+
+    @E("não deve ser exibido as opções de pagamento")
+    public void naoExibePagamento() {
+        customizarFaturaPage.validarMeiosPagamento(false);
+    }
+
+    @E("deve ser exibido os meios de recebimento da fatura")
+    public void exibeRecebimentoFatura() {
+        customizarFaturaPage.validarTiposFatura(true);
+    }
+
+    @E("não deve ser exibido os meios de recebimento da fatura")
+    public void naoExibeRecebimentoFatura() {
+        customizarFaturaPage.validarTiposFatura(false);
+    }
+
+    @E("deve ser exibido as datas de vencimento")
+    public void exibeDatasVencimento() {
+        customizarFaturaPage.validarDatasVencimento(true);
+    }
+
+    @E("não deve ser exibido as datas de vencimento")
+    public void naoExibeDatasVencimento() {
+        customizarFaturaPage.validarDatasVencimento(false);
+    }
+
+    @E("seleciona a forma de pagamento: {string}") //Débito ou Boleto
     public void selecionarPagamentoBoleto(String pagamento) {
         if (pagamento.equals("Débito")) {
             customizarFaturaPage.selecionarDebito();
@@ -24,7 +54,12 @@ public class CustomizarFaturaSteps extends BaseSteps {
         }
     }
 
-    @E("seleciona o método de recebimento da fatura: {string}")
+    @E("preenche os dados bancários")
+    public void preencherDadosBancarios() {
+        customizarFaturaPage.preencherDadosBancarios();
+    }
+
+    @E("seleciona o método de recebimento da fatura: {string}") //WhatsApp, E-mail ou Correios
     public void selecionarRecebimentoFatura(String fatura) {
         customizarFaturaPage.selecionarTipoFatura(fatura);
     }
@@ -39,20 +74,23 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.aceitarTermos();
     }
 
-    @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura")
+    @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos")
     public void clicarContinuar() {
         customizarFaturaPage.clicarContinuar();
     }
 
     @E("clicar no botão [Ok, entendi]")
-    public void oUsuarioClicaNoBotaoOkEntendi() { customizarFaturaPage.clickOkEntendi();
+    public void oUsuarioClicaNoBotaoOkEntendi() {
+        customizarFaturaPage.clickOkEntendi();
     }
 
     @E("clicar no botão [Não concordo]")
-    public void oUsuarioClicaNoBotaoNaoConcordo() { customizarFaturaPage.clickNaoConcordo();
+    public void oUsuarioClicaNoBotaoNaoConcordo() {
+        customizarFaturaPage.clickNaoConcordo();
     }
 
     @Então("é direcionado para a tela de Cliente Combo")
-    public void direcionadoParaATelaDeClienteCombo() { customizarFaturaPage.direcionadoParaCombo();
+    public void direcionadoParaATelaDeClienteCombo() {
+        customizarFaturaPage.direcionadoParaCombo();
     }
 }

@@ -1,25 +1,39 @@
 #language: pt
 
-@regressivo
-Funcionalidade: Aquisicao Controle - Reprovacao Clear Sale
+@Regressivo
+Funcionalidade: Gross - Aquisição - Planos
 
-  @controle
-  @aquisicao
-  @entregaConvencional
-  @boleto
-  @reprovacaoClearSale
+  @Aquisicao
+  @Controle
+  @AquisicaoControleReprovClearSale
   Cenario: Aquisicao Controle - Reprovacao Clear Sale
-    Dado que acesso a Loja Online
-    E selecionar o plano de id "17218" do carrossel da Home clicando no botão Eu quero! dele
-    E validar que não há alterações no valor e nas informações do Plano
-    E preencho os campos Celular de contato "11999999988", E-mail "eutesteauto@outlook.com" e CPF [CPF aprovado na clearSale? "false", CPF na diretrix? "false"]
-    E clicar no botão "Eu quero!"
-    E preencho os campos Nome Completo "AQS CONVENCIONAL", Data De Nascimento "09/10/1980" e Nome da Mãe "Marta Silva"
-    E preencho os campos "01001001", "65" e "apt 81" no endereço
-    E clicar no botão "Continuar"
-    E seleciono a forma de pagamento
-    E marco o checkbox de termos de aceite
-    Quando clicar no botão "Continuar pagamento"
-    Entao validar que não há alterações no valor e/ou informações do Plano na tela de parabens
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o plano de id "17218" do carrossel da Home
+    Então é direcionado para a tela de Carrinho
+      Mas não deve haver alterações no valor e nas informações do Plano
+    E seleciona o fluxo "Aquisição"
+    E preenche os campos: [Celular de contato] "11999999988", [E-mail] "clordertest@mailsac.com" e [CPF] [CPF aprovado na clearSale? "false", CPF na diretrix? "false"]
+
+    Quando o usuário clicar no botão [Eu quero!] do Carrinho
+    Então é direcionado para a tela de Dados Pessoais
+      Mas não deve haver alterações no valor e nas informações do Plano
+    E preenche os campos de informações pessoais: Nome Completo "ECOMMAUT AQSCTRL REPROVCLEAR", Data De Nascimento "01011991" e Nome da Mãe "NOME MAE"
+    E preenche os campos de endereço: [CEP] com um CEP de entrega "convencional", [Número] "65" e [Complemento] "AP202"
+
+    Quando o usuário clicar no botão Continuar da tela de Dados Pessoais
+    Então é direcionado para a tela de Customizar Fatura
+    Mas não deve haver alterações no valor e nas informações do Plano
+      E deve ser exibido as opções de pagamento
+      E deve ser exibido os meios de recebimento da fatura
+      E deve ser exibido as datas de vencimento
+    E seleciona a forma de pagamento: "Débito"
+    E preenche os dados bancários
+    E seleciona o método de recebimento da fatura: "WhatsApp"
+    E marca o checkbox de termos de aceite
+
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Então é direcionado para a tela de Parabéns
+      Mas não deve haver alterações no valor e nas informações do Plano
+    E os dados do pedido estão corretos
 
 

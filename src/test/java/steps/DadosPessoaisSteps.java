@@ -21,15 +21,15 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.inserirNomeMae(nomeMae);
     }
 
+    @E("preenche os campos de endereço: [CEP] com um CEP de entrega {string}, [Número] {string} e [Complemento] {string}")
+    public void preencherCamposEndereco(String cep, String numero, String complemento) {
+        dadosPessoaisPage.inserirCep(cep);
+        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+    }
+
     @Então("será exibida a mensagem de erro e não será possível continuar: {string}")
     public void validarMensagemDeErroDoCep(String mensagem) {
         dadosPessoaisPage.validarMensagemBloqueioCep(mensagem);
-    }
-
-    @E("preenche os campos de endereço: [CEP] com um CEP de entrega {string}, [Número] {string} e [Complemento] {string}")
-    public void preencheCamposEndereco(String cep, String numero, String complemento) {
-        dadosPessoaisPage.inserirCep(cep);
-        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 
     @Quando("o usuário clicar no botão Continuar da tela de Dados Pessoais")

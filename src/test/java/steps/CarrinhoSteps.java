@@ -12,9 +12,10 @@ import java.io.IOException;
 public class CarrinhoSteps extends BaseSteps {
     CarrinhoPage carrinhoPage = new CarrinhoPage(driverQA);
 
-    @Dado("que o usuário acesse a URL parametrizada para a oferta de rentabilização {string}")
+    @Dado("que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização {string}")
     public void acessarUrlCarrinho(String url) {
-        carrinhoPage.acessarUrlCarrinho(url);
+        carrinhoPage.acessarUrlRentabCarrinho(url);
+        carrinhoPage.validarPaginaCarrinho();
     }
 
     @Então("é direcionado para a tela de Carrinho")
@@ -22,7 +23,7 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validarPaginaCarrinho();
     }
 
-    @E("seleciona o fluxo {string}")
+    @E("seleciona o fluxo {string}") //Migração/Troca, Portabilidade, Aquisição
     public void selecionaFluxo(String fluxo) {
         carrinhoPage.selecionarFluxo(fluxo);
     }
@@ -45,8 +46,6 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.inserirEmail(email);
     }
 
-
-
     @Então("será exibida a mensagem de erro: {string}")
     public void validaQueFoiExibidaUmaMensagemDeErro(String mensagem) {
         carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
@@ -58,5 +57,7 @@ public class CarrinhoSteps extends BaseSteps {
     }
 
     @Então("é direcionado pra tela de Customizar Fatua, com alerta de multa")
-    public void direcionadoPraTelaDeMulta() { carrinhoPage.direcionadoParaMulta();}
+    public void direcionadoPraTelaDeMulta() {
+        carrinhoPage.direcionadoParaMulta();
+    }
 }

@@ -11,7 +11,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
         glue = {"steps", "support"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
-        tags = "@bloqueioCEPdiferente")
+        tags = "@TrocaControleRentabilizacaoDebito")
 
 public class RunnerTest {
 }
