@@ -35,6 +35,11 @@ public class CustomizarFaturaPage {
         driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
     }
 
+    public void validarPaginaTermosCombo() {
+        driverQA.waitPageLoad("checkout/multi/terms-and-conditions", 60);
+        isComboFlow = true;
+    }
+
     private void validarCamposDebito() {
         banco = new Select(driverQA.findElement("slc-banco", "id"));
         agencia = driverQA.findElement("slc-agencia", "id");

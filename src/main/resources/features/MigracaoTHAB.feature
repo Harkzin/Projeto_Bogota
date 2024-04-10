@@ -36,7 +36,7 @@ Funcionalidade: Migracao THAB
     Quando seleciona o plano de controle antecipado ofertado, clicando no botão [Eu Quero!] dele
     Então é direcionado para a tela de fatura Cliente THAB
     E não deve ser exibido as opções de pagamento
-    E deve ser exibido as datas de vencimento
+    E não deve ser exibido as datas de vencimento
     E seleciona o método de recebimento da fatura: "E-mail"
     E marca o checkbox de termos de aceite
 
