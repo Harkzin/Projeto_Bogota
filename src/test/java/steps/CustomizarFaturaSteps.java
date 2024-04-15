@@ -1,13 +1,16 @@
 package steps;
 
-import io.cucumber.java.pt.*;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Mas;
+import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
 
 public class CustomizarFaturaSteps extends BaseSteps {
     CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA);
 
-    @Entao("é direcionado para a tela de Customizar Fatura")
+    @Então("é direcionado para a tela de Customizar Fatura")
     public void validarPagiaCustomizarFatura() {
         customizarFaturaPage.validarPaginaCustomizarFatura();
     }
@@ -91,5 +94,10 @@ public class CustomizarFaturaSteps extends BaseSteps {
     public void eDirecionadoParaATelaDeFaturaClienteTHAB() {
         customizarFaturaPage.direcionadoParaTHAB();
         customizarFaturaPage.isThabFlow = true;
+    }
+
+    @Então("é direcionado para a tela de Termos Combo")
+    public void eDirecionadoParaATelaDeTermosCombo() {
+        customizarFaturaPage.validarPaginaTermosCombo();
     }
 }

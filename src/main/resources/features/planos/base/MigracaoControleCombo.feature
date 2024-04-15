@@ -15,7 +15,7 @@ Funcionalidade: Migracao Controle para Pos Combo Multi
     E preenche os campos: [Telefone com DDD] "11947627466", [E-mail] "clordertest@mailsac.com" e [CPF] "33637686058"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Então é direcionado para a tela de Termos Combo
     E marca o checkbox de termos de aceite
     E não deve ser exibido as opções de pagamento
     E não deve ser exibido os meios de recebimento da fatura
@@ -25,8 +25,6 @@ Funcionalidade: Migracao Controle para Pos Combo Multi
 
     Entao é direcionado para a tela de SMS
     E preenche o campo [Código enviado Por SMS] com o token recebido
-
-
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao é direcionado para a tela de Parabéns
