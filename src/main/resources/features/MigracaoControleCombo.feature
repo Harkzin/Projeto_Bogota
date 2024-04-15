@@ -1,11 +1,11 @@
 #language: pt
 
-@regressivo
-Funcionalidade: Migracao Controle para Pos Combo Multi
+@Regressivo
+Funcionalidade: Planos - Base
 
-  @migracao
-  @pos
-  @migracaoControlecomboMulti
+  @Migracao
+  @Pos
+  @MigracaoControlecomboMulti
   Cenario: Migracao Controle para Pos Combo Multi
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17270" do carrossel da Home

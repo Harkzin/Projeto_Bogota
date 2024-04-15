@@ -4,8 +4,10 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import org.apiguardian.api.API;
 import pages.LoginPage;
 import support.BaseSteps;
+import support.RestAPI;
 
 
 public class LoginSteps extends BaseSteps {
@@ -54,6 +56,8 @@ public class LoginSteps extends BaseSteps {
 
     @E("preenche o campo [Digite o código recebido] com o código recebido")
     public void preencheOCampoDigiteOCodigoRecebidoComOCodigoRecebido() {
+        String token = RestAPI.buscarToken;
+        loginPage.preencheCodigoToken(token);
     }
 
     @Então("é direcionado para a tela Meus Pedidos")

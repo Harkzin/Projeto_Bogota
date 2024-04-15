@@ -25,16 +25,6 @@ public class HomeSteps extends BaseSteps {
         homePage.preencherCampoSeuTelefoneHeader(msisdn);
     }
 
-    @E("validar que o botão Entrar foi alterado para o {string}")
-    public void validarQueOBotaoEntrarFoiAlteradoParaO(String cliente) {
-        homePage.validarClienteMeusPedidos(cliente);
-    }
-
-    @E("preencho com o Token")
-    public void preenchoComOToken() {
-//        homePage.tokenTemp();
-    }
-
     @E("clicar na PLP do plano")
     public void clicarNaPLP() {
         //homePage.clicarPLP();
@@ -49,7 +39,7 @@ public class HomeSteps extends BaseSteps {
     public void clicaNoBotaoEntrar() {
         homePage.clicaBotaoEntrar();
     }
-    @Então("é direcionado que foi direcionado para a Home")
+    @Então("é direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
     }

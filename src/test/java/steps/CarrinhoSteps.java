@@ -2,7 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import pages.CarrinhoPage;
 import support.BaseSteps;
@@ -18,7 +18,7 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validarPaginaCarrinho();
     }
 
-    @Então("é direcionado para a tela de Carrinho")
+    @Entao("é direcionado para a tela de Carrinho")
     public void validarCarrinho() {
         carrinhoPage.validarPaginaCarrinho();
     }
@@ -46,7 +46,7 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.inserirEmail(email);
     }
 
-    @Então("será exibida a mensagem de erro: {string}")
+    @Entao("será exibida a mensagem de erro: {string}")
     public void validaQueFoiExibidaUmaMensagemDeErro(String mensagem) {
         carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
     }
@@ -56,13 +56,13 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.clicarEuQuero();
     }
 
-    @Então("é direcionado para a tela de THAB")
-    public void eDirecionadoParaATelaDeTHAB() {
-        carrinhoPage.direcionadoParaTHAB();
-    }
-
-    @Quando("seleciona o plano de controle antecipado ofertado, clicando no botão [Eu Quero!] dele")
+    @Quando("seleciona o plano de controle antecipado ofertado")
     public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {
         carrinhoPage.clicarEuQueroTHAB();
+    }
+
+    @Entao("será exibida a mensagem de erro Bloqueio Dependente")
+    public void eExibidaAMensagemDeErroBloqueioDependente() {
+        carrinhoPage.validaMsgBloqueioDependente();
     }
 }

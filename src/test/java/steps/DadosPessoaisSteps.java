@@ -32,7 +32,7 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.validarMensagemBloqueioCep(mensagem);
     }
 
-    @Quando("o usuário clicar no botão Continuar da tela de Dados Pessoais")
+    @Quando("o usuário clicar no botão [Continuar] da tela de Dados Pessoais")
     public void clicarContinuar() {
         dadosPessoaisPage.clicarContinuar();
     }

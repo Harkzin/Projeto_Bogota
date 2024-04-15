@@ -21,6 +21,8 @@ import static java.time.Duration.ofSeconds;
 
 public final class RestAPI {
 
+    public static String buscarToken;
+
     private RestAPI() {
     }
 
@@ -81,5 +83,8 @@ public final class RestAPI {
     public static String getPedidoEnderecoNome(String messageId) throws JSONException {
         Response response = get("https://mailsac.com/api/text/clordertest@mailsac.com/" + messageId + "?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
         return response.getBody().asString();
+    }
+    public static String buscarToken() {
+        return null;
     }
 }

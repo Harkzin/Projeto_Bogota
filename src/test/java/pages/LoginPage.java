@@ -18,11 +18,11 @@ public class LoginPage {
         Assert.assertNotNull(driverQA.findElement("lnk-claro-clube", "id"));
         Assert.assertNotNull(driverQA.findElement("btn-continuar", "id"));
 
-        Assert.assertFalse("O botão [Continuar] deveria estar desabilitado", (driverQA.findElement("btn-continuar", "id").isEnabled()));
+        Assert.assertFalse((driverQA.findElement("btn-continuar", "id").isEnabled()));
     }
 
     public void clicarAcompanharPedidos() {
-        driverQA.click("lnk-acompanhar-pedidos", "id");
+        driverQA.JavaScriptClick("lnk-acompanhar-pedidos", "id");
     }
 
     public void validaTelaLoginCPF() {
@@ -41,7 +41,7 @@ public class LoginPage {
     public void clicarBotaoContinuar() {
         Assert.assertTrue("O botão [Continuar] está habilitado", (driverQA.findElement("btn-continuar", "id").isEnabled()));
 
-        driverQA.click("btn-continuar", "id");
+        driverQA.JavaScriptClick("btn-continuar", "id");
     }
 
     public void validaTelaToken() {
@@ -53,7 +53,7 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
-        driverQA.click("lnk-receber-codigo-email", "id");
+        driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
     }
 
     public void validaTelaEmail() {
@@ -64,7 +64,8 @@ public class LoginPage {
     }
 
     public void preencheCodigoToken(String token) {
-
+        String campoToken = "txt-token";
+        driverQA.sendKeys(campoToken, "id", token);
     }
 
     public void validaTelaMeusPedidos() {

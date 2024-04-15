@@ -246,6 +246,6 @@ public class CustomizarFaturaPage {
     public void direcionadoParaTHAB() {
         driverQA.waitPageLoad("checkout/multi/payment-method/add", 10);
 
-//        Assert.assertNotNull(driverQA.findElement("txt-controle-antecipado", "id"));
+        Assert.assertNotNull(driverQA.findElement("txt-controle-antecipado", "id"));
     }
 }

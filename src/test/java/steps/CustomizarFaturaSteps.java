@@ -93,7 +93,7 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.direcionadoParaMulta();
     }
 
-    @Então("é direcionado para a tela de fatura Cliente THAB")
+    @Então("é direcionado para a tela de fatura THAB")
     public void eDirecionadoParaATelaDeFaturaClienteTHAB() {
         customizarFaturaPage.direcionadoParaTHAB();
     }
@@ -101,5 +101,10 @@ public class CustomizarFaturaSteps extends BaseSteps {
     @Então("é direcionado para a tela de Termos Combo")
     public void eDirecionadoParaATelaDeTermosCombo() {
         customizarFaturaPage.validarPaginaTermosCombo();
+    }
+
+    @Quando("o usuário clicar no botão Continuar da tela de Cliente Combo")
+    public void oUsuárioClicarNoBotaoContinuarDaTelaDeClienteCombo() {
+        customizarFaturaPage.clicarContinuar();
     }
 }

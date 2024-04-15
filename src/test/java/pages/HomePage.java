@@ -15,15 +15,10 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-        String campoTelefone = "(//input[@name='telephone'])[1]";
+        String campoTelefone = "txt-telefone";
 
         driverQA.waitSeconds(8);
         driverQA.sendKeys(campoTelefone, "id", msisdn);
-    }
-
-    public void validarClienteMeusPedidos(String cliente) {
-        String botaoOlaEcomm = "(//button[contains(text(), '" + cliente + "')])[1]";
-        driverQA.findElements(botaoOlaEcomm, "id");
     }
 
     public void acessarPDP(String idPlano) {
@@ -35,8 +30,7 @@ public class HomePage {
     }
 
     public void clicaBotaoEntrar() {
-//        driverQA.JavaScriptClick("btn-entrar", "id");
-        driverQA.JavaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-main-action mdn-Button mdn-Button--iconText mdn-Button--primaryInverse mdn-Button--sm  gtm-link-event']", "xpath");
+        driverQA.JavaScriptClick("btn-entrar", "id");
     }
 
     public void validarHomePage() {

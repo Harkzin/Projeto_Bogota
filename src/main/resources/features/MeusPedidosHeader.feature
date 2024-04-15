@@ -1,10 +1,10 @@
 #language: pt
 
-@regressivo
-Funcionalidade: Validar Meus Pedidos Header
+@Regressivo
+Funcionalidade: Planos - Base
 
-  @home
-  @validaMeusPedidos
+  @Home
+  @ValidaMeusPedidos
   Cenario: Validar Meus Pedidos Header
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar no botão [Entrar] do header

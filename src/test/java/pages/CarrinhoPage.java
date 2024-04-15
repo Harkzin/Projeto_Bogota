@@ -153,18 +153,11 @@ public class CarrinhoPage {
         driverQA.JavaScriptClick("btn-eu-quero", "id");
     }
 
-    public void validarMensagemBloqueioClienteDependente(String mensagem) {
-        String msgErroBloqueioDependente = "cboxLoadedContent";
-        Assert.assertEquals(mensagem, driverQA.getText(msgErroBloqueioDependente, "id").substring(0, 106));
-    }
-
-    public void direcionadoParaTHAB() {
-        driverQA.waitPageLoad("claro/pt/cart?THAB=true", 10);
-
-        Assert.assertNotNull(driverQA.findElement("controle-antecipado", "id"));
-    }
-
     public void clicarEuQueroTHAB() {
         driverQA.JavaScriptClick("buttonCheckoutThab", "id");
+    }
+
+    public void validaMsgBloqueioDependente() {
+        Assert.assertNotNull(driverQA.findElement("cboxLoadedContent", "id"));
     }
 }

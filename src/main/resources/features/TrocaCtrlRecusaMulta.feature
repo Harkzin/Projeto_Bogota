@@ -1,10 +1,10 @@
 #language: pt
 
-@regressivo
-Funcionalidade: Troca Controle - Recusa multa
+@Regressivo
+Funcionalidade: Planos - Base
 
-  @controle
-  @troca
+  @Controle
+  @Troca
   @TrocaCtrlRecusaMulta
   Cenario: Troca Controle recusa multa
     Dado que o usuário acesse a Loja Online
@@ -19,4 +19,4 @@ Funcionalidade: Troca Controle - Recusa multa
     E clicar no botão [Não concordo]
 
     Quando clicar no botão [Ok, entendi]
-    Então é direcionado que foi direcionado para a Home
+    Então é direcionado para a Home

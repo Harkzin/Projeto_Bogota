@@ -14,9 +14,4 @@ public class ComumSteps extends BaseSteps {
     public void validarResumoDaCompra() {
 
     }
-
-    @Quando("o usuário clicar no botão Continuar da tela de Cliente Combo")
-    public void oUsuárioClicarNoBotãoContinuarDaTelaDeClienteCombo() {
-        dadosPessoaisPage.clicarContinuar();
-    }
 }
