@@ -22,7 +22,7 @@ public class LoginPage {
     }
 
     public void clicarAcompanharPedidos() {
-        driverQA.click("lnk-acompanhar-pedidos", "id");
+        driverQA.JavaScriptClick("lnk-acompanhar-pedidos", "id");
     }
 
     public void validaTelaLoginCPF() {
@@ -35,13 +35,13 @@ public class LoginPage {
     }
 
     public void preencheCPF(String cpf) {
-        driverQA.sendKeysCampoMascara(cpf, "txt-cpf", "id");
+        driverQA.actionSendKeys("txt-cpf", "id", cpf);
     }
 
     public void clicarBotaoContinuar() {
         Assert.assertTrue("O botão [Continuar] está habilitado", (driverQA.findElement("btn-continuar", "id").isEnabled()));
 
-        driverQA.click("btn-continuar", "id");
+        driverQA.JavaScriptClick("btn-continuar", "id");
     }
 
     public void validaTelaToken() {
@@ -53,7 +53,7 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
-        driverQA.click("lnk-receber-codigo-email", "id");
+        driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
     }
 
     public void validaTelaEmail() {

@@ -1,14 +1,10 @@
 package pages;
 
-import io.cucumber.java.pt.Então;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import org.junit.Assert;
 
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static pages.ComumPage.urlAmbiente;
 import static support.RestAPI.checkCpfDiretrix;
@@ -30,7 +26,6 @@ public class CarrinhoPage {
     private WebElement cpfPortabilidade;
     private WebElement telefoneContatoAquisicao;
     private WebElement cpfAquisicao;
-
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) throws IOException, InterruptedException {
         String cpf;
@@ -154,8 +149,7 @@ public class CarrinhoPage {
     }
 
     public void validarMensagemBloqueioClienteDependente(String mensagem) {
-        String msgErroBloqueioDependente = "cboxLoadedContent";
-        Assert.assertEquals(mensagem, driverQA.getText(msgErroBloqueioDependente, "id").substring(0, 106));
+        Assert.assertEquals(mensagem, driverQA.findElement("cboxLoadedContent", "id").getText().substring(0, 106));
     }
 
     public void direcionadoParaTHAB() {

@@ -14,31 +14,10 @@ public class DadosPessoaisPage {
         driverQA = stepDriver;
     }
 
-    public enum CEP {
-        CONVECIONAL("01001001"),
-        EXPRESSA_AQUISICAO("01001000"),
-        EXPRESSA_PORTABILIDADE("01001010");
-
-        private final String cep;
-
-        private CEP(final String cep) {
-            this.cep = cep;
-        }
-
-        public String getCEP() {
-            return cep;
-        }
-    }
-
-    // Variaveis criadas para utilizacao de validacao na tela de parabens
-    public static String nomeCliente;
-    public static String cepCliente;
-    public static String numeroEndCliente;
-    public static String complementoCliente;
-    public static String enderecoCliente;
-    public static String bairroCliente;
-    public static String ufCliente;
-    public static String cidadeCliente;
+    private WebElement chipComumConvencional;
+    private WebElement chipComumExpressa;
+    private WebElement usarMesmoEnderecoCobranca;
+    public boolean showDeliveryModes = true;
 
     public void validarPaginaDadosPessoais() {
         driverQA.waitPageLoad("/checkout/multi/delivery-address/addClaroAddress", 10);
@@ -56,16 +35,15 @@ public class DadosPessoaisPage {
         driverQA.actionSendKeys("txt-nome-mae", "id", nomeMae);
     }
 
-    public void inserirCep(String tipoEntrega, boolean fluxoPre) {
-        final String cep;
-        final boolean expressa;
+    public void inserirCep(String tipoCep) {
+        String cep;
 
-        if (tipoEntrega.equals("convencional")) {
+        if (tipoCep.equals("convencional")) {
             cep = "01001001";
-            expressa = false;
-        } else { //expressa
+        } else if (tipoCep.equals("expressa")) {
             cep = ((JavascriptExecutor) driverQA.getDriver()).executeScript("return ACC.processType").toString().equals("ACQUISITION") ? "01001000" : "01001010"; //expressa aquisição ou expressa port
-            expressa = true;
+        } else {
+            cep = tipoCep;
         }
 
         driverQA.actionSendKeys("txt-cep-endereco-entrega", "id", cep);
@@ -76,21 +54,45 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals(driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals(driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals(driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
+    }
 
-        if (!fluxoPre) {
-            WebElement enderecoCobrancaElement = driverQA.findElement("endereco-cobranca_checkbox", "id");
-            WebElement enderecoCobrancaParentElement = enderecoCobrancaElement.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
+    public void validarTiposEntrega(boolean isExpressDelivery) {
+        chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
+        chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
+        usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
 
-            if (!expressa) {
-                Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommom", "id").isSelected());
-                Assert.assertTrue(driverQA.findElement("rdn-convencional", "id").isSelected());
-                Assert.assertFalse(enderecoCobrancaParentElement.isDisplayed());
+        WebElement entregaConvencional = driverQA.findElement("rdn-convencional", "id");
+        WebElement entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
+
+        if (showDeliveryModes) {
+            WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
+            WebElement entregaConvencionalParent = entregaConvencional.findElement(By.xpath("../../..")); //div pai do pai do pai do input
+            WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
+
+            System.out.println(enderecoCobrancaParent.getAttribute("class"));
+
+            if (!isExpressDelivery) {
+                Assert.assertTrue(chipComumConvencional.isSelected());
+                Assert.assertTrue(entregaConvencional.isSelected());
+                Assert.assertTrue(entregaConvencionalParent.isDisplayed());
+
+                Assert.assertFalse(entregaExpressaParent.isDisplayed());
+                Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
+            } else {
+                Assert.assertTrue(chipComumExpressa.isSelected());
+                Assert.assertTrue(entregaExpressa.isSelected());
+                Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
+                Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
+                Assert.assertTrue(entregaExpressaParent.isDisplayed());
+
+                Assert.assertFalse(entregaConvencionalParent.isDisplayed());
             }
-            Assert.assertTrue(driverQA.findElement("rdn-chipTypeCommomExpress", "id").isSelected());
-            Assert.assertTrue(driverQA.findElement("rdn-entrega-expressa", "id").isSelected());
-
-            Assert.assertTrue(enderecoCobrancaParentElement.isDisplayed());
-            Assert.assertTrue(enderecoCobrancaElement.isSelected());
+        } else {
+            Assert.assertNull(chipComumConvencional);
+            Assert.assertNull(chipComumExpressa);
+            Assert.assertNull(usarMesmoEnderecoCobranca);
+            Assert.assertNull(entregaConvencional);
+            Assert.assertNull(entregaExpressa);
         }
     }
 

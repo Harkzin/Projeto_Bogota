@@ -40,7 +40,7 @@ public class HomeSteps extends BaseSteps {
         //homePage.clicarPLP();
     }
 
-    @Quando("o usuário clicar no botão [Mais detalhes] do plano: {string}")
+    @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String idPlano) {
         homePage.acessarPDP(idPlano);
     }
