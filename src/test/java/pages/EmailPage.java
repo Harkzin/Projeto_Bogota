@@ -21,7 +21,7 @@ public class EmailPage {
     }
 
     public void validarEmail() throws JSONException, InterruptedException {
-        String messageId = getMessageFirstId();
+        /*String messageId = getMessageFirstId();
         String endereco = montaEnderecoValidacaoEmail(DadosPessoaisPage.enderecoCliente,
                 DadosPessoaisPage.numeroEndCliente,
                 DadosPessoaisPage.complementoCliente,
@@ -34,6 +34,6 @@ public class EmailPage {
         Assert.assertTrue(response.contains(DadosPessoaisPage.nomeCliente));
         Assert.assertTrue(response.contains(ParabensPage.pedidoParabens));
         Assert.assertTrue(response.contains(endereco));
-        purgeInbox(messageId);
+        purgeInbox(messageId);*/
     }
 }

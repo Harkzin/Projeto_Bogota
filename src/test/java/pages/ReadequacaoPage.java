@@ -10,7 +10,7 @@ public class ReadequacaoPage  {
         driverQA = stepDriver;
     }
 
-    public void direcionadoParaTHAB() {
+    public void validarPaginaReadequacaoTHAB() {
         driverQA.waitPageLoad("claro/pt/cart?THAB=true", 10);
 
         Assert.assertNotNull(driverQA.findElement("controle-antecipado", "id"));

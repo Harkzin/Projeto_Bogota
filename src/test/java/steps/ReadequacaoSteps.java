@@ -9,6 +9,6 @@ public class ReadequacaoSteps extends BaseSteps {
 
     @Entao("é direcionado para a tela de readequação THAB")
     public void eDirecionadoParaATelaDeTHAB() {
-        readequacaoPage.direcionadoParaTHAB();
+        readequacaoPage.validarPaginaReadequacaoTHAB();
     }
 }

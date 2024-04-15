@@ -35,7 +35,7 @@ public class LoginPage {
     }
 
     public void preencheCPF(String cpf) {
-        driverQA.sendKeysCampoMascara(cpf, "txt-cpf", "id");
+        driverQA.actionSendKeys("txt-cpf", "id", cpf);
     }
 
     public void clicarBotaoContinuar() {
@@ -65,7 +65,7 @@ public class LoginPage {
 
     public void preencheCodigoToken(String token) {
         String campoToken = "txt-token";
-        driverQA.sendKeys(campoToken, "id", token);
+        driverQA.actionSendKeys(campoToken, "id", token);
     }
 
     public void validaTelaMeusPedidos() {

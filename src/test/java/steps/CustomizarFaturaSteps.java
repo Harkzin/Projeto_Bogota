@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
@@ -19,7 +20,7 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.validarMeiosPagamento(true);
     }
 
-    @E("não deve ser exibido as opções de pagamento")
+    @Mas("não deve ser exibido as opções de pagamento")
     public void naoExibePagamento() {
         customizarFaturaPage.validarMeiosPagamento(false);
     }
@@ -29,7 +30,7 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.validarTiposFatura(true);
     }
 
-    @E("não deve ser exibido os meios de recebimento da fatura")
+    @Mas("não deve ser exibido os meios de recebimento da fatura")
     public void naoExibeRecebimentoFatura() {
         customizarFaturaPage.validarTiposFatura(false);
     }
@@ -39,18 +40,14 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.validarDatasVencimento(true);
     }
 
-    @E("não deve ser exibido as datas de vencimento")
+    @Mas("não deve ser exibido as datas de vencimento")
     public void naoExibeDatasVencimento() {
         customizarFaturaPage.validarDatasVencimento(false);
     }
 
-    @E("seleciona a forma de pagamento: {string}") //Débito ou Boleto
+    @E("seleciona a forma de pagamento: {string}") //"Débito" ou "Boleto"
     public void selecionarPagamentoBoleto(String pagamento) {
-        if (pagamento.equals("Débito")) {
-            customizarFaturaPage.selecionarDebito();
-        } else {
-            customizarFaturaPage.selecionarBoleto();
-        }
+        customizarFaturaPage.selecionarPagamento(pagamento);
     }
 
     @E("preenche os dados bancários")
@@ -58,12 +55,12 @@ public class CustomizarFaturaSteps extends BaseSteps {
         customizarFaturaPage.preencherDadosBancarios();
     }
 
-    @E("seleciona o método de recebimento da fatura: {string}") //WhatsApp, E-mail ou Correios
+    @E("seleciona o método de recebimento da fatura: {string}") //"WhatsApp", "E-mail" ou "Correios"
     public void selecionarRecebimentoFatura(String fatura) {
         customizarFaturaPage.selecionarTipoFatura(fatura);
     }
 
-    @E("selecionar a data de vencimento {string}")
+    @E("seleciona a data de vencimento {string}")
     public void selecionarDataDeVencimento(String data) {
         customizarFaturaPage.selecionarDataVencimento(data);
     }
@@ -96,6 +93,7 @@ public class CustomizarFaturaSteps extends BaseSteps {
     @Então("é direcionado para a tela de fatura THAB")
     public void eDirecionadoParaATelaDeFaturaClienteTHAB() {
         customizarFaturaPage.direcionadoParaTHAB();
+        customizarFaturaPage.isThabFlow = true;
     }
 
     @Então("é direcionado para a tela de Termos Combo")

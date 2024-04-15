@@ -46,9 +46,9 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.inserirEmail(email);
     }
 
-    @Entao("será exibida a mensagem de erro: {string}")
-    public void validaQueFoiExibidaUmaMensagemDeErro(String mensagem) {
-        carrinhoPage.validarMensagemBloqueioClienteDependente(mensagem);
+    @Entao("será exibida a mensagem de erro Bloqueio Dependente")
+    public void eExibidaAMensagemDeErroBloqueioDependente() {
+        carrinhoPage.validaMsgBloqueioDependente();
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do Carrinho")
@@ -58,11 +58,7 @@ public class CarrinhoSteps extends BaseSteps {
 
     @Quando("seleciona o plano de controle antecipado ofertado")
     public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {
-        carrinhoPage.clicarEuQueroTHAB();
+        carrinhoPage.clicarEuQuero();
     }
 
-    @Entao("será exibida a mensagem de erro Bloqueio Dependente")
-    public void eExibidaAMensagemDeErroBloqueioDependente() {
-        carrinhoPage.validaMsgBloqueioDependente();
-    }
 }

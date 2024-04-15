@@ -2,10 +2,10 @@ package pages;
 
 import support.DriverQA;
 
-public class PLPPage {
+public class PlpPlanosPage {
     private final DriverQA driver;
 
-    public PLPPage(DriverQA stepDriver) {
+    public PlpPlanosPage(DriverQA stepDriver) {
         driver = stepDriver;
     }
 

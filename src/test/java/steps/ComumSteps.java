@@ -10,8 +10,8 @@ public class ComumSteps extends BaseSteps {
     ComumPage comumPage = new ComumPage(driverQA);
     DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
 
-    @Mas("não deve haver alterações no valor e nas informações do Plano")
+    @Mas("não deve haver alterações no valor e nem nas informações do Plano")
     public void validarResumoDaCompra() {
-
+        comumPage.validarResumoCompra();
     }
 }

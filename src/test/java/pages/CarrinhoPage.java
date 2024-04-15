@@ -1,14 +1,10 @@
 package pages;
 
-import io.cucumber.java.pt.Então;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import org.junit.Assert;
 
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static pages.ComumPage.urlAmbiente;
 import static support.RestAPI.checkCpfDiretrix;
@@ -30,7 +26,6 @@ public class CarrinhoPage {
     private WebElement cpfPortabilidade;
     private WebElement telefoneContatoAquisicao;
     private WebElement cpfAquisicao;
-
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) throws IOException, InterruptedException {
         String cpf;
@@ -151,10 +146,6 @@ public class CarrinhoPage {
 
     public void clicarEuQuero() {
         driverQA.JavaScriptClick("btn-eu-quero", "id");
-    }
-
-    public void clicarEuQueroTHAB() {
-        driverQA.JavaScriptClick("buttonCheckoutThab", "id");
     }
 
     public void validaMsgBloqueioDependente() {
