@@ -126,6 +126,7 @@ public class CarrinhoPage {
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
+        driverQA.waitElementVisibility(telefoneMigracao, 10);
         driverQA.actionSendKeys(telefoneMigracao, telefone);
         driverQA.actionSendKeys(cpfMigracao, cpf);
     }
