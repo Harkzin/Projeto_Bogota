@@ -8,7 +8,7 @@ Funcionalidade: Planos - Base
   @TrocaCtrlRentabilizacaoDebito
   Cenario: Troca Controle - Rentabilização - Débito
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
-    E preenche os campos: [Telefone com DDD] "11947628242", [E-mail] "clordertest@mailsac.com" e [CPF] "73124213858"
+    E preenche os campos: [Telefone com DDD] "11947628242", [E-mail] e [CPF] "73124213858"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura

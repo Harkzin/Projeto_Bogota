@@ -1,6 +1,7 @@
 package support;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,12 +9,15 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.ComumPage.Email;
 
 import java.time.Duration;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
+import static support.RestAPI.getEmailMessage;
 
 public class DriverQA {
     private static WebDriver driver;
@@ -148,11 +152,24 @@ public class DriverQA {
     public void actionSendKeys(WebElement element, String text) {
         Actions action = new Actions(driver);
         action.click(element);
-        text.chars().forEach(c -> action.sendKeys(String.valueOf((char) c)).pause(Duration.ofMillis(50)).perform());
+        text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
     }
 
     public void actionSendKeys(String selectorValue, String selectorType, String text) {
         actionSendKeys(findElement(selectorValue, selectorType), text);
+    }
+
+    public Document getEmail(String emailAddress, Email emailSubject) {
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(Duration.ofSeconds(60))
+                .withMessage("Aguardando recebimento do e-mail")
+                .pollingEvery(Duration.ofSeconds(5));
+        return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
+    }
+
+    public void waitElementToBeClickable(WebElement element, int timeoutSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public void waitElementVisibility(WebElement element, int timeoutSeconds) {

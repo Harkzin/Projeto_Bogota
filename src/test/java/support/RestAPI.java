@@ -1,5 +1,6 @@
 package support;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import io.restassured.response.Response;
 
 import org.json.JSONArray;
@@ -8,21 +9,23 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import pages.ComumPage.Email;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.get;
 import static java.time.Duration.ofSeconds;
 
 public final class RestAPI {
-
-    public static String buscarToken;
-
     private RestAPI() {
     }
 
@@ -67,6 +70,49 @@ public final class RestAPI {
         return response.statusCode() != 422 || !node.at("/error").get("detailedMessage").asText().equalsIgnoreCase("CPF não encontrado"); //CPF na Diretrix? = true, fora da Diretrix? = false, para testes deve ser false.
     }
 
+    public static Document getEmailMessage(String emailAddress, Email emailSubject) {
+        final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
+
+        final HttpRequest getMessages = HttpRequest.newBuilder()
+                .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
+                .timeout(ofSeconds(15))
+                .header("Mailsac-Key", MAILSAC_KEY)
+                .GET()
+                .build();
+
+        List<JsonNode> messageList;
+
+        try {
+            messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {
+            });
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Optional<JsonNode> message = messageList.stream().filter(node -> node.get("subject").asText().contains(emailSubject.getSubject())).findFirst();
+
+        if (message.isPresent()) {
+            final HttpRequest getMessage = HttpRequest.newBuilder()
+                    .uri(URI.create("https://mailsac.com/api/dirty/" + emailAddress + "/" + message.get().get("_id").asText()))
+                    .timeout(ofSeconds(15))
+                    .header("Mailsac-Key", MAILSAC_KEY)
+                    .GET()
+                    .build();
+
+            Document email;
+
+            try {
+                email = Jsoup.parseBodyFragment(clientHttp.send(getMessage, HttpResponse.BodyHandlers.ofString()).body());
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            return email;
+        } else {
+            return null;
+        }
+    }
+
     public static String getMessageFirstId() throws JSONException, InterruptedException {
         Thread.sleep(30000);
         Response response = get("https://mailsac.com/api/addresses/clordertest@mailsac.com/messages/?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
@@ -83,8 +129,5 @@ public final class RestAPI {
     public static String getPedidoEnderecoNome(String messageId) throws JSONException {
         Response response = get("https://mailsac.com/api/text/clordertest@mailsac.com/" + messageId + "?_mailsacKey=k_TYuwAJiFKZzxwZynlOIrMNH3kIjpbcg42");
         return response.getBody().asString();
-    }
-    public static String buscarToken() {
-        return null;
     }
 }

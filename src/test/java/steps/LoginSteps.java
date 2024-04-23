@@ -4,10 +4,10 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
-import org.apiguardian.api.API;
 import pages.LoginPage;
 import support.BaseSteps;
-import support.RestAPI;
+
+import static pages.ComumPage.Cart_emailAddress;
 
 
 public class LoginSteps extends BaseSteps {
@@ -26,9 +26,10 @@ public class LoginSteps extends BaseSteps {
 
     @Entao("é direcionado para a tela de login com CPF")
     public void eDirecionadoParaATelaDeAcompanhamentoDoUsuario() {
-        loginPage.validaTelaLoginCPF();
+        loginPage.validarPaginaLoginCpf();
 
     }
+
     @E("preenche o campo [CPF] {string}")
     public void preencheOCampoCPFComOCPF(String cpf) {
         loginPage.preencheCPF(cpf);
@@ -41,7 +42,7 @@ public class LoginSteps extends BaseSteps {
 
     @Entao("é direcionado para a tela de opções de token")
     public void eDirecionadoParaATelaDeToken() {
-        loginPage.validaTelaToken();
+        loginPage.validarPaginaLoginToken();
     }
 
     @E("selecionar a opção [Receber código por e-mail]")
@@ -51,13 +52,13 @@ public class LoginSteps extends BaseSteps {
 
     @E("é direcionado para a tela de token por email")
     public void eDirecionadoParaATelaDeEMail() {
-        loginPage.validaTelaEmail();
+        loginPage.validarPaginaLoginEmail();
     }
 
-    @E("preenche o campo [Digite o código recebido] com o código recebido")
-    public void preencheOCampoDigiteOCodigoRecebidoComOCodigoRecebido() {
-        String token = RestAPI.buscarToken;
-        loginPage.preencheCodigoToken(token);
+    @E("preenche o campo [Digite o código recebido] com o código recebido no e-mail {string}")
+    public void preencherToken(String email) {
+        Cart_emailAddress = email;
+        loginPage.inserirTokenEmail();
     }
 
     @Então("é direcionado para a tela Meus Pedidos")

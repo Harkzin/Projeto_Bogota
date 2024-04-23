@@ -6,8 +6,8 @@ import io.cucumber.java.pt.Quando;
 import pages.PdpPlanosPage;
 import support.BaseSteps;
 
-import static pages.ComumPage.hasLoyalty;
-import static pages.ComumPage.isDebitPaymentFlow;
+import static pages.ComumPage.Cart_hasLoyalty;
+import static pages.ComumPage.Cart_isDebitPaymentFlow;
 
 public class PdpPlanosSteps extends BaseSteps {
 
@@ -18,13 +18,14 @@ public class PdpPlanosSteps extends BaseSteps {
         pdpPlanosPage.validarPDP();
     }
 
-    @Quando("o usuário selecionar a forma de pagamento {string}") //Débito ou Boleto
-    public void selecionarPagamento(String pagamento) {
-        if (pagamento.equals("Débito")) {
-            pdpPlanosPage.selecionarDebito();
-        } else {
-            pdpPlanosPage.selecionarBoleto();
-        }
+    @Quando("o usuário selecionar a forma de pagamento [Débito]")
+    public void selecionarPagamentoDebito() {
+        pdpPlanosPage.selecionarDebito();
+    }
+
+    @Quando("o usuário selecionar a forma de pagamento [Boleto]")
+    public void selecionarPagamentoBoleto() {
+        pdpPlanosPage.selecionarBoleto();
     }
 
     @E("selecionar Fidelidade de 12 meses")
@@ -39,7 +40,7 @@ public class PdpPlanosSteps extends BaseSteps {
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(isDebitPaymentFlow, hasLoyalty);
+        pdpPlanosPage.validarValorPlano(Cart_isDebitPaymentFlow, Cart_hasLoyalty);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")

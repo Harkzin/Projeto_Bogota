@@ -12,8 +12,8 @@ Funcionalidade: Planos - Gross
     Quando selecionar o plano de id "17218" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona o fluxo "Aquisição"
-    E preenche os campos: [Celular de contato] "11999999988", [E-mail] "clordertest@mailsac.com" e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E seleciona a opção [Aquisição]
+    E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais

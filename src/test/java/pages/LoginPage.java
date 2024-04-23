@@ -3,6 +3,9 @@ package pages;
 import org.junit.Assert;
 import support.DriverQA;
 
+import static pages.ComumPage.Cart_emailAddress;
+import static pages.ComumPage.Email.CONFIRMA_TOKEN;
+
 public class LoginPage {
     private final DriverQA driverQA;
 
@@ -25,7 +28,7 @@ public class LoginPage {
         driverQA.JavaScriptClick("lnk-acompanhar-pedidos", "id");
     }
 
-    public void validaTelaLoginCPF() {
+    public void validarPaginaLoginCpf() {
         driverQA.waitPageLoad("/login/my-orders", 10);
 
         Assert.assertNotNull(driverQA.findElement("track-order-form", "id"));
@@ -39,12 +42,12 @@ public class LoginPage {
     }
 
     public void clicarBotaoContinuar() {
-        Assert.assertTrue("O botão [Continuar] está habilitado", (driverQA.findElement("btn-continuar", "id").isEnabled()));
+        driverQA.waitElementToBeClickable(driverQA.findElement("btn-continuar", "id"), 1);
 
         driverQA.JavaScriptClick("btn-continuar", "id");
     }
 
-    public void validaTelaToken() {
+    public void validarPaginaLoginToken() {
         driverQA.waitPageLoad("/login/token", 10);
 
         Assert.assertNotNull(driverQA.findElement("token-verification-method", "id"));
@@ -56,16 +59,15 @@ public class LoginPage {
         driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
     }
 
-    public void validaTelaEmail() {
+    public void validarPaginaLoginEmail() {
         driverQA.waitPageLoad("/login/token/email", 10);
 
         Assert.assertNotNull(driverQA.findElement("token-validation-form", "id"));
         Assert.assertNotNull(driverQA.findElement("txt-token", "id"));
     }
 
-    public void preencheCodigoToken(String token) {
-        String campoToken = "txt-token";
-        driverQA.actionSendKeys(campoToken, "id", token);
+    public void inserirTokenEmail() {
+        driverQA.actionSendKeys("txt-token", "id", driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validaTelaMeusPedidos() {
@@ -75,8 +77,6 @@ public class LoginPage {
     }
 
     public void acessarPedidoRecente() {
-            driverQA.JavaScriptClick("lnk-pedido-1", "id");
-        }
-
+        driverQA.JavaScriptClick("lnk-pedido-1", "id");
+    }
 }
-

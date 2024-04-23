@@ -11,25 +11,25 @@ Funcionalidade: Planos - Base
     Quando o usuário clicar no botão [Mais detalhes] do plano "17270"
     Então é direcionado para a PDP do plano
 
-    Quando o usuário selecionar a forma de pagamento "Boleto"
+    Quando o usuário selecionar a forma de pagamento [Boleto]
     Então o valor do plano é atualizado
 
     Quando o usuário selecionar Sem fidelidade
     Então os aplicativos ilimitados são removidos da composição do plano
 
-    Quando o usuário selecionar a forma de pagamento "Débito"
+    Quando o usuário selecionar a forma de pagamento [Débito]
     E selecionar Fidelidade de 12 meses
     Então o valor do plano é atualizado
     E os aplicativos ilimitados são reexibidos na composição do plano
 
-    Quando o usuário selecionar a forma de pagamento "Boleto"
+    Quando o usuário selecionar a forma de pagamento [Boleto]
     Então o valor do plano é atualizado
 
     Quando o usuário clicar no botão Eu quero! da PDP
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona o fluxo "Migração/Troca"
-    E preenche os campos: [Telefone com DDD] "11947486000", [E-mail] "claroqualidade3@gmail.com" e [CPF] "94516280884"
+    E seleciona a opção [Migração], para o fluxo de migração de plataforma
+    E preenche os campos: [Telefone com DDD] "11947486000", [E-mail] e [CPF] "94516280884"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
