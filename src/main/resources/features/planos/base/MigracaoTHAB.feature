@@ -11,8 +11,8 @@ Funcionalidade: Planos - Base
     Quando selecionar o plano de id "17216" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona o fluxo "Migração/Troca"
-    E preenche os campos: [Telefone com DDD] "11947628552", [E-mail] "clordertest@mailsac.com" e [CPF] "33006780213"
+    E seleciona a opção [Migração], para o fluxo de migração de plataforma
+    E preenche os campos: [Telefone com DDD] "11947628552", [E-mail] e [CPF] "33006780213"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais

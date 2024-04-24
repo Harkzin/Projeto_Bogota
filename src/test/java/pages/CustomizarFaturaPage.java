@@ -7,7 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import support.DriverQA;
 
-import static pages.ComumPage.isDebitPaymentFlow;
+import static pages.ComumPage.Cart_isDebitPaymentFlow;
+import static pages.ComumPage.Cart_processType;
+import static pages.ComumPage.ProcessType.MIGRATE;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -64,15 +66,15 @@ public class CustomizarFaturaPage {
             if (abaDebito.findElement(By.tagName("input")).isSelected()) {
                 Assert.assertFalse(abaBoleto.isSelected());
                 validarCamposDebito();
-                isDebitPaymentFlow = true;
+                Cart_isDebitPaymentFlow = true;
             } else {
                 Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
-                isDebitPaymentFlow = false;
+                Cart_isDebitPaymentFlow = false;
             }
         } else { //fluxo base - cliente já é débito / combo / THAB
             Assert.assertNull(abaDebito);
             Assert.assertNull(abaBoleto);
-            isDebitPaymentFlow = !isThabFlow;
+            Cart_isDebitPaymentFlow = !isThabFlow;
         }
     }
 
@@ -126,7 +128,7 @@ public class CustomizarFaturaPage {
         };
 
         if (exibe) { //fluxo gross ou base com fatura impressa e migra pré-ctrl
-            if (isDebitPaymentFlow) {
+            if (Cart_isDebitPaymentFlow) {
                 assertDebit.accept(true);
                 assertTicket.accept(false);
             } else {
@@ -134,8 +136,8 @@ public class CustomizarFaturaPage {
                 assertDebit.accept(false);
             }
         } else { //fluxo base com fatura digital ou combo
-            if (!isComboFlow && ((JavascriptExecutor) driverQA.getDriver()).executeScript("return ACC.processType").toString().equals("MIGRATE")) { //existe (oculto) no html apenas as opções do método de pagamento atual
-                if (isDebitPaymentFlow) {
+            if (!isComboFlow && (Cart_processType == MIGRATE)) { //existe (oculto) no html apenas as opções do método de pagamento atual
+                if (Cart_isDebitPaymentFlow) {
                     assertDebit.accept(false);
                     assertTicketNull.run();
                 } else {
@@ -182,24 +184,24 @@ public class CustomizarFaturaPage {
             Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
 
             validarCamposDebito();
-            isDebitPaymentFlow = true;
+            Cart_isDebitPaymentFlow = true;
         } else {
             driverQA.JavaScriptClick(abaBoleto.findElement(By.tagName("div")));
             Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
             Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
 
-            isDebitPaymentFlow = false;
+            Cart_isDebitPaymentFlow = false;
         }
     }
 
     public void selecionarTipoFatura(String fatura) {
         switch (fatura) {
             case "Whatsapp":
-                driverQA.JavaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+                driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
             case "E-mail":
-                driverQA.JavaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
+                driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? emailDebit : emailTicket);
             case "Correios":
-                driverQA.JavaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
+                driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
     }
 
@@ -218,7 +220,7 @@ public class CustomizarFaturaPage {
     }
 
     public void aceitarTermos() {
-        WebElement termos = driverQA.findElement(isComboFlow ? "chk-termos" : isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
+        WebElement termos = driverQA.findElement(isComboFlow ? "chk-termos" : Cart_isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
         Assert.assertFalse(termos.isSelected());
         driverQA.JavaScriptClick(termos);
         Assert.assertTrue(termos.isSelected());

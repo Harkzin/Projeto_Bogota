@@ -7,6 +7,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
+import static pages.ComumPage.Cart_processType;
+import static pages.ComumPage.ProcessType.ACQUISITION;
+
 public class DadosPessoaisPage {
     private final DriverQA driverQA;
 
@@ -41,7 +44,7 @@ public class DadosPessoaisPage {
         if (tipoCep.equals("convencional")) {
             cep = "01001001";
         } else if (tipoCep.equals("expressa")) {
-            cep = ((JavascriptExecutor) driverQA.getDriver()).executeScript("return ACC.processType").toString().equals("ACQUISITION") ? "01001000" : "01001010"; //expressa aquisição ou expressa port
+            cep = (Cart_processType == ACQUISITION) ? "01001000" : "01001010"; //expressa aquisição ou expressa port
         } else {
             cep = tipoCep;
         }

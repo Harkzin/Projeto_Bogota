@@ -2,7 +2,7 @@ package pages;
 
 import support.DriverQA;
 
-import static pages.ComumPage.planId;
+import static pages.ComumPage.Cart_planId;
 
 public class HomePage {
     private final DriverQA driverQA;
@@ -24,7 +24,7 @@ public class HomePage {
 
     public void acessarPDP(String idPlano) {
         driverQA.JavaScriptClick("txt-mais-detalhes-" + idPlano, "id");
-        planId = idPlano;
+        Cart_planId = idPlano;
     }
 
     public void selecionarPlano(String idPlano) {

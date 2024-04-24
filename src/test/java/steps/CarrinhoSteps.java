@@ -9,6 +9,8 @@ import support.BaseSteps;
 
 import java.io.IOException;
 
+import static pages.ComumPage.ProcessType.*;
+
 public class CarrinhoSteps extends BaseSteps {
     CarrinhoPage carrinhoPage = new CarrinhoPage(driverQA);
 
@@ -23,27 +25,47 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validarPaginaCarrinho();
     }
 
-    @E("seleciona o fluxo {string}") //Migração/Troca, Portabilidade, Aquisição
-    public void selecionaFluxo(String fluxo) {
-        carrinhoPage.selecionarFluxo(fluxo);
+    @E("seleciona a opção [Migração], para o fluxo de troca de Plano")
+    public void selecionaTrocaPlano() {
+        carrinhoPage.selecionarFluxo(EXCHANGE);
     }
 
-    @E("preenche os campos: [Telefone com DDD] {string}, [E-mail] {string} e [CPF] {string}")
-    public void preencherCamposCarrinhoBase(String telefone, String email, String cpf) {
+    @E("seleciona a opção [Migração], para o fluxo de troca de promoção")
+    public void selecionaTrocaPromo() {
+        carrinhoPage.selecionarFluxo(EXCHANGE_PROMO);
+    }
+
+    @E("seleciona a opção [Migração], para o fluxo de migração de plataforma")
+    public void selecionaMigra() {
+        carrinhoPage.selecionarFluxo(MIGRATE);
+    }
+
+    @E("seleciona a opção [Portabilidade]")
+    public void selecionaPortabilidade() {
+        carrinhoPage.selecionarFluxo(PORTABILITY);
+    }
+
+    @E("seleciona a opção [Aquisição]")
+    public void selecionaAquisicao() {
+        carrinhoPage.selecionarFluxo(ACQUISITION);
+    }
+
+    @E("preenche os campos: [Telefone com DDD] {string}, [E-mail] e [CPF] {string}")
+    public void preencherCamposCarrinhoBase(String telefone, String cpf) {
         carrinhoPage.inserirDadosBase(telefone, cpf);
-        carrinhoPage.inserirEmail(email);
+        carrinhoPage.inserirEmail();
     }
 
-    @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] {string} e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
-    public void preencherCamposCarrinhoPortabilidade(String telefone, String email, String cpfAprovado, String cpfDiretrix) throws IOException, InterruptedException {
+    @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
+    public void preencherCamposCarrinhoPortabilidade(String telefone, String cpfAprovado, String cpfDiretrix) throws IOException, InterruptedException {
         carrinhoPage.inserirDadosPortabilidade(telefone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
-        carrinhoPage.inserirEmail(email);
+        carrinhoPage.inserirEmail();
     }
 
-    @E("preenche os campos: [Celular de contato] {string}, [E-mail] {string} e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
-    public void preencherCamposCarrinhoAquisicao(String telefoneContato, String email, String cpfAprovado, String cpfDiretrix) throws IOException, InterruptedException {
+    @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
+    public void preencherCamposCarrinhoAquisicao(String telefoneContato, String cpfAprovado, String cpfDiretrix) throws IOException, InterruptedException {
         carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
-        carrinhoPage.inserirEmail(email);
+        carrinhoPage.inserirEmail();
     }
 
     @Entao("será exibida a mensagem de erro Bloqueio Dependente")
@@ -60,5 +82,4 @@ public class CarrinhoSteps extends BaseSteps {
     public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {
         carrinhoPage.clicarEuQuero();
     }
-
 }
