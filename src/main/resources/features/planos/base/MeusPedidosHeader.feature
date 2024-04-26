@@ -3,8 +3,7 @@
 @Regressivo
 Funcionalidade: Planos - Base
 
-  @Home
-  @ValidaMeusPedidos
+  @MeusPedidosHeader
   Cenario: Validar Meus Pedidos Header
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar no botão [Entrar] do header
