@@ -61,6 +61,11 @@ public class LoginSteps extends BaseSteps {
         loginPage.inserirTokenEmail();
     }
 
+    @Quando("o usuário clicar no botão [Confirmar]")
+    public void oUsuarioClicarNoBotaoConfirmar() {
+        loginPage.clicarBotaoConfirmar();
+    }
+
     @Então("é direcionado para a tela Meus Pedidos")
     public void eDirecionadoParaATelaMeusPedidos() {
         loginPage.validaTelaMeusPedidos();
