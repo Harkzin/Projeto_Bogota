@@ -21,7 +21,7 @@ Funcionalidade: Planos - Base
     Então é direcionado para a tela de token por email
     E preenche o campo [Digite o código recebido] com o código recebido no e-mail "64475126aec442ce9ec10eb61a44bdd3@mailsac.com"
 
-    Quando o usuário clicar no botão [Continuar]
+    Quando o usuário clicar no botão [Confirmar]
     Então é direcionado para a tela Meus Pedidos
     E acessar o pedido mais recente, clicando no Número do pedido dele
     E validar que foi direcionado para a página de Detalhes de pedido

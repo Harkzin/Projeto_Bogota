@@ -79,4 +79,8 @@ public class LoginPage {
     public void acessarPedidoRecente() {
         driverQA.JavaScriptClick("lnk-pedido-1", "id");
     }
+
+    public void clicarBotaoConfirmar() {
+        driverQA.JavaScriptClick("btn-confirmar", "id");
+    }
 }
