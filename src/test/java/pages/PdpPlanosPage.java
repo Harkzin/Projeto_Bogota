@@ -143,10 +143,12 @@ public class PdpPlanosPage {
         WebElement appsIlimitadosParent = planCharacteristics.findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));
 
         if (exibe) {
-            Assert.assertTrue(appsIlimitadosParent.isDisplayed());
+            //Assert.assertTrue(appsIlimitadosParent.isDisplayed());
+            driverQA.waitElementVisibility(appsIlimitadosParent, 2);
             //TODO validar apps exibidos ECCMAUT-351
         } else {
-            Assert.assertFalse(appsIlimitadosParent.isDisplayed());
+            driverQA.waitElementInvisibility(appsIlimitadosParent, 2);
+            //Assert.assertFalse(appsIlimitadosParent.isDisplayed());
         }
     }
 

@@ -2,13 +2,11 @@ package pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import support.DriverQA;
 
-import static pages.ComumPage.Cart_isDebitPaymentFlow;
-import static pages.ComumPage.Cart_processType;
+import static pages.ComumPage.*;
 import static pages.ComumPage.ProcessType.MIGRATE;
 
 import java.util.List;
@@ -33,10 +31,15 @@ public class CustomizarFaturaPage {
     private WebElement whatsappTicket;
     private WebElement emailTicket;
     private WebElement correiosTicket;
-    public boolean isThabFlow = false;
 
     public void validarPaginaCustomizarFatura() {
         driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
+    }
+
+    public void validarPagiaCustomizarFaturaThab() {
+        driverQA.waitPageLoad("checkout/multi/payment-method/add", 10);
+
+        Assert.assertNotNull(driverQA.findElement("txt-controle-antecipado", "id"));
     }
 
     public void validarPaginaTermosCombo() {
@@ -74,18 +77,18 @@ public class CustomizarFaturaPage {
         } else { //fluxo base - cliente já é débito / combo / THAB
             Assert.assertNull(abaDebito);
             Assert.assertNull(abaBoleto);
-            Cart_isDebitPaymentFlow = !isThabFlow;
+            Cart_isDebitPaymentFlow = !Cart_isThabFlow; //TODO caso combo = ??
         }
     }
 
     public void validarTiposFatura(Boolean exibe) {
-        whatsappDebit = driverQA.findElement("rdn-whatsapp-payment-clarodebitpaymentinfo", "id");
-        emailDebit = driverQA.findElement("rdn-e-mail-payment-clarodebitpaymentinfo", "id");
-        correiosDebit = driverQA.findElement("rdn-correios-payment-clarodebitpaymentinfo", "id");
+        whatsappDebit = driverQA.findElement("rdn-whatsapp-debit", "id");
+        emailDebit = driverQA.findElement("rdn-email-debit", "id");
+        correiosDebit = driverQA.findElement("rdn-correios-debit", "id");
 
-        whatsappTicket = driverQA.findElement("rdn-whatsapp-payment-claroticketpaymentinfo", "id");
-        emailTicket = driverQA.findElement("rdn-e-mail-payment-claroticketpaymentinfo", "id");
-        correiosTicket = driverQA.findElement("rdn-correios-payment-claroticketpaymentinfo", "id");
+        whatsappTicket = driverQA.findElement("rdn-whatsapp-ticket", "id");
+        emailTicket = driverQA.findElement("rdn-email-ticket", "id");
+        correiosTicket = driverQA.findElement("rdn-correios-ticket", "id");
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {
@@ -103,7 +106,7 @@ public class CustomizarFaturaPage {
             if (isDisplayed) {
                 Assert.assertTrue(whatsappTicket.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertTrue(emailTicket.findElement(By.xpath("..")).isDisplayed());
-                if (isThabFlow) {
+                if (Cart_isThabFlow) {
                     Assert.assertNull(correiosTicket);
                 } else {
                     Assert.assertTrue(correiosTicket.findElement(By.xpath("..")).isDisplayed());
@@ -136,15 +139,15 @@ public class CustomizarFaturaPage {
                 assertDebit.accept(false);
             }
         } else { //fluxo base com fatura digital ou combo
-            if (!isComboFlow && (Cart_processType == MIGRATE)) { //existe (oculto) no html apenas as opções do método de pagamento atual
-                if (Cart_isDebitPaymentFlow) {
+            if (!isComboFlow && (Cart_processType == MIGRATE)) {
+                if (Cart_isDebitPaymentFlow) { //existe (oculto) no html apenas as opções para débito
                     assertDebit.accept(false);
                     assertTicketNull.run();
-                } else {
+                } else { //existe oculto no html as duas versões de cada
                     assertTicket.accept(false);
-                    assertDebitNull.run();
+                    assertDebit.accept(false);
                 }
-            } else { //EXCHANGE e EXCHANGE_PROMO - troca e troca de promo (não existe no html)
+            } else { //EXCHANGE e EXCHANGE_PROMO - troca e troca de promo ou combo (não existe no html)
                 assertDebitNull.run();
                 assertTicketNull.run();
             }
@@ -152,12 +155,24 @@ public class CustomizarFaturaPage {
     }
 
     public void validarDatasVencimento(Boolean exibe) {
-        WebElement datas = driverQA.findElement("datas-vencimento", "id");
+        WebElement datasDebit = driverQA.findElement("datas-vencimento-debit", "id");
+        WebElement datasTicket = driverQA.findElement("datas-vencimento-ticket", "id");
 
         if (exibe) { //fluxo gross ou base em migra pré-ctrl e ctrl-pós
-            Assert.assertNotNull(datas);
+            List<WebElement> dias;
 
-            List<WebElement> dias = datas.findElements(By.tagName("span"));
+            if (Cart_isDebitPaymentFlow) {
+                Assert.assertTrue(datasDebit.isDisplayed());
+                Assert.assertFalse(datasTicket.isDisplayed());
+
+                dias = datasDebit.findElements(By.tagName("span"));
+            } else {
+                Assert.assertFalse(datasDebit.isDisplayed());
+                Assert.assertTrue(datasTicket.isDisplayed());
+
+                dias = datasTicket.findElements(By.tagName("span"));
+            }
+
             Assert.assertEquals(6, dias.size()); // seis datas devem ser exibidas
 
             int checked = 0;
@@ -173,7 +188,8 @@ public class CustomizarFaturaPage {
 
             Assert.assertEquals(1, checked); //apenas uma data selecionada
         } else { //fluxo base em troca de plano mesma plataforma (ctrl-ctrl e pos-pos)
-            Assert.assertNull(datas);
+            Assert.assertNull(datasDebit);
+            Assert.assertNull(datasTicket);
         }
     }
 
@@ -241,11 +257,5 @@ public class CustomizarFaturaPage {
     public void direcionadoParaMulta() {
         driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
         Assert.assertNotNull(driverQA.findElement("txt-mensagem-multa", "id"));
-    }
-
-    public void direcionadoParaTHAB() {
-        driverQA.waitPageLoad("checkout/multi/payment-method/add", 10);
-
-        Assert.assertNotNull(driverQA.findElement("txt-controle-antecipado", "id"));
     }
 }

@@ -29,7 +29,7 @@ Funcionalidade: Planos - Base
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "11947486000", [E-mail] e [CPF] "94516280884"
+    E preenche os campos: [Telefone com DDD] "11947720054", [E-mail] e [CPF] "03495509801"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
@@ -38,6 +38,7 @@ Funcionalidade: Planos - Base
       E não deve ser exibido os meios de recebimento da fatura
       E deve ser exibido as datas de vencimento
     E seleciona a forma de pagamento: "Débito"
+    E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos

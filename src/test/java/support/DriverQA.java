@@ -177,6 +177,11 @@ public class DriverQA {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
+    public void waitElementInvisibility(WebElement element, int timeoutSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
     public void JavaScriptClick(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);

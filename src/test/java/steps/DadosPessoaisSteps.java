@@ -7,6 +7,8 @@ import io.cucumber.java.pt.Quando;
 import pages.DadosPessoaisPage;
 import support.BaseSteps;
 
+import static pages.ComumPage.Cart_isExpressDelivery;
+
 public class DadosPessoaisSteps extends BaseSteps {
     DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
 
@@ -22,25 +24,33 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.inserirNomeMae(nomeMae);
     }
 
-    @E("preenche os campos de endereço: [CEP] {string}, [Número] {string} e [Complemento] {string}") //CEP - "convencional", "expressa" ou Número do CEP
-    public void preencheOsCamposDeEndereçoCEPNumeroEComplemento(String cep, String numero, String complemento) {
+    @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
+    public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+        Cart_isExpressDelivery = false;
+    }
+
+    @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
+    public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
+        dadosPessoaisPage.inserirCep(cep);
+        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+        Cart_isExpressDelivery = true;
     }
 
     @E("deve ser exibido os tipos de entrega")
-    public void exibeEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(true);
+    public void exibirEntrega() {
+        dadosPessoaisPage.validarTiposEntrega(true, Cart_isExpressDelivery);
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
-    public void naoExibeEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(false);
+    public void naoExibirEntrega() {
+        dadosPessoaisPage.validarTiposEntrega(false, Cart_isExpressDelivery);
     }
 
-    @Então("será exibida a mensagem de erro e não será possível continuar: {string}")
-    public void validarMensagemDeErroDoCep(String mensagem) {
-        dadosPessoaisPage.validarMensagemBloqueioCep(mensagem);
+    @Então("será recarregada a página e exibida a mensagem de erro: {string}")
+    public void exibirFraseBloqueioCep(String mensagem) {
+        dadosPessoaisPage.validarPaginaDadosPessoaisBloqueioCep(mensagem);
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Dados Pessoais")

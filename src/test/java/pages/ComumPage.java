@@ -10,12 +10,14 @@ public class ComumPage {
     }
 
     public static final String urlAmbiente = "https://accstorefront.cokecxf-commercec1-" + System.getProperty("env", "s6").toLowerCase() + "-public.model-t.cc.commerce.ondemand.com";
-    public static String Cart_planId;
-    public static Boolean Cart_isDebitPaymentFlow = true;
-    public static Boolean Cart_hasLoyalty = true;
     public static String Cart_emailAddress;
-    public static Boolean Cart_hasDevice = false;
+    public static String Cart_planId;
     public static ProcessType Cart_processType;
+    public static boolean Cart_isDebitPaymentFlow = true;
+    public static boolean Cart_hasLoyalty = true;
+    public static boolean Cart_hasDevice = false;
+    public static boolean Cart_isExpressDelivery;
+    public static boolean Cart_isThabFlow = false;
 
     public enum ProcessType {
         ACQUISITION,
@@ -44,6 +46,10 @@ public class ComumPage {
     }
 
     public void validarResumoCompra() {
+        //TODO ECCMAUT-351
+    }
+
+    public void validarAparelhoResumoCompra() {
         //TODO ECCMAUT-351
     }
 }
