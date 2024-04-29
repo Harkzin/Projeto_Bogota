@@ -38,8 +38,6 @@ public class CustomizarFaturaPage {
 
     public void validarPagiaCustomizarFaturaThab() {
         driverQA.waitPageLoad("checkout/multi/payment-method/add", 10);
-
-        Assert.assertNotNull(driverQA.findElement("txt-controle-antecipado", "id"));
     }
 
     public void validarPaginaTermosCombo() {
@@ -130,13 +128,17 @@ public class CustomizarFaturaPage {
             Assert.assertNull(correiosTicket);
         };
 
-        if (exibe) { //fluxo gross ou base com fatura impressa e migra pré-ctrl
+        if (exibe) { //fluxo gross, fluxo base com fatura impressa, migra pré-ctrl e thab
             if (Cart_isDebitPaymentFlow) {
                 assertDebit.accept(true);
                 assertTicket.accept(false);
             } else {
                 assertTicket.accept(true);
-                assertDebit.accept(false);
+                if (!Cart_isThabFlow) {
+                    assertDebit.accept(false);
+                } else {
+                    assertDebitNull.run();
+                }
             }
         } else { //fluxo base com fatura digital ou combo
             if (!isComboFlow && (Cart_processType == MIGRATE)) {
@@ -214,8 +216,10 @@ public class CustomizarFaturaPage {
         switch (fatura) {
             case "Whatsapp":
                 driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+                break;
             case "E-mail":
                 driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? emailDebit : emailTicket);
+                break;
             case "Correios":
                 driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }

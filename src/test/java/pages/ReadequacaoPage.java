@@ -15,4 +15,8 @@ public class ReadequacaoPage  {
 
         Assert.assertNotNull(driverQA.findElement("controle-antecipado", "id"));
     }
+
+    public void clicarEuQuero() {
+        driverQA.JavaScriptClick("buttonCheckoutThab", "id");
+    }
 }

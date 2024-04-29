@@ -1,6 +1,5 @@
 #language: pt
 
-@Regressivo
 Funcionalidade: Planos - Base
 
   @Migracao
@@ -12,7 +11,7 @@ Funcionalidade: Planos - Base
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "11947628552", [E-mail] e [CPF] "33006780213"
+    E preenche os campos: [Telefone com DDD] "11947720457", [E-mail] e [CPF] "57064187728"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
@@ -35,7 +34,7 @@ Funcionalidade: Planos - Base
     Então é direcionado para a tela de readequação THAB
 
     Quando seleciona o plano de controle antecipado ofertado
-    Então é direcionado para a tela de fatura THAB
+    Então é direcionado para a tela de Customizar Fatura THAB
       Mas não deve haver alterações no valor e nem nas informações do Plano
       Mas não deve ser exibido as opções de pagamento
       E deve ser exibido os meios de recebimento da fatura

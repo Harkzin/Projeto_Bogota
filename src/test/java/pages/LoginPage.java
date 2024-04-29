@@ -1,6 +1,7 @@
 package pages;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
 import static pages.ComumPage.Cart_emailAddress;
@@ -13,15 +14,21 @@ public class LoginPage {
         driverQA = stepDriver;
     }
 
+    private WebElement TxtCpf;
+    private WebElement BtnContinuar;
+    private WebElement TxtToken;
+
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
+
+        BtnContinuar = driverQA.findElement("btn-continuar", "id");
 
         Assert.assertNotNull(driverQA.findElement("txt-telefone", "id"));
         Assert.assertNotNull(driverQA.findElement("lnk-acompanhar-pedidos", "id"));
         Assert.assertNotNull(driverQA.findElement("lnk-claro-clube", "id"));
-        Assert.assertNotNull(driverQA.findElement("btn-continuar", "id"));
+        Assert.assertNotNull(BtnContinuar);
 
-        Assert.assertFalse((driverQA.findElement("btn-continuar", "id").isEnabled()));
+        Assert.assertFalse(BtnContinuar.isEnabled());
     }
 
     public void clicarAcompanharPedidos() {
@@ -31,20 +38,22 @@ public class LoginPage {
     public void validarPaginaLoginCpf() {
         driverQA.waitPageLoad("/login/my-orders", 10);
 
-        Assert.assertNotNull(driverQA.findElement("track-order-form", "id"));
-        Assert.assertNotNull(driverQA.findElement("txt-cpf", "id"));
+        TxtCpf = driverQA.findElement("txt-cpf", "id");
 
-        Assert.assertFalse("O botão [Continuar] deveria estar desabilitado", (driverQA.findElement("btn-continuar", "id").isEnabled()));
+        Assert.assertNotNull(driverQA.findElement("track-order-form", "id"));
+        Assert.assertNotNull(TxtCpf);
+
+        Assert.assertFalse(BtnContinuar.isEnabled());
     }
 
     public void preencheCPF(String cpf) {
-        driverQA.actionSendKeys("txt-cpf", "id", cpf);
+        driverQA.actionSendKeys(TxtCpf, cpf);
     }
 
     public void clicarBotaoContinuar() {
         driverQA.waitElementToBeClickable(driverQA.findElement("btn-continuar", "id"), 1);
 
-        driverQA.JavaScriptClick("btn-continuar", "id");
+        driverQA.JavaScriptClick(BtnContinuar);
     }
 
     public void validarPaginaLoginToken() {
@@ -62,12 +71,13 @@ public class LoginPage {
     public void validarPaginaLoginEmail() {
         driverQA.waitPageLoad("/login/token/email", 10);
 
-        Assert.assertNotNull(driverQA.findElement("token-validation-form", "id"));
-        Assert.assertNotNull(driverQA.findElement("txt-token", "id"));
+        TxtToken = driverQA.findElement("txt-token", "id");
+
+        Assert.assertNotNull(TxtToken);
     }
 
     public void inserirTokenEmail() {
-        driverQA.actionSendKeys("txt-token", "id", driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        driverQA.actionSendKeys(TxtToken, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validaTelaMeusPedidos() {

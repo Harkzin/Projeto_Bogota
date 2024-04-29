@@ -77,9 +77,4 @@ public class CarrinhoSteps extends BaseSteps {
     public void clicarEuQuero() {
         carrinhoPage.clicarEuQuero();
     }
-
-    @Quando("seleciona o plano de controle antecipado ofertado")
-    public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {
-        carrinhoPage.clicarEuQuero();
-    }
 }
