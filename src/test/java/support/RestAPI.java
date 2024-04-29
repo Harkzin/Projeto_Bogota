@@ -24,6 +24,7 @@ import java.util.Optional;
 import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.get;
 import static java.time.Duration.ofSeconds;
+import static pages.ComumPage.Email.CONFIRMA_TOKEN;
 
 public final class RestAPI {
     private RestAPI() {
@@ -80,9 +81,20 @@ public final class RestAPI {
                 .GET()
                 .build();
 
+        final HttpRequest clearInbox = HttpRequest.newBuilder()
+                .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
+                .timeout(ofSeconds(15))
+                .header("Mailsac-Key", MAILSAC_KEY)
+                .DELETE()
+                .build();
+
         List<JsonNode> messageList;
 
         try {
+            if (emailSubject.equals(CONFIRMA_TOKEN)) {
+                clientHttp.send(clearInbox, HttpResponse.BodyHandlers.discarding());
+            }
+
             messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {
             });
         } catch (IOException | InterruptedException e) {

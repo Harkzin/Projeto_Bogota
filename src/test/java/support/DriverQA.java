@@ -142,13 +142,6 @@ public class DriverQA {
         return elements;
     }
 
-    public void actionClick(String selectorValue, String selectorType) {
-        WebElement element = findElement(selectorValue, selectorType);
-        Actions act = new Actions(driver);
-        act.moveToElement(element);
-        act.click(element).perform();
-    }
-
     public void actionSendKeys(WebElement element, String text) {
         Actions action = new Actions(driver);
         action.click(element);

@@ -101,6 +101,7 @@ public class PdpPlanosPage {
 
         if (isDebit) {
             if (hasLoyalty) {
+                //ECCMAUT-351
                 //Assert.assertEquals(getPrice.apply(debitLoyalty), debitLoyaltyPrice);
                 //Assert.assertEquals(getPrice.apply(debitLoyaltyNav), debitNotLoyaltyPrice);
 
@@ -109,6 +110,7 @@ public class PdpPlanosPage {
                 Assert.assertFalse(debitNotLoyalty.isDisplayed());
                 Assert.assertFalse(ticketNotLoyalty.isDisplayed());
             } else {
+                //ECCMAUT-351
                 //Assert.assertEquals(getPrice.apply(debitNotLoyalty), debitNotLoyaltyPrice);
                 //Assert.assertEquals(getPrice.apply(debitNotLoyaltyNav), debitNotLoyaltyPrice);
 
@@ -119,6 +121,7 @@ public class PdpPlanosPage {
             }
         } else {
             if (hasLoyalty) {
+                //ECCMAUT-351
                 //Assert.assertEquals(getPrice.apply(ticketLoyalty), ticketLoyaltyPrice);
                 //Assert.assertEquals(getPrice.apply(ticketLoyaltyNav), ticketLoyaltyPrice);
 
@@ -128,6 +131,7 @@ public class PdpPlanosPage {
                 Assert.assertFalse(ticketNotLoyalty.isDisplayed());
 
             } else {
+                //ECCMAUT-351
                 //Assert.assertEquals(getPrice.apply(ticketNotLoyalty), ticketNotLoyaltyPrice);
                 //Assert.assertEquals(getPrice.apply(ticketNotLoyaltyNav), ticketNotLoyaltyPrice);
 
@@ -143,12 +147,10 @@ public class PdpPlanosPage {
         WebElement appsIlimitadosParent = planCharacteristics.findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));
 
         if (exibe) {
-            //Assert.assertTrue(appsIlimitadosParent.isDisplayed());
             driverQA.waitElementVisibility(appsIlimitadosParent, 2);
             //TODO validar apps exibidos ECCMAUT-351
         } else {
             driverQA.waitElementInvisibility(appsIlimitadosParent, 2);
-            //Assert.assertFalse(appsIlimitadosParent.isDisplayed());
         }
     }
 

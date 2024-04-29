@@ -134,17 +134,16 @@ public class CarrinhoPage {
             }
         } else { //aparelhos
             switch (Cart_processType) {
-                case ACQUISITION: {
+                case ACQUISITION:
                     validarCamposAquisicao();
-                }
+                    break;
                 case APARELHO_TROCA_APARELHO:
                 case EXCHANGE:
-                case MIGRATE: {
+                case MIGRATE:
                     validarCamposBase(true);
-                }
-                case PORTABILITY: {
+                    break;
+                case PORTABILITY:
                     validarCamposPortabilidade();
-                }
             }
             validarCampoEmail(true);
         }
