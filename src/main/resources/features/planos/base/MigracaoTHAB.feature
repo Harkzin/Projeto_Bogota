@@ -17,7 +17,7 @@ Funcionalidade: Planos - Base
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de informações pessoais: Nome Completo "ECOMM MAURO THAB", Data De Nascimento "20022000" e Nome da Mãe "Marta Silva"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECCMAUT THAB", [Data de Nascimento] "20022000" e [Nome da Mãe] "Marta Silva"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP 402"
       Mas não deve ser exibido os tipos de entrega
 

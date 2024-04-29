@@ -75,7 +75,7 @@ public class DadosPessoaisPage {
     public void validarTiposEntrega(boolean showDeliveryModes, boolean isExpressDelivery) {
         chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
         chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
-        usarMesmoEnderecoCobranca = driverQA.findElement("billingAddress_checkbox", "id");
+        usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
 
         WebElement entregaConvencional = driverQA.findElement("rdn-convencional", "id");
         WebElement entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");

@@ -17,7 +17,7 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.validarPaginaDadosPessoais();
     }
 
-    @E("preenche os campos de informações pessoais: Nome Completo {string}, Data De Nascimento {string} e Nome da Mãe {string}")
+    @E("preenche os campos de dados pessoais: [Nome Completo] {string}, [Data de Nascimento] {string} e [Nome da Mãe] {string}")
     public void preencherDadosPessoais(String nome, String data, String nomeMae) {
         dadosPessoaisPage.inserirNome(nome);
         dadosPessoaisPage.inserirDataNascimento(data);

@@ -32,7 +32,7 @@ public class HomeSteps extends BaseSteps {
 
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String idPlano) {
-        homePage.acessarPDP(idPlano);
+        homePage.acessarPdpPlano(idPlano);
     }
 
     @Quando("o usuário clicar no botão [Entrar] do header")

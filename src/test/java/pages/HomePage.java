@@ -22,8 +22,8 @@ public class HomePage {
         driverQA.actionSendKeys(campoTelefone, "id", msisdn);
     }
 
-    public void acessarPDP(String idPlano) {
-        driverQA.JavaScriptClick("txt-mais-detalhes-" + idPlano, "id");
+    public void acessarPdpPlano(String idPlano) {
+        driverQA.JavaScriptClick("lnk-mais-detalhes-" + idPlano, "id");
         Cart_planId = idPlano;
     }
 
