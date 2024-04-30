@@ -45,8 +45,9 @@ public class LoginSteps extends BaseSteps {
         loginPage.validarPaginaLoginToken();
     }
 
-    @E("selecionar a opção [Receber código por e-mail]")
-    public void selecionaAOpcaoReceberCodigoPorEMail() {
+    @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
+    public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
+        Cart_emailAddress = email;
         loginPage.selecionaReceberCodigoEmail();
     }
 
@@ -55,9 +56,8 @@ public class LoginSteps extends BaseSteps {
         loginPage.validarPaginaLoginEmail();
     }
 
-    @E("preenche o campo [Digite o código recebido] com o código recebido no e-mail {string}")
-    public void preencherToken(String email) {
-        Cart_emailAddress = email;
+    @E("preenche o campo [Digite o código recebido] com o token")
+    public void preencherToken() {
         loginPage.inserirTokenEmail();
     }
 

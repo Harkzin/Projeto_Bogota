@@ -1,5 +1,6 @@
 #language: pt
 
+  @Regressivo
 Funcionalidade: Planos - Base
 
   @Migracao
