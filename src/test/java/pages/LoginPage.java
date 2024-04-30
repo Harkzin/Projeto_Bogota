@@ -6,6 +6,7 @@ import support.DriverQA;
 
 import static pages.ComumPage.Cart_emailAddress;
 import static pages.ComumPage.Email.CONFIRMA_TOKEN;
+import static support.RestAPI.clearInbox;
 
 public class LoginPage {
     private final DriverQA driverQA;
@@ -65,6 +66,7 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
+        clearInbox(Cart_emailAddress);
         driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
     }
 

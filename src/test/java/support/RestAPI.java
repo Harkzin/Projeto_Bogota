@@ -24,7 +24,6 @@ import java.util.Optional;
 import static io.restassured.RestAssured.*;
 import static io.restassured.RestAssured.get;
 import static java.time.Duration.ofSeconds;
-import static pages.ComumPage.Email.CONFIRMA_TOKEN;
 
 public final class RestAPI {
     private RestAPI() {
@@ -32,6 +31,7 @@ public final class RestAPI {
 
     private static final HttpClient clientHttp = HttpClient.newHttpClient();
     private static final ObjectMapper objMapper = new ObjectMapper();
+    private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
 
     public static String getCpf() throws IOException, InterruptedException {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
@@ -72,7 +72,6 @@ public final class RestAPI {
     }
 
     public static Document getEmailMessage(String emailAddress, Email emailSubject) {
-        final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
 
         final HttpRequest getMessages = HttpRequest.newBuilder()
                 .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
@@ -81,20 +80,9 @@ public final class RestAPI {
                 .GET()
                 .build();
 
-        final HttpRequest clearInbox = HttpRequest.newBuilder()
-                .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
-                .timeout(ofSeconds(15))
-                .header("Mailsac-Key", MAILSAC_KEY)
-                .DELETE()
-                .build();
-
         List<JsonNode> messageList;
 
         try {
-            if (emailSubject.equals(CONFIRMA_TOKEN)) {
-                clientHttp.send(clearInbox, HttpResponse.BodyHandlers.discarding());
-            }
-
             messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {
             });
         } catch (IOException | InterruptedException e) {
@@ -122,6 +110,21 @@ public final class RestAPI {
             return email;
         } else {
             return null;
+        }
+    }
+
+    public static void clearInbox(String emailAddress) {
+        final HttpRequest deleteMessages = HttpRequest.newBuilder()
+                .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
+                .timeout(ofSeconds(15))
+                .header("Mailsac-Key", MAILSAC_KEY)
+                .DELETE()
+                .build();
+
+        try {
+            clientHttp.send(deleteMessages, HttpResponse.BodyHandlers.discarding());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
