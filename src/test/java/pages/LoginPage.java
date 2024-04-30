@@ -13,9 +13,8 @@ public class LoginPage {
     public LoginPage(DriverQA stepDriver) {
         driverQA = stepDriver;
     }
-
-    private WebElement TxtCpf;
     private WebElement BtnContinuar;
+    private WebElement TxtCpf;
     private WebElement TxtToken;
 
     public void validarPaginaLogin() {
@@ -39,6 +38,7 @@ public class LoginPage {
         driverQA.waitPageLoad("/login/my-orders", 10);
 
         TxtCpf = driverQA.findElement("txt-cpf", "id");
+        BtnContinuar = driverQA.findElement("btn-continuar", "id");
 
         Assert.assertNotNull(driverQA.findElement("track-order-form", "id"));
         Assert.assertNotNull(TxtCpf);
@@ -92,5 +92,9 @@ public class LoginPage {
 
     public void clicarBotaoConfirmar() {
         driverQA.JavaScriptClick("btn-confirmar", "id");
+    }
+
+    public void validaTelaDetalhesPedido() {
+        //TODO Validar Campos Pedidos ()
     }
 }

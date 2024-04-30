@@ -78,6 +78,6 @@ public class LoginSteps extends BaseSteps {
 
     @E("validar que foi direcionado para a página de Detalhes de pedido")
     public void validarQueFoiDirecionadoParaAPaginaDeDetalhesDePedido() {
-//        loginPage.validaTelaDetalhesPedido();
+        loginPage.validaTelaDetalhesPedido();
     }
 }
