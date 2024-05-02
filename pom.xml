@@ -17,20 +17,20 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>7.15.0</version>
+            <version>7.17.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>7.15.0</version>
+            <version>7.17.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
-            <version>5.7.8</version>
+            <version>5.8.0</version>
         </dependency>
 
         <dependency>
@@ -61,19 +61,19 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.18.1</version>
+            <version>4.20.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.7.0</version>
+            <version>5.8.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>2.0.12</version>
+            <version>2.0.13</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -83,7 +83,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>11</source>
@@ -120,7 +120,7 @@
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
-                <version>5.8.0</version>
+                <version>5.8.1</version>
                 <executions>
                     <execution>
                         <id>execution</id>
@@ -129,7 +129,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <projectName>${project.name} - EcommPlans Test Automation Report</projectName>
+                            <projectName>${project.name} - Ecomm Test Automation Report</projectName>
                             <outputDirectory>${project.build.directory}/reports</outputDirectory>
                             <jsonFiles>
                                 <param>**/*.json</param>
