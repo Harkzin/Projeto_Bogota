@@ -1,6 +1,5 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
 import org.junit.Assert;
@@ -32,7 +31,7 @@ public class CarrinhoPage {
     private WebElement cpfAquisicao;
     private WebElement email;
 
-    private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) throws IOException, InterruptedException {
+    private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {
         String cpf;
         String clearSaleRule = isApproved ? ".*[1348]$" : ".*5$"; //Regra do final do CPF da clearSale.
 
@@ -179,12 +178,12 @@ public class CarrinhoPage {
         driverQA.actionSendKeys(cpfMigracao, cpf);
     }
 
-    public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
+    public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
         driverQA.actionSendKeys(telefonePortabilidade, telefone);
         driverQA.actionSendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) throws IOException, InterruptedException {
+    public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
         driverQA.actionSendKeys(telefoneContatoAquisicao, telefoneContato);
         driverQA.actionSendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
