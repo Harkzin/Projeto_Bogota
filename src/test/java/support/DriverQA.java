@@ -47,7 +47,7 @@ public class DriverQA {
                     driver = new FirefoxDriver(firefoxOptions);
                     break;
                 case "chrome":
-                    WebDriverManager.chromedriver().clearDriverCache().clearResolutionCache().setup();
+                    WebDriverManager.chromedriver().setup();
                     ChromeOptions chromeOptions = new ChromeOptions();
                     if (headless.equals("true")) {
                         chromeOptions.addArguments("--headless");
