@@ -14,21 +14,21 @@ public class LoginPage {
     public LoginPage(DriverQA stepDriver) {
         driverQA = stepDriver;
     }
-    private WebElement BtnContinuar;
-    private WebElement TxtCpf;
-    private WebElement TxtToken;
+    private WebElement continuar;
+    private WebElement cpf;
+    private WebElement token;
 
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
 
-        BtnContinuar = driverQA.findElement("btn-continuar", "id");
+        continuar = driverQA.findElement("btn-continuar", "id");
 
-        Assert.assertNotNull(driverQA.findElement("txt-telefone", "id"));
-        Assert.assertNotNull(driverQA.findElement("lnk-acompanhar-pedidos", "id"));
-        Assert.assertNotNull(driverQA.findElement("lnk-claro-clube", "id"));
-        Assert.assertNotNull(BtnContinuar);
+        Assert.assertTrue(driverQA.findElement("txt-telefone", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
+        Assert.assertTrue(continuar.isDisplayed());
 
-        Assert.assertFalse(BtnContinuar.isEnabled());
+        Assert.assertFalse(continuar.isEnabled());
     }
 
     public void clicarAcompanharPedidos() {
@@ -38,31 +38,29 @@ public class LoginPage {
     public void validarPaginaLoginCpf() {
         driverQA.waitPageLoad("/login/my-orders", 10);
 
-        TxtCpf = driverQA.findElement("txt-cpf", "id");
-        BtnContinuar = driverQA.findElement("btn-continuar", "id");
+        cpf = driverQA.findElement("txt-cpf", "id");
+        continuar = driverQA.findElement("btn-continuar", "id");
 
-        Assert.assertNotNull(driverQA.findElement("track-order-form", "id"));
-        Assert.assertNotNull(TxtCpf);
+        Assert.assertTrue(driverQA.findElement("track-order-form", "id").isDisplayed());
+        Assert.assertTrue(cpf.isDisplayed());
 
-        Assert.assertFalse(BtnContinuar.isEnabled());
+        Assert.assertFalse(continuar.isEnabled());
     }
 
     public void preencheCPF(String cpf) {
-        driverQA.actionSendKeys(TxtCpf, cpf);
+        driverQA.actionSendKeys(this.cpf, cpf);
     }
 
     public void clicarBotaoContinuar() {
-        driverQA.waitElementToBeClickable(driverQA.findElement("btn-continuar", "id"), 1);
-
-        driverQA.JavaScriptClick(BtnContinuar);
+        driverQA.JavaScriptClick(continuar);
     }
 
     public void validarPaginaLoginToken() {
         driverQA.waitPageLoad("/login/token", 10);
 
-        Assert.assertNotNull(driverQA.findElement("token-verification-method", "id"));
-        Assert.assertNotNull(driverQA.findElement("lnk-receber-codigo-email", "id"));
-        Assert.assertNotNull(driverQA.findElement("lnk-receber-codigo-sms", "id"));
+        Assert.assertTrue(driverQA.findElement("token-verification-method", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-email", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-sms", "id").isDisplayed());
     }
 
     public void selecionaReceberCodigoEmail() {
@@ -73,19 +71,21 @@ public class LoginPage {
     public void validarPaginaLoginEmail() {
         driverQA.waitPageLoad("/login/token/email", 10);
 
-        TxtToken = driverQA.findElement("txt-token", "id");
+        token = driverQA.findElement("txt-token", "id");
 
-        Assert.assertNotNull(TxtToken);
+        Assert.assertTrue(token.isDisplayed());
+
     }
 
     public void inserirTokenEmail() {
-        driverQA.actionSendKeys(TxtToken, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        driverQA.actionSendKeys(token, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
-    public void validaTelaMeusPedidos() {
+    public void validarPaginaMeusPedidos() {
         driverQA.waitPageLoad("/my-account/orders", 10);
 
-        Assert.assertNotNull(driverQA.findElement("txt-lista-pedidos", "id"));
+        Assert.assertTrue(driverQA.findElement("txt-lista-pedidos", "id").isDisplayed());
+
     }
 
     public void acessarPedidoRecente() {
@@ -96,7 +96,7 @@ public class LoginPage {
         driverQA.JavaScriptClick("btn-confirmar", "id");
     }
 
-    public void validaTelaDetalhesPedido() {
+    public void validarPaginaDetalhesPedido() {
         //TODO Validar Campos Pedidos ()
     }
 }

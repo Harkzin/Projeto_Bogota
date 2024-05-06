@@ -9,20 +9,20 @@ public class ParabensPage {
         driverQA = stepDriver;
     }
 
-    private String parabensNomeCliente = "msg-parabens-sucesso";
-    private String parabensNomePlano = "msg-sucesso-plano";
-    private String parabensPedidoCliente = "msg-informacao-pedido";
-    private String xpathNumeroDoPedido = "(//*[@data-automation='informacao-pedido'])[2]";
-    private String nomePedido = "msg-informacao-nome";
-    private String cpfPedido = "msg-informacao-cpf";
-    private String xpathTelefonePedido = "//*[@data-automation='informacao-telefone']";
-    private String planoNomePedido = "msg-informacao-plano";
-    private String valorPedido = "msg-informacao-valor";
-    private String xpathFormaPagamentoPedido = "msg-informacao-pagamento";
-    private String diaVencimentoFatura = "msg-informacao-vencimento";
-    private String enderecoDeEntregaPedido = "msg-endereco";
-    private String xpathTipoDoFretePedido = "//*[@data-automation='tipo-frete-conclusao']";
-    private String xpathValorDoFretePedido = "//*[@data-automation='valor-frete-conclusao']";
+    private final String parabensNomeCliente = "msg-parabens-sucesso";
+    private final String parabensNomePlano = "msg-sucesso-plano";
+    private final String parabensPedidoCliente = "msg-informacao-pedido";
+    private final String xpathNumeroDoPedido = "(//*[@data-automation='informacao-pedido'])[2]";
+    private final String nomePedido = "msg-informacao-nome";
+    private final String cpfPedido = "msg-informacao-cpf";
+    private final String xpathTelefonePedido = "//*[@data-automation='informacao-telefone']";
+    private final String planoNomePedido = "msg-informacao-plano";
+    private final String valorPedido = "msg-informacao-valor";
+    private final String xpathFormaPagamentoPedido = "msg-informacao-pagamento";
+    private final String diaVencimentoFatura = "msg-informacao-vencimento";
+    private final String enderecoDeEntregaPedido = "msg-endereco";
+    private final String xpathTipoDoFretePedido = "//*[@data-automation='tipo-frete-conclusao']";
+    private final String xpathValorDoFretePedido = "//*[@data-automation='valor-frete-conclusao']";
     public static String pedidoParabens;
 
     public void validarPaginaParabens() {

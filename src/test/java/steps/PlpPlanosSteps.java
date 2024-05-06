@@ -1,6 +1,6 @@
 package steps;
 
-import io.cucumber.java.pt.E;;
+import io.cucumber.java.pt.E;
 import pages.PlpPlanosPage;
 import support.BaseSteps;
 

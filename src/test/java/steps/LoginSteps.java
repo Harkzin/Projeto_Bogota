@@ -68,7 +68,7 @@ public class LoginSteps extends BaseSteps {
 
     @Então("é direcionado para a tela Meus Pedidos")
     public void eDirecionadoParaATelaMeusPedidos() {
-        loginPage.validaTelaMeusPedidos();
+        loginPage.validarPaginaMeusPedidos();
     }
 
     @E("acessar o pedido mais recente, clicando no Número do pedido dele")
@@ -78,6 +78,6 @@ public class LoginSteps extends BaseSteps {
 
     @E("validar que foi direcionado para a página de Detalhes de pedido")
     public void validarQueFoiDirecionadoParaAPaginaDeDetalhesDePedido() {
-        loginPage.validaTelaDetalhesPedido();
+        loginPage.validarPaginaDetalhesPedido();
     }
 }

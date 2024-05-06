@@ -1,14 +1,9 @@
 package pages;
 
 import org.junit.Assert;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
-
-import static pages.ComumPage.Cart_isExpressDelivery;
-import static pages.ComumPage.Cart_processType;
-import static pages.ComumPage.ProcessType.ACQUISITION;
 
 public class DadosPessoaisPage {
     private final DriverQA driverQA;
