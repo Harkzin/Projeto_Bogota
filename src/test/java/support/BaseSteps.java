@@ -1,18 +1,19 @@
 package support;
 
 public class BaseSteps {
-    protected static DriverQA driver = new DriverQA();
+    protected static DriverQA driverQA = new DriverQA();
+
     public BaseSteps() {
         String browser = System.getProperty("browser", "chrome");
         switch (browser) {
             case "chrome":
-                browser = driver.start("chrome");
+                driverQA.setupDriver("chrome");
                 break;
             case "firefox":
-                browser = driver.start("firefox");
+                driverQA.setupDriver("firefox");
                 break;
             default:
-                throw new IllegalArgumentException("Navegador inválido: " + browser);
+                throw new IllegalArgumentException("Invalid browser: " + browser);
         }
     }
 }

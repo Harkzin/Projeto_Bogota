@@ -1,109 +1,122 @@
 package pages;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import support.DriverQA;
-import support.Hooks;
 
 public class DadosPessoaisPage {
-    private DriverQA driver;
+    private final DriverQA driverQA;
 
     public DadosPessoaisPage(DriverQA stepDriver) {
-        driver = stepDriver;
+        driverQA = stepDriver;
     }
 
-    // Dados Pessoais
-    private String idFormDadosPessoais = "addressForm.personalInformation";
-    private String xpathTxtNome = "//input[@data-automation='nome-completo']";
-    private String xpathTxtDtNascimento = "//input[@data-automation='nascimento']";
-    private String xpathTxtNomeMae = "//input[@data-automation='nome-completo-mae']";
-    private String xpathSubmitContinuarDados = "//input[@data-automation='continuar']";
+    private WebElement cep;
+    private WebElement chipComumConvencional;
+    private WebElement chipComumExpressa;
+    private WebElement usarMesmoEnderecoCobranca;
+    //public boolean showDeliveryModes = true;
 
-    // Dados Endereco
-    private String idTxtCep = "postcode_deliveryAddress";
-    private String xpathTxtNumero = "//input[@data-automation='numero']";
-    private String xpathTxtComplemento = "//input[@data-automation='complemento']";
-    private String xpathTipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? "(//*[@for='shippingTypeOption1'])[2]" : "(//*[@for='shippingTypeOption1'])[1]";
-    private String xpathValorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? "(//*[@for='shippingTypeOption1'])[2]" : "(//*[@class='shipping-value'])[1]";
-    public static String xpathBtnContinuar = "//button[@data-automation='continuar']";
-    public static String xpathBtnContinuarPagamento = "//button[@title='Continuar']";
+    private void validarCampoCep() {
+        cep = driverQA.findElement("txt-cep-endereco-entrega", "id");
+        Assert.assertTrue(cep.isDisplayed());
+        Assert.assertEquals(cep.getAttribute("value"), "");
+    }
 
-    // Variavel utilizada para validacao de cenario @bloqueioCEPdiferente
-    private String xpathMsgErroCEP = "//*[@id='postcode_deliveryAddress-error']";
+    public void validarPaginaDadosPessoais() {
+        driverQA.waitPageLoad("/checkout/multi/delivery-address/addClaroAddress", 15);
 
-    // Variaveis criadas para utilizacao de validacao na tela de parabens
-    public static String nomeCliente;
-    public static String cepCliente;
-    public static String numeroEndCliente;
-    public static String complementoCliente;
-    public static String xpathEnderecoCliente = "(//*[@name='deliveryAddress.streetName'])[2]";
-    public static String xpathBairroCliente = "(//*[@name='deliveryAddress.neighbourhood'])[2]";
-    public static String xpathUfCliente = "(//*[@name='deliveryAddress.stateCode'])[2]";
-    public static String xpathCidadeCliente = "(//*[@name='deliveryAddress.townCity'])[2]";
-    ;
-    public static String enderecoCliente;
-    public static String bairroCliente;
-    public static String ufCliente;
-    public static String cidadeCliente;
-    public static String tipoDeFreteCarrinho;
-    public static String valorDoFreteCarrinho;
+        validarCampoCep();
+    }
 
-    public void preencherNomeCompleto(String nomeCompleto) {
-        if (driver.isDisplayed(xpathTxtNome, "xpath")) {
-            driver.actionSendKey(nomeCompleto, xpathTxtNome, "xpath");
+    public void validarPaginaDadosPessoaisBloqueioCep(String mensagem) {
+        driverQA.waitPageLoad("/checkout/multi/delivery-address/addClaroAddress", 10);
+
+        validarCampoCep();
+
+        WebElement fraseErro = driverQA.findElement("txt-cep-endereco-entrega-error", "id");
+        Assert.assertTrue(fraseErro.isDisplayed());
+        Assert.assertEquals(mensagem, fraseErro.getText());
+
+        Assert.assertNull(driverQA.findElement("txt-nome-completo", "id"));
+        Assert.assertNull(driverQA.findElement("txt-nascimento", "id"));
+        Assert.assertNull(driverQA.findElement("txt-nome-mae", "id"));
+    }
+
+    public void inserirNome(String nomeCompleto) {
+        driverQA.actionSendKeys("txt-nome-completo", "id", nomeCompleto);
+    }
+
+    public void inserirDataNascimento(String dataNasc) {
+        driverQA.actionSendKeys("txt-nascimento", "id", dataNasc);
+    }
+
+    public void inserirNomeMae(String nomeMae) {
+        driverQA.actionSendKeys("txt-nome-mae", "id", nomeMae);
+    }
+
+    public void inserirCep(String cepNumber) {
+        driverQA.actionSendKeys(cep, cepNumber);
+
+        WebElement endereco = driverQA.findElement("txt-endereco-endereco-entrega", "id");
+        driverQA.waitElementVisibility(endereco, 12);
+        Assert.assertNotEquals("Preenchimento automático", endereco.getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
+    }
+
+    public void validarTiposEntrega(boolean showDeliveryModes, boolean isExpressDelivery) {
+        chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
+        chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
+        usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
+
+        WebElement entregaConvencional = driverQA.findElement("rdn-convencional", "id");
+        WebElement entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
+
+        if (showDeliveryModes) {
+            WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
+            WebElement entregaConvencionalParent = entregaConvencional.findElement(By.xpath("../../..")); //div pai do pai do pai do input
+            WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
+
+            if (!isExpressDelivery) {
+                Assert.assertTrue(chipComumConvencional.isSelected());
+                Assert.assertTrue(entregaConvencional.isSelected());
+                Assert.assertTrue(entregaConvencionalParent.isDisplayed());
+
+                Assert.assertFalse(entregaExpressaParent.isDisplayed());
+                Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
+            } else {
+                Assert.assertTrue(chipComumExpressa.isSelected());
+                Assert.assertTrue(entregaExpressa.isSelected());
+                Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
+                Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
+                Assert.assertTrue(entregaExpressaParent.isDisplayed());
+
+                Assert.assertFalse(entregaConvencionalParent.isDisplayed());
+            }
+        } else {
+            Assert.assertNull(chipComumConvencional);
+            Assert.assertNull(chipComumExpressa);
+            Assert.assertNull(usarMesmoEnderecoCobranca);
+            Assert.assertNull(entregaConvencional);
+            Assert.assertNull(entregaExpressa);
         }
     }
 
-    public void preencherDataNascimento(String dataNascimento) {
-        if (driver.isDisplayed(xpathTxtDtNascimento, "xpath")) {
-            driver.actionSendKey(dataNascimento, xpathTxtDtNascimento, "xpath");
-        }
+    public void inserirDadosEndereco(String numero, String complemento) {
+        WebElement numeroElement = driverQA.findElement("txt-numero-endereco-entrega", "id");
+        WebElement complementoElement = driverQA.findElement("txt-complemento-endereco-entrega", "id");
+
+        Assert.assertEquals(numeroElement.getAttribute("value"), "");
+        Assert.assertEquals(complementoElement.getAttribute("value"), "");
+
+        driverQA.actionSendKeys(numeroElement, numero);
+        driverQA.actionSendKeys(complementoElement, complemento);
     }
 
-    public void preencherNomeDaMae(String nomeDaMae) {
-        if (driver.isDisplayed(xpathTxtNomeMae, "xpath")) {
-            driver.actionSendKey(nomeDaMae, xpathTxtNomeMae, "xpath");
-        }
-    }
-
-    public void validarMensagemBloqueiocep(String mensagem) {
-        driver.waitElementXP(xpathMsgErroCEP);
-        Assert.assertEquals(mensagem, driver.getText(xpathMsgErroCEP, "xpath"));
-    }
-
-    public void camposDadosPessoais(String nomeCompleto, String dataNascimento, String nomeDaMae) {
-        driver.waitElementAll(idFormDadosPessoais, "id");
-        driver.sendKeys(nomeCompleto, xpathTxtNome, "xpath");
-        driver.sendKeysCampoMascara(dataNascimento, xpathTxtDtNascimento, "xpath");
-        driver.sendKeys(nomeDaMae, xpathTxtNomeMae, "xpath");
-        nomeCliente = nomeCompleto;
-    }
-
-    public void camposEndereco(String cep, String numero, String complemento) {
-        cepCliente = cep;
-        numeroEndCliente = numero;
-        complementoCliente = complemento;
-        driver.waitElementToBeClickableAll(idTxtCep, 10, "id");
-        driver.sendKeysCampoMascara(cep, idTxtCep, "id");
-        driver.sendTab(2, "");
-        driver.waitElementToBeClickableAll(xpathTxtNumero, 15, "xpath");
-        driver.sendKeys(numero, xpathTxtNumero, "xpath");
-        driver.waitElementToBeClickableAll(xpathTxtComplemento, 10, "xpath");
-        driver.sendKeys(complemento, xpathTxtComplemento, "xpath");
-
-//        tipoDeFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(0, 16) : driver.getText(xpathTipoDeFreteCarrinho, "xpath");;
-//        valorDoFreteCarrinho = (Hooks.tagScenarios.contains("@entregaExpressa")) ? driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38) : driver.getText(xpathValorDoFreteCarrinho, "xpath");;
-
-        if (Hooks.tagScenarios.contains("@entregaExpressa")) {
-            tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath").substring(0, 16);
-//            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath").substring(32, 38);
-        } else if (Hooks.tagScenarios.contains("@entregaConvencional")){
-            tipoDeFreteCarrinho = driver.getText(xpathTipoDeFreteCarrinho, "xpath");
-//            valorDoFreteCarrinho = driver.getText(xpathValorDoFreteCarrinho, "xpath");
-        }
-
-        enderecoCliente = driver.getValue(xpathEnderecoCliente, "xpath");
-        bairroCliente = driver.getValue(xpathBairroCliente, "xpath");
-        ufCliente = driver.getValue(xpathUfCliente, "xpath");
-        cidadeCliente = driver.getValue(xpathCidadeCliente, "xpath");
+    public void clicarContinuar() {
+        driverQA.JavaScriptClick("btn-continuar", "id");
     }
 }

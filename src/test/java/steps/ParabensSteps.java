@@ -6,10 +6,15 @@ import support.BaseSteps;
 
 public class ParabensSteps extends BaseSteps {
 
-    ParabensPage parabensPage = new ParabensPage(driver);
+    ParabensPage parabensPage = new ParabensPage(driverQA);
 
-    @Então("^validar que não há alterações no valor e/ou informações do Plano na tela de parabens$")
-    public void validarQueNãoHáAlteraçõesNoValorEOuInformaçõesDoPlanoNaTelaDeParabens() throws Throwable {
+    @Então("é direcionado para a tela de Parabéns")
+    public void validarPaginaParabens() {
+        parabensPage.validarPaginaParabens();
+    }
+
+    @Então("os dados do pedido estão corretos")
+    public void validarDadosPedido() {
         parabensPage.validarCamposPedido();
     }
 }

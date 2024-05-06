@@ -2,50 +2,45 @@ package steps;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Quando;
 import pages.HomePage;
 import support.BaseSteps;
-import support.Hooks;
 
 public class HomeSteps extends BaseSteps {
+    HomePage homePage = new HomePage(driverQA);
 
-    HomePage homePage = new HomePage(driver);
-
-    @Dado("^que acesso a Loja Online$")
-    public void queAcessoALojaOnline() throws Throwable {
+    @Dado("que o usuário acesse a Loja Online")
+    public void AcessarLojaOnline() {
         homePage.acessarLojaHome();
     }
-    @E("^selecionar o \"([^\"]*)\" plano do carrossel da Home clicando no botão Eu quero! dele$")
-    public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoDele(String cardHome) throws Throwable {
-        if (Hooks.tagScenarios.contains("@controle")) {
-            homePage.selecionarCardControle(cardHome);
 
-        } else if (Hooks.tagScenarios.contains("@pos")) {
-            homePage.selecionarCardPos(cardHome);
-        }
+    @Quando("selecionar o plano de id {string} do carrossel da Home")
+    public void selecionarPlanoHome(String id) {
+        homePage.selecionarPlano(id);
     }
-    @E("^preencher o campo “Seu telefone Claro” com o msidn \"([^\"]*)\"$")
-    public void preencherOCampoSeuTelefoneClaroComOMsidn(String msisdn) throws Throwable {
+
+    @E("preencher o campo Seu telefone Claro com o msidn {string}")
+    public void preencherOCampoSeuTelefoneClaroComOMsidn(String msisdn) {
         homePage.preencherCampoSeuTelefoneHeader(msisdn);
     }
-    @E("^validar que o botão Entrar foi alterado para o \"([^\"]*)\"$")
-    public void validarQueOBotãoEntrarFoiAlteradoParaO(String cliente) throws Throwable {
-        homePage.validarClienteMeusPedidos(cliente);
-    }
-    @E("^preencho com o Token$")
-    public void preenchoComOToken() {
-        homePage.tokenTemp();}
-    @Dado("^que acesso a URL parametrizada para a oferta de rentabilizacao$")
-    public void queAcessoAURLParametrizadaParaAOfertaDeRentabilizacao() {
-        homePage.acessarURLRentabilizacao();
+
+    @E("clicar na PLP do plano")
+    public void clicarNaPLP() {
+        //homePage.clicarPLP();
     }
 
-    @E("^clicar na PLP do plano$")
-    public void clicarNaPLP() throws Throwable {
-        homePage.clicarPLP();
+    @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
+    public void acessarPdpPlano(String idPlano) {
+        homePage.acessarPdpPlano(idPlano);
     }
 
-    @E("^selecionar o \"([^\"]*)\" plano do carrossel da Home clicando no botão Mais detalhes dele$")
-    public void selecionarOPlanoDoCarrosselDaHomeClicandoNoBotãoMaisDetalhesDele(String cardPDP) throws Throwable {
-        homePage.selecionarPDPCard(cardPDP);
+    @Quando("o usuário clicar no botão [Entrar] do header")
+    public void clicaNoBotaoEntrar() {
+        homePage.clicaBotaoEntrar();
+    }
+    @Então("é direcionado para a Home")
+    public void validarQueFoiDirecionadoParaAHome() {
+        homePage.validarHomePage();
     }
 }
