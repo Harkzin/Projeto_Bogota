@@ -28,6 +28,7 @@ public class DriverQA {
 
     public void setupDriver(String browser) {
         String headless = System.getProperty("headless", "true");
+        String resolution = System.getProperty("resolution", "true");
 
         String title = "";
         try {
@@ -66,8 +67,12 @@ public class DriverQA {
                     throw new IllegalArgumentException("Invalid browser: " + browser);
             }
 
-            //driver.manage().window().setSize(new Dimension(1920, 1080));
-            driver.manage().window().maximize();
+            if (resolution.equals("false")) { //Local
+                driver.manage().window().maximize();
+            } else { //Jenkins
+                driver.manage().window().setSize(new Dimension(1920, 1080));
+                driver.manage().window().setPosition(new Point(0, 0));
+            }
         }
     }
 
