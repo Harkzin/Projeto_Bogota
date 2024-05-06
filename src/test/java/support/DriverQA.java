@@ -150,7 +150,7 @@ public class DriverQA {
 
     public void actionSendKeys(WebElement element, String text) {
         Actions action = new Actions(driver);
-        action.click(element);
+        action.pause(Duration.ofMillis(500)).click(element);
         text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
     }
 

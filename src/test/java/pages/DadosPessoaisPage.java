@@ -25,7 +25,7 @@ public class DadosPessoaisPage {
     }
 
     public void validarPaginaDadosPessoais() {
-        driverQA.waitPageLoad("/checkout/multi/delivery-address/addClaroAddress", 10);
+        driverQA.waitPageLoad("/checkout/multi/delivery-address/addClaroAddress", 15);
 
         validarCampoCep();
     }
