@@ -53,6 +53,7 @@ public class DriverQA {
                         chromeOptions.addArguments("--headless");
                     }
                     chromeOptions.addArguments("--incognito");
+                    chromeOptions.addArguments("--no-sandbox");
                     chromeOptions.addArguments("--no-default-browser-check");
                     chromeOptions.addArguments("--disable-default-apps");
                     chromeOptions.addArguments("--disable-extensions");
