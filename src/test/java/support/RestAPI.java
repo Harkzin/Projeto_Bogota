@@ -12,8 +12,7 @@ import java.net.http.HttpResponse;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.time.Duration.ofSeconds;
 
@@ -125,5 +124,24 @@ public final class RestAPI {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<String> getBankAccount(String bankId) {
+        final HttpRequest getAccount = HttpRequest.newBuilder()
+                .uri(URI.create("https://www.invertexto.com/ajax/gerar-conta-bancaria.php"))
+                .timeout(ofSeconds(15))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("banco=" + bankId + "&estado=SP"))
+                .build();
+
+        JsonNode response;
+
+        try {
+            response = objMapper.readTree(clientHttp.send(getAccount, HttpResponse.BodyHandlers.ofString()).body());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Arrays.asList(response.get("agencia").asText(), response.get("conta").asText());
     }
 }
