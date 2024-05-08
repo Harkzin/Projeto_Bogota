@@ -28,7 +28,7 @@ public class DriverQA {
 
     public void setupDriver(String browser) {
         String headless = System.getProperty("headless", "true");
-        String resolution = System.getProperty("resolution", "true");
+        String maximized = System.getProperty("maximized", "false");
 
         String title = "";
         try {
@@ -67,7 +67,7 @@ public class DriverQA {
                     throw new IllegalArgumentException("Invalid browser: " + browser);
             }
 
-            if (resolution.equals("false")) { //Local
+            if (maximized.equals("true")) { //Local
                 driver.manage().window().maximize();
             } else { //Jenkins
                 driver.manage().window().setSize(new Dimension(1920, 1080));

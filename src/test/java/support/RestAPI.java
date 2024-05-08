@@ -12,8 +12,8 @@ import java.net.http.HttpResponse;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.util.*;
 
 import static java.time.Duration.ofSeconds;
 
@@ -33,8 +33,14 @@ public final class RestAPI {
                 .POST(HttpRequest.BodyPublishers.ofString("acao=gerar_cpf&pontuacao=N&cpf_estado=SP"))
                 .build();
 
+        long startTime = System.currentTimeMillis() + 200L; //200ms delay
+
         try {
-            return clientHttp.send(getCpfRequest, HttpResponse.BodyHandlers.ofString()).body(); //Retorna um CPF como String.
+            while (true) { //Delay para chamadas consecutivas
+                if (System.currentTimeMillis() >= startTime) {
+                    return clientHttp.send(getCpfRequest, HttpResponse.BodyHandlers.ofString()).body(); //Retorna um CPF como String.
+                }
+            }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -125,5 +131,30 @@ public final class RestAPI {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<String> getBankAccount(String bankId) {
+        final HttpRequest getAccount = HttpRequest.newBuilder()
+                .uri(URI.create("https://www.invertexto.com/ajax/gerar-conta-bancaria.php"))
+                .timeout(ofSeconds(15))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("banco=" + bankId + "&estado=SP"))
+                .build();
+
+        JsonNode response;
+        long startTime = System.currentTimeMillis() + 250L; //250ms delay
+
+        try {
+            while (true) { //Delay para chamadas consecutivas
+                if (System.currentTimeMillis() >= startTime) {
+                    response = objMapper.readTree(clientHttp.send(getAccount, HttpResponse.BodyHandlers.ofString()).body());
+                    break;
+                }
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Arrays.asList(response.get("agencia").asText(), response.get("conta").asText());
     }
 }

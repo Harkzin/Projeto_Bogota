@@ -8,8 +8,9 @@ import support.DriverQA;
 
 import static pages.ComumPage.*;
 import static pages.ComumPage.ProcessType.MIGRATE;
+import static support.RestAPI.getBankAccount;
 
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class CustomizarFaturaPage {
@@ -226,13 +227,57 @@ public class CustomizarFaturaPage {
     }
 
     public void preencherDadosBancarios() {
-        banco.selectByValue("001");
-        Assert.assertEquals(banco.getFirstSelectedOption().getText(), "001 - Banco do Brasil");
+        HashMap<Integer, String> banks = new HashMap<>();
+        banks.put(1, "001"); //Banco do Brasil
+        banks.put(2, "237"); //Bradesco
+        banks.put(3, "104"); //Caixa
+        banks.put(4, "341"); //Itaú
+        banks.put(5, "033"); //Santander
+        banks.put(6, "422"); //Safra (sem gerador de conta)
+        banks.put(7, "041"); //Banrisul (sem gerador de conta)
+        banks.put(8, "389"); //Mercantil (sem gerador de conta)
 
-        Assert.assertTrue(agencia.isEnabled());
-        Assert.assertTrue(conta.isEnabled());
-        driverQA.actionSendKeys(agencia, "6523");
-        driverQA.actionSendKeys(conta, "1443038");
+        int bankId = new Random().nextInt(8) + 1; //Random de 1 a 8
+
+        List<String> bankAccount = new ArrayList<>();
+
+        if (bankId <= 5) { //API
+            bankAccount = getBankAccount(String.valueOf(bankId));
+        } else { //6 ~ 8 - Dados fixos - Não tem API
+            switch (bankId) {
+                case 6:
+                    bankAccount = Arrays.asList("0340", "00252116");
+                    break;
+                case 7:
+                    bankAccount = Arrays.asList("0131", "251134003");
+                    break;
+                case 8:
+                    bankAccount = Arrays.asList("0103", "12345678");
+            }
+        }
+
+        banco.selectByValue(banks.get(bankId));
+
+        if (bankId == 3) { //CAIXA
+            WebElement caixaAccountType = driverQA.findElement("customBank", "id");
+            Select caixaAccountTypeSelect = new Select(caixaAccountType);
+            driverQA.waitElementToBeClickable(caixaAccountType, 1);
+
+            String accountId = bankAccount.get(1).substring(0, 2);
+
+            //A API retorna vários tipos de conta CAIXA diferentes, só 4 delas são aceitas no Ecomm
+            while (!accountId.matches("(001|006|013|023)")) {
+                bankAccount = getBankAccount("3");
+                accountId = bankAccount.get(1).substring(0, 3);
+            }
+
+            bankAccount.set(1, bankAccount.get(1).substring(3));
+            caixaAccountTypeSelect.selectByValue(accountId);
+        }
+
+        driverQA.waitElementToBeClickable(agencia, 1);
+        driverQA.actionSendKeys(agencia, bankAccount.get(0));
+        driverQA.actionSendKeys(conta, bankAccount.get(1));
     }
 
     public void selecionarDataVencimento(String data) {

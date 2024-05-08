@@ -36,6 +36,7 @@ public class ComumPage {
         //TODO Listar demais e-mails
 
         private final String subject;
+
         Email(String subject) {
             this.subject = subject;
         }
