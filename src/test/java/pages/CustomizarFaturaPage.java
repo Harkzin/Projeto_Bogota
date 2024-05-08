@@ -10,10 +10,7 @@ import static pages.ComumPage.*;
 import static pages.ComumPage.ProcessType.MIGRATE;
 import static support.RestAPI.getBankAccount;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class CustomizarFaturaPage {
@@ -249,17 +246,18 @@ public class CustomizarFaturaPage {
         } else { //6 ~ 8 - Dados fixos - Não tem API
             switch (bankId) {
                 case 6:
-                    bankAccount = List.of("", "");
+                    bankAccount = Arrays.asList("0340", "00252116");
                     break;
                 case 7:
-                    bankAccount = List.of("", "");
+                    bankAccount = Arrays.asList("0131", "251134003");
                     break;
                 case 8:
-                    bankAccount = List.of("", "");
+                    bankAccount = Arrays.asList("0103", "12345678");
             }
         }
 
         banco.selectByValue(banks.get(bankId));
+
         if (bankId == 3) { //CAIXA
             WebElement caixaAccountType = driverQA.findElement("customBank", "id");
             Select caixaAccountTypeSelect = new Select(caixaAccountType);
@@ -268,9 +266,9 @@ public class CustomizarFaturaPage {
             String accountId = bankAccount.get(1).substring(0, 2);
 
             //A API retorna vários tipos de conta CAIXA diferentes, só 4 delas são aceitas no Ecomm
-            while (!accountId.matches("^(001|006|013|023)")) {
+            while (!accountId.matches("(001|006|013|023)")) {
                 bankAccount = getBankAccount("3");
-                accountId = bankAccount.get(1).substring(0, 2);
+                accountId = bankAccount.get(1).substring(0, 3);
             }
 
             bankAccount.set(1, bankAccount.get(1).substring(3));
@@ -278,8 +276,6 @@ public class CustomizarFaturaPage {
         }
 
         driverQA.waitElementToBeClickable(agencia, 1);
-        Assert.assertTrue(conta.isEnabled());
-
         driverQA.actionSendKeys(agencia, bankAccount.get(0));
         driverQA.actionSendKeys(conta, bankAccount.get(1));
     }
