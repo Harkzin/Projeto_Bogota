@@ -7,7 +7,7 @@ import io.cucumber.java.pt.Quando;
 import pages.DadosPessoaisPage;
 import support.BaseSteps;
 
-import static pages.ComumPage.Cart_isExpressDelivery;
+import static support.Common.Cart_isExpressDelivery;
 
 public class DadosPessoaisSteps extends BaseSteps {
     DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);

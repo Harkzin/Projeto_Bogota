@@ -4,8 +4,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
-import static pages.ComumPage.Cart_emailAddress;
-import static pages.ComumPage.Email.CONFIRMA_TOKEN;
+import static support.Common.Email.CONFIRMA_TOKEN;
 import static support.RestAPI.clearInbox;
 
 public class LoginPage {
@@ -17,6 +16,7 @@ public class LoginPage {
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
+    private String emailAddress;
 
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
@@ -64,7 +64,7 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
-        clearInbox(Cart_emailAddress);
+        clearInbox(emailAddress);
         driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
     }
 
@@ -78,7 +78,7 @@ public class LoginPage {
     }
 
     public void inserirTokenEmail() {
-        driverQA.actionSendKeys(token, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        driverQA.actionSendKeys(token, driverQA.getEmail(emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {

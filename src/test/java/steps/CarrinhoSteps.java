@@ -7,12 +7,10 @@ import io.cucumber.java.pt.Quando;
 import pages.CarrinhoPage;
 import support.BaseSteps;
 
-import java.io.IOException;
-
-import static pages.ComumPage.ProcessType.*;
+import static support.Common.ProcessType.*;
 
 public class CarrinhoSteps extends BaseSteps {
-    CarrinhoPage carrinhoPage = new CarrinhoPage(driverQA);
+    CarrinhoPage carrinhoPage = new CarrinhoPage(driverQA, cartOrder);
 
     @Dado("que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização {string}")
     public void acessarUrlCarrinho(String url) {

@@ -1,19 +1,23 @@
 package pages;
 
+import support.CartOrder;
+import support.Common;
 import support.DriverQA;
 
-import static pages.ComumPage.Cart_planId;
+import static support.Common.Cart_planId;
 
 public class HomePage {
     private final DriverQA driverQA;
+    private final CartOrder cartOrder;
 
-    public HomePage(DriverQA stepDriver) {
+    public HomePage(DriverQA stepDriver, CartOrder cartOrder) {
         driverQA = stepDriver;
+        this.cartOrder = cartOrder;
     }
 
     public void acessarLojaHome() {
-        driverQA.getDriver().get(ComumPage.urlAmbiente);
-        driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
+        driverQA.getDriver().get(Common.urlAmbiente);
+        driverQA.waitPageLoad(Common.urlAmbiente, 20);
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
@@ -36,6 +40,6 @@ public class HomePage {
     }
 
     public void validarHomePage() {
-        driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
+        driverQA.waitPageLoad(Common.urlAmbiente, 20);
     }
 }

@@ -8,7 +8,7 @@ import pages.HomePage;
 import support.BaseSteps;
 
 public class HomeSteps extends BaseSteps {
-    HomePage homePage = new HomePage(driverQA);
+    HomePage homePage = new HomePage(driverQA, cartOrder);
 
     @Dado("que o usuário acesse a Loja Online")
     public void AcessarLojaOnline() {

@@ -1,12 +1,15 @@
 package pages;
 
+import support.CartOrder;
 import support.DriverQA;
 
 public class PlpPlanosPage {
     private final DriverQA driver;
+    private final CartOrder cartOrder;
 
-    public PlpPlanosPage(DriverQA stepDriver) {
+    public PlpPlanosPage(DriverQA stepDriver, CartOrder cartOrder) {
         driver = stepDriver;
+        this.cartOrder = cartOrder;
     }
 
     // Card

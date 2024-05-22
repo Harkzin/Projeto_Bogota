@@ -6,12 +6,12 @@ import io.cucumber.java.pt.Quando;
 import pages.PdpPlanosPage;
 import support.BaseSteps;
 
-import static pages.ComumPage.Cart_hasLoyalty;
-import static pages.ComumPage.Cart_isDebitPaymentFlow;
+import static support.Common.Cart_hasLoyalty;
+import static support.Common.Cart_isDebitPaymentFlow;
 
 public class PdpPlanosSteps extends BaseSteps {
 
-    PdpPlanosPage pdpPlanosPage = new PdpPlanosPage(driverQA);
+    PdpPlanosPage pdpPlanosPage = new PdpPlanosPage(driverQA, cartOrder);
 
     @Então("é direcionado para a PDP do plano")
     public void validarPDP() {

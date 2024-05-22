@@ -7,8 +7,7 @@ import io.cucumber.java.pt.Quando;
 import pages.LoginPage;
 import support.BaseSteps;
 
-import static pages.ComumPage.Cart_emailAddress;
-
+import static support.Common.Cart_emailAddress;
 
 public class LoginSteps extends BaseSteps {
 

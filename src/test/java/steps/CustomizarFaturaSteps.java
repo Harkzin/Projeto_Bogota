@@ -7,10 +7,10 @@ import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.BaseSteps;
 
-import static pages.ComumPage.Cart_isThabFlow;
+import static support.Common.Cart_isThabFlow;
 
 public class CustomizarFaturaSteps extends BaseSteps {
-    CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA);
+    CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA, cartOrder);
 
     @Então("é direcionado para a tela de Customizar Fatura")
     public void validarPagiaCustomizarFatura() {

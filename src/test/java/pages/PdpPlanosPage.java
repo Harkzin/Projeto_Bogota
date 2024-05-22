@@ -3,17 +3,19 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import support.CartOrder;
+import support.Common;
 import support.DriverQA;
 
 import java.util.function.Function;
 
-import static pages.ComumPage.*;
-
 public class PdpPlanosPage {
     private final DriverQA driverQA;
+    private final CartOrder cartOrder;
 
-    public PdpPlanosPage(DriverQA stepDriver) {
+    public PdpPlanosPage(DriverQA stepDriver, CartOrder cartOrder) {
         driverQA = stepDriver;
+        this.cartOrder = cartOrder;
     }
 
     private WebElement debitPayment;
@@ -33,7 +35,7 @@ public class PdpPlanosPage {
     }
 
     public void validarPDP() {
-        driverQA.waitPageLoad(Cart_planId, 10);
+        driverQA.waitPageLoad(Common.Cart_planId, 10);
 
         debitPayment = driverQA.findElement("rdn-debitcard", "id");
         ticketPayment = driverQA.findElement("rdn-ticket", "id");
@@ -55,7 +57,7 @@ public class PdpPlanosPage {
         driverQA.JavaScriptClick(debitPayment);
         validarDebito();
 
-        Cart_isDebitPaymentFlow = true;
+        Common.Cart_isDebitPaymentFlow = true;
     }
 
     public void selecionarBoleto() {
@@ -63,14 +65,14 @@ public class PdpPlanosPage {
         Assert.assertTrue(ticketPayment.isSelected());
         Assert.assertFalse(debitPayment.isSelected());
 
-        Cart_isDebitPaymentFlow = false;
+        Common.Cart_isDebitPaymentFlow = false;
     }
 
     public void selecionarFidelidade() {
         driverQA.JavaScriptClick(loyalty);
         validarFidelidade();
 
-        Cart_hasLoyalty = true;
+        Common.Cart_hasLoyalty = true;
     }
 
     public void selecionarSemFidelidade() {
@@ -78,7 +80,7 @@ public class PdpPlanosPage {
         Assert.assertTrue(noLoyalty.isSelected());
         Assert.assertFalse(loyalty.isSelected());
 
-        Cart_hasLoyalty = false;
+        Common.Cart_hasLoyalty = false;
     }
 
     public void validarValorPlano(Boolean isDebit, Boolean hasLoyalty) {
@@ -155,6 +157,6 @@ public class PdpPlanosPage {
     }
 
     public void clicarEuQuero() {
-        driverQA.JavaScriptClick("btn-eu-quero-" + Cart_planId, "id");
+        driverQA.JavaScriptClick("btn-eu-quero-" + Common.Cart_planId, "id");
     }
 }

@@ -1,12 +1,15 @@
 package pages;
 
+import support.CartOrder;
 import support.DriverQA;
 
 public class ParabensPage {
     private final DriverQA driverQA;
+    private final CartOrder cartOrder;
 
-    public ParabensPage(DriverQA stepDriver) {
+    public ParabensPage(DriverQA stepDriver, CartOrder cartOrder) {
         driverQA = stepDriver;
+        this.cartOrder = cartOrder;
     }
 
     private final String parabensNomeCliente = "msg-parabens-sucesso";

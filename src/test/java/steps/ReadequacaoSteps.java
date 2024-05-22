@@ -6,7 +6,7 @@ import pages.ReadequacaoPage;
 import support.BaseSteps;
 
 public class ReadequacaoSteps extends BaseSteps {
-    ReadequacaoPage readequacaoPage = new ReadequacaoPage(driverQA);
+    ReadequacaoPage readequacaoPage = new ReadequacaoPage(driverQA, cartOrder);
 
     @Entao("é direcionado para a tela de readequação THAB")
     public void eDirecionadoParaATelaDeTHAB() {

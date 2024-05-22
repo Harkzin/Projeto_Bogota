@@ -5,17 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import pages.ComumPage.Email;
+import support.Common.Email;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.io.IOException;
-import java.time.LocalTime;
 import java.util.*;
 
 import static java.time.Duration.ofSeconds;
+import static support.Common.*;
+import static support.Common.ambiente;
 
 public final class RestAPI {
     private RestAPI() {
@@ -156,5 +157,19 @@ public final class RestAPI {
         }
 
         return Arrays.asList(response.get("agencia").asText(), response.get("conta").asText());
+    }
+
+    public static JsonNode getProductDetails(String product, ResponseLevel level) {
+        final HttpRequest productDetails = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/products/" + product + "?fields=" + level))
+                .timeout(ofSeconds(15))
+                .GET()
+                .build();
+
+        try {
+            return objMapper.readTree(clientHttp.send(productDetails, HttpResponse.BodyHandlers.ofString()).body());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

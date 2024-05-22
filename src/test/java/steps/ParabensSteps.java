@@ -6,7 +6,7 @@ import support.BaseSteps;
 
 public class ParabensSteps extends BaseSteps {
 
-    ParabensPage parabensPage = new ParabensPage(driverQA);
+    ParabensPage parabensPage = new ParabensPage(driverQA, cartOrder);
 
     @Então("é direcionado para a tela de Parabéns")
     public void validarPaginaParabens() {

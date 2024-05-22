@@ -1,7 +1,8 @@
 package support;
 
 public class BaseSteps {
-    protected static DriverQA driverQA = new DriverQA();
+    protected DriverQA driverQA = new DriverQA();
+    protected CartOrder cartOrder = new CartOrder();
 
     public BaseSteps() {
         String browser = System.getProperty("browser", "chrome");
