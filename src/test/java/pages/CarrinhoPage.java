@@ -201,4 +201,9 @@ public class CarrinhoPage {
     public void validaMsgBloqueioDependente() {
         Assert.assertNotNull(driverQA.findElement("cboxLoadedContent", "id"));
     }
+
+    public void validaMsgNumeroBase() {
+        Assert.assertNotNull(driverQA.findElement("cboxLoadedContent", "id"));
+    }
+
 }

@@ -73,6 +73,11 @@ public class CarrinhoSteps extends BaseSteps {
         carrinhoPage.validaMsgBloqueioDependente();
     }
 
+    @Entao("será exibida a mensagem de erro numero base")
+    public void eExibidaAMensagemDeErroNumeroBase() {
+        carrinhoPage.validaMsgNumeroBase();
+    }
+
     @Quando("o usuário clicar no botão [Eu quero!] do Carrinho")
     public void clicarEuQuero() {
         carrinhoPage.clicarEuQuero();
