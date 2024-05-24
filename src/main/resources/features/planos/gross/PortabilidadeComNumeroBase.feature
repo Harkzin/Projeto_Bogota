@@ -15,4 +15,4 @@ Funcionalidade: Planos - Gross
     E preenche os campos: [Telefone a ser portado com DDD] "11913572571", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
-    Então será exibida a mensagem de erro numero base
+    Então será exibida a mensagem de erro: "O número de telefone informado já consta em nossa base da Claro. Caso queira trocar seu plano, selecione"
