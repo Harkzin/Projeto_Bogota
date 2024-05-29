@@ -119,14 +119,14 @@ public class CarrinhoPage {
                 validarCamposBase(false);
                 validarCampoEmail(false);
             } else if (url.contains("targetCampaign=portin")) { //cart rentab port
-                Common.Cart_processType = PORTABILITY;
+                cartOrder.essential.processType = PORTABILITY;
                 Assert.assertNull(fluxoBase);
                 Assert.assertNotNull(fluxoPortabilidade);
                 Assert.assertNull(fluxoAquisicao);
                 validarCamposPortabilidade();
                 validarCampoEmail(false);
             } else {                                            //cart rentab aquisição (targetCampaign=gross)
-                Common.Cart_processType = ACQUISITION;
+                cartOrder.essential.processType = ACQUISITION;
                 Assert.assertNull(fluxoBase);
                 Assert.assertNull(fluxoPortabilidade);
                 Assert.assertNotNull(fluxoAquisicao);
@@ -134,7 +134,7 @@ public class CarrinhoPage {
                 validarCampoEmail(false);
             }
         } else { //aparelhos
-            switch (Common.Cart_processType) {
+            switch (cartOrder.essential.processType) {
                 case ACQUISITION:
                     validarCamposAquisicao();
                     break;
@@ -151,7 +151,7 @@ public class CarrinhoPage {
     }
 
     public void selecionarFluxo(Common.ProcessType processType) {
-        Common.Cart_processType = processType;
+        cartOrder.essential.processType = processType;
 
         switch (processType) {
             case EXCHANGE:
@@ -191,9 +191,9 @@ public class CarrinhoPage {
     }
 
     public void inserirEmail() {
-        Common.Cart_emailAddress = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
+        cartOrder.essential.user.email = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
 
-        driverQA.actionSendKeys(email, Common.Cart_emailAddress);
+        driverQA.actionSendKeys(email, cartOrder.essential.user.email);
     }
 
     public void clicarEuQuero() {

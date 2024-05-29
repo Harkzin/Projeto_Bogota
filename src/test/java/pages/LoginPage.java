@@ -2,6 +2,7 @@ package pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import support.CartOrder;
 import support.DriverQA;
 
 import static support.Common.Email.CONFIRMA_TOKEN;
@@ -9,9 +10,11 @@ import static support.RestAPI.clearInbox;
 
 public class LoginPage {
     private final DriverQA driverQA;
+    private final CartOrder cartOrder;
 
-    public LoginPage(DriverQA stepDriver) {
+    public LoginPage(DriverQA stepDriver, CartOrder cartOrder) {
         driverQA = stepDriver;
+        this.cartOrder = cartOrder;
     }
     private WebElement continuar;
     private WebElement cpf;

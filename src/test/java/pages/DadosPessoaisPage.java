@@ -3,7 +3,10 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import support.Common;
 import support.DriverQA;
+
+import static support.Common.DeliveryMode.CONVENTIONAL;
 
 public class DadosPessoaisPage {
     private final DriverQA driverQA;
@@ -67,7 +70,7 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
     }
 
-    public void validarTiposEntrega(boolean showDeliveryModes, boolean isExpressDelivery) {
+    public void validarTiposEntrega(boolean showDeliveryModes, Common.DeliveryMode deliveryMode) {
         chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
         chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
         usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
@@ -80,7 +83,7 @@ public class DadosPessoaisPage {
             WebElement entregaConvencionalParent = entregaConvencional.findElement(By.xpath("../../..")); //div pai do pai do pai do input
             WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
 
-            if (!isExpressDelivery) {
+            if (deliveryMode == CONVENTIONAL) {
                 Assert.assertTrue(chipComumConvencional.isSelected());
                 Assert.assertTrue(entregaConvencional.isSelected());
                 Assert.assertTrue(entregaConvencionalParent.isDisplayed());

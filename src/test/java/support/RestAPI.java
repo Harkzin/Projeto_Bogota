@@ -1,6 +1,7 @@
 package support;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Jsoup;
@@ -19,12 +20,12 @@ import static support.Common.*;
 import static support.Common.ambiente;
 
 public final class RestAPI {
-    private RestAPI() {
-    }
+
+    private RestAPI() {}
 
     private static final HttpClient clientHttp = HttpClient.newHttpClient();
-    private static final ObjectMapper objMapper = new ObjectMapper();
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
+    public static final ObjectMapper objMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static String getCpf() {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
@@ -159,15 +160,15 @@ public final class RestAPI {
         return Arrays.asList(response.get("agencia").asText(), response.get("conta").asText());
     }
 
-    public static JsonNode getProductDetails(String product, ResponseLevel level) {
+    public static String getProductDetails(String product) {
         final HttpRequest productDetails = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/products/" + product + "?fields=" + level))
+                .uri(URI.create("https://api.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/products/" + product + "?fields=FULL"))
                 .timeout(ofSeconds(15))
                 .GET()
                 .build();
 
         try {
-            return objMapper.readTree(clientHttp.send(productDetails, HttpResponse.BodyHandlers.ofString()).body());
+            return clientHttp.send(productDetails, HttpResponse.BodyHandlers.ofString()).body();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

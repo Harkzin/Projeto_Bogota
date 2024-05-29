@@ -1,19 +1,14 @@
 package support;
 
 public final class Common {
-    private Common() {
-    }
 
-    public static String ambiente = System.getProperty("env", "s6").toLowerCase();
+    private Common() {}
+
+    public static final String ambiente = System.getProperty("env", "s6").toLowerCase();
     public static final String urlAmbiente = "https://accstorefront.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com";
-    public static String Cart_emailAddress;
     public static String Cart_planId;
-    public static ProcessType Cart_processType;
     public static boolean Cart_isDebitPaymentFlow = true;
-    public static boolean Cart_hasLoyalty = true;
     public static boolean Cart_hasDevice = false;
-    public static boolean Cart_isExpressDelivery;
-    public static boolean Cart_isThabFlow = false;
 
     public enum ProcessType {
         ACQUISITION,
@@ -42,9 +37,8 @@ public final class Common {
         }
     }
 
-    public enum ResponseLevel {
-        DEFAULT,
-        BASIC,
-        FULL
+    public enum DeliveryMode {
+        CONVENTIONAL,
+        EXPRESS
     }
 }

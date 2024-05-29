@@ -6,7 +6,6 @@ import io.cucumber.java.pt.Quando;
 import pages.PdpPlanosPage;
 import support.BaseSteps;
 
-import static support.Common.Cart_hasLoyalty;
 import static support.Common.Cart_isDebitPaymentFlow;
 
 public class PdpPlanosSteps extends BaseSteps {
@@ -40,7 +39,7 @@ public class PdpPlanosSteps extends BaseSteps {
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(Cart_isDebitPaymentFlow, Cart_hasLoyalty);
+        pdpPlanosPage.validarValorPlano(Cart_isDebitPaymentFlow);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")

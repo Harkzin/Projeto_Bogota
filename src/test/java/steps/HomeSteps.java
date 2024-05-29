@@ -1,5 +1,6 @@
 package steps;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;

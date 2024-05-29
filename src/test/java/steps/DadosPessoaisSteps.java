@@ -7,7 +7,7 @@ import io.cucumber.java.pt.Quando;
 import pages.DadosPessoaisPage;
 import support.BaseSteps;
 
-import static support.Common.Cart_isExpressDelivery;
+import static support.Common.DeliveryMode.*;
 
 public class DadosPessoaisSteps extends BaseSteps {
     DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
@@ -28,24 +28,24 @@ public class DadosPessoaisSteps extends BaseSteps {
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        Cart_isExpressDelivery = false;
+        cartOrder.delivery.deliveryMode = CONVENTIONAL;
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        Cart_isExpressDelivery = true;
+        cartOrder.delivery.deliveryMode = EXPRESS;
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(true, Cart_isExpressDelivery);
+        dadosPessoaisPage.validarTiposEntrega(true, cartOrder.delivery.deliveryMode);
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(false, Cart_isExpressDelivery);
+        dadosPessoaisPage.validarTiposEntrega(false, cartOrder.delivery.deliveryMode);
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

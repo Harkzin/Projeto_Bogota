@@ -23,6 +23,7 @@ public class PdpPlanosPage {
     private WebElement loyalty;
     private WebElement noLoyalty;
     private WebElement planCharacteristics;
+    private boolean hasLoyalty = true;
 
     private void validarDebito() {
         Assert.assertTrue(debitPayment.isSelected());
@@ -46,7 +47,7 @@ public class PdpPlanosPage {
         validarDebito();
         validarFidelidade();
         validarAppIlimitados(true);
-        validarValorPlano(true, true);
+        validarValorPlano(true);
 
         String planName = "TODO ECCMAUT-351";
         //Assert.assertEquals(driverQA.findElement("//*[@id='plan-name']/span", "xpath").getText(), planName);
@@ -72,7 +73,7 @@ public class PdpPlanosPage {
         driverQA.JavaScriptClick(loyalty);
         validarFidelidade();
 
-        Common.Cart_hasLoyalty = true;
+        hasLoyalty = true;
     }
 
     public void selecionarSemFidelidade() {
@@ -80,10 +81,10 @@ public class PdpPlanosPage {
         Assert.assertTrue(noLoyalty.isSelected());
         Assert.assertFalse(loyalty.isSelected());
 
-        Common.Cart_hasLoyalty = false;
+        hasLoyalty = false;
     }
 
-    public void validarValorPlano(Boolean isDebit, Boolean hasLoyalty) {
+    public void validarValorPlano(Boolean isDebit) {
         WebElement debitLoyalty = driverQA.findElement("price-debit-loyalty", "id");
         WebElement ticketLoyalty = driverQA.findElement("price-ticket-loyalty", "id");
         WebElement debitNotLoyalty = driverQA.findElement("price-debit-not-loyalty", "id");

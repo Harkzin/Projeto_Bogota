@@ -2,7 +2,7 @@ package support;
 
 public class BaseSteps {
     protected DriverQA driverQA = new DriverQA();
-    protected CartOrder cartOrder = new CartOrder();
+    protected CartOrder cartOrder = new CartOrder().initializeDefaultCartOrder();
 
     public BaseSteps() {
         String browser = System.getProperty("browser", "chrome");

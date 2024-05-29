@@ -79,7 +79,7 @@ public class CustomizarFaturaPage {
         } else { //fluxo base - cliente já é débito / combo / THAB
             Assert.assertNull(abaDebito);
             Assert.assertNull(abaBoleto);
-            Common.Cart_isDebitPaymentFlow = !Common.Cart_isThabFlow; //TODO caso combo = ??
+            Common.Cart_isDebitPaymentFlow = !cartOrder.thab; //TODO caso combo = ??
         }
     }
 
@@ -108,7 +108,7 @@ public class CustomizarFaturaPage {
             if (isDisplayed) {
                 Assert.assertTrue(whatsappTicket.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertTrue(emailTicket.findElement(By.xpath("..")).isDisplayed());
-                if (Common.Cart_isThabFlow) {
+                if (cartOrder.thab) {
                     Assert.assertNull(correiosTicket);
                 } else {
                     Assert.assertTrue(correiosTicket.findElement(By.xpath("..")).isDisplayed());
@@ -138,14 +138,14 @@ public class CustomizarFaturaPage {
                 assertTicket.accept(false);
             } else {
                 assertTicket.accept(true);
-                if (!Common.Cart_isThabFlow) {
+                if (!cartOrder.thab) {
                     assertDebit.accept(false);
                 } else {
                     assertDebitNull.run();
                 }
             }
         } else { //fluxo base com fatura digital ou combo
-            if (!isComboFlow && (Common.Cart_processType == MIGRATE)) {
+            if (!isComboFlow && (cartOrder.essential.processType == MIGRATE)) {
                 if (Common.Cart_isDebitPaymentFlow) { //existe (oculto) no html apenas as opções para débito
                     assertDebit.accept(false);
                     assertTicketNull.run();

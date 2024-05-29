@@ -7,11 +7,9 @@ import io.cucumber.java.pt.Quando;
 import pages.LoginPage;
 import support.BaseSteps;
 
-import static support.Common.Cart_emailAddress;
-
 public class LoginSteps extends BaseSteps {
 
-    LoginPage loginPage = new LoginPage(driverQA);
+    LoginPage loginPage = new LoginPage(driverQA, cartOrder);
 
     @Entao("é direcionado para a tela de opções da área logada")
     public void eDirecionadoParaATelaDeLogin() {
@@ -46,7 +44,7 @@ public class LoginSteps extends BaseSteps {
 
     @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
-        Cart_emailAddress = email;
+        cartOrder.essential.user.email = email;
         loginPage.selecionaReceberCodigoEmail();
     }
 
