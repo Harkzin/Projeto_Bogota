@@ -1,15 +1,18 @@
 package pages;
 
 import org.junit.Assert;
+import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.DriverQA;
+import support.utils.DriverQA;
 
+@Component
 public class ReadequacaoPage  {
+
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public ReadequacaoPage(DriverQA stepDriver, CartOrder cartOrder) {
-        driverQA = stepDriver;
+    public ReadequacaoPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
 
@@ -20,6 +23,6 @@ public class ReadequacaoPage  {
     }
 
     public void clicarEuQuero() {
-        driverQA.JavaScriptClick("buttonCheckoutThab", "id");
+        driverQA.javaScriptClick("buttonCheckoutThab", "id");
     }
 }

@@ -3,10 +3,10 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import support.CartOrder;
-import support.DriverQA;
+import support.utils.DriverQA;
 
-import static support.Common.Email.CONFIRMA_TOKEN;
-import static support.RestAPI.clearInbox;
+import static support.utils.Common.Email.CONFIRMA_TOKEN;
+import static support.api.RestAPI.clearInbox;
 
 public class LoginPage {
     private final DriverQA driverQA;
@@ -35,7 +35,7 @@ public class LoginPage {
     }
 
     public void clicarAcompanharPedidos() {
-        driverQA.JavaScriptClick("lnk-acompanhar-pedidos", "id");
+        driverQA.javaScriptClick("lnk-acompanhar-pedidos", "id");
     }
 
     public void validarPaginaLoginCpf() {
@@ -55,7 +55,7 @@ public class LoginPage {
     }
 
     public void clicarBotaoContinuar() {
-        driverQA.JavaScriptClick(continuar);
+        driverQA.javaScriptClick(continuar);
     }
 
     public void validarPaginaLoginToken() {
@@ -68,7 +68,7 @@ public class LoginPage {
 
     public void selecionaReceberCodigoEmail() {
         clearInbox(emailAddress);
-        driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
+        driverQA.javaScriptClick("lnk-receber-codigo-email", "id");
     }
 
     public void validarPaginaLoginEmail() {
@@ -92,11 +92,11 @@ public class LoginPage {
     }
 
     public void acessarPedidoRecente() {
-        driverQA.JavaScriptClick("lnk-pedido-1", "id");
+        driverQA.javaScriptClick("lnk-pedido-1", "id");
     }
 
     public void clicarBotaoConfirmar() {
-        driverQA.JavaScriptClick("btn-confirmar", "id");
+        driverQA.javaScriptClick("btn-confirmar", "id");
     }
 
     public void validarPaginaDetalhesPedido() {

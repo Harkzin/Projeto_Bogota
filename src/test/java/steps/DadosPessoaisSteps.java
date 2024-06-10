@@ -5,12 +5,19 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.DadosPessoaisPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static support.Common.DeliveryMode.*;
+import static support.utils.Common.DeliveryMode.*;
 
-public class DadosPessoaisSteps extends BaseSteps {
-    DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
+public class DadosPessoaisSteps {
+
+    private final DadosPessoaisPage dadosPessoaisPage;
+    private final CartOrder cartOrder;
+
+    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) { //Spring Autowired
+        this.dadosPessoaisPage = dadosPessoaisPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a tela de Dados Pessoais")
     public void validarPaginaDadosPessoais() {

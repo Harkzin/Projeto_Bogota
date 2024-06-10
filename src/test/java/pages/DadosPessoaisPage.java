@@ -3,16 +3,22 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import support.Common;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.CartOrder;
+import support.utils.Common;
+import support.utils.DriverQA;
 
-import static support.Common.DeliveryMode.CONVENTIONAL;
+import static support.utils.Common.DeliveryMode.CONVENTIONAL;
 
+@Component
 public class DadosPessoaisPage {
-    private final DriverQA driverQA;
 
-    public DadosPessoaisPage(DriverQA stepDriver) {
-        driverQA = stepDriver;
+    private final DriverQA driverQA;
+    private final CartOrder cartOrder;
+
+    public DadosPessoaisPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
+        this.cartOrder = cartOrder;
     }
 
     private WebElement cep;
@@ -120,6 +126,6 @@ public class DadosPessoaisPage {
     }
 
     public void clicarContinuar() {
-        driverQA.JavaScriptClick("btn-continuar", "id");
+        driverQA.javaScriptClick("btn-continuar", "id");
     }
 }

@@ -1,4 +1,4 @@
-package support;
+package support.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.nodes.Document;
@@ -11,68 +11,56 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import support.Common.Email;
+import support.utils.Common.Email;
 
 import java.time.Duration;
 import java.util.List;
 
-import static java.time.Duration.ofSeconds;
-import static support.RestAPI.getEmailMessage;
+import static support.api.RestAPI.getEmailMessage;
 
 public class DriverQA {
-    private static WebDriver driver;
 
-    public WebDriver getDriver() {
-        return driver;
-    }
+    private WebDriver driver;
 
     public void setupDriver(String browser) {
         String headless = System.getProperty("headless", "true");
         String maximized = System.getProperty("maximized", "false");
 
-        String title = "";
-        try {
-            title = driver.getTitle();
-        } catch (Exception e) {
-            title = "ERROR";
+        switch (browser) {
+            case "firefox":
+                WebDriverManager.firefoxdriver().clearDriverCache().setup();
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                if (headless.equals("true")) {
+                    firefoxOptions.addArguments("--headless");
+                }
+                firefoxOptions.addArguments("--private");
+                driver = new FirefoxDriver(firefoxOptions);
+                break;
+            case "chrome":
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if (headless.equals("true")) {
+                    chromeOptions.addArguments("--headless");
+                }
+                chromeOptions.addArguments("--incognito");
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--no-default-browser-check");
+                chromeOptions.addArguments("--disable-default-apps");
+                chromeOptions.addArguments("--disable-extensions");
+                chromeOptions.addArguments("--disable-notifications");
+                chromeOptions.addArguments("--disable-dev-shm-usage");
+                chromeOptions.addArguments("--deny-permission-prompts");
+                driver = new ChromeDriver(chromeOptions);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid browser: " + browser);
         }
-        if (title.equals("ERROR")) {
-            switch (browser) {
-                case "firefox":
-                    WebDriverManager.firefoxdriver().clearDriverCache().setup();
-                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    if (headless.equals("true")) {
-                        firefoxOptions.addArguments("--headless");
-                    }
-                    firefoxOptions.addArguments("--private");
-                    driver = new FirefoxDriver(firefoxOptions);
-                    break;
-                case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    if (headless.equals("true")) {
-                        chromeOptions.addArguments("--headless");
-                    }
-                    chromeOptions.addArguments("--incognito");
-                    chromeOptions.addArguments("--no-sandbox");
-                    chromeOptions.addArguments("--no-default-browser-check");
-                    chromeOptions.addArguments("--disable-default-apps");
-                    chromeOptions.addArguments("--disable-extensions");
-                    chromeOptions.addArguments("--disable-notifications");
-                    chromeOptions.addArguments("--disable-dev-shm-usage");
-                    chromeOptions.addArguments("--deny-permission-prompts");
-                    driver = new ChromeDriver(chromeOptions);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid browser: " + browser);
-            }
 
-            if (maximized.equals("true")) { //Local
-                driver.manage().window().maximize();
-            } else { //Jenkins
-                driver.manage().window().setSize(new Dimension(1920, 1080));
-                driver.manage().window().setPosition(new Point(0, 0));
-            }
+        if (maximized.equals("true")) { //Local
+            driver.manage().window().maximize();
+        } else { //Jenkins
+            driver.manage().window().setSize(new Dimension(1920, 1080));
+            driver.manage().window().setPosition(new Point(0, 0));
         }
     }
 
@@ -158,6 +146,10 @@ public class DriverQA {
         actionSendKeys(findElement(selectorValue, selectorType), text);
     }
 
+    public WebDriver getDriver() {
+        return driver;
+    }
+
     public Document getEmail(String emailAddress, Email emailSubject) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(Duration.ofSeconds(60))
@@ -166,28 +158,33 @@ public class DriverQA {
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
     }
 
+    public void javaScriptClick(WebElement element) {
+        javaScriptMove(element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);
+    }
+
+    public void javaScriptClick(String selectorValue, String selectorType) {
+        javaScriptClick(findElement(selectorValue, selectorType));
+    }
+
+    public void javaScriptMove(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
+    }
+
     public void waitElementToBeClickable(WebElement element, int timeoutSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public void waitElementVisibility(WebElement element, int timeoutSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
+        javaScriptMove(element);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public void waitElementInvisibility(WebElement element, int timeoutSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.invisibilityOf(element));
-    }
-
-    public void JavaScriptClick(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);
-    }
-
-    public void JavaScriptClick(String selectorValue, String selectorType) {
-        JavaScriptClick(findElement(selectorValue, selectorType));
     }
 
     public void waitPageLoad(String urlFraction, Integer timeout) {

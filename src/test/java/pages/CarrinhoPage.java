@@ -1,24 +1,27 @@
 package pages;
 
 import org.openqa.selenium.WebElement;
+import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.Common;
-import support.DriverQA;
+import support.utils.Common;
+import support.utils.DriverQA;
 import org.junit.Assert;
 
 import java.util.UUID;
 
-import static support.Common.ProcessType.ACQUISITION;
-import static support.Common.ProcessType.PORTABILITY;
-import static support.RestAPI.checkCpfDiretrix;
-import static support.RestAPI.getCpf;
+import static support.utils.Common.ProcessType.ACQUISITION;
+import static support.utils.Common.ProcessType.PORTABILITY;
+import static support.api.RestAPI.checkCpfDiretrix;
+import static support.api.RestAPI.getCpf;
 
+@Component
 public class CarrinhoPage {
+
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public CarrinhoPage(DriverQA stepDriver, CartOrder cartOrder) {
-        driverQA = stepDriver;
+    public CarrinhoPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
 
@@ -100,7 +103,7 @@ public class CarrinhoPage {
     public void validarPaginaCarrinho() {
         driverQA.waitPageLoad("/cart", 10);
 
-        if (!Common.Cart_hasDevice) {
+        if (!cartOrder.hasDevice) {
             String url = driverQA.getDriver().getCurrentUrl();
 
             fluxoBase = driverQA.findElement("rdn-migracao", "id");
@@ -157,15 +160,15 @@ public class CarrinhoPage {
             case EXCHANGE:
             case EXCHANGE_PROMO:
             case MIGRATE:
-                driverQA.JavaScriptClick(fluxoBase);
+                driverQA.javaScriptClick(fluxoBase);
                 validarCamposBase(false);
                 break;
             case PORTABILITY:
-                driverQA.JavaScriptClick(fluxoPortabilidade);
+                driverQA.javaScriptClick(fluxoPortabilidade);
                 validarCamposPortabilidade();
                 break;
             case ACQUISITION:
-                driverQA.JavaScriptClick(fluxoAquisicao);
+                driverQA.javaScriptClick(fluxoAquisicao);
                 validarCamposAquisicao();
         }
         validarCampoEmail(false);
@@ -197,7 +200,7 @@ public class CarrinhoPage {
     }
 
     public void clicarEuQuero() {
-        driverQA.JavaScriptClick("btn-eu-quero", "id");
+        driverQA.javaScriptClick("btn-eu-quero", "id");
     }
 
     public void validaMsgBloqueioDependente() {

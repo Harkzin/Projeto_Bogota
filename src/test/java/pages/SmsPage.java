@@ -3,13 +3,16 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.utils.DriverQA;
 
+@Component
 public class SmsPage {
+
     private final DriverQA driverQA;
 
-    public SmsPage(DriverQA stepDriver) {
-        driverQA = stepDriver;
+    public SmsPage(DriverQA driverQA) { //Spring Autowired
+        this.driverQA = driverQA;
     }
 
     private WebElement token;
@@ -29,6 +32,6 @@ public class SmsPage {
     }
 
     public void clicarFinalizar() {
-        driverQA.JavaScriptClick("btn-finalizar", "id");
+        driverQA.javaScriptClick("btn-finalizar", "id");
     }
 }

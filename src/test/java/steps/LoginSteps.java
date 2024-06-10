@@ -5,11 +5,17 @@ import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.LoginPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-public class LoginSteps extends BaseSteps {
+public class LoginSteps {
 
-    LoginPage loginPage = new LoginPage(driverQA, cartOrder);
+    private final LoginPage loginPage;
+    private final CartOrder cartOrder;
+
+    public LoginSteps(LoginPage loginPage, CartOrder cartOrder) { //Spring Autowired
+        this.loginPage = loginPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Entao("é direcionado para a tela de opções da área logada")
     public void eDirecionadoParaATelaDeLogin() {

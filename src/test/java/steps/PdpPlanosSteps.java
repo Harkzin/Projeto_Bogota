@@ -4,13 +4,17 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.PdpPlanosPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static support.Common.Cart_isDebitPaymentFlow;
+public class PdpPlanosSteps {
 
-public class PdpPlanosSteps extends BaseSteps {
+    private final PdpPlanosPage pdpPlanosPage;
+    private final CartOrder cartOrder;
 
-    PdpPlanosPage pdpPlanosPage = new PdpPlanosPage(driverQA, cartOrder);
+    public PdpPlanosSteps(PdpPlanosPage pdpPlanosPage, CartOrder cartOrder) { //Spring Autowired
+        this.pdpPlanosPage = pdpPlanosPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a PDP do plano")
     public void validarPDP() {
@@ -39,17 +43,17 @@ public class PdpPlanosSteps extends BaseSteps {
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(Cart_isDebitPaymentFlow);
+        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")
     public void ocultaAppsIlimitados() {
-        pdpPlanosPage.validarAppIlimitados(false);
+        pdpPlanosPage.validarAppsIlimitados(false);
     }
 
     @E("os aplicativos ilimitados são reexibidos na composição do plano")
     public void exibeAppsIlimitados() {
-        pdpPlanosPage.validarAppIlimitados(true);
+        pdpPlanosPage.validarAppsIlimitados(true);
     }
 
     @Quando("o usuário clicar no botão Eu quero! da PDP")

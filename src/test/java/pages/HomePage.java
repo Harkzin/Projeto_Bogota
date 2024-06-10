@@ -1,17 +1,18 @@
 package pages;
 
+import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.Common;
-import support.DriverQA;
+import support.utils.Common;
+import support.utils.DriverQA;
 
-import static support.Common.Cart_planId;
-
+@Component
 public class HomePage {
+
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public HomePage(DriverQA stepDriver, CartOrder cartOrder) {
-        driverQA = stepDriver;
+    public HomePage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
 
@@ -20,26 +21,23 @@ public class HomePage {
         driverQA.waitPageLoad(Common.urlAmbiente, 20);
     }
 
+    public void validarHomePage() {
+        driverQA.waitPageLoad(Common.urlAmbiente, 20);
+    }
+
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-        String campoTelefone = "txt-telefone";
-
-        driverQA.actionSendKeys(campoTelefone, "id", msisdn);
+        driverQA.actionSendKeys("txt-telefone", "id", msisdn);
     }
 
-    public void acessarPdpPlano(String idPlano) {
-        driverQA.JavaScriptClick("lnk-mais-detalhes-" + idPlano, "id");
-        Cart_planId = idPlano;
+    public void acessarPdpPlano(String id) {
+        driverQA.javaScriptClick("lnk-mais-detalhes-" + id, "id");
     }
 
-    public void selecionarPlano(String idPlano) {
-        driverQA.JavaScriptClick("btn-eu-quero-" + idPlano, "id");
+    public void selecionarPlano(String id) {
+        driverQA.javaScriptClick("btn-eu-quero-" + id, "id");
     }
 
     public void clicaBotaoEntrar() {
-        driverQA.JavaScriptClick("btn-entrar", "id");
-    }
-
-    public void validarHomePage() {
-        driverQA.waitPageLoad(Common.urlAmbiente, 20);
+        driverQA.javaScriptClick("btn-entrar", "id");
     }
 }

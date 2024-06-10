@@ -1,16 +1,20 @@
 package pages;
 
+import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.DriverQA;
+import support.utils.DriverQA;
 
+@Component
 public class ComumPage {
-    private final DriverQA driver;
+
+    private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public ComumPage(DriverQA stepDriver, CartOrder cartOrder) {
-        driver = stepDriver;
+    public ComumPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
+
 
     public void validarResumoCompraPlano() {
         //TODO ECCMAUT-351

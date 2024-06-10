@@ -5,12 +5,19 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import pages.CarrinhoPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static support.Common.ProcessType.*;
+import static support.utils.Common.ProcessType.*;
 
-public class CarrinhoSteps extends BaseSteps {
-    CarrinhoPage carrinhoPage = new CarrinhoPage(driverQA, cartOrder);
+public class CarrinhoSteps {
+
+    private final CarrinhoPage carrinhoPage;
+    private final CartOrder cartOrder;
+
+    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cartOrder) { //Spring Autowired
+        this.carrinhoPage = carrinhoPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Dado("que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização {string}")
     public void acessarUrlCarrinho(String url) {

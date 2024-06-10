@@ -1,14 +1,17 @@
 package pages;
 
+import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.DriverQA;
+import support.utils.DriverQA;
 
+@Component
 public class PlpPlanosPage {
-    private final DriverQA driver;
+
+    private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public PlpPlanosPage(DriverQA stepDriver, CartOrder cartOrder) {
-        driver = stepDriver;
+    public PlpPlanosPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
 
@@ -20,6 +23,6 @@ public class PlpPlanosPage {
 
         //driver.waitElementVisibility(xpathTituloControlePLP, "xpath");
         //driver.waitElementVisibility("btn-eu-quero-" + idPlano + "", "id");
-        driver.JavaScriptClick("btn-eu-quero-" + idPlano + "", "id");
+        driverQA.javaScriptClick("btn-eu-quero-" + idPlano + "", "id");
     }
 }

@@ -1,15 +1,21 @@
 package steps;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.HomePage;
-import support.BaseSteps;
+import support.CartOrder;
 
-public class HomeSteps extends BaseSteps {
-    HomePage homePage = new HomePage(driverQA, cartOrder);
+public class HomeSteps {
+
+    private final HomePage homePage;
+    private CartOrder cartOrder;
+
+    public HomeSteps(HomePage homePage, CartOrder cartOrder) { //Spring Autowired
+        this.homePage = homePage;
+        this.cartOrder = cartOrder;
+    }
 
     @Dado("que o usuário acesse a Loja Online")
     public void AcessarLojaOnline() {
@@ -17,8 +23,9 @@ public class HomeSteps extends BaseSteps {
     }
 
     @Quando("selecionar o plano de id {string} do carrossel da Home")
-    public void selecionarPlanoHome(String id) {
+    public void selecionarPlano(String id) {
         homePage.selecionarPlano(id);
+        cartOrder.setPlan(id);
     }
 
     @E("preencher o campo Seu telefone Claro com o msidn {string}")
@@ -26,20 +33,37 @@ public class HomeSteps extends BaseSteps {
         homePage.preencherCampoSeuTelefoneHeader(msisdn);
     }
 
-    @E("clicar na PLP do plano")
-    public void clicarNaPLP() {
-        //homePage.clicarPLP();
+    @Quando("o usuário clicar na opção [Controle] do header")
+    public void acessarPlpControle() {
+        //TODO
+    }
+
+    @Quando("o usuário clicar na opção [Pós] do header")
+    public void acessarPlpPos() {
+        //TODO
+    }
+
+    @Quando("o usuário clicar na opção [Celulares] do header")
+    public void acessarPlpCelulares() {
+        //TODO
+    }
+
+    @Quando("o usuário clicar na opção [Acessórios] do header")
+    public void acessarPlpAcessorios() {
+        //TODO
     }
 
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
-    public void acessarPdpPlano(String idPlano) {
-        homePage.acessarPdpPlano(idPlano);
+    public void acessarPdpPlano(String id) {
+        homePage.acessarPdpPlano(id);
+        cartOrder.setPlan(id);
     }
 
     @Quando("o usuário clicar no botão [Entrar] do header")
     public void clicaNoBotaoEntrar() {
         homePage.clicaBotaoEntrar();
     }
+
     @Então("é direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();

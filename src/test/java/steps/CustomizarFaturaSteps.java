@@ -5,11 +5,17 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
-import support.BaseSteps;
+import support.CartOrder;
 
+public class CustomizarFaturaSteps {
 
-public class CustomizarFaturaSteps extends BaseSteps {
-    CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA, cartOrder);
+    private final CustomizarFaturaPage customizarFaturaPage;
+    private final CartOrder cartOrder;
+
+    public CustomizarFaturaSteps(CustomizarFaturaPage customizarFaturaPage, CartOrder cartOrder) { //Spring Autowired
+        this.customizarFaturaPage = customizarFaturaPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a tela de Customizar Fatura")
     public void validarPagiaCustomizarFatura() {

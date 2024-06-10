@@ -1,11 +1,13 @@
 package support;
 
+import support.utils.DriverQA;
+
 public class BaseSteps {
-    protected DriverQA driverQA = new DriverQA();
-    protected CartOrder cartOrder = new CartOrder().initializeDefaultCartOrder();
+    protected DriverQA driverQA;// = new DriverQA();
+    protected CartOrder cartOrder;// = new CartOrder().initializeDefaultCartOrder();
 
     public BaseSteps() {
-        String browser = System.getProperty("browser", "chrome");
+        /*String browser = System.getProperty("browser", "chrome");
         switch (browser) {
             case "chrome":
                 driverQA.setupDriver("chrome");
@@ -15,6 +17,6 @@ public class BaseSteps {
                 break;
             default:
                 throw new IllegalArgumentException("Invalid browser: " + browser);
-        }
+        }*/
     }
 }

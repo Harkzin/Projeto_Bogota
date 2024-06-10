@@ -1,4 +1,4 @@
-package support;
+package support.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import support.Common.Email;
+import support.utils.Common.Email;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static java.time.Duration.ofSeconds;
-import static support.Common.*;
-import static support.Common.ambiente;
+import static support.utils.Common.ambiente;
 
 public final class RestAPI {
 

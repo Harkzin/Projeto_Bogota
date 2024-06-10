@@ -1,15 +1,24 @@
-package support;
+package support.config;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import support.utils.DriverQA;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class Hooks extends BaseSteps {
+
+public class Hooks {
+
+    private final DriverQA driverQA;
+
+    public Hooks(DriverQA driverQA) { //Spring Autowired
+        this.driverQA = driverQA;
+    }
+
     public static Collection<String> tagScenarios = new ArrayList<>();
 
     @Before
@@ -18,8 +27,7 @@ public class Hooks extends BaseSteps {
     }
 
     @After(order = 2)
-    public void printScreen(Scenario scenario) throws InterruptedException {
-        Thread.sleep(1000);
+    public void printScreen(Scenario scenario) {
         byte[] screenshot = (((TakesScreenshot) driverQA.getDriver()).getScreenshotAs(OutputType.BYTES));
         scenario.attach(screenshot, "image/png", "screenshot");
     }
