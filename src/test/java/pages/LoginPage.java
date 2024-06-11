@@ -31,8 +31,23 @@ public class LoginPage {
         Assert.assertFalse(continuar.isEnabled());
     }
 
+    public void validarPaginaMinhaConta() {
+        driverQA.waitPageLoad("/my-account", 10);
+
+        Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
+    }
+
+    public void validarMensagemSemSaldoClaroClube(String mensagemClube){
+        Assert.assertEquals(driverQA.findElement("//*[@id=\"lnk-claro-clube\"]/p[2]", "xpath").getText(), mensagemClube);
+    }
+
     public void clicarAcompanharPedidos() {
         driverQA.JavaScriptClick("lnk-acompanhar-pedidos", "id");
+    }
+
+    public void clicarClaroClube() {
+        driverQA.JavaScriptClick("lnk-claro-clube", "id");
     }
 
     public void validarPaginaLoginCpf() {
@@ -46,6 +61,7 @@ public class LoginPage {
 
         Assert.assertFalse(continuar.isEnabled());
     }
+
 
     public void preencheCPF(String cpf) {
         driverQA.actionSendKeys(this.cpf, cpf);
@@ -78,6 +94,8 @@ public class LoginPage {
     }
 
     public void inserirTokenEmail() {
+        System.out.println("CART EMAIL ADRESS: " + Cart_emailAddress);
+        clearInbox(Cart_emailAddress);
         driverQA.actionSendKeys(token, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
