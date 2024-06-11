@@ -38,7 +38,7 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
     }
 
-    public void validarMensagemSemSaldoClaroClube(String mensagemClube){
+    public void mensagemSemSaldoClaroClube(String mensagemClube){
         Assert.assertEquals(driverQA.findElement("//*[@id=\"lnk-claro-clube\"]/p[2]", "xpath").getText(), mensagemClube);
     }
 
@@ -94,7 +94,6 @@ public class LoginPage {
     }
 
     public void inserirTokenEmail() {
-        System.out.println("CART EMAIL ADRESS: " + Cart_emailAddress);
         clearInbox(Cart_emailAddress);
         driverQA.actionSendKeys(token, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }

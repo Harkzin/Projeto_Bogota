@@ -24,9 +24,9 @@ public class LoginSteps extends BaseSteps {
         loginPage.validarPaginaMinhaConta();
     }
 
-    @Então("validar que mensagem exibida é {string}")
-    public void validarQueMensagemExibidaÉ(String mensagemClube) {
-        loginPage.validarMensagemSemSaldoClaroClube(mensagemClube);
+    @Então("será exibida a mensagem {string}")
+    public void seraExibidaAMensagem(String mensagemClube) {
+        loginPage.mensagemSemSaldoClaroClube(mensagemClube);
     }
 
     @Quando("o usuário clicar na opção [Acompanhar pedidos]")

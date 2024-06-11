@@ -22,4 +22,4 @@ Funcionalidade: Planos - Base
 
     Quando o usuário clicar no botão [Confirmar]
     Então é direcionado para a tela de opções minha conta
-    E validar que mensagem exibida é "Não existe saldo disponível para resgate"
+    E será exibida a mensagem "Não existe saldo disponível para resgate"
