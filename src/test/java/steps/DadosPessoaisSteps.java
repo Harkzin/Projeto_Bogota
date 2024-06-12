@@ -7,7 +7,7 @@ import io.cucumber.java.pt.Quando;
 import pages.DadosPessoaisPage;
 import support.CartOrder;
 
-import static support.utils.Common.DeliveryMode.*;
+import static support.utils.Constants.DeliveryMode.*;
 
 public class DadosPessoaisSteps {
 

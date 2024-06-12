@@ -11,7 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import support.utils.Common.Email;
+import support.utils.Constants.Email;
 
 import java.time.Duration;
 import java.util.List;
@@ -159,7 +159,7 @@ public class DriverQA {
     }
 
     public void javaScriptClick(WebElement element) {
-        javaScriptMove(element);
+        javaScriptScrollTo(element);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click()", element);
     }
 
@@ -167,7 +167,7 @@ public class DriverQA {
         javaScriptClick(findElement(selectorValue, selectorType));
     }
 
-    public void javaScriptMove(WebElement element) {
+    public void javaScriptScrollTo(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
     }
 
@@ -177,7 +177,7 @@ public class DriverQA {
     }
 
     public void waitElementVisibility(WebElement element, int timeoutSeconds) {
-        javaScriptMove(element);
+        javaScriptScrollTo(element);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }

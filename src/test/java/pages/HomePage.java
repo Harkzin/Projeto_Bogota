@@ -2,7 +2,7 @@ package pages;
 
 import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.utils.Common;
+import support.utils.Constants;
 import support.utils.DriverQA;
 
 @Component
@@ -17,12 +17,12 @@ public class HomePage {
     }
 
     public void acessarLojaHome() {
-        driverQA.getDriver().get(Common.urlAmbiente);
-        driverQA.waitPageLoad(Common.urlAmbiente, 20);
+        driverQA.getDriver().get(Constants.urlAmbiente);
+        driverQA.waitPageLoad(Constants.urlAmbiente, 20);
     }
 
     public void validarHomePage() {
-        driverQA.waitPageLoad(Common.urlAmbiente, 20);
+        driverQA.waitPageLoad(Constants.urlAmbiente, 20);
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {

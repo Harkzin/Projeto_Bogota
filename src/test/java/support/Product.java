@@ -70,152 +70,133 @@ public final class Product {
                 .findFirst().orElseThrow();
     }
 
-    private List<String> getThumbsFeatureValues(String code) {
+    private List<String> getMediaFeatureValues(String code) {
         return getPlanAttributes(code)
                 .featureValues
                 .stream()
-                .map(featureValue -> featureValue.getValue().substring(8)) //Remove o /thumbs/ do nome
+                .map(featureValue -> featureValue.value.replace("/thumbs/", "")) //Sanity
                 .collect(Collectors.toList());
     }
 
-    public String getTitlePlanApps() {
+    private boolean hasAttribute(String code) {
+        return classifications.stream()
+                .filter(classification -> classification.code.contains("serviceplanclassification"))
+                .findFirst().orElseThrow()
+                .features.stream()
+                .anyMatch(feature -> feature.code.contains(code));
+    }
+
+    public boolean hasPlanApps() {
+        return hasAttribute("planapps");
+    }
+
+    public String getPlanAppsTitle() {
         return getPlanAttributes("planapps").name;
     }
 
     public List<String> getPlanApps() {
-        return getThumbsFeatureValues("planapps");
+        return getMediaFeatureValues("planapps");
     }
 
-    public String getTitleExtraPlay() {
-        return getPlanAttributes("clarotitleextraplay").featureValues.get(0).getValue();
+    public boolean hasExtraPlayApps() {
+        return hasAttribute("planextraplayapps");
+    }
+
+    public boolean hasExtraPlayTitle() {
+        return hasAttribute("clarotitleextraplay");
+    }
+
+    public String getExtraPlayTitle() {
+        return getPlanAttributes("clarotitleextraplay").featureValues.get(0).value;
     }
 
     public List<String> getExtraPlayApps() {
-        return getThumbsFeatureValues("planextraplayapps");
+        return getMediaFeatureValues("planextraplayapps");
     }
 
-    public String getTitleClaroServices() {
+    public boolean hasClaroServices() {
+        return hasAttribute("claroservicespdp");
+    }
+
+    public String getClaroServicesTitle() {
         return getPlanAttributes("claroservicespdp").name;
     }
 
     public List<String> getClaroServices() {
-        return getThumbsFeatureValues("claroservicespdp");
+        return getMediaFeatureValues("claroservicespdp");
     }
 
     public static class Classification {
 
+        @JsonProperty("code")
         private String code;
+        @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+        @JsonProperty("features")
         private List<Feature> features;
+        @JsonProperty("name")
         private String name;
 
         private Classification() {
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public List<Feature> getFeatures() {
-            return features;
-        }
-
-        public String getName() {
-            return name;
         }
     }
 
     public static class ClaroPaymentModePrice {
 
+        @JsonProperty("formattedValue")
         private String formattedValue;
+        @JsonProperty("promotionSource")
         private String promotionSource;
+        @JsonProperty("value")
         private double value;
 
         private ClaroPaymentModePrice() {
-        }
-
-        public String getFormattedValue() {
-            return formattedValue;
-        }
-
-        public String getPromotionSource() {
-            return promotionSource;
-        }
-
-        public double getValue() {
-            return value;
         }
     }
 
     public static class Feature {
 
+        @JsonProperty("code")
         private String code;
+        @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+        @JsonProperty("featureValues")
         private List<FeatureValue> featureValues;
+        @JsonProperty("name")
         private String name;
 
         private Feature() {
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public List<FeatureValue> getFeatureValues() {
-            return featureValues;
-        }
-
-        public String getName() {
-            return name;
         }
     }
 
     public static class FeatureValue {
 
+        @JsonProperty("value")
         private String value;
 
         private FeatureValue() {
-        }
-
-        public String getValue() {
-            return value;
         }
     }
 
     public static class LoyaltyClaroPrice {
 
+        @JsonProperty("formattedValue")
         private String formattedValue;
+        @JsonProperty("promotionSource")
         private String promotionSource;
+        @JsonProperty("value")
         private double value;
 
         private LoyaltyClaroPrice() {
-        }
-
-        public String getFormattedValue() {
-            return formattedValue;
-        }
-
-        public String getPromotionSource() {
-            return promotionSource;
-        }
-
-        public double getValue() {
-            return value;
         }
     }
 
     public static class Price {
 
+        @JsonProperty("formattedValue")
         private String formattedValue;
+        @JsonProperty("value")
         private double value;
 
         private Price() {
-        }
-
-        public String getFormattedValue() {
-            return formattedValue;
-        }
-
-        public double getValue() {
-            return value;
         }
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
-import static support.utils.Common.ProcessType.MIGRATE;
+import static support.utils.Constants.ProcessType.MIGRATE;
 import static support.api.RestAPI.getBankAccount;
 
 import java.util.*;

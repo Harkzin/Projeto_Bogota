@@ -18,7 +18,7 @@ public class PdpPlanosSteps {
 
     @Então("é direcionado para a PDP do plano")
     public void validarPDP() {
-        pdpPlanosPage.validarPDP();
+        pdpPlanosPage.validarPdpPlanos();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")

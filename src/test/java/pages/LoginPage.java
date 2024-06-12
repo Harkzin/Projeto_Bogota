@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import support.CartOrder;
 import support.utils.DriverQA;
 
-import static support.utils.Common.Email.CONFIRMA_TOKEN;
+import static support.utils.Constants.Email.CONFIRMA_TOKEN;
 import static support.api.RestAPI.clearInbox;
 
 public class LoginPage {

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import support.utils.Common.Email;
+import support.utils.Constants.Email;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static java.time.Duration.ofSeconds;
-import static support.utils.Common.ambiente;
+import static support.utils.Constants.ambiente;
 
 public final class RestAPI {
 

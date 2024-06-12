@@ -5,10 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.utils.Common;
+import support.utils.Constants;
 import support.utils.DriverQA;
 
-import static support.utils.Common.DeliveryMode.CONVENTIONAL;
+import static support.utils.Constants.DeliveryMode.CONVENTIONAL;
 
 @Component
 public class DadosPessoaisPage {
@@ -76,7 +76,7 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
     }
 
-    public void validarTiposEntrega(boolean showDeliveryModes, Common.DeliveryMode deliveryMode) {
+    public void validarTiposEntrega(boolean showDeliveryModes, Constants.DeliveryMode deliveryMode) {
         chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
         chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
         usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");

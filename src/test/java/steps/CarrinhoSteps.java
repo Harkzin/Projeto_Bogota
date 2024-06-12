@@ -7,7 +7,7 @@ import io.cucumber.java.pt.Quando;
 import pages.CarrinhoPage;
 import support.CartOrder;
 
-import static support.utils.Common.ProcessType.*;
+import static support.utils.Constants.ProcessType.*;
 
 public class CarrinhoSteps {
 

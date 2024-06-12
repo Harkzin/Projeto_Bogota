@@ -3,14 +3,14 @@ package pages;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.utils.Common;
+import support.utils.Constants;
 import support.utils.DriverQA;
 import org.junit.Assert;
 
 import java.util.UUID;
 
-import static support.utils.Common.ProcessType.ACQUISITION;
-import static support.utils.Common.ProcessType.PORTABILITY;
+import static support.utils.Constants.ProcessType.ACQUISITION;
+import static support.utils.Constants.ProcessType.PORTABILITY;
 import static support.api.RestAPI.checkCpfDiretrix;
 import static support.api.RestAPI.getCpf;
 
@@ -153,7 +153,7 @@ public class CarrinhoPage {
         }
     }
 
-    public void selecionarFluxo(Common.ProcessType processType) {
+    public void selecionarFluxo(Constants.ProcessType processType) {
         cartOrder.essential.processType = processType;
 
         switch (processType) {
@@ -175,7 +175,7 @@ public class CarrinhoPage {
     }
 
     public void acessarUrlRentabCarrinho(String url) {
-        driverQA.getDriver().get(Common.urlAmbiente + url);
+        driverQA.getDriver().get(Constants.urlAmbiente + url);
     }
 
     public void inserirDadosBase(String telefone, String cpf) {

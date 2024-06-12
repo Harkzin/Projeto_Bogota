@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static support.utils.Common.*;
+import static support.utils.Constants.*;
 import static support.api.RestAPI.getProductDetails;
 import static support.api.RestAPI.objMapper;
 
