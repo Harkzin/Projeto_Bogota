@@ -23,6 +23,31 @@ public final class Product {
     private String name;
     private String url;
 
+    private Feature getPlanAttributes(String code) {
+        return classifications.stream()
+                .filter(classification -> classification.code.contains("serviceplanclassification"))
+                .findFirst().orElseThrow()
+                .features.stream()
+                .filter(feature -> feature.code.contains(code))
+                .findFirst().orElseThrow();
+    }
+
+    private List<String> getMediaFeatureValues(String code) {
+        return getPlanAttributes(code)
+                .featureValues
+                .stream()
+                .map(featureValue -> featureValue.value.replace("/thumbs/", "")) //Sanity
+                .collect(Collectors.toList());
+    }
+
+    private boolean hasAttribute(String code) {
+        return classifications.stream()
+                .filter(classification -> classification.code.contains("serviceplanclassification"))
+                .findFirst().orElseThrow()
+                .features.stream()
+                .anyMatch(feature -> feature.code.contains(code));
+    }
+
     public Price getBaseDevicePrice() {
         return price;
     }
@@ -59,31 +84,6 @@ public final class Product {
                     .findFirst().orElseThrow()
                     .formattedValue.substring(3);
         }
-    }
-
-    private Feature getPlanAttributes(String code) {
-        return classifications.stream()
-                .filter(classification -> classification.code.contains("serviceplanclassification"))
-                .findFirst().orElseThrow()
-                .features.stream()
-                .filter(feature -> feature.code.contains(code))
-                .findFirst().orElseThrow();
-    }
-
-    private List<String> getMediaFeatureValues(String code) {
-        return getPlanAttributes(code)
-                .featureValues
-                .stream()
-                .map(featureValue -> featureValue.value.replace("/thumbs/", "")) //Sanity
-                .collect(Collectors.toList());
-    }
-
-    private boolean hasAttribute(String code) {
-        return classifications.stream()
-                .filter(classification -> classification.code.contains("serviceplanclassification"))
-                .findFirst().orElseThrow()
-                .features.stream()
-                .anyMatch(feature -> feature.code.contains(code));
     }
 
     public boolean hasPlanApps() {
@@ -124,6 +124,18 @@ public final class Product {
 
     public List<String> getClaroServices() {
         return getMediaFeatureValues("claroservicespdp");
+    }
+
+    public boolean hasPlanPortability() {
+        return hasAttribute("planportability");
+    }
+
+    public List<String> getPlanPortability() {
+        return getPlanAttributes("planportability")
+                .featureValues
+                .stream()
+                .map(featureValue -> featureValue.value)
+                .collect(Collectors.toList());
     }
 
     public static class Classification {

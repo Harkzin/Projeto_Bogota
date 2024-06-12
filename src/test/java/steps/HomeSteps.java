@@ -24,8 +24,8 @@ public class HomeSteps {
 
     @Quando("selecionar o plano de id {string} do carrossel da Home")
     public void selecionarPlano(String id) {
-        homePage.selecionarPlano(id);
         cartOrder.setPlan(id);
+        homePage.selecionarPlano(id);
     }
 
     @E("preencher o campo Seu telefone Claro com o msidn {string}")
@@ -55,8 +55,8 @@ public class HomeSteps {
 
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
-        homePage.acessarPdpPlano(id);
         cartOrder.setPlan(id);
+        homePage.acessarPdpPlano(id);
     }
 
     @Quando("o usuário clicar no botão [Entrar] do header")
