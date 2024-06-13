@@ -33,17 +33,19 @@ public class PdpPlanosSteps {
 
     @E("selecionar Fidelidade de 12 meses")
     public void selecionarFidelidade() {
+        cartOrder.hasLoyalty = true;
         pdpPlanosPage.selecionarFidelidade();
     }
 
     @Quando("o usuário selecionar Sem fidelidade")
     public void selecionarSemFidelidade() {
+        cartOrder.hasLoyalty = false;
         pdpPlanosPage.selecionarSemFidelidade();
     }
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow);
+        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")

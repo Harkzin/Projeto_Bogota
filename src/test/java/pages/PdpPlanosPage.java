@@ -12,8 +12,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static pages.ComumPage.validarMidiasPlano;
-
 @Component
 public class PdpPlanosPage {
 
@@ -30,7 +28,6 @@ public class PdpPlanosPage {
     private WebElement loyalty;
     private WebElement noLoyalty;
     private WebElement planCharacteristics;
-    private boolean hasLoyalty = true;
 
     public void validarPdpPlanos() {
         driverQA.waitPageLoad(cartOrder.getPlan().getUrl(), 10);
@@ -44,7 +41,7 @@ public class PdpPlanosPage {
         //Valida opções default
         validarDebito();
         validarFidelidade();
-        validarValorPlano(true);
+        validarValorPlano(true, true);
 
         //Valida resumo, caso configurado
         if (!cartOrder.getPlan().getSummary().isEmpty()) {
@@ -76,7 +73,7 @@ public class PdpPlanosPage {
         if (!cartOrder.getPlan().getName().isEmpty()) {
             //Nome principal
             WebElement planName = driverQA.findElement("//*[@id='plan-name']/span", "xpath");
-            ComumPage.validarNomePlano(cartOrder, planName);
+            ComumPage.validateElementText(cartOrder.getPlan().getName(), planName);
 
             //Nome nav (barra horizontal superior)
             showNav();
@@ -89,28 +86,27 @@ public class PdpPlanosPage {
 
         //Valida título extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayTitle()) {
-            WebElement claroTitleExtraPlay = planCharacteristics
-                    .findElement(By.xpath("div[contains(concat(' ',normalize-space(@class)), ' title-extra-play')]/p"));
+            WebElement claroExtraPlayTitle = planCharacteristics
+                    .findElement(By.xpath("div[contains(@class, 'title-extra-play')]/p"));
 
-            ComumPage.validarTituloExtraPlay(cartOrder, claroTitleExtraPlay);
+            ComumPage.validateElementText(cartOrder.getPlan().getExtraPlayTitle(), claroExtraPlayTitle);
         }
 
         //Valida apps extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = planCharacteristics
-                    .findElements(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' extra-play ')]/.//img"));
+                    .findElements(By.xpath("div[contains(@class, ' extra-play ')]//img"));
 
-            validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
+            ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
         }
 
         //Valida serviços Claro, caso configurado
         if (cartOrder.getPlan().hasClaroServices()) {
-            String claroServicesTitle = planCharacteristics
-                    .findElement(By.xpath("div[contains(concat(' ',normalize-space(@class)), ' claro-services')]/p"))
-                    .getText();
+            WebElement claroServicesTitle = planCharacteristics
+                    .findElement(By.xpath("div[contains(@class, ' claro-services')]/p"));
 
             List<WebElement> claroServicesApps = planCharacteristics
-                    .findElements(By.xpath("div[contains(concat(' ',normalize-space(@class)), ' claro-services')]/div/.//img"));
+                    .findElements(By.xpath("div[contains(@class, ' claro-services')]//img"));
 
             ComumPage.validarServicosClaro(driverQA, cartOrder, claroServicesTitle, claroServicesApps);
         }
@@ -149,19 +145,15 @@ public class PdpPlanosPage {
     public void selecionarFidelidade() {
         driverQA.javaScriptClick(loyalty);
         validarFidelidade();
-
-        hasLoyalty = true;
     }
 
     public void selecionarSemFidelidade() {
         driverQA.javaScriptClick(noLoyalty);
         Assert.assertTrue(noLoyalty.isSelected());
         Assert.assertFalse(loyalty.isSelected());
-
-        hasLoyalty = false;
     }
 
-    public void validarValorPlano(Boolean isDebit) {
+    public void validarValorPlano(boolean isDebit, boolean hasLoyalty) {
         //Valores do Front
         WebElement debitLoyalty = driverQA.findElement("price-debit-loyalty", "id");
         WebElement ticketLoyalty = driverQA.findElement("price-ticket-loyalty", "id");
@@ -256,15 +248,11 @@ public class PdpPlanosPage {
             if (exibe) {
                 driverQA.waitElementVisibility(planAppsParent, 2);
 
-                //Valida título
-                String appsTitleResume = planAppsParent
-                        .findElement(By.xpath("div[1]/div"))
-                        .getText();
-                Assert.assertEquals(cartOrder.getPlan().getPlanAppsTitle(), appsTitleResume);
-
-                //Valida Apps
+                //Título
+                WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
+                //Apps
                 List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
-                validarMidiasPlano(cartOrder.getPlan().getPlanApps(), planApps, driverQA);
+                ComumPage.validarAppsIlimitados(driverQA, cartOrder, planAppsTitle, planApps);
             } else {
                 driverQA.waitElementInvisibility(planAppsParent, 2);
             }

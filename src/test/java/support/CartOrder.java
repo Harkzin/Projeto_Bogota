@@ -14,6 +14,7 @@ public final class CartOrder {
     private final List<Product> products = new ArrayList<>();
     public boolean isDebitPaymentFlow = true;
     public boolean hasDevice;
+    public boolean hasLoyalty = true;
     public Essential essential;
     public PositionsAndPrices positionsAndPrices;
     public Dependent dependent;

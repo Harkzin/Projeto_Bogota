@@ -10,7 +10,7 @@ import support.CartOrder;
 public class HomeSteps {
 
     private final HomePage homePage;
-    private CartOrder cartOrder;
+    private final CartOrder cartOrder;
 
     public HomeSteps(HomePage homePage, CartOrder cartOrder) { //Spring Autowired
         this.homePage = homePage;

@@ -24,13 +24,13 @@ public class HomePage {
     }
 
     private void validarCardPlano(String code) {
-        //TODO atualizar find para id
+        //TODO atualizar find para id quando for criado
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
         if (!cartOrder.getPlan().getName().isEmpty()) {
             WebElement planName = cardParent.findElement(By.xpath("h3"));
-            ComumPage.validarNomePlano(cartOrder, planName);
+            ComumPage.validateElementText(cartOrder.getPlan().getName(), planName);
         }
 
         //Valida preço
@@ -50,7 +50,7 @@ public class HomePage {
         if (cartOrder.getPlan().hasExtraPlayTitle()) {
             WebElement extraPlayTitle = cardParent
                     .findElement(By.xpath("div[@class='characteristics']/div[contains(@class, 'title-extra-play')][1]/p"));
-            ComumPage.validarTituloExtraPlay(cartOrder, extraPlayTitle);
+            ComumPage.validateElementText(cartOrder.getPlan().getExtraPlayTitle(), extraPlayTitle);
         }
 
         //Valida apps extraPlay

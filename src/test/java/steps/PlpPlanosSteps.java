@@ -1,6 +1,7 @@
 package steps;
 
 import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Quando;
 import pages.PlpPlanosPage;
 import support.CartOrder;
 
@@ -14,9 +15,9 @@ public class PlpPlanosSteps {
         this.cartOrder = cartOrder;
     }
 
-    @E("^selecionar o \"([^\"]*)\" plano do carrossel da PLP clicando no botão Eu quero! dele$")
-    public void selecionarOPlanoDoCarrosselDaPLPClicandoNoBotãoEuQueroDele(String cardPLP) {
-        plpPlanosPage.selecionarCardControle(cardPLP);
-
+    @Quando("selecionar o plano de id: {string}")
+    public void selecionarPlano(String id) {
+        cartOrder.setPlan(id);
+        plpPlanosPage.selecionarPlano(id);
     }
 }
