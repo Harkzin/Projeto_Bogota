@@ -39,7 +39,7 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
     }
 
-    public void mensagemSemSaldoClaroClube(String mensagemClube) {
+    public void validarMensagemSaldoClaroClube(String mensagemClube) {
         WebElement msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
 
         Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
