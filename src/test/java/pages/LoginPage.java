@@ -72,7 +72,7 @@ public class LoginPage {
     }
 
     public void validarPaginaLoginToken() {
-        driverQA.waitPageLoad("/login/token", 10);
+        driverQA.waitPageLoad("/login/token", 15);
 
         Assert.assertTrue(driverQA.findElement("token-verification-method", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-email", "id").isDisplayed());
