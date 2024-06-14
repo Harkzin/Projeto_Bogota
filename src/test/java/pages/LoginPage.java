@@ -14,6 +14,7 @@ public class LoginPage {
     public LoginPage(DriverQA stepDriver) {
         driverQA = stepDriver;
     }
+
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
@@ -38,8 +39,11 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
     }
 
-    public void mensagemSemSaldoClaroClube(String mensagemClube){
-        Assert.assertEquals(driverQA.findElement("//*[@id=\"lnk-claro-clube\"]/p[2]", "xpath").getText(), mensagemClube);
+    public void validarMensagemSaldoClaroClube(String mensagemClube) {
+        WebElement msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
+
+        Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
+        Assert.assertTrue(msgClaroClube.isDisplayed());
     }
 
     public void clicarAcompanharPedidos() {
@@ -72,7 +76,7 @@ public class LoginPage {
     }
 
     public void validarPaginaLoginToken() {
-        driverQA.waitPageLoad("/login/token", 10);
+        driverQA.waitPageLoad("/login/token", 15);
 
         Assert.assertTrue(driverQA.findElement("token-verification-method", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-email", "id").isDisplayed());

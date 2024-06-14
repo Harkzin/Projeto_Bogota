@@ -26,7 +26,7 @@ public class LoginSteps extends BaseSteps {
 
     @Então("será exibida a mensagem {string}")
     public void seraExibidaAMensagem(String mensagemClube) {
-        loginPage.mensagemSemSaldoClaroClube(mensagemClube);
+        loginPage.validarMensagemSaldoClaroClube(mensagemClube);
     }
 
     @Quando("o usuário clicar na opção [Acompanhar pedidos]")
