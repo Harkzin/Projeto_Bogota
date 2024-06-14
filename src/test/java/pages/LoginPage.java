@@ -18,7 +18,6 @@ public class LoginPage {
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
-    private WebElement msgClaroClube;
 
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
@@ -41,7 +40,7 @@ public class LoginPage {
     }
 
     public void mensagemSemSaldoClaroClube(String mensagemClube) {
-        msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
+        WebElement msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
 
         Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
         Assert.assertTrue(msgClaroClube.isDisplayed());
