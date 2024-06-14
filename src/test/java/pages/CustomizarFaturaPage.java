@@ -48,8 +48,8 @@ public class CustomizarFaturaPage {
 
     private void validarCamposDebito() {
         banco = new Select(driverQA.findElement("slc-banco", "id"));
-        agencia = driverQA.findElement("slc-agencia", "id");
-        conta = driverQA.findElement("slc-conta", "id");
+        agencia = driverQA.findElement("txt-agencia", "id");
+        conta = driverQA.findElement("txt-conta", "id");
 
         Assert.assertEquals(banco.getFirstSelectedOption().getText(), "Banco");
 
@@ -61,7 +61,7 @@ public class CustomizarFaturaPage {
     }
 
     public void validarMeiosPagamento(Boolean exibe) {
-        abaDebito = driverQA.findElement("tab-debito-automatico", "id");
+        abaDebito = driverQA.findElement("tab-debito", "id");
         abaBoleto = driverQA.findElement("tab-boleto", "id");
 
         if (exibe) { //fluxo gross ou base com pagamento boleto e migra pré-ctrl
@@ -259,7 +259,7 @@ public class CustomizarFaturaPage {
         banco.selectByValue(banks.get(bankId));
 
         if (bankId == 3) { //CAIXA
-            WebElement caixaAccountType = driverQA.findElement("customBank", "id");
+            WebElement caixaAccountType = driverQA.findElement("slc-tipo-conta", "id");
             Select caixaAccountTypeSelect = new Select(caixaAccountType);
             driverQA.waitElementToBeClickable(caixaAccountType, 1);
 
