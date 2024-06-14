@@ -14,9 +14,11 @@ public class LoginPage {
     public LoginPage(DriverQA stepDriver) {
         driverQA = stepDriver;
     }
+
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
+    private WebElement msgClaroClube;
 
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
@@ -38,9 +40,11 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
     }
 
-    public void mensagemSemSaldoClaroClube(String mensagemClube){
-        Assert.assertEquals(driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath").getText(), mensagemClube);
-        Assert.assertTrue(driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath").isDisplayed());
+    public void mensagemSemSaldoClaroClube(String mensagemClube) {
+        msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
+
+        Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
+        Assert.assertTrue(msgClaroClube.isDisplayed());
     }
 
     public void clicarAcompanharPedidos() {
