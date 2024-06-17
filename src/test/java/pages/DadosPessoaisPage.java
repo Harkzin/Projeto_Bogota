@@ -119,4 +119,10 @@ public class DadosPessoaisPage {
     public void clicarContinuar() {
         driverQA.JavaScriptClick("btn-continuar", "id");
     }
+
+    public void selecionarEsim() {
+        WebElement EsimInput = driverQA.findElement("rdn-chipTypeEsimExpress", "id");
+        driverQA.JavaScriptClick(EsimInput);
+        //deve realizar a validação de exibição dos textos citados no documento
+    }
 }

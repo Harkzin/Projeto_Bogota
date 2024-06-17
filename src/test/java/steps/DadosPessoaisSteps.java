@@ -43,6 +43,13 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.validarTiposEntrega(true, Cart_isExpressDelivery);
     }
 
+    @E("o usuário seleciona o tipo de sim [Esim]")
+    public void selecionaEsim() {
+        dadosPessoaisPage.selecionarEsim();
+    }
+
+
+
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
         dadosPessoaisPage.validarTiposEntrega(false, Cart_isExpressDelivery);
