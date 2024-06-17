@@ -1,5 +1,6 @@
 package steps;
 
+import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import pages.ComumPage;
 import support.CartOrder;
@@ -16,6 +17,11 @@ public class ComumSteps {
 
     @Mas("não deve haver alterações no valor e nem nas informações do Plano")
     public void validarResumoCompraPlano() {
+        comumPage.validarResumoCompraPlano();
+    }
+
+    @Então("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra")
+    public void validarAlteraValorPagamento() {
         comumPage.validarResumoCompraPlano();
     }
 

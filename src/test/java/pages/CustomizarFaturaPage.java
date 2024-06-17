@@ -6,8 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
+import support.utils.Constants;
+import support.utils.Constants.PlanPaymentMode;
 import support.utils.DriverQA;
 
+import static pages.ComumPage.*;
+import static support.utils.Constants.PlanPaymentMode.*;
 import static support.utils.Constants.ProcessType.MIGRATE;
 import static support.api.RestAPI.getBankAccount;
 
@@ -25,7 +29,7 @@ public class CustomizarFaturaPage {
         this.cartOrder = cartOrder;
     }
 
-    private Boolean isComboFlow = false;
+    private boolean isComboFlow = false;
     private WebElement abaDebito;
     private WebElement abaBoleto;
     private Select banco;
@@ -40,6 +44,9 @@ public class CustomizarFaturaPage {
 
     public void validarPaginaCustomizarFatura() {
         driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
+
+        abaDebito = driverQA.findElement("tab-debito", "id");
+        abaBoleto = driverQA.findElement("tab-boleto", "id");
     }
 
     public void validarPagiaCustomizarFaturaThab() {
@@ -53,39 +60,44 @@ public class CustomizarFaturaPage {
 
     private void validarCamposDebito() {
         banco = new Select(driverQA.findElement("slc-banco", "id"));
-        agencia = driverQA.findElement("slc-agencia", "id");
-        conta = driverQA.findElement("slc-conta", "id");
+        agencia = driverQA.findElement("txt-agencia", "id");
+        conta = driverQA.findElement("txt-conta", "id");
 
         Assert.assertEquals(banco.getFirstSelectedOption().getText(), "Banco");
 
         Assert.assertEquals(agencia.getAttribute("value"), "");
         Assert.assertFalse(agencia.isEnabled());
+        Assert.assertTrue(agencia.isDisplayed());
 
         Assert.assertEquals(conta.getAttribute("value"), "");
         Assert.assertFalse(conta.isEnabled());
+        Assert.assertTrue(conta.isDisplayed());
     }
 
-    public void validarMeiosPagamento(Boolean exibe) {
-        abaDebito = driverQA.findElement("tab-debito-automatico", "id");
-        abaBoleto = driverQA.findElement("tab-boleto", "id");
-
-        if (exibe) { //fluxo gross ou base com pagamento boleto e migra pré-ctrl
-            if (abaDebito.findElement(By.tagName("input")).isSelected()) {
-                Assert.assertFalse(abaBoleto.isSelected());
+    public void validarMeiosPagamento(PlanPaymentMode payment) { //Exibe nos fluxos: gross / base - cliente pagamento boleto / migra pré-ctrl
+        switch (payment) {
+            case DEBIT: //Fluxo está sendo débito. Default.
+                Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
+                Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
                 validarCamposDebito();
-                cartOrder.isDebitPaymentFlow = true;
-            } else {
+                break;
+            case TICKET: //Fluxo está sendo boleto. Cliente selecionou antes na PDP ou PLP.
+                Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
                 Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
-                cartOrder.isDebitPaymentFlow = false;
-            }
-        } else { //fluxo base - cliente já é débito / combo / THAB
-            Assert.assertNull(abaDebito);
-            Assert.assertNull(abaBoleto);
-            cartOrder.isDebitPaymentFlow = !cartOrder.thab; //TODO caso combo = ??
+                break;
         }
+
+        Assert.assertTrue(abaBoleto.findElement(By.tagName("div")).isDisplayed());
+        Assert.assertTrue(abaDebito.findElement(By.tagName("div")).isDisplayed());
     }
 
-    public void validarTiposFatura(Boolean exibe) {
+    public void validarNaoExibeMeiosPagamento() { //Fluxos: base - cliente já é débito / combo / THAB
+        Assert.assertNull(abaDebito);
+        Assert.assertNull(abaBoleto);
+        //cartOrder.isDebitPaymentFlow = !cartOrder.thab; //TODO caso combo = ??
+    }
+
+    public void validarTiposFatura(boolean exibe) {
         whatsappDebit = driverQA.findElement("rdn-whatsapp-debit", "id");
         emailDebit = driverQA.findElement("rdn-email-debit", "id");
         correiosDebit = driverQA.findElement("rdn-correios-debit", "id");
@@ -162,7 +174,7 @@ public class CustomizarFaturaPage {
         }
     }
 
-    public void validarDatasVencimento(Boolean exibe) {
+    public void validarDatasVencimento(boolean exibe) {
         WebElement datasDebit = driverQA.findElement("datas-vencimento-debit", "id");
         WebElement datasTicket = driverQA.findElement("datas-vencimento-ticket", "id");
 
@@ -181,54 +193,56 @@ public class CustomizarFaturaPage {
                 dias = datasTicket.findElements(By.tagName("span"));
             }
 
-            Assert.assertEquals(6, dias.size()); // seis datas devem ser exibidas
+            Assert.assertEquals("Seis datas de vencimento devem existir", 6, dias.size());
 
             int checked = 0;
             for (WebElement diaVencimento : dias) {
                 WebElement input = diaVencimento.findElement(By.tagName("input"));
                 WebElement label = diaVencimento.findElement(By.tagName("label"));
-                String txtLabel = label.getText();
+                int dia = Integer.parseInt(label.getText());
 
                 Assert.assertTrue(label.isDisplayed());
-                Assert.assertTrue(Integer.parseInt(txtLabel) >= 1 && Integer.parseInt(txtLabel) <= 31); //números exibidos devem ser dias do mês
+                Assert.assertTrue("Número exibido deve ser umm dia do mês", dia >= 1 && dia <= 31);
                 if (input.isSelected()) checked++;
             }
 
-            Assert.assertEquals(1, checked); //apenas uma data selecionada
+            Assert.assertEquals("Apenas uma data selecionada", 1, checked);
         } else { //fluxo base em troca de plano mesma plataforma (ctrl-ctrl e pos-pos)
             Assert.assertNull(datasDebit);
             Assert.assertNull(datasTicket);
         }
     }
 
-    public void selecionarPagamento(String paymentType) {
-        if (paymentType.equals("Débito")) {
+    public void selecionarDebito() {
             driverQA.javaScriptClick(abaDebito.findElement(By.tagName("div")));
             Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
             Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
 
             validarCamposDebito();
-            cartOrder.isDebitPaymentFlow = true;
-        } else {
-            driverQA.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
-            Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
-            Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
+    }
 
-            cartOrder.isDebitPaymentFlow = false;
+    public void selecionarBoleto() {
+        driverQA.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
+        Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
+        Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
+    }
+
+    public void selecionarTipoFatura(Constants.InvoiceType invoiceType) {
+        switch (invoiceType) {
+            case WHATSAPP:
+                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+                break;
+            case EMAIL:
+                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? emailDebit : emailTicket);
+                break;
+            case PRINTED:
+                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
     }
 
-    public void selecionarTipoFatura(String fatura) {
-        switch (fatura) {
-            case "Whatsapp":
-                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
-                break;
-            case "E-mail":
-                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? emailDebit : emailTicket);
-                break;
-            case "Correios":
-                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
-        }
+    public void validarPrecoFaturaImpressaDebito() {
+        WebElement pricePrinted = driverQA.findElement("", "xpath");
+        validateElementText(cartOrder.getPlan().getFormattedPlanPrice(false, true), pricePrinted); //Preço débito fatura impressa = boleto (sem desconto)
     }
 
     public void preencherDadosBancarios() {
@@ -264,7 +278,7 @@ public class CustomizarFaturaPage {
         banco.selectByValue(banks.get(bankId));
 
         if (bankId == 3) { //CAIXA
-            WebElement caixaAccountType = driverQA.findElement("customBank", "id");
+            WebElement caixaAccountType = driverQA.findElement("slc-tipo-conta", "id");
             Select caixaAccountTypeSelect = new Select(caixaAccountType);
             driverQA.waitElementToBeClickable(caixaAccountType, 1);
 

@@ -38,4 +38,16 @@ public final class Constants {
         CONVENTIONAL,
         EXPRESS
     }
+
+    public enum InvoiceType {
+        WHATSAPP,
+        EMAIL,
+        PRINTED
+    }
+
+    public enum PlanPaymentMode {
+        DEBIT,
+        TICKET,
+        CREDIT_CARD
+    }
 }

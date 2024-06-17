@@ -6,6 +6,11 @@ import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.CartOrder;
+import support.utils.Constants;
+import support.utils.Constants.InvoiceType;
+
+import static support.utils.Constants.InvoiceType.*;
+import static support.utils.Constants.PlanPaymentMode.*;
 
 public class CustomizarFaturaSteps {
 
@@ -22,17 +27,22 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.validarPaginaCustomizarFatura();
     }
 
-    @E("deve ser exibido as opções de pagamento")
+    @E("deve ser exibido as opções de pagamento, com a opção [Débito] selecionada")
     public void exibePagamento() {
-        customizarFaturaPage.validarMeiosPagamento(true);
+        customizarFaturaPage.validarMeiosPagamento(DEBIT);
+    }
+
+    @E("deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada")
+    public void exibePagamentoBoleto() {
+        customizarFaturaPage.validarMeiosPagamento(TICKET);
     }
 
     @Mas("não deve ser exibido as opções de pagamento")
     public void naoExibePagamento() {
-        customizarFaturaPage.validarMeiosPagamento(false);
+        customizarFaturaPage.validarNaoExibeMeiosPagamento();
     }
 
-    @E("deve ser exibido os meios de recebimento da fatura")
+    @E("deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada")
     public void exibeRecebimentoFatura() {
         customizarFaturaPage.validarTiposFatura(true);
     }
@@ -52,9 +62,16 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.validarDatasVencimento(false);
     }
 
-    @E("seleciona a forma de pagamento: {string}") //"Débito" ou "Boleto"
-    public void selecionarPagamentoBoleto(String pagamento) {
-        customizarFaturaPage.selecionarPagamento(pagamento);
+    @Quando("o usuário selecionar a forma de pagamento [Débito]")
+    public void selecionarPagamentoDebito() {
+        cartOrder.isDebitPaymentFlow = true;
+        customizarFaturaPage.selecionarDebito();
+    }
+
+    @Quando("o usuário selecionar a forma de pagamento [Boleto]")
+    public void selecionarPagamentoBoleto() {
+        cartOrder.isDebitPaymentFlow = false;
+        customizarFaturaPage.selecionarBoleto();
     }
 
     @E("preenche os dados bancários")
@@ -62,9 +79,24 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.preencherDadosBancarios();
     }
 
-    @E("seleciona o método de recebimento da fatura: {string}") //"WhatsApp", "E-mail" ou "Correios"
-    public void selecionarRecebimentoFatura(String fatura) {
-        customizarFaturaPage.selecionarTipoFatura(fatura);
+    @Quando("o usuário selecionar o método de recebimento da fatura [WhatsApp]")
+    public void selecionarFaturaWhatsApp() {
+        customizarFaturaPage.selecionarTipoFatura(WHATSAPP);
+    }
+
+    @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
+    public void selecionarFaturaEmail() {
+        customizarFaturaPage.selecionarTipoFatura(EMAIL);
+    }
+
+    @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")
+    public void selecionarFaturaCorreios() {
+        customizarFaturaPage.selecionarTipoFatura(PRINTED);
+    }
+
+    @Então("o valor do Plano será atualizado no Resumo da compra") //Débito fatura impressa = sem desconto, preço igual de boleto.
+    public void validarValorFaturaImpressa() {
+        customizarFaturaPage.validarPrecoFaturaImpressaDebito();
     }
 
     @E("seleciona a data de vencimento {string}")
