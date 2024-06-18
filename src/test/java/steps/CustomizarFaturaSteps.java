@@ -6,8 +6,6 @@ import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
 import support.CartOrder;
-import support.utils.Constants;
-import support.utils.Constants.InvoiceType;
 
 import static support.utils.Constants.InvoiceType.*;
 import static support.utils.Constants.PlanPaymentMode.*;

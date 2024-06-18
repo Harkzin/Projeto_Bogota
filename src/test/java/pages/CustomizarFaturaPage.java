@@ -11,7 +11,6 @@ import support.utils.Constants.PlanPaymentMode;
 import support.utils.DriverQA;
 
 import static pages.ComumPage.*;
-import static support.utils.Constants.PlanPaymentMode.*;
 import static support.utils.Constants.ProcessType.MIGRATE;
 import static support.api.RestAPI.getBankAccount;
 
@@ -79,6 +78,7 @@ public class CustomizarFaturaPage {
             case DEBIT: //Fluxo está sendo débito. Default.
                 Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
                 Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
+
                 validarCamposDebito();
                 break;
             case TICKET: //Fluxo está sendo boleto. Cliente selecionou antes na PDP ou PLP.
@@ -214,34 +214,42 @@ public class CustomizarFaturaPage {
     }
 
     public void selecionarDebito() {
-            driverQA.javaScriptClick(abaDebito.findElement(By.tagName("div")));
-            Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
-            Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
+        driverQA.javaScriptClick(abaDebito.findElement(By.tagName("div")));
+        Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
+        Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
 
-            validarCamposDebito();
+        driverQA.actionPause(2000);
+        validarCamposDebito();
     }
 
     public void selecionarBoleto() {
         driverQA.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
         Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
+
+        driverQA.actionPause(2000);
     }
 
     public void selecionarTipoFatura(Constants.InvoiceType invoiceType) {
         switch (invoiceType) {
             case WHATSAPP:
                 driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+                driverQA.actionPause(1500);
                 break;
             case EMAIL:
                 driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? emailDebit : emailTicket);
+                driverQA.actionPause(1500);
                 break;
             case PRINTED:
                 driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
+                driverQA.actionPause(1500);
+                break;
         }
     }
 
     public void validarPrecoFaturaImpressaDebito() {
-        WebElement pricePrinted = driverQA.findElement("", "xpath");
+        WebElement pricePrinted = driverQA
+                .findElement("//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div//span[contains(@class, 'js-entry-price-plan')]", "xpath");
         validateElementText(cartOrder.getPlan().getFormattedPlanPrice(false, true), pricePrinted); //Preço débito fatura impressa = boleto (sem desconto)
     }
 
@@ -295,8 +303,11 @@ public class CustomizarFaturaPage {
         }
 
         driverQA.waitElementToBeClickable(agencia, 1);
-        driverQA.actionSendKeys(agencia, bankAccount.get(0));
+        driverQA.actionSendKeys(agencia, bankAccount.get(0)); //.findElement(By.xpath("following-sibling::label"))
+        Assert.assertEquals("Campo agência preenchido", bankAccount.get(0), agencia.getAttribute("value"));
+
         driverQA.actionSendKeys(conta, bankAccount.get(1));
+        Assert.assertEquals("Campo conta preenchido", bankAccount.get(1), conta.getAttribute("value"));
     }
 
     public void selecionarDataVencimento(String data) {

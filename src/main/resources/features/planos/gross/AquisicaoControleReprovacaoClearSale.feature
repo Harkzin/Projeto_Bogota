@@ -50,8 +50,6 @@ Funcionalidade: Planos - Gross
       E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento
     E preenche os dados bancários
-
-    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos

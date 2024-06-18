@@ -21,12 +21,12 @@ public class PdpPlanosSteps {
         pdpPlanosPage.validarPdpPlanos();
     }
 
-    @Quando("o usuário selecionar a forma de pagamento [Débito]")
+    @Quando("o usuário selecionar a forma de pagamento [Débito] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoDebito() {
         pdpPlanosPage.selecionarDebito();
     }
 
-    @Quando("o usuário selecionar a forma de pagamento [Boleto]")
+    @Quando("o usuário selecionar a forma de pagamento [Boleto] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoBoleto() {
         pdpPlanosPage.selecionarBoleto();
     }
