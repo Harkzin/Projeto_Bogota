@@ -26,16 +26,16 @@ public class DadosPessoaisSteps extends BaseSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
+        Cart_isExpressDelivery = false;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        Cart_isExpressDelivery = false;
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
+        Cart_isExpressDelivery = true;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        Cart_isExpressDelivery = true;
     }
 
     @E("deve ser exibido os tipos de entrega")
