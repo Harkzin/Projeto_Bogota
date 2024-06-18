@@ -216,6 +216,8 @@ public class CustomizarFaturaPage {
 
             cartOrder.isDebitPaymentFlow = false;
         }
+
+        driverQA.actionPause(2000);
     }
 
     public void selecionarTipoFatura(String fatura) {
@@ -229,6 +231,7 @@ public class CustomizarFaturaPage {
             case "Correios":
                 driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
+        driverQA.actionPause(1500);
     }
 
     public void preencherDadosBancarios() {

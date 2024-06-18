@@ -23,11 +23,13 @@ public class PdpPlanosSteps {
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
+        cartOrder.isDebitPaymentFlow = true;
         pdpPlanosPage.selecionarDebito();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
+        cartOrder.isDebitPaymentFlow = false;
         pdpPlanosPage.selecionarBoleto();
     }
 

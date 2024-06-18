@@ -137,6 +137,7 @@ public class DriverQA {
     }
 
     public void actionSendKeys(WebElement element, String text) {
+        javaScriptScrollTo(element);
         Actions action = new Actions(driver);
         action.pause(Duration.ofMillis(500)).click(element);
         text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
@@ -144,6 +145,11 @@ public class DriverQA {
 
     public void actionSendKeys(String selectorValue, String selectorType, String text) {
         actionSendKeys(findElement(selectorValue, selectorType), text);
+    }
+
+    public void actionPause(int miliseconds) {
+        Actions action = new Actions(driver);
+        action.pause(Duration.ofMillis(miliseconds)).perform();
     }
 
     public WebDriver getDriver() {
@@ -168,7 +174,7 @@ public class DriverQA {
     }
 
     public void javaScriptScrollTo(WebElement element) {
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true)", element);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
     }
 
     public void waitElementToBeClickable(WebElement element, int timeoutSeconds) {

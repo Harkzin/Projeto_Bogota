@@ -130,16 +130,12 @@ public class PdpPlanosPage {
     public void selecionarDebito() {
         driverQA.javaScriptClick(debitPayment);
         validarDebito();
-
-        cartOrder.isDebitPaymentFlow = true;
     }
 
     public void selecionarBoleto() {
         driverQA.javaScriptClick(ticketPayment);
         Assert.assertTrue(ticketPayment.isSelected());
         Assert.assertFalse(debitPayment.isSelected());
-
-        cartOrder.isDebitPaymentFlow = false;
     }
 
     public void selecionarFidelidade() {
