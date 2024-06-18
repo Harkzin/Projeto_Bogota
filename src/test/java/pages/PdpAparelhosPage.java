@@ -17,12 +17,16 @@ public class PdpAparelhosPage {
 
     public PdpAparelhosPage(DriverQA stepdriver){driverQA = stepdriver;}
 
-    public void validarRedirecionamentoParaPdpAparelhos(String aparelho) {
-        driverQA.waitPageLoad("/0000000000000" + aparelho, 10);
+    public void validarRedirecionamentoProduto() {
+        driverQA.waitPageLoad("/000000000000018061", 5);
     }
 
-    public void selecionarCorAparelho(String idCorAparelho) {
-        imgCorProduto = driverQA.findElement("img-cor-do-produto-"+idCorAparelho+"", "id");
+    public void validarRedirecionamentoParaPdpAparelhos() {
+        driverQA.waitPageLoad("/smartphone", 5);
+    }
+
+    public void selecionarCorAparelho() {
+        imgCorProduto = driverQA.findElement("img-cor-do-produto-1", "id");
         driverQA.JavaScriptClick(imgCorProduto.findElement(By.tagName("img")));
     }
 
@@ -50,5 +54,10 @@ public class PdpAparelhosPage {
         driverQA.waitElementToBeClickable(botaoComprar, 10);
         driverQA.JavaScriptClick(botaoComprar);
         Cart_hasDevice = true;
+    }
+
+    public void clicaBotaoEuQuero(String aparelho) {
+        driverQA.waitElementToBeClickable(driverQA.findElement("btn-eu-quero-0000000000000" + aparelho, "id"), 10);
+        driverQA.JavaScriptClick("btn-eu-quero-0000000000000" + aparelho, "id");
     }
 }

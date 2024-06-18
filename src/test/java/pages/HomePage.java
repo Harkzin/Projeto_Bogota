@@ -1,11 +1,15 @@
 package pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
 import static pages.ComumPage.Cart_planId;
 
 public class HomePage {
     private final DriverQA driverQA;
+
+    private WebElement tabCelular;
 
     public HomePage(DriverQA stepDriver) {
         driverQA = stepDriver;
@@ -37,5 +41,10 @@ public class HomePage {
 
     public void validarHomePage() {
         driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
+    }
+
+    public void acessarMenuCelulares() {
+        tabCelular = driverQA.findElement("tab-aparelhos", "id");
+        driverQA.JavaScriptClick(tabCelular.findElement(By.tagName("p")));
     }
 }

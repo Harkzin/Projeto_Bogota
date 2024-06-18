@@ -1,13 +1,8 @@
 package steps;
 
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.*;
 import pages.CarrinhoPage;
 import support.BaseSteps;
-
-import java.io.IOException;
 
 import static pages.ComumPage.ProcessType.*;
 
@@ -69,7 +64,7 @@ public class CarrinhoSteps extends BaseSteps {
     }
 
 
-    @Entao("será exibida a mensagem de erro: {string}")
+    @Então("será exibida a mensagem de erro: {string}")
     public void eExibidaAMensagemDeErro(String msgExibida) {
         carrinhoPage.validaMsgErro(msgExibida);
     }
@@ -78,4 +73,6 @@ public class CarrinhoSteps extends BaseSteps {
     public void clicarEuQuero() {
         carrinhoPage.clicarEuQuero();
     }
+
+
 }
