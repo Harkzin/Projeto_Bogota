@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
@@ -203,7 +204,9 @@ public class CarrinhoPage {
         driverQA.javaScriptClick("btn-eu-quero", "id");
     }
 
-    public void validaMsgBloqueioDependente() {
-        Assert.assertNotNull(driverQA.findElement("cboxLoadedContent", "id"));
+    public void validaMsgErro(String msgExibida) {
+        WebElement contentMessageError =  driverQA.findElement("cboxLoadedContent", "id").findElement(By.tagName("p"));
+        driverQA.waitElementVisibility(contentMessageError,10);
+        Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 }

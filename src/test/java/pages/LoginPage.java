@@ -16,10 +16,10 @@ public class LoginPage {
         driverQA = stepDriver;
         this.cartOrder = cartOrder;
     }
+
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
-    private String emailAddress;
 
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
@@ -34,8 +34,26 @@ public class LoginPage {
         Assert.assertFalse(continuar.isEnabled());
     }
 
+    public void validarPaginaMinhaConta() {
+        driverQA.waitPageLoad("/my-account", 10);
+
+        Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
+    }
+
+    public void validarMensagemSaldoClaroClube(String mensagemClube) {
+        WebElement msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
+
+        Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
+        Assert.assertTrue(msgClaroClube.isDisplayed());
+    }
+
     public void clicarAcompanharPedidos() {
         driverQA.javaScriptClick("lnk-acompanhar-pedidos", "id");
+    }
+
+    public void clicarClaroClube() {
+        driverQA.javaScriptClick("lnk-claro-clube", "id");
     }
 
     public void validarPaginaLoginCpf() {
@@ -50,6 +68,7 @@ public class LoginPage {
         Assert.assertFalse(continuar.isEnabled());
     }
 
+
     public void preencheCPF(String cpf) {
         driverQA.actionSendKeys(this.cpf, cpf);
     }
@@ -59,7 +78,7 @@ public class LoginPage {
     }
 
     public void validarPaginaLoginToken() {
-        driverQA.waitPageLoad("/login/token", 10);
+        driverQA.waitPageLoad("/login/token", 15);
 
         Assert.assertTrue(driverQA.findElement("token-verification-method", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-email", "id").isDisplayed());
@@ -67,7 +86,7 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
-        clearInbox(emailAddress);
+        clearInbox(cartOrder.essential.user.email);
         driverQA.javaScriptClick("lnk-receber-codigo-email", "id");
     }
 
@@ -81,7 +100,8 @@ public class LoginPage {
     }
 
     public void inserirTokenEmail() {
-        driverQA.actionSendKeys(token, driverQA.getEmail(emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        clearInbox(cartOrder.essential.user.email);
+        driverQA.actionSendKeys(token, driverQA.getEmail(cartOrder.essential.user.email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {

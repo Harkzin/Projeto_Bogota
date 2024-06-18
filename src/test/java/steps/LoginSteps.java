@@ -22,9 +22,24 @@ public class LoginSteps {
         loginPage.validarPaginaLogin();
     }
 
+    @Entao("é direcionado para a tela de opções minha conta")
+    public void eDirecionadoParaATelaDeMinhaConta() {
+        loginPage.validarPaginaMinhaConta();
+    }
+
+    @Então("será exibida a mensagem {string}")
+    public void seraExibidaAMensagem(String mensagemClube) {
+        loginPage.validarMensagemSaldoClaroClube(mensagemClube);
+    }
+
     @Quando("o usuário clicar na opção [Acompanhar pedidos]")
     public void oUsuarioClicarNaOpcaoAcompanharPedidos() {
         loginPage.clicarAcompanharPedidos();
+    }
+
+    @Quando("o usuário clicar na opção [Claro clube]")
+    public void oUsuarioClicarNaOpcaoClaroClube() {
+        loginPage.clicarClaroClube();
     }
 
     @Entao("é direcionado para a tela de login com CPF")
@@ -32,7 +47,6 @@ public class LoginSteps {
         loginPage.validarPaginaLoginCpf();
 
     }
-
     @E("preenche o campo [CPF] {string}")
     public void preencheOCampoCPFComOCPF(String cpf) {
         loginPage.preencheCPF(cpf);
@@ -73,7 +87,6 @@ public class LoginSteps {
     public void eDirecionadoParaATelaMeusPedidos() {
         loginPage.validarPaginaMeusPedidos();
     }
-
     @E("acessar o pedido mais recente, clicando no Número do pedido dele")
     public void acessarOPedidoMaisRecenteClicandoNoNumeroDoPedidoDele() {
         loginPage.acessarPedidoRecente();

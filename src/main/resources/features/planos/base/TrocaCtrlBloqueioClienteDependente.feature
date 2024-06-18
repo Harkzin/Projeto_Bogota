@@ -15,4 +15,4 @@ Funcionalidade: Planos - Base
     E preenche os campos: [Telefone com DDD] "11947626685", [E-mail] e [CPF] "48064730813"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
-    Entao será exibida a mensagem de erro Bloqueio Dependente
+    Entao será exibida a mensagem de erro: "Verificamos que a linha informada é um dependente. Somente o titular pode realizar as alterações no plano."
