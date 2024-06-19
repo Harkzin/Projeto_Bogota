@@ -9,8 +9,6 @@ import static pages.ComumPage.Cart_planId;
 public class HomePage {
     private final DriverQA driverQA;
 
-    private WebElement tabCelular;
-
     public HomePage(DriverQA stepDriver) {
         driverQA = stepDriver;
     }
@@ -43,8 +41,8 @@ public class HomePage {
         driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
     }
 
-    public void acessarMenuCelulares() {
-        tabCelular = driverQA.findElement("tab-aparelhos", "id");
+    private void acessarMenuCelulares() {
+        WebElement tabCelular = driverQA.findElement("tab-aparelhos", "id");
         driverQA.JavaScriptClick(tabCelular.findElement(By.tagName("p")));
     }
 }

@@ -11,7 +11,7 @@ public class PlpAparelhosSteps extends BaseSteps {
 
     PlpAparelhosPage plpAparelhosPage = new PlpAparelhosPage(driverQA);
 
-    @Entao("é direcionado para a tela para tela PLP de Aparelho")
+    @Entao("é direcionado para a tela PLP de Aparelho")
     public void validoQueFoiDirecionadoParaAPDPDeAparelhos() {
         plpAparelhosPage.validarRedirecionamentoParaPdpAparelhos();
     }
