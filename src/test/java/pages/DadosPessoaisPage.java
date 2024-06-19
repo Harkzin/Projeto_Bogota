@@ -138,10 +138,13 @@ public class DadosPessoaisPage {
     }
 
     public void selecionarEsim() {
-        WebElement EsimInput = driverQA.findElement("rdn-chipTypeEsim", "id");
-        driverQA.JavaScriptClick(EsimInput);
-        Assert.assertFalse(entregaConvencional.isDisplayed());
-        Assert.assertFalse(entregaExpressa.isDisplayed());
+        if(Cart_isExpressDelivery) {
+            driverQA.JavaScriptClick(chipEsimExpress);
+            driverQA.waitElementInvisibility(entregaExpressa, 1);
+        } else {
+            driverQA.JavaScriptClick(chipEsimConvencional);
+            driverQA.waitElementInvisibility(entregaConvencional, 1);
+        }
         //TODO ECCMAUT-940
     }
 }
