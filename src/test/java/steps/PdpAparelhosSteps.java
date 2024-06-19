@@ -1,7 +1,6 @@
 package steps;
 
 import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.PdpAparelhosPage;
@@ -11,18 +10,18 @@ public class PdpAparelhosSteps extends BaseSteps {
 
     PdpAparelhosPage pdpAparelhosPage = new PdpAparelhosPage(driverQA);
 
-    @Entao("é direcionado para a tela PDP de Aparelho selecionado")
-    public void validoQueFoiDirecionadoParaAPDPDeAparelhosSelecionado() {
-        pdpAparelhosPage.validarRedirecionamentoProduto();
+    @Então("é direcionado para a PDP do Aparelho selecionado")
+    public void validarTelaPDPAparelho() {
+        pdpAparelhosPage.validarPaginaPDPAparelho();
     }
 
-    @Quando("o úsuario seleciono a cor [Azul Safira] do aparelho")
-    public void selecionoACordoAparelho() {
-        pdpAparelhosPage.selecionarCorAparelho();
+    @Quando("o usuário selecionar a cor variante do modelo {string}")
+    public void selecionoACordoAparelho(String id) {
+        pdpAparelhosPage.selecionarCorAparelho(id);
     }
 
-    @Entao("será informado que não há estoque")
+    @E("será informado que não há estoque")
     public void deveMostrarProdutoEsgotado() {
-        pdpAparelhosPage.validarProdutoEstoque();
+        pdpAparelhosPage.validarProdutoSemEstoque();
     }
 }

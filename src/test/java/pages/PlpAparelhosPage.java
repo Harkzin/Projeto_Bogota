@@ -1,6 +1,5 @@
 package pages;
-import io.cucumber.java.pt.Entao;
-import org.junit.Assert;
+
 import support.DriverQA;
 
 public class PlpAparelhosPage {

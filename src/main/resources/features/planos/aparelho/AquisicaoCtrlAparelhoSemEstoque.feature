@@ -1,20 +1,17 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle com credito reprovado
+Funcionalidade: Aparelhos - Gross
 
-  @Controle
-  @Aquisicao
-  @AqCtrlAparelhoSemEstoque
-
+  @AparelhoSemEstoque
   Cenario: Aquisicao Controle Aparelho Sem Estoque
-
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar no botão [Celulares] do header
     Então é direcionado para a tela PLP de Aparelho
 
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "18061"
-    Então é direcionado para a tela PDP de Aparelho selecionado
+    Então é direcionado para a PDP do Aparelho selecionado
 
-    Quando o úsuario seleciono a cor [Azul Safira] do aparelho
-    Então será informado que não há estoque
+    Quando o usuário selecionar a cor variante do modelo "18062"
+    Então é direcionado para a PDP do Aparelho selecionado
+    E será informado que não há estoque
