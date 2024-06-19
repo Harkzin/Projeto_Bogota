@@ -111,4 +111,8 @@ public class HomePage {
     public void clicaBotaoEntrar() {
         driverQA.javaScriptClick("btn-entrar", "id");
     }
+
+    public void acessarMenuCelulares() {
+        driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
+    }
 }

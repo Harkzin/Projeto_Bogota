@@ -68,4 +68,9 @@ public class HomeSteps {
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
     }
+
+    @Quando("o usuário clicar no botão [Celulares] do header")
+    public void acessoAAbaCelulares() {
+        homePage.acessarMenuCelulares();
+    }
 }
