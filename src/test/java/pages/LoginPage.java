@@ -12,7 +12,7 @@ public class LoginPage {
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public LoginPage(DriverQA stepDriver, CartOrder cartOrder) {
+    public LoginPage(DriverQA stepDriver, CartOrder cartOrder) { //Spring Autowired
         driverQA = stepDriver;
         this.cartOrder = cartOrder;
     }
@@ -30,7 +30,6 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
         Assert.assertTrue(continuar.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
     }
 
@@ -64,7 +63,6 @@ public class LoginPage {
 
         Assert.assertTrue(driverQA.findElement("track-order-form", "id").isDisplayed());
         Assert.assertTrue(cpf.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
     }
 
@@ -92,11 +90,9 @@ public class LoginPage {
 
     public void validarPaginaLoginEmail() {
         driverQA.waitPageLoad("/login/token/email", 10);
-
         token = driverQA.findElement("txt-token", "id");
 
         Assert.assertTrue(token.isDisplayed());
-
     }
 
     public void inserirTokenEmail() {
@@ -108,7 +104,6 @@ public class LoginPage {
         driverQA.waitPageLoad("/my-account/orders", 10);
 
         Assert.assertTrue(driverQA.findElement("txt-lista-pedidos", "id").isDisplayed());
-
     }
 
     public void acessarPedidoRecente() {

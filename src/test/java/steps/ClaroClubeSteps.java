@@ -4,10 +4,13 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import pages.ClaroClubePage;
-import support.BaseSteps;
 
-public class ClaroClubeSteps extends BaseSteps {
-    ClaroClubePage claroClubePage = new ClaroClubePage(driverQA);
+public class ClaroClubeSteps {
+    private final ClaroClubePage claroClubePage;
+
+    ClaroClubeSteps(ClaroClubePage claroClubePage) { //Spring Autowired
+        this.claroClubePage = claroClubePage;
+    }
 
     @Entao("é direcionado para a tela de Claro Clube")
     public void eDirecionadoParaATelaDeClaroClube() {
