@@ -18,6 +18,7 @@ public class ComumPage {
     public static boolean Cart_hasDevice = false;
     public static boolean Cart_isExpressDelivery;
     public static boolean Cart_isThabFlow = false;
+    public static String Cart_deviceId;
 
     public enum ProcessType {
         ACQUISITION,

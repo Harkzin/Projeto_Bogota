@@ -1,5 +1,7 @@
 package pages;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
 import static pages.ComumPage.Cart_planId;
@@ -37,5 +39,9 @@ public class HomePage {
 
     public void validarHomePage() {
         driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
+    }
+
+    public void acessarMenuCelulares() {
+        driverQA.JavaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }

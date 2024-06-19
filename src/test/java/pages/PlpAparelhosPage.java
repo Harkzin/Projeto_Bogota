@@ -1,0 +1,20 @@
+package pages;
+
+import support.DriverQA;
+
+public class PlpAparelhosPage {
+
+    private final DriverQA driverQA;
+
+    public PlpAparelhosPage(DriverQA stepDriver) {
+        driverQA = stepDriver;
+    }
+
+    public void validarRedirecionamentoParaPdpAparelhos() {
+        driverQA.waitPageLoad("/smartphone", 5);
+    }
+
+    public void clicaBotaoEuQuero(String aparelho) {
+        driverQA.JavaScriptClick("btn-eu-quero-0000000000000" + aparelho, "id");
+    }
+}
