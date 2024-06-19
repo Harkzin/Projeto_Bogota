@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import support.DriverQA;
 
+import static pages.ComumPage.Cart_isExpressDelivery;
+
 public class DadosPessoaisPage {
     private final DriverQA driverQA;
 
@@ -16,7 +18,10 @@ public class DadosPessoaisPage {
     private WebElement chipComumConvencional;
     private WebElement chipComumExpressa;
     private WebElement usarMesmoEnderecoCobranca;
-    //public boolean showDeliveryModes = true;
+    private WebElement entregaConvencional;
+    private WebElement entregaExpressa;
+    private WebElement chipEsimConvencional;
+    private WebElement chipEsimExpress;
 
     private void validarCampoCep() {
         cep = driverQA.findElement("txt-cep-endereco-entrega", "id");
@@ -65,15 +70,29 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
+        validarTiposChip();
+    }
+
+    private void validarTiposChip() {
+        chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
+        chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
+        chipEsimConvencional = driverQA.findElement("rdn-chipTypeEsim", "id");
+        chipEsimExpress = driverQA.findElement("rdn-chipTypeEsimExpress", "id");
+
+        if(Cart_isExpressDelivery) {
+            Assert.assertTrue(chipComumExpressa.isSelected());
+            Assert.assertFalse(chipEsimExpress.isSelected());
+        } else {
+            Assert.assertTrue(chipComumConvencional.isSelected());
+            Assert.assertFalse(chipEsimConvencional.isSelected());
+        }
     }
 
     public void validarTiposEntrega(boolean showDeliveryModes, boolean isExpressDelivery) {
-        chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
-        chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
         usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
+        entregaConvencional = driverQA.findElement("rdn-convencional", "id");
+        entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
 
-        WebElement entregaConvencional = driverQA.findElement("rdn-convencional", "id");
-        WebElement entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
 
         if (showDeliveryModes) {
             WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
@@ -81,14 +100,12 @@ public class DadosPessoaisPage {
             WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
 
             if (!isExpressDelivery) {
-                Assert.assertTrue(chipComumConvencional.isSelected());
                 Assert.assertTrue(entregaConvencional.isSelected());
                 Assert.assertTrue(entregaConvencionalParent.isDisplayed());
 
                 Assert.assertFalse(entregaExpressaParent.isDisplayed());
                 Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
             } else {
-                Assert.assertTrue(chipComumExpressa.isSelected());
                 Assert.assertTrue(entregaExpressa.isSelected());
                 Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
                 Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
@@ -118,5 +135,16 @@ public class DadosPessoaisPage {
 
     public void clicarContinuar() {
         driverQA.JavaScriptClick("btn-continuar", "id");
+    }
+
+    public void selecionarEsim() {
+        if(Cart_isExpressDelivery) {
+            driverQA.JavaScriptClick(chipEsimExpress);
+            driverQA.waitElementInvisibility(entregaExpressa, 1);
+        } else {
+            driverQA.JavaScriptClick(chipEsimConvencional);
+            driverQA.waitElementInvisibility(entregaConvencional, 1);
+        }
+        //TODO ECCMAUT-940
     }
 }
