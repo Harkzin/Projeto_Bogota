@@ -42,7 +42,6 @@ public class HomePage {
     }
 
     public void acessarMenuCelulares() {
-        WebElement tabCelular = driverQA.findElement("tab-aparelhos", "id");
-        driverQA.JavaScriptClick(tabCelular.findElement(By.tagName("p")));
+        driverQA.JavaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }
