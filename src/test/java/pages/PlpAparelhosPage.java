@@ -16,7 +16,6 @@ public class PlpAparelhosPage {
     }
 
     public void clicaBotaoEuQuero(String aparelho) {
-        driverQA.waitElementToBeClickable(driverQA.findElement("btn-eu-quero-0000000000000" + aparelho, "id"), 10);
         driverQA.JavaScriptClick("btn-eu-quero-0000000000000" + aparelho, "id");
     }
 }

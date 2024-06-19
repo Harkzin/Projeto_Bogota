@@ -41,7 +41,7 @@ public class HomePage {
         driverQA.waitPageLoad(ComumPage.urlAmbiente, 20);
     }
 
-    private void acessarMenuCelulares() {
+    public void acessarMenuCelulares() {
         WebElement tabCelular = driverQA.findElement("tab-aparelhos", "id");
         driverQA.JavaScriptClick(tabCelular.findElement(By.tagName("p")));
     }
