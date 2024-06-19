@@ -33,21 +33,26 @@ public class DadosPessoaisSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
+        cartOrder.delivery.deliveryMode = CONVENTIONAL;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        cartOrder.delivery.deliveryMode = CONVENTIONAL;
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
+        cartOrder.delivery.deliveryMode = EXPRESS;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        cartOrder.delivery.deliveryMode = EXPRESS;
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
         dadosPessoaisPage.validarTiposEntrega(true, cartOrder.delivery.deliveryMode);
+    }
+
+    @E("o usuário seleciona o tipo de sim [Esim]")
+    public void selecionaEsim() {
+        dadosPessoaisPage.selecionarEsim();
     }
 
     @Mas("não deve ser exibido os tipos de entrega")

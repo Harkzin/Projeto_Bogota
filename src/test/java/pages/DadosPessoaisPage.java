@@ -8,7 +8,9 @@ import support.CartOrder;
 import support.utils.Constants;
 import support.utils.DriverQA;
 
+import static support.utils.Constants.*;
 import static support.utils.Constants.DeliveryMode.CONVENTIONAL;
+import static support.utils.Constants.DeliveryMode.EXPRESS;
 
 @Component
 public class DadosPessoaisPage {
@@ -24,8 +26,10 @@ public class DadosPessoaisPage {
     private WebElement cep;
     private WebElement chipComumConvencional;
     private WebElement chipComumExpressa;
-    private WebElement usarMesmoEnderecoCobranca;
-    //public boolean showDeliveryModes = true;
+    private WebElement entregaConvencional;
+    private WebElement entregaExpressa;
+    private WebElement chipEsimConvencional;
+    private WebElement chipEsimExpress;
 
     private void validarCampoCep() {
         cep = driverQA.findElement("txt-cep-endereco-entrega", "id");
@@ -74,15 +78,28 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
+        validarTiposChip();
     }
 
-    public void validarTiposEntrega(boolean showDeliveryModes, Constants.DeliveryMode deliveryMode) {
+    private void validarTiposChip() {
         chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
         chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
-        usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
+        chipEsimConvencional = driverQA.findElement("rdn-chipTypeEsim", "id");
+        chipEsimExpress = driverQA.findElement("rdn-chipTypeEsimExpress", "id");
 
-        WebElement entregaConvencional = driverQA.findElement("rdn-convencional", "id");
-        WebElement entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
+        if(cartOrder.delivery.deliveryMode == EXPRESS) {
+            Assert.assertTrue(chipComumExpressa.isSelected());
+            Assert.assertFalse(chipEsimExpress.isSelected());
+        } else {
+            Assert.assertTrue(chipComumConvencional.isSelected());
+            Assert.assertFalse(chipEsimConvencional.isSelected());
+        }
+    }
+
+    public void validarTiposEntrega(boolean showDeliveryModes, DeliveryMode deliveryMode) {
+        entregaConvencional = driverQA.findElement("rdn-convencional", "id");
+        entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
+        WebElement usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
 
         if (showDeliveryModes) {
             WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
@@ -90,14 +107,12 @@ public class DadosPessoaisPage {
             WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
 
             if (deliveryMode == CONVENTIONAL) {
-                Assert.assertTrue(chipComumConvencional.isSelected());
                 Assert.assertTrue(entregaConvencional.isSelected());
                 Assert.assertTrue(entregaConvencionalParent.isDisplayed());
 
                 Assert.assertFalse(entregaExpressaParent.isDisplayed());
                 Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
             } else {
-                Assert.assertTrue(chipComumExpressa.isSelected());
                 Assert.assertTrue(entregaExpressa.isSelected());
                 Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
                 Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
@@ -105,7 +120,7 @@ public class DadosPessoaisPage {
 
                 Assert.assertFalse(entregaConvencionalParent.isDisplayed());
             }
-        } else {
+        } else { //Fluxo migração de Pré, não existe entrega. Elementos não existem no html também.
             Assert.assertNull(chipComumConvencional);
             Assert.assertNull(chipComumExpressa);
             Assert.assertNull(usarMesmoEnderecoCobranca);
@@ -127,5 +142,16 @@ public class DadosPessoaisPage {
 
     public void clicarContinuar() {
         driverQA.javaScriptClick("btn-continuar", "id");
+    }
+
+    public void selecionarEsim() {
+        if(cartOrder.delivery.deliveryMode == EXPRESS) {
+            driverQA.javaScriptClick(chipEsimExpress);
+            driverQA.waitElementInvisibility(entregaExpressa, 1);
+        } else {
+            driverQA.javaScriptClick(chipEsimConvencional);
+            driverQA.waitElementInvisibility(entregaConvencional, 1);
+        }
+        //TODO ECCMAUT-940
     }
 }
