@@ -9,7 +9,7 @@ import support.utils.DriverQA;
 public class ClaroClubePage {
     private final DriverQA driverQA;
 
-    public ClaroClubePage(DriverQA driverQA) {
+    public ClaroClubePage(DriverQA driverQA) { //Spring Autowired
         this.driverQA = driverQA;
     }
 

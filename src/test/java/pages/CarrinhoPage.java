@@ -139,16 +139,9 @@ public class CarrinhoPage {
             }
         } else { //aparelhos
             switch (cartOrder.essential.processType) {
-                case ACQUISITION:
-                    validarCamposAquisicao();
-                    break;
-                case APARELHO_TROCA_APARELHO:
-                case EXCHANGE:
-                case MIGRATE:
-                    validarCamposBase(true);
-                    break;
-                case PORTABILITY:
-                    validarCamposPortabilidade();
+                case ACQUISITION -> validarCamposAquisicao();
+                case APARELHO_TROCA_APARELHO, EXCHANGE, MIGRATE -> validarCamposBase(true);
+                case PORTABILITY -> validarCamposPortabilidade();
             }
             validarCampoEmail(true);
         }
@@ -158,19 +151,18 @@ public class CarrinhoPage {
         cartOrder.essential.processType = processType;
 
         switch (processType) {
-            case EXCHANGE:
-            case EXCHANGE_PROMO:
-            case MIGRATE:
+            case EXCHANGE, EXCHANGE_PROMO, MIGRATE -> {
                 driverQA.javaScriptClick(fluxoBase);
                 validarCamposBase(false);
-                break;
-            case PORTABILITY:
+            }
+            case PORTABILITY -> {
                 driverQA.javaScriptClick(fluxoPortabilidade);
                 validarCamposPortabilidade();
-                break;
-            case ACQUISITION:
+            }
+            case ACQUISITION -> {
                 driverQA.javaScriptClick(fluxoAquisicao);
                 validarCamposAquisicao();
+            }
         }
         validarCampoEmail(false);
     }

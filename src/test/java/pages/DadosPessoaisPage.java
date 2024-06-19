@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.utils.Constants;
 import support.utils.DriverQA;
 
 import static support.utils.Constants.*;
@@ -74,10 +73,10 @@ public class DadosPessoaisPage {
 
         WebElement endereco = driverQA.findElement("txt-endereco-endereco-entrega", "id");
         driverQA.waitElementVisibility(endereco, 12);
-        Assert.assertNotEquals("Preenchimento automático", endereco.getAttribute("value"), "");
-        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
-        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
-        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [endereço]", endereco.getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [bairro]", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [estado]", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [cidade]", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
         validarTiposChip();
     }
 

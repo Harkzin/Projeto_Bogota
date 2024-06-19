@@ -222,14 +222,9 @@ public class CustomizarFaturaPage {
 
     public void selecionarTipoFatura(String fatura) {
         switch (fatura) {
-            case "Whatsapp":
-                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
-                break;
-            case "E-mail":
-                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? emailDebit : emailTicket);
-                break;
-            case "Correios":
-                driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
+            case "Whatsapp" -> driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+            case "E-mail" -> driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? emailDebit : emailTicket);
+            case "Correios" -> driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
         driverQA.actionPause(1500);
     }
@@ -252,16 +247,12 @@ public class CustomizarFaturaPage {
         if (bankId <= 5) { //API
             bankAccount = getBankAccount(String.valueOf(bankId));
         } else { //6 ~ 8 - Dados fixos - Não tem API
-            switch (bankId) {
-                case 6:
-                    bankAccount = Arrays.asList("0340", "00252116");
-                    break;
-                case 7:
-                    bankAccount = Arrays.asList("0131", "251134003");
-                    break;
-                case 8:
-                    bankAccount = Arrays.asList("0103", "12345678");
-            }
+            bankAccount = switch (bankId) {
+                case 6 -> Arrays.asList("0340", "00252116");
+                case 7 -> Arrays.asList("0131", "251134003");
+                case 8 -> Arrays.asList("0103", "12345678");
+                default -> bankAccount;
+            };
         }
 
         banco.selectByValue(banks.get(bankId));
