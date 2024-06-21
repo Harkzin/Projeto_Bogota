@@ -1,24 +1,27 @@
 package pages;
 
 import org.junit.Assert;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.CartOrder;
+import support.utils.DriverQA;
 
-import static pages.ComumPage.Cart_deviceId;
-
+@Component
 public class PdpAparelhosPage {
-    private final DriverQA driverQA;
 
-    public PdpAparelhosPage(DriverQA stepdriver) {
-        driverQA = stepdriver;
+    private final DriverQA driverQA;
+    private final CartOrder cartOrder;
+
+    public PdpAparelhosPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
+        this.cartOrder = cartOrder;
     }
 
-    public void validarPaginaPDPAparelho() {
-        driverQA.waitPageLoad("/0000000000000" + Cart_deviceId, 5);
+    public void validarPaginaPDPAparelho(String id) {
+        driverQA.waitPageLoad(id, 5);
     }
 
     public void selecionarCorAparelho(String id) {
-        Cart_deviceId = id;
-        driverQA.JavaScriptClick("//a[contains(@href, '" + id + "')]", "xpath");
+        driverQA.javaScriptClick("//a[contains(@href, '" + id + "')]", "xpath");
     }
 
     public void validarProdutoSemEstoque() {

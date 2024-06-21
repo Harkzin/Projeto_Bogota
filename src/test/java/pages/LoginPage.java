@@ -2,17 +2,21 @@ package pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.CartOrder;
+import support.utils.DriverQA;
 
-import static pages.ComumPage.Cart_emailAddress;
-import static pages.ComumPage.Email.CONFIRMA_TOKEN;
-import static support.RestAPI.clearInbox;
+import static support.utils.Constants.Email.CONFIRMA_TOKEN;
+import static support.api.RestAPI.clearInbox;
 
+@Component
 public class LoginPage {
     private final DriverQA driverQA;
+    private final CartOrder cartOrder;
 
-    public LoginPage(DriverQA stepDriver) {
+    public LoginPage(DriverQA stepDriver, CartOrder cartOrder) { //Spring Autowired
         driverQA = stepDriver;
+        this.cartOrder = cartOrder;
     }
 
     private WebElement continuar;
@@ -28,7 +32,6 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
         Assert.assertTrue(continuar.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
     }
 
@@ -47,11 +50,11 @@ public class LoginPage {
     }
 
     public void clicarAcompanharPedidos() {
-        driverQA.JavaScriptClick("lnk-acompanhar-pedidos", "id");
+        driverQA.javaScriptClick("lnk-acompanhar-pedidos", "id");
     }
 
     public void clicarClaroClube() {
-        driverQA.JavaScriptClick("lnk-claro-clube", "id");
+        driverQA.javaScriptClick("lnk-claro-clube", "id");
     }
 
     public void validarPaginaLoginCpf() {
@@ -62,7 +65,6 @@ public class LoginPage {
 
         Assert.assertTrue(driverQA.findElement("track-order-form", "id").isDisplayed());
         Assert.assertTrue(cpf.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
     }
 
@@ -72,7 +74,7 @@ public class LoginPage {
     }
 
     public void clicarBotaoContinuar() {
-        driverQA.JavaScriptClick(continuar);
+        driverQA.javaScriptClick(continuar);
     }
 
     public void validarPaginaLoginToken() {
@@ -84,37 +86,34 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
-        clearInbox(Cart_emailAddress);
-        driverQA.JavaScriptClick("lnk-receber-codigo-email", "id");
+        clearInbox(cartOrder.essential.user.email);
+        driverQA.javaScriptClick("lnk-receber-codigo-email", "id");
     }
 
     public void validarPaginaLoginEmail() {
         driverQA.waitPageLoad("/login/token/email", 10);
-
         token = driverQA.findElement("txt-token", "id");
 
         Assert.assertTrue(token.isDisplayed());
-
     }
 
     public void inserirTokenEmail() {
-        clearInbox(Cart_emailAddress);
-        driverQA.actionSendKeys(token, driverQA.getEmail(Cart_emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        clearInbox(cartOrder.essential.user.email);
+        driverQA.actionSendKeys(token, driverQA.getEmail(cartOrder.essential.user.email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {
         driverQA.waitPageLoad("/my-account/orders", 10);
 
         Assert.assertTrue(driverQA.findElement("txt-lista-pedidos", "id").isDisplayed());
-
     }
 
     public void acessarPedidoRecente() {
-        driverQA.JavaScriptClick("lnk-pedido-1", "id");
+        driverQA.javaScriptClick("lnk-pedido-1", "id");
     }
 
     public void clicarBotaoConfirmar() {
-        driverQA.JavaScriptClick("btn-confirmar", "id");
+        driverQA.javaScriptClick("btn-confirmar", "id");
     }
 
     public void validarPaginaDetalhesPedido() {

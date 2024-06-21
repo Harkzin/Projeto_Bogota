@@ -1,17 +1,35 @@
 package steps;
 
+import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Mas;
-import io.cucumber.java.pt.Quando;
 import pages.ComumPage;
-import pages.DadosPessoaisPage;
-import support.BaseSteps;
+import support.CartOrder;
+import support.utils.Constants;
 
-public class ComumSteps extends BaseSteps {
-    ComumPage comumPage = new ComumPage(driverQA);
-    DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
+public class ComumSteps {
+
+    private final ComumPage comumPage;
+    private final CartOrder cartOrder;
+
+    public ComumSteps(ComumPage comumPage, CartOrder cartOrder) { //Spring Autowired
+        this.comumPage = comumPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Mas("não deve haver alterações no valor e nem nas informações do Plano")
-    public void validarResumoDaCompra() {
-        comumPage.validarResumoCompra();
+    public void validarResumoCompraPlano() {
+        comumPage.validarResumoCompraPlano();
+    }
+
+    @Mas("não deve haver alterações no valor e nem nas informações do Aparelho")
+    public void validarResumoCompraAparelho() {
+        comumPage.validarResumoCompraAparelho();
+    }
+
+    @E("o plano do carrinho será atualizado para o Plano Combo correspondente")
+    public void atualizarParaPlanoCombo() {
+        cartOrder.setPlan(Constants.planSingleToCombo.get(cartOrder.getPlan().getCode()));
+        cartOrder.isDebitPaymentFlow = false; //TODO valor deve ser de acordo com o tipo de pagamento da linha combo
+        comumPage.validarResumoCompraPlano();
     }
 }

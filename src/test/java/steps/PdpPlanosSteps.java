@@ -4,53 +4,60 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.PdpPlanosPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static pages.ComumPage.Cart_hasLoyalty;
-import static pages.ComumPage.Cart_isDebitPaymentFlow;
+public class PdpPlanosSteps {
 
-public class PdpPlanosSteps extends BaseSteps {
+    private final PdpPlanosPage pdpPlanosPage;
+    private final CartOrder cartOrder;
 
-    PdpPlanosPage pdpPlanosPage = new PdpPlanosPage(driverQA);
+    public PdpPlanosSteps(PdpPlanosPage pdpPlanosPage, CartOrder cartOrder) { //Spring Autowired
+        this.pdpPlanosPage = pdpPlanosPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a PDP do plano")
     public void validarPDP() {
-        pdpPlanosPage.validarPDP();
+        pdpPlanosPage.validarPdpPlanos();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
+        cartOrder.isDebitPaymentFlow = true;
         pdpPlanosPage.selecionarDebito();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
+        cartOrder.isDebitPaymentFlow = false;
         pdpPlanosPage.selecionarBoleto();
     }
 
     @E("selecionar Fidelidade de 12 meses")
     public void selecionarFidelidade() {
+        cartOrder.hasLoyalty = true;
         pdpPlanosPage.selecionarFidelidade();
     }
 
     @Quando("o usuário selecionar Sem fidelidade")
     public void selecionarSemFidelidade() {
+        cartOrder.hasLoyalty = false;
         pdpPlanosPage.selecionarSemFidelidade();
     }
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(Cart_isDebitPaymentFlow, Cart_hasLoyalty);
+        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")
     public void ocultaAppsIlimitados() {
-        pdpPlanosPage.validarAppIlimitados(false);
+        pdpPlanosPage.validarAppsIlimitados(false);
     }
 
     @E("os aplicativos ilimitados são reexibidos na composição do plano")
     public void exibeAppsIlimitados() {
-        pdpPlanosPage.validarAppIlimitados(true);
+        pdpPlanosPage.validarAppsIlimitados(true);
     }
 
     @Quando("o usuário clicar no botão Eu quero! da PDP")

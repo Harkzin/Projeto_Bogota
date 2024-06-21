@@ -4,10 +4,16 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import pages.SmsPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-public class SmsSteps extends BaseSteps {
-    SmsPage smsPage = new SmsPage(driverQA);
+public class SmsSteps {
+    private final SmsPage smsPage;
+    private final CartOrder cartOrder;
+
+    public SmsSteps(SmsPage smsPage, CartOrder cartOrder) { //Spring Autowired
+        this.smsPage = smsPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Entao("é direcionado para a tela de SMS")
     public void validarPaginaSms() {

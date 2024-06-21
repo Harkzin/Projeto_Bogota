@@ -5,12 +5,19 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.DadosPessoaisPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static pages.ComumPage.Cart_isExpressDelivery;
+import static support.utils.Constants.DeliveryMode.*;
 
-public class DadosPessoaisSteps extends BaseSteps {
-    DadosPessoaisPage dadosPessoaisPage = new DadosPessoaisPage(driverQA);
+public class DadosPessoaisSteps {
+
+    private final DadosPessoaisPage dadosPessoaisPage;
+    private final CartOrder cartOrder;
+
+    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) { //Spring Autowired
+        this.dadosPessoaisPage = dadosPessoaisPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a tela de Dados Pessoais")
     public void validarPaginaDadosPessoais() {
@@ -26,21 +33,21 @@ public class DadosPessoaisSteps extends BaseSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
-        Cart_isExpressDelivery = false;
+        cartOrder.delivery.deliveryMode = CONVENTIONAL;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
-        Cart_isExpressDelivery = true;
+        cartOrder.delivery.deliveryMode = EXPRESS;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(true, Cart_isExpressDelivery);
+        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
     @E("o usuário seleciona o tipo de sim [Esim]")
@@ -48,11 +55,9 @@ public class DadosPessoaisSteps extends BaseSteps {
         dadosPessoaisPage.selecionarEsim();
     }
 
-
-
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(false, Cart_isExpressDelivery);
+        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

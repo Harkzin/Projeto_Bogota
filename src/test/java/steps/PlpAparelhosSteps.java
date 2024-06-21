@@ -3,22 +3,26 @@ package steps;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.PlpAparelhosPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static pages.ComumPage.Cart_deviceId;
+public class PlpAparelhosSteps {
 
-public class PlpAparelhosSteps extends BaseSteps {
+    private final PlpAparelhosPage plpAparelhosPage;
+    private final CartOrder cartOrder;
 
-    PlpAparelhosPage plpAparelhosPage = new PlpAparelhosPage(driverQA);
+    public PlpAparelhosSteps (PlpAparelhosPage plpAparelhosPage, CartOrder cartOrder) { //Spring Autowired
+        this.plpAparelhosPage = plpAparelhosPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a tela PLP de Aparelho")
     public void validoQueFoiDirecionadoParaAPDPDeAparelhos() {
-        plpAparelhosPage.validarRedirecionamentoParaPdpAparelhos();
+        plpAparelhosPage.validarPlpAparelhos();
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
     public void clicarEuQuero(String id) {
-        Cart_deviceId = id;
+        cartOrder.setDevice(id);
         plpAparelhosPage.clicaBotaoEuQuero(id);
     }
 }

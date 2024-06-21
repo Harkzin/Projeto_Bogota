@@ -2,15 +2,22 @@ package steps;
 
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.junit.Assume;
 import pages.ReadequacaoPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-public class ReadequacaoSteps extends BaseSteps {
-    ReadequacaoPage readequacaoPage = new ReadequacaoPage(driverQA);
+public class ReadequacaoSteps {
+    private final ReadequacaoPage readequacaoPage;
+    private final CartOrder cartOrder;
+
+    public ReadequacaoSteps(ReadequacaoPage readequacaoPage, CartOrder cartOrder) { //Spring Autowired
+        this.readequacaoPage = readequacaoPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Entao("é direcionado para a tela de readequação THAB")
     public void eDirecionadoParaATelaDeTHAB() {
-        readequacaoPage.validarPaginaReadequacaoTHAB();
+        readequacaoPage.validarPaginaReadequacaoTHAB(cartOrder.getPlan());
     }
     @Quando("seleciona o plano de controle antecipado ofertado")
     public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {

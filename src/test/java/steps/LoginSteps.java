@@ -5,14 +5,17 @@ import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.LoginPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static pages.ComumPage.Cart_emailAddress;
+public class LoginSteps {
 
+    private final LoginPage loginPage;
+    private final CartOrder cartOrder;
 
-public class LoginSteps extends BaseSteps {
-
-    LoginPage loginPage = new LoginPage(driverQA);
+    public LoginSteps(LoginPage loginPage, CartOrder cartOrder) { //Spring Autowired
+        this.loginPage = loginPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Entao("é direcionado para a tela de opções da área logada")
     public void eDirecionadoParaATelaDeLogin() {
@@ -61,7 +64,7 @@ public class LoginSteps extends BaseSteps {
 
     @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
-        Cart_emailAddress = email;
+        cartOrder.essential.user.email = email;
         loginPage.selecionaReceberCodigoEmail();
     }
 

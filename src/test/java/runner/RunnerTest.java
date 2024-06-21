@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/main/resources/features",
-        glue = {"steps", "support"},
+        glue = {"steps", "support.config"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
         tags = "@TrocaControleRentabilizacaoDebito")

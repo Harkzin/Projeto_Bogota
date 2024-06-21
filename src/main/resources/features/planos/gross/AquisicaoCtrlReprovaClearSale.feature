@@ -5,7 +5,7 @@ Funcionalidade: Planos - Gross
 
   @Aquisicao
   @Controle
-  @AquisicaoControleReprovClearSale
+  @AquisicaoCtrlReprovaClearSale
   Cenario: Aquisicao Controle - Reprovacao Clear Sale
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17218" do carrossel da Home
@@ -36,5 +36,3 @@ Funcionalidade: Planos - Gross
     Então é direcionado para a tela de Parabéns
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
-
-

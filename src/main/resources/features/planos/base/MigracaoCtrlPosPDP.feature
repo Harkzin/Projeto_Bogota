@@ -3,12 +3,14 @@
 @Regressivo
 Funcionalidade: Planos - Base
 
+  #Massa: Controle - pagamento boleto - fatura digital
+
   @Migracao
   @Pos
   @MigracaoCtrlPosPDP
   Cenario: Migração de Plano Controle - PDP - Cliente Boleto para Débito
     Dado que o usuário acesse a Loja Online
-    Quando o usuário clicar no botão [Mais detalhes] do plano "17270"
+    Quando o usuário clicar no botão [Mais detalhes] do plano "17268"
     Então é direcionado para a PDP do plano
 
     Quando o usuário selecionar a forma de pagamento [Boleto]

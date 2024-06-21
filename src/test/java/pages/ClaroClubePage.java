@@ -2,13 +2,15 @@ package pages;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.utils.DriverQA;
 
+@Component
 public class ClaroClubePage {
     private final DriverQA driverQA;
 
-    public ClaroClubePage(DriverQA stepDriver) {
-        driverQA = stepDriver;
+    public ClaroClubePage(DriverQA driverQA) { //Spring Autowired
+        this.driverQA = driverQA;
     }
 
     private WebElement continuar;
@@ -18,10 +20,9 @@ public class ClaroClubePage {
         driverQA.waitPageLoad("/login/claro-clube", 10);
 
         phone = driverQA.findElement("phone", "id");
-        continuar = driverQA.findElement("//*[@id=\"claro-clube-form\"]/button", "xpath");
+        continuar = driverQA.findElement("//*[@id='claro-clube-form']/button", "xpath");
 
         Assert.assertTrue(phone.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
     }
 
@@ -30,7 +31,6 @@ public class ClaroClubePage {
     }
 
     public void clicarBotaoContinuarClaroClube() {
-        driverQA.JavaScriptClick(continuar);
+        driverQA.javaScriptClick(continuar);
     }
-
 }

@@ -5,12 +5,17 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
 import pages.CustomizarFaturaPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-import static pages.ComumPage.Cart_isThabFlow;
+public class CustomizarFaturaSteps {
 
-public class CustomizarFaturaSteps extends BaseSteps {
-    CustomizarFaturaPage customizarFaturaPage = new CustomizarFaturaPage(driverQA);
+    private final CustomizarFaturaPage customizarFaturaPage;
+    private final CartOrder cartOrder;
+
+    public CustomizarFaturaSteps(CustomizarFaturaPage customizarFaturaPage, CartOrder cartOrder) { //Spring Autowired
+        this.customizarFaturaPage = customizarFaturaPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a tela de Customizar Fatura")
     public void validarPagiaCustomizarFatura() {
@@ -95,7 +100,7 @@ public class CustomizarFaturaSteps extends BaseSteps {
     @Então("é direcionado para a tela de Customizar Fatura THAB")
     public void validarPagiaCustomizarFaturaTHAB() {
         customizarFaturaPage.validarPagiaCustomizarFaturaThab();
-        Cart_isThabFlow = true;
+        cartOrder.thab = true;
     }
 
     @Então("é direcionado para a tela de Termos Combo")

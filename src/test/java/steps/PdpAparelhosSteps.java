@@ -4,19 +4,26 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import pages.PdpAparelhosPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-public class PdpAparelhosSteps extends BaseSteps {
+public class PdpAparelhosSteps  {
 
-    PdpAparelhosPage pdpAparelhosPage = new PdpAparelhosPage(driverQA);
+    private final PdpAparelhosPage pdpAparelhosPage;
+    private final CartOrder cartOrder;
+
+    public PdpAparelhosSteps(PdpAparelhosPage pdpAparelhosPage, CartOrder cartOrder) { //Spring Autowired
+        this.pdpAparelhosPage = pdpAparelhosPage;
+        this.cartOrder = cartOrder;
+    }
 
     @Então("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
-        pdpAparelhosPage.validarPaginaPDPAparelho();
+        pdpAparelhosPage.validarPaginaPDPAparelho(cartOrder.getDevice().getCode());
     }
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")
     public void selecionoACordoAparelho(String id) {
+        cartOrder.setDevice(id);
         pdpAparelhosPage.selecionarCorAparelho(id);
     }
 

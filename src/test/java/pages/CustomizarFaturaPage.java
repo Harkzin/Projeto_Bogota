@@ -4,20 +4,25 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.CartOrder;
+import support.utils.DriverQA;
 
-import static pages.ComumPage.*;
-import static pages.ComumPage.ProcessType.MIGRATE;
-import static support.RestAPI.getBankAccount;
+import static support.utils.Constants.ProcessType.MIGRATE;
+import static support.api.RestAPI.getBankAccount;
 
 import java.util.*;
 import java.util.function.Consumer;
 
+@Component
 public class CustomizarFaturaPage {
-    private final DriverQA driverQA;
 
-    public CustomizarFaturaPage(DriverQA stepDriver) {
-        driverQA = stepDriver;
+    private final DriverQA driverQA;
+    private final CartOrder cartOrder;
+
+    public CustomizarFaturaPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
+        this.cartOrder = cartOrder;
     }
 
     private Boolean isComboFlow = false;
@@ -68,15 +73,15 @@ public class CustomizarFaturaPage {
             if (abaDebito.findElement(By.tagName("input")).isSelected()) {
                 Assert.assertFalse(abaBoleto.isSelected());
                 validarCamposDebito();
-                Cart_isDebitPaymentFlow = true;
+                cartOrder.isDebitPaymentFlow = true;
             } else {
                 Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
-                Cart_isDebitPaymentFlow = false;
+                cartOrder.isDebitPaymentFlow = false;
             }
         } else { //fluxo base - cliente já é débito / combo / THAB
             Assert.assertNull(abaDebito);
             Assert.assertNull(abaBoleto);
-            Cart_isDebitPaymentFlow = !Cart_isThabFlow; //TODO caso combo = ??
+            cartOrder.isDebitPaymentFlow = !cartOrder.thab && !isComboFlow; //TODO combo funcionará apenas boleto
         }
     }
 
@@ -91,59 +96,59 @@ public class CustomizarFaturaPage {
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {
-                Assert.assertTrue(whatsappDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertTrue(emailDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertTrue(correiosDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             } else {
-                Assert.assertFalse(whatsappDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(emailDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(correiosDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             }
         };
 
         Consumer<Boolean> assertTicket = isDisplayed -> {
             if (isDisplayed) {
-                Assert.assertTrue(whatsappTicket.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertTrue(emailTicket.findElement(By.xpath("..")).isDisplayed());
-                if (Cart_isThabFlow) {
-                    Assert.assertNull(correiosTicket);
+                Assert.assertTrue("Exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
+                if (cartOrder.thab) {
+                    Assert.assertNull("Não deve existir no html", correiosTicket);
                 } else {
-                    Assert.assertTrue(correiosTicket.findElement(By.xpath("..")).isDisplayed());
+                    Assert.assertTrue("Exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
                 }
             } else {
-                Assert.assertFalse(whatsappTicket.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(emailTicket.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(correiosTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
             }
         };
 
         Runnable assertDebitNull = () -> {
-            Assert.assertNull(whatsappDebit);
-            Assert.assertNull(emailDebit);
-            Assert.assertNull(correiosDebit);
+            Assert.assertNull("Não deve existir no html", whatsappDebit);
+            Assert.assertNull("Não deve existir no html", emailDebit);
+            Assert.assertNull("Não deve existir no html", correiosDebit);
         };
 
         Runnable assertTicketNull = () -> {
-            Assert.assertNull(whatsappTicket);
-            Assert.assertNull(emailTicket);
-            Assert.assertNull(correiosTicket);
+            Assert.assertNull("Não deve existir no html", whatsappTicket);
+            Assert.assertNull("Não deve existir no html", emailTicket);
+            Assert.assertNull("Não deve existir no html", correiosTicket);
         };
 
         if (exibe) { //fluxo gross, fluxo base com fatura impressa, migra pré-ctrl e thab
-            if (Cart_isDebitPaymentFlow) {
+            if (cartOrder.isDebitPaymentFlow) {
                 assertDebit.accept(true);
                 assertTicket.accept(false);
             } else {
                 assertTicket.accept(true);
-                if (!Cart_isThabFlow) {
+                if (!cartOrder.thab) {
                     assertDebit.accept(false);
                 } else {
                     assertDebitNull.run();
                 }
             }
         } else { //fluxo base com fatura digital ou combo
-            if (!isComboFlow && (Cart_processType == MIGRATE)) {
-                if (Cart_isDebitPaymentFlow) { //existe (oculto) no html apenas as opções para débito
+            if (!isComboFlow && (cartOrder.essential.processType == MIGRATE)) {
+                if (cartOrder.isDebitPaymentFlow) { //existe (oculto) no html apenas as opções para débito
                     assertDebit.accept(false);
                     assertTicketNull.run();
                 } else { //existe oculto no html as duas versões de cada
@@ -164,7 +169,7 @@ public class CustomizarFaturaPage {
         if (exibe) { //fluxo gross ou base em migra pré-ctrl e ctrl-pós
             List<WebElement> dias;
 
-            if (Cart_isDebitPaymentFlow) {
+            if (cartOrder.isDebitPaymentFlow) {
                 Assert.assertTrue(datasDebit.isDisplayed());
                 Assert.assertFalse(datasTicket.isDisplayed());
 
@@ -198,32 +203,30 @@ public class CustomizarFaturaPage {
 
     public void selecionarPagamento(String paymentType) {
         if (paymentType.equals("Débito")) {
-            driverQA.JavaScriptClick(abaDebito.findElement(By.tagName("div")));
+            driverQA.javaScriptClick(abaDebito.findElement(By.tagName("div")));
             Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
             Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
 
             validarCamposDebito();
-            Cart_isDebitPaymentFlow = true;
+            cartOrder.isDebitPaymentFlow = true;
         } else {
-            driverQA.JavaScriptClick(abaBoleto.findElement(By.tagName("div")));
+            driverQA.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
             Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
             Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
 
-            Cart_isDebitPaymentFlow = false;
+            cartOrder.isDebitPaymentFlow = false;
         }
+
+        driverQA.actionPause(2000);
     }
 
     public void selecionarTipoFatura(String fatura) {
         switch (fatura) {
-            case "Whatsapp":
-                driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
-                break;
-            case "E-mail":
-                driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? emailDebit : emailTicket);
-                break;
-            case "Correios":
-                driverQA.JavaScriptClick(Cart_isDebitPaymentFlow ? correiosDebit : correiosTicket);
+            case "Whatsapp" -> driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+            case "E-mail" -> driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? emailDebit : emailTicket);
+            case "Correios" -> driverQA.javaScriptClick(cartOrder.isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
+        driverQA.actionPause(1500);
     }
 
     public void preencherDadosBancarios() {
@@ -244,16 +247,12 @@ public class CustomizarFaturaPage {
         if (bankId <= 5) { //API
             bankAccount = getBankAccount(String.valueOf(bankId));
         } else { //6 ~ 8 - Dados fixos - Não tem API
-            switch (bankId) {
-                case 6:
-                    bankAccount = Arrays.asList("0340", "00252116");
-                    break;
-                case 7:
-                    bankAccount = Arrays.asList("0131", "251134003");
-                    break;
-                case 8:
-                    bankAccount = Arrays.asList("0103", "12345678");
-            }
+            bankAccount = switch (bankId) {
+                case 6 -> Arrays.asList("0340", "00252116");
+                case 7 -> Arrays.asList("0131", "251134003");
+                case 8 -> Arrays.asList("0103", "12345678");
+                default -> bankAccount;
+            };
         }
 
         banco.selectByValue(banks.get(bankId));
@@ -285,22 +284,22 @@ public class CustomizarFaturaPage {
     }
 
     public void aceitarTermos() {
-        WebElement termos = driverQA.findElement(isComboFlow ? "chk-termos" : Cart_isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
+        WebElement termos = driverQA.findElement(isComboFlow ? "chk-termos" : cartOrder.isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
         Assert.assertFalse(termos.isSelected());
-        driverQA.JavaScriptClick(termos);
+        driverQA.javaScriptClick(termos);
         Assert.assertTrue(termos.isSelected());
     }
 
     public void clicarContinuar() {
-        driverQA.JavaScriptClick("btn-continuar", "id");
+        driverQA.javaScriptClick("btn-continuar", "id");
     }
 
     public void clickOkEntendi() {
-        driverQA.JavaScriptClick("btn-multa-entendi", "id");
+        driverQA.javaScriptClick("btn-multa-entendi", "id");
     }
 
     public void clickNaoConcordo() {
-        driverQA.JavaScriptClick("btn-multa-nao-concordo", "id");
+        driverQA.javaScriptClick("btn-multa-nao-concordo", "id");
     }
 
     public void direcionadoParaMulta() {

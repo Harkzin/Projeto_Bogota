@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Aparelhos - Base
 
   @ConsultaSaldoClienteNaoClaroClube
   Cenario: Consulta de saldo Claro Clube - Cliente não Claro Clube - Header

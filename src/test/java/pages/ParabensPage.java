@@ -1,12 +1,18 @@
 package pages;
 
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.CartOrder;
+import support.utils.DriverQA;
 
+@Component
 public class ParabensPage {
-    private final DriverQA driverQA;
 
-    public ParabensPage(DriverQA stepDriver) {
-        driverQA = stepDriver;
+    private final DriverQA driverQA;
+    private final CartOrder cartOrder;
+
+    public ParabensPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
+        this.cartOrder = cartOrder;
     }
 
     private final String parabensNomeCliente = "msg-parabens-sucesso";

@@ -1,16 +1,23 @@
 package steps;
 
 import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Quando;
 import pages.PlpPlanosPage;
-import support.BaseSteps;
+import support.CartOrder;
 
-public class PlpPlanosSteps extends BaseSteps {
+public class PlpPlanosSteps {
 
-    PlpPlanosPage plpPlanosPage = new PlpPlanosPage(driverQA);
+    private final PlpPlanosPage plpPlanosPage;
+    private final CartOrder cartOrder;
 
-    @E("^selecionar o \"([^\"]*)\" plano do carrossel da PLP clicando no botão Eu quero! dele$")
-    public void selecionarOPlanoDoCarrosselDaPLPClicandoNoBotãoEuQueroDele(String cardPLP) throws Throwable {
-        plpPlanosPage.selecionarCardControle(cardPLP);
+    public PlpPlanosSteps(PlpPlanosPage plpPlanosPage, CartOrder cartOrder) { //Spring Autowired
+        this.plpPlanosPage = plpPlanosPage;
+        this.cartOrder = cartOrder;
+    }
 
+    @Quando("selecionar o plano de id: {string}")
+    public void selecionarPlano(String id) {
+        cartOrder.setPlan(id);
+        plpPlanosPage.selecionarPlano(id);
     }
 }

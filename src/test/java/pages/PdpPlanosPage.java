@@ -3,17 +3,24 @@ package pages;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import support.DriverQA;
+import org.springframework.stereotype.Component;
+import support.CartOrder;
+import support.utils.DriverQA;
 
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static pages.ComumPage.*;
-
+@Component
 public class PdpPlanosPage {
-    private final DriverQA driverQA;
 
-    public PdpPlanosPage(DriverQA stepDriver) {
-        driverQA = stepDriver;
+    private final DriverQA driverQA;
+    private final CartOrder cartOrder;
+
+    public PdpPlanosPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+        this.driverQA = driverQA;
+        this.cartOrder = cartOrder;
     }
 
     private WebElement debitPayment;
@@ -21,6 +28,94 @@ public class PdpPlanosPage {
     private WebElement loyalty;
     private WebElement noLoyalty;
     private WebElement planCharacteristics;
+
+    public void validarPdpPlanos() {
+        driverQA.waitPageLoad(cartOrder.getPlan().getUrl(), 10);
+
+        debitPayment = driverQA.findElement("rdn-debitcard", "id");
+        ticketPayment = driverQA.findElement("rdn-ticket", "id");
+        loyalty = driverQA.findElement("rdn-loyalty-true", "id");
+        noLoyalty = driverQA.findElement("rdn-loyalty-false", "id");
+        planCharacteristics = driverQA.findElement("plan-characteristics", "id");
+
+        //Valida opções default
+        validarDebito();
+        validarFidelidade();
+        validarValorPlano(true, true);
+
+        //Valida resumo, caso configurado
+        if (!cartOrder.getPlan().getSummary().isEmpty()) {
+            WebElement summary = driverQA.findElement("//*[@id='plan-name']/following-sibling::p[1]", "xpath");
+
+            Assert.assertTrue(summary.isDisplayed());
+            Assert.assertTrue(cartOrder.getPlan().getSummary().contains(summary.getText()));
+        }
+
+        //Valida descrição, caso configurado
+        if (!cartOrder.getPlan().getDescription().isEmpty()) {
+            List<WebElement> descriptionElements = driverQA.findElements("//*[@id='product-page-description']/div[2]/div/p", "xpath");
+
+            descriptionElements.forEach(webElement -> { //Valida a exibição de cada parágrafo da descrição, pode haver um ou vários.
+                if (!webElement.getText().isEmpty()) {
+                    Assert.assertTrue("Texto de descrição é exibido", webElement.isDisplayed());
+                }
+            });
+
+            String descriptionText = descriptionElements
+                    .stream()
+                    .map(webElement -> webElement.getAttribute("outerHTML"))
+                    .collect(Collectors.joining());
+
+            Assert.assertTrue(descriptionText.contains(cartOrder.getPlan().getDescription()));
+        }
+
+        //Valida nome do Plano, caso configurado
+        if (!cartOrder.getPlan().getName().isEmpty()) {
+            //Nome principal
+            WebElement planName = driverQA.findElement("//*[@id='plan-name']/span", "xpath");
+            ComumPage.validateElementText(cartOrder.getPlan().getName(), planName);
+
+            //Nome nav (barra horizontal superior)
+            showNav();
+            WebElement planNameNav = driverQA.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
+            Assert.assertEquals(cartOrder.getPlan().getName(), planNameNav.getText());
+            Assert.assertTrue(planNameNav.isDisplayed());
+        }
+
+        validarAppsIlimitados(true);
+
+        //Valida título extraPlay, caso configurado
+        if (cartOrder.getPlan().hasExtraPlayTitle()) {
+            WebElement claroExtraPlayTitle = planCharacteristics
+                    .findElement(By.xpath("div[contains(@class, 'title-extra-play')]/p"));
+
+            ComumPage.validateElementText(cartOrder.getPlan().getExtraPlayTitle(), claroExtraPlayTitle);
+        }
+
+        //Valida apps extraPlay, caso configurado
+        if (cartOrder.getPlan().hasExtraPlayApps()) {
+            List<WebElement> extraPlayApps = planCharacteristics
+                    .findElements(By.xpath("div[contains(@class, ' extra-play ')]//img"));
+
+            ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
+        }
+
+        //Valida serviços Claro, caso configurado
+        if (cartOrder.getPlan().hasClaroServices()) {
+            WebElement claroServicesTitle = planCharacteristics
+                    .findElement(By.xpath("div[contains(@class, ' claro-services')]/p"));
+
+            List<WebElement> claroServicesApps = planCharacteristics
+                    .findElements(By.xpath("div[contains(@class, ' claro-services')]//img"));
+
+            ComumPage.validarServicosClaro(driverQA, cartOrder, claroServicesTitle, claroServicesApps);
+        }
+    }
+
+    private void showNav() {
+        //Scroll forçado para exibir o nav (barra suspensa superior). Só aparece ao descer na página.
+        driverQA.javaScriptScrollTo(driverQA.findElement("footer-claro", "id"));
+    }
 
     private void validarDebito() {
         Assert.assertTrue(debitPayment.isSelected());
@@ -32,56 +127,30 @@ public class PdpPlanosPage {
         Assert.assertFalse(noLoyalty.isSelected());
     }
 
-    public void validarPDP() {
-        driverQA.waitPageLoad(Cart_planId, 10);
-
-        debitPayment = driverQA.findElement("rdn-debitcard", "id");
-        ticketPayment = driverQA.findElement("rdn-ticket", "id");
-        loyalty = driverQA.findElement("rdn-loyalty-true", "id");
-        noLoyalty = driverQA.findElement("rdn-loyalty-false", "id");
-        planCharacteristics = driverQA.findElement("plan-characteristics", "id");
-
-        validarDebito();
-        validarFidelidade();
-        validarAppIlimitados(true);
-        validarValorPlano(true, true);
-
-        String planName = "TODO ECCMAUT-351";
-        //Assert.assertEquals(driverQA.findElement("//*[@id='plan-name']/span", "xpath").getText(), planName);
-        //Assert.assertEquals(driverQA.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath").getText(), planName);
-    }
-
     public void selecionarDebito() {
-        driverQA.JavaScriptClick(debitPayment);
+        driverQA.javaScriptClick(debitPayment);
         validarDebito();
-
-        Cart_isDebitPaymentFlow = true;
     }
 
     public void selecionarBoleto() {
-        driverQA.JavaScriptClick(ticketPayment);
+        driverQA.javaScriptClick(ticketPayment);
         Assert.assertTrue(ticketPayment.isSelected());
         Assert.assertFalse(debitPayment.isSelected());
-
-        Cart_isDebitPaymentFlow = false;
     }
 
     public void selecionarFidelidade() {
-        driverQA.JavaScriptClick(loyalty);
+        driverQA.javaScriptClick(loyalty);
         validarFidelidade();
-
-        Cart_hasLoyalty = true;
     }
 
     public void selecionarSemFidelidade() {
-        driverQA.JavaScriptClick(noLoyalty);
+        driverQA.javaScriptClick(noLoyalty);
         Assert.assertTrue(noLoyalty.isSelected());
         Assert.assertFalse(loyalty.isSelected());
-
-        Cart_hasLoyalty = false;
     }
 
-    public void validarValorPlano(Boolean isDebit, Boolean hasLoyalty) {
+    public void validarValorPlano(boolean isDebit, boolean hasLoyalty) {
+        //Valores do Front
         WebElement debitLoyalty = driverQA.findElement("price-debit-loyalty", "id");
         WebElement ticketLoyalty = driverQA.findElement("price-ticket-loyalty", "id");
         WebElement debitNotLoyalty = driverQA.findElement("price-debit-not-loyalty", "id");
@@ -92,69 +161,101 @@ public class PdpPlanosPage {
         WebElement debitNotLoyaltyNav = driverQA.findElement("price-debit-not-loyalty-nav", "id");
         WebElement ticketNotLoyaltyNav = driverQA.findElement("price-ticket-not-loyalty-nav", "id");
 
-        String debitLoyaltyPrice = "TODO ECCMAUT-351";
-        String ticketLoyaltyPrice = "TODO ECCMAUT-351";
-        String debitNotLoyaltyPrice = "TODO ECCMAUT-351";
-        String ticketNotLoyaltyPrice = "TODO ECCMAUT-351";
+        //Valores de referência API
+        String debitLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(true, true);
+        String ticketLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(false, true);
+        String debitNotLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(true, false);
+        String ticketNotLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(false, false);
 
-        Function<WebElement, String> getPrice = element -> element.findElement(By.xpath("span[2]")).getText().replace("&nbsp;", "");
+        //Recebe o WebElement e retorna o preço em String
+        Function<WebElement, String> getPrice = element -> element
+                .findElement(By.xpath("span[2]"))
+                .getText()
+                .trim();
 
         if (isDebit) {
             if (hasLoyalty) {
-                //ECCMAUT-351
-                //Assert.assertEquals(getPrice.apply(debitLoyalty), debitLoyaltyPrice);
-                //Assert.assertEquals(getPrice.apply(debitLoyaltyNav), debitNotLoyaltyPrice);
+                Consumer<WebElement> validateDebitLoyalty = webElement -> {
+                    Assert.assertEquals(debitLoyaltyPrice, getPrice.apply(webElement));
 
-                Assert.assertTrue(debitLoyalty.isDisplayed());
-                Assert.assertFalse(ticketLoyalty.isDisplayed());
-                Assert.assertFalse(debitNotLoyalty.isDisplayed());
-                Assert.assertFalse(ticketNotLoyalty.isDisplayed());
+                    //Exibe apenas um dos preços
+                    Assert.assertTrue(webElement.isDisplayed());
+                    Assert.assertFalse(ticketLoyalty.isDisplayed());
+                    Assert.assertFalse(debitNotLoyalty.isDisplayed());
+                    Assert.assertFalse(ticketNotLoyalty.isDisplayed());
+                };
+
+                validateDebitLoyalty.accept(debitLoyalty);
+                showNav();
+                validateDebitLoyalty.accept(debitLoyaltyNav);
             } else {
-                //ECCMAUT-351
-                //Assert.assertEquals(getPrice.apply(debitNotLoyalty), debitNotLoyaltyPrice);
-                //Assert.assertEquals(getPrice.apply(debitNotLoyaltyNav), debitNotLoyaltyPrice);
+                Consumer<WebElement> validateDebitNotLoyalty = webElement -> {
+                    Assert.assertEquals(debitNotLoyaltyPrice, getPrice.apply(webElement));
 
-                Assert.assertFalse(debitLoyalty.isDisplayed());
-                Assert.assertFalse(ticketLoyalty.isDisplayed());
-                Assert.assertTrue(debitNotLoyalty.isDisplayed());
-                Assert.assertFalse(ticketNotLoyalty.isDisplayed());
+                    //Exibe apenas um dos preços
+                    Assert.assertFalse(debitLoyalty.isDisplayed());
+                    Assert.assertFalse(ticketLoyalty.isDisplayed());
+                    Assert.assertTrue(webElement.isDisplayed());
+                    Assert.assertFalse(ticketNotLoyalty.isDisplayed());
+                };
+
+                validateDebitNotLoyalty.accept(debitNotLoyalty);
+                showNav();
+                validateDebitNotLoyalty.accept(debitNotLoyaltyNav);
             }
         } else {
             if (hasLoyalty) {
-                //ECCMAUT-351
-                //Assert.assertEquals(getPrice.apply(ticketLoyalty), ticketLoyaltyPrice);
-                //Assert.assertEquals(getPrice.apply(ticketLoyaltyNav), ticketLoyaltyPrice);
+                Consumer<WebElement> validateTicketLoyalty = webElement -> {
+                    Assert.assertEquals(ticketLoyaltyPrice, getPrice.apply(webElement));
 
-                Assert.assertFalse(debitLoyalty.isDisplayed());
-                Assert.assertTrue(ticketLoyalty.isDisplayed());
-                Assert.assertFalse(debitNotLoyalty.isDisplayed());
-                Assert.assertFalse(ticketNotLoyalty.isDisplayed());
+                    //Exibe apenas um dos preços
+                    Assert.assertFalse(debitLoyalty.isDisplayed());
+                    Assert.assertTrue(webElement.isDisplayed());
+                    Assert.assertFalse(debitNotLoyalty.isDisplayed());
+                    Assert.assertFalse(ticketNotLoyalty.isDisplayed());
+                };
 
+                validateTicketLoyalty.accept(ticketLoyalty);
+                showNav();
+                validateTicketLoyalty.accept(ticketLoyaltyNav);
             } else {
-                //ECCMAUT-351
-                //Assert.assertEquals(getPrice.apply(ticketNotLoyalty), ticketNotLoyaltyPrice);
-                //Assert.assertEquals(getPrice.apply(ticketNotLoyaltyNav), ticketNotLoyaltyPrice);
+                Consumer<WebElement> validateTicketNotLoyalty = webElement -> {
+                    Assert.assertEquals(ticketNotLoyaltyPrice, getPrice.apply(webElement));
 
-                Assert.assertFalse(debitLoyalty.isDisplayed());
-                Assert.assertFalse(ticketLoyalty.isDisplayed());
-                Assert.assertFalse(debitNotLoyalty.isDisplayed());
-                Assert.assertTrue(ticketNotLoyalty.isDisplayed());
+                    //Exibe apenas um dos preços
+                    Assert.assertFalse(debitLoyalty.isDisplayed());
+                    Assert.assertFalse(ticketLoyalty.isDisplayed());
+                    Assert.assertFalse(debitNotLoyalty.isDisplayed());
+                    Assert.assertTrue(webElement.isDisplayed());
+                };
+
+                validateTicketNotLoyalty.accept(ticketNotLoyalty);
+                showNav();
+                validateTicketNotLoyalty.accept(ticketNotLoyaltyNav);
             }
         }
     }
 
-    public void validarAppIlimitados(Boolean exibe) {
-        WebElement appsIlimitadosParent = planCharacteristics.findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));
+    public void validarAppsIlimitados(Boolean exibe) {
+        if (cartOrder.getPlan().hasPlanApps()) {
+            WebElement planAppsParent = planCharacteristics
+                    .findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));
 
-        if (exibe) {
-            driverQA.waitElementVisibility(appsIlimitadosParent, 2);
-            //TODO validar apps exibidos ECCMAUT-351
-        } else {
-            driverQA.waitElementInvisibility(appsIlimitadosParent, 2);
+            if (exibe) {
+                driverQA.waitElementVisibility(planAppsParent, 2);
+
+                //Título
+                WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
+                //Apps
+                List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
+                ComumPage.validarAppsIlimitados(driverQA, cartOrder, planAppsTitle, planApps);
+            } else {
+                driverQA.waitElementInvisibility(planAppsParent, 2);
+            }
         }
     }
 
     public void clicarEuQuero() {
-        driverQA.JavaScriptClick("btn-eu-quero-" + Cart_planId, "id");
+        driverQA.javaScriptClick("btn-eu-quero-" + cartOrder.getPlan().getCode(), "id");
     }
 }
