@@ -1,6 +1,7 @@
 #language: pt
 
 @Desativado
+  #Cenário desabilitade da regressão por bug despriorizado em Prod (Front, Dados pessoais)
 Funcionalidade: Planos - Gross
 
   @Aquisicao
@@ -8,7 +9,7 @@ Funcionalidade: Planos - Gross
   @AquisicaoPosBloqueioCepDiferente
   Cenario: Cenário de erro - Aquisição Pós - Bloqueio para CEP diferente da regionalização
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17218" do carrossel da Home
+    Quando selecionar o plano de id "17268" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]

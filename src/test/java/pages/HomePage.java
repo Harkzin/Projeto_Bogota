@@ -68,20 +68,7 @@ public class HomePage {
                     .map(webElement -> webElement.findElement(By.tagName("p")))
                     .collect(Collectors.toList());
 
-            //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
-            //A posição entre eles pode mudar, não servindo como referência.
-            if (cartOrder.getPlan().hasExtraPlayTitle()) {
-                planPortability.remove(planPortability
-                        .stream()
-                        .filter(webElement -> webElement.getText().equals(cartOrder.getPlan().getExtraPlayTitle()))
-                        .findFirst().orElseThrow());
-            }
-
-            IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-                Assert.assertEquals(cartOrder.getPlan().getPlanPortability().get(i), planPortability.get(i).getText());
-
-                Assert.assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
-            });
+            ComumPage.validarPlanPortability(planPortability, cartOrder.getPlan());
         }
     }
 

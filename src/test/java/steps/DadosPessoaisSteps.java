@@ -47,7 +47,7 @@ public class DadosPessoaisSteps {
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(true, cartOrder.delivery.deliveryMode);
+        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
     @E("o usuário seleciona o tipo de sim [Esim]")
@@ -57,7 +57,7 @@ public class DadosPessoaisSteps {
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(false, cartOrder.delivery.deliveryMode);
+        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

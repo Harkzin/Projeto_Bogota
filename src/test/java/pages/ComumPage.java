@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
+import support.Product;
 import support.utils.DriverQA;
 
 import java.util.List;
@@ -60,8 +61,25 @@ public class ComumPage {
         validarMidiasPlano(cartOrder.getPlan().getClaroServices(), claroServicesApps, driverQA);
     }
 
+    public static void validarPlanPortability(List<WebElement> planPortability, Product plan) {
+        //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
+        //A posição entre eles pode mudar, não servindo como referência.
+        if (plan.hasExtraPlayTitle()) {
+            planPortability.remove(planPortability
+                    .stream()
+                    .filter(webElement -> webElement.getText().equals(plan.getExtraPlayTitle()))
+                    .findFirst().orElseThrow());
+        }
+
+        IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
+            Assert.assertEquals(plan.getPlanPortability().get(i), planPortability.get(i).getText());
+
+            Assert.assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
+        });
+    }
+
     public void validarResumoCompraPlano() {
-        driverQA.actionPause(500);
+        driverQA.actionPause(1000);
 
         String planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
 

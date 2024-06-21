@@ -1,9 +1,11 @@
 package pages;
 
 
+import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
+@Component
 public class PlpAparelhosPage {
 
     private final DriverQA driverQA;
@@ -19,6 +21,6 @@ public class PlpAparelhosPage {
     }
 
     public void clicaBotaoEuQuero(String id) {
-        driverQA.javaScriptClick("btn-eu-quero-0000000000000" + id, "id");
+        driverQA.javaScriptClick("btn-eu-quero-" + id, "id");
     }
 }

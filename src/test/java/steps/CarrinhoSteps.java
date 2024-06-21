@@ -2,7 +2,9 @@ package steps;
 
 import io.cucumber.java.pt.*;
 import pages.CarrinhoPage;
+import pages.ComumPage;
 import support.CartOrder;
+import support.utils.Constants;
 
 import static support.utils.Constants.ProcessType.*;
 

@@ -3,6 +3,8 @@
 @Regressivo
 Funcionalidade: Planos - Base
 
+  #Massa: Controle - pagamento boleto - fatura digital
+
   @Migracao
   @Pos
   @MigracaoCtrlPosPDP

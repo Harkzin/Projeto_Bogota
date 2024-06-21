@@ -81,7 +81,7 @@ public class CustomizarFaturaPage {
         } else { //fluxo base - cliente já é débito / combo / THAB
             Assert.assertNull(abaDebito);
             Assert.assertNull(abaBoleto);
-            cartOrder.isDebitPaymentFlow = !cartOrder.thab; //TODO caso combo = ??
+            cartOrder.isDebitPaymentFlow = !cartOrder.thab && !isComboFlow; //TODO combo funcionará apenas boleto
         }
     }
 
@@ -96,42 +96,42 @@ public class CustomizarFaturaPage {
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {
-                Assert.assertTrue(whatsappDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertTrue(emailDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertTrue(correiosDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             } else {
-                Assert.assertFalse(whatsappDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(emailDebit.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(correiosDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             }
         };
 
         Consumer<Boolean> assertTicket = isDisplayed -> {
             if (isDisplayed) {
-                Assert.assertTrue(whatsappTicket.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertTrue(emailTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
                 if (cartOrder.thab) {
-                    Assert.assertNull(correiosTicket);
+                    Assert.assertNull("Não deve existir no html", correiosTicket);
                 } else {
-                    Assert.assertTrue(correiosTicket.findElement(By.xpath("..")).isDisplayed());
+                    Assert.assertTrue("Exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
                 }
             } else {
-                Assert.assertFalse(whatsappTicket.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(emailTicket.findElement(By.xpath("..")).isDisplayed());
-                Assert.assertFalse(correiosTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
             }
         };
 
         Runnable assertDebitNull = () -> {
-            Assert.assertNull(whatsappDebit);
-            Assert.assertNull(emailDebit);
-            Assert.assertNull(correiosDebit);
+            Assert.assertNull("Não deve existir no html", whatsappDebit);
+            Assert.assertNull("Não deve existir no html", emailDebit);
+            Assert.assertNull("Não deve existir no html", correiosDebit);
         };
 
         Runnable assertTicketNull = () -> {
-            Assert.assertNull(whatsappTicket);
-            Assert.assertNull(emailTicket);
-            Assert.assertNull(correiosTicket);
+            Assert.assertNull("Não deve existir no html", whatsappTicket);
+            Assert.assertNull("Não deve existir no html", emailTicket);
+            Assert.assertNull("Não deve existir no html", correiosTicket);
         };
 
         if (exibe) { //fluxo gross, fluxo base com fatura impressa, migra pré-ctrl e thab

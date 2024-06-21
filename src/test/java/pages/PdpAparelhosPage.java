@@ -17,7 +17,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarPaginaPDPAparelho(String id) {
-        driverQA.waitPageLoad("/0000000000000" + id, 5);
+        driverQA.waitPageLoad(id, 5);
     }
 
     public void selecionarCorAparelho(String id) {

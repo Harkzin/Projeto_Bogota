@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
+import java.util.function.BiConsumer;
+
 import static support.utils.Constants.*;
 import static support.utils.Constants.DeliveryMode.CONVENTIONAL;
 import static support.utils.Constants.DeliveryMode.EXPRESS;
@@ -77,54 +79,77 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals("Preenchimento automático [bairro]", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático [estado]", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático [cidade]", driverQA.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
-        validarTiposChip();
     }
 
-    private void validarTiposChip() {
+    public void validarTiposEntregaEChip(boolean showDeliveryModes, DeliveryMode deliveryMode, boolean isDeviceCart) {
+        //Chip comum
         chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
         chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
+
+        //eSIM
         chipEsimConvencional = driverQA.findElement("rdn-chipTypeEsim", "id");
         chipEsimExpress = driverQA.findElement("rdn-chipTypeEsimExpress", "id");
 
-        if(cartOrder.delivery.deliveryMode == EXPRESS) {
-            Assert.assertTrue(chipComumExpressa.isSelected());
-            Assert.assertFalse(chipEsimExpress.isSelected());
-        } else {
-            Assert.assertTrue(chipComumConvencional.isSelected());
-            Assert.assertFalse(chipEsimConvencional.isSelected());
-        }
-    }
-
-    public void validarTiposEntrega(boolean showDeliveryModes, DeliveryMode deliveryMode) {
+        //Entrega
         entregaConvencional = driverQA.findElement("rdn-convencional", "id");
         entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
+
         WebElement usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
 
         if (showDeliveryModes) {
-            WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
+            //Elementos pai dos inputs para validar a exibição
             WebElement entregaConvencionalParent = entregaConvencional.findElement(By.xpath("../../..")); //div pai do pai do pai do input
             WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
+            WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
+
+            BiConsumer<WebElement, WebElement> validateChipTypes = (commonChip, eSim) -> {
+                if (!isDeviceCart) {
+                    Assert.assertTrue("Chip comum selecionado", commonChip.isSelected());
+                    Assert.assertFalse("Chip eSim desmarcado", eSim.isSelected());
+                } else {
+                    Assert.assertNull("Escolha de chip para Aparelho acontece na PDP", commonChip);
+                    Assert.assertNull("Escolha de chip para Aparelho acontece na PDP", eSim);
+                }
+            };
 
             if (deliveryMode == CONVENTIONAL) {
+                validateChipTypes.accept(chipComumConvencional, chipEsimConvencional);
+
+                //Exibe entrega convencional
                 Assert.assertTrue(entregaConvencional.isSelected());
                 Assert.assertTrue(entregaConvencionalParent.isDisplayed());
 
+                //Exibe apenas o bloco de entrega convencional. Ambos existem no html (convencional e expressa) mas só um é exibido
                 Assert.assertFalse(entregaExpressaParent.isDisplayed());
+
+                //Endereço de cobrança apenas em entrega expressa
                 Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
             } else {
+                validateChipTypes.accept(chipComumExpressa, chipEsimExpress);
+
+                //Exibe entrega expressa
                 Assert.assertTrue(entregaExpressa.isSelected());
-                Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
-                Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
                 Assert.assertTrue(entregaExpressaParent.isDisplayed());
 
+                //Exibe a seção para endereço de cobrança com o checkbox marcado
+                Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
+                Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
+
+                //Exibe apenas o bloco de entrega expressa. Ambos existem no html (convencional e expressa) mas só um é exibido
                 Assert.assertFalse(entregaConvencionalParent.isDisplayed());
             }
-        } else { //Fluxo migração de Pré, não existe entrega. Elementos não existem no html também.
+        } else { //Fluxo migração de Pré, não existe entrega. Elementos não existem no html
+            //Chip
             Assert.assertNull(chipComumConvencional);
             Assert.assertNull(chipComumExpressa);
-            Assert.assertNull(usarMesmoEnderecoCobranca);
+            Assert.assertNull(chipEsimConvencional);
+            Assert.assertNull(chipEsimExpress);
+
+            //Entrega
             Assert.assertNull(entregaConvencional);
             Assert.assertNull(entregaExpressa);
+
+            Assert.assertNull(usarMesmoEnderecoCobranca);
         }
     }
 

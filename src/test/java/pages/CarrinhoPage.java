@@ -197,7 +197,9 @@ public class CarrinhoPage {
     }
 
     public void validaMsgErro(String msgExibida) {
-        WebElement contentMessageError =  driverQA.findElement("cboxLoadedContent", "id").findElement(By.tagName("p"));
+        driverQA.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
+        WebElement contentMessageError =  driverQA.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+
         driverQA.waitElementVisibility(contentMessageError,10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }

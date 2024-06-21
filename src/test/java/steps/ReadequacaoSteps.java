@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.junit.Assume;
 import pages.ReadequacaoPage;
 import support.CartOrder;
 
@@ -16,7 +17,7 @@ public class ReadequacaoSteps {
 
     @Entao("é direcionado para a tela de readequação THAB")
     public void eDirecionadoParaATelaDeTHAB() {
-        readequacaoPage.validarPaginaReadequacaoTHAB();
+        readequacaoPage.validarPaginaReadequacaoTHAB(cartOrder.getPlan());
     }
     @Quando("seleciona o plano de controle antecipado ofertado")
     public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {

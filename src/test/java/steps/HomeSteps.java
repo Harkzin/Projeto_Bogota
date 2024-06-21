@@ -4,6 +4,7 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import org.junit.Assume;
 import pages.HomePage;
 import support.CartOrder;
 
@@ -45,7 +46,7 @@ public class HomeSteps {
 
     @Quando("o usuário clicar na opção [Celulares] do header")
     public void acessarPlpCelulares() {
-        //TODO
+        homePage.acessarMenuCelulares();
     }
 
     @Quando("o usuário clicar na opção [Acessórios] do header")
@@ -67,10 +68,5 @@ public class HomeSteps {
     @Então("é direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
-    }
-
-    @Quando("o usuário clicar no botão [Celulares] do header")
-    public void acessoAAbaCelulares() {
-        homePage.acessarMenuCelulares();
     }
 }

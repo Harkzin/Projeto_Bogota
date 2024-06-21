@@ -5,7 +5,7 @@ Funcionalidade: Planos - Gross
 
   @Aquisicao
   @Controle
-  @AquisicaoControleReprovClearSale
+  @AquisicaoCtrlReprovaClearSale
   Cenario: Aquisicao Controle - Reprovacao Clear Sale
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17218" do carrossel da Home
