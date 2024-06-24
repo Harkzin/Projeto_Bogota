@@ -9,7 +9,7 @@ import static support.utils.Constants.*;
 import static support.api.RestAPI.getProductDetails;
 import static support.api.RestAPI.objMapper;
 
-public final class CartOrder {
+public class CartOrder {
 
     private final List<Product> products = new ArrayList<>();
     public boolean isDebitPaymentFlow = true;

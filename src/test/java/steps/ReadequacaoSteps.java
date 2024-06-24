@@ -2,7 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import org.junit.Assume;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.ReadequacaoPage;
 import support.CartOrder;
 
@@ -10,7 +10,8 @@ public class ReadequacaoSteps {
     private final ReadequacaoPage readequacaoPage;
     private final CartOrder cartOrder;
 
-    public ReadequacaoSteps(ReadequacaoPage readequacaoPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public ReadequacaoSteps(ReadequacaoPage readequacaoPage, CartOrder cartOrder) {
         this.readequacaoPage = readequacaoPage;
         this.cartOrder = cartOrder;
     }

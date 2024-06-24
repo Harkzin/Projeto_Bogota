@@ -4,6 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.LoginPage;
 import support.CartOrder;
 
@@ -12,7 +13,8 @@ public class LoginSteps {
     private final LoginPage loginPage;
     private final CartOrder cartOrder;
 
-    public LoginSteps(LoginPage loginPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public LoginSteps(LoginPage loginPage, CartOrder cartOrder) {
         this.loginPage = loginPage;
         this.cartOrder = cartOrder;
     }

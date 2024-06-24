@@ -1,17 +1,21 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.utils.DriverQA;
 
 @Component
+@ScenarioScope
 public class SmsPage {
 
     private final DriverQA driverQA;
 
-    public SmsPage(DriverQA driverQA) { //Spring Autowired
+    @Autowired
+    public SmsPage(DriverQA driverQA) {
         this.driverQA = driverQA;
     }
 

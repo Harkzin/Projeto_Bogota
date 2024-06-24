@@ -1,7 +1,9 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.Product;
@@ -11,12 +13,14 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @Component
+@ScenarioScope
 public class ComumPage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public ComumPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public ComumPage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
