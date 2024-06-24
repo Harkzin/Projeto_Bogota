@@ -5,7 +5,7 @@ Funcionalidade: Planos - Gross
   @Aquisicao
   @Pos
   @AquisicaoPosPagoUmDependente
-  Cenario: Aquisição Pós - 02 Dependentes - Fluxo Completo
+  Cenario: Aquisição Pós - 01 Dependente
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17270" do carrossel da Home
     Então é direcionado para a tela de Carrinho
