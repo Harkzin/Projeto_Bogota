@@ -1,7 +1,7 @@
 package steps;
 
-import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.PlpPlanosPage;
 import support.CartOrder;
 
@@ -10,7 +10,8 @@ public class PlpPlanosSteps {
     private final PlpPlanosPage plpPlanosPage;
     private final CartOrder cartOrder;
 
-    public PlpPlanosSteps(PlpPlanosPage plpPlanosPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public PlpPlanosSteps(PlpPlanosPage plpPlanosPage, CartOrder cartOrder) {
         this.plpPlanosPage = plpPlanosPage;
         this.cartOrder = cartOrder;
     }

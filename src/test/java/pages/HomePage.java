@@ -1,8 +1,10 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.Constants;
@@ -10,15 +12,16 @@ import support.utils.DriverQA;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
+@ScenarioScope
 public class HomePage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public HomePage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public HomePage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }

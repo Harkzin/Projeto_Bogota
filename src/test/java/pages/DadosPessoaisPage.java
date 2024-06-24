@@ -1,8 +1,10 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
@@ -14,12 +16,14 @@ import static support.utils.Constants.DeliveryMode.CONVENTIONAL;
 import static support.utils.Constants.DeliveryMode.EXPRESS;
 
 @Component
+@ScenarioScope
 public class DadosPessoaisPage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public DadosPessoaisPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public DadosPessoaisPage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }

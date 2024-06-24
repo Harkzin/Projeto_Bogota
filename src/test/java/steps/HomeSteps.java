@@ -4,7 +4,7 @@ import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
-import org.junit.Assume;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.HomePage;
 import support.CartOrder;
 
@@ -13,7 +13,8 @@ public class HomeSteps {
     private final HomePage homePage;
     private final CartOrder cartOrder;
 
-    public HomeSteps(HomePage homePage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public HomeSteps(HomePage homePage, CartOrder cartOrder) {
         this.homePage = homePage;
         this.cartOrder = cartOrder;
     }

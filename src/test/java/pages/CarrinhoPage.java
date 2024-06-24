@@ -1,7 +1,8 @@
 package pages;
 
-import org.openqa.selenium.By;
+import io.cucumber.spring.ScenarioScope;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.Constants;
@@ -16,12 +17,14 @@ import static support.api.RestAPI.checkCpfDiretrix;
 import static support.api.RestAPI.getCpf;
 
 @Component
+@ScenarioScope
 public class CarrinhoPage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public CarrinhoPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public CarrinhoPage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }

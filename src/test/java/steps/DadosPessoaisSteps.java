@@ -4,6 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.DadosPessoaisPage;
 import support.CartOrder;
 
@@ -14,7 +15,8 @@ public class DadosPessoaisSteps {
     private final DadosPessoaisPage dadosPessoaisPage;
     private final CartOrder cartOrder;
 
-    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) {
         this.dadosPessoaisPage = dadosPessoaisPage;
         this.cartOrder = cartOrder;
     }

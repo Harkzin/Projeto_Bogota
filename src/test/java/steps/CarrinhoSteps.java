@@ -1,10 +1,9 @@
 package steps;
 
 import io.cucumber.java.pt.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.CarrinhoPage;
-import pages.ComumPage;
 import support.CartOrder;
-import support.utils.Constants;
 
 import static support.utils.Constants.ProcessType.*;
 
@@ -13,7 +12,8 @@ public class CarrinhoSteps {
     private final CarrinhoPage carrinhoPage;
     private final CartOrder cartOrder;
 
-    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cartOrder) {
         this.carrinhoPage = carrinhoPage;
         this.cartOrder = cartOrder;
     }

@@ -1,9 +1,11 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
@@ -15,12 +17,14 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @Component
+@ScenarioScope
 public class CustomizarFaturaPage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public CustomizarFaturaPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public CustomizarFaturaPage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
