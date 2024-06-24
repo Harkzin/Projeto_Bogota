@@ -16,6 +16,7 @@ import support.utils.Constants.Email;
 import java.time.Duration;
 import java.util.List;
 
+import static java.time.Duration.ofSeconds;
 import static support.api.RestAPI.getEmailMessage;
 
 public class DriverQA {
@@ -158,9 +159,9 @@ public class DriverQA {
 
     public Document getEmail(String emailAddress, Email emailSubject) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(60))
+                .withTimeout(ofSeconds(60))
                 .withMessage("Aguardando recebimento do e-mail")
-                .pollingEvery(Duration.ofSeconds(5));
+                .pollingEvery(ofSeconds(5));
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
     }
 
@@ -178,28 +179,34 @@ public class DriverQA {
     }
 
     public void waitElementToBeClickable(WebElement element, int timeoutSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public void waitElementVisibility(WebElement element, int timeoutSeconds) {
         javaScriptScrollTo(element);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
     public void waitElementInvisibility(WebElement element, int timeoutSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     public void waitElementPresence(String xpath, int timeoutSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
     }
 
+    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time){
+        WebDriverWait wait = new WebDriverWait(driver ,ofSeconds(time));
+        wait.until(ExpectedConditions.attributeContains(element,attribute, value));
+    }
+
+
     public void waitPageLoad(String urlFraction, Integer timeout) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeout));
         wait.until(ExpectedConditions.urlContains(urlFraction));
 
         wait.until(driver -> "complete".equals(((JavascriptExecutor) driver).executeScript("return document.readyState")));
