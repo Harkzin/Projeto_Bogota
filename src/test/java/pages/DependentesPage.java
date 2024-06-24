@@ -1,18 +1,22 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
 @Component
+@ScenarioScope
 public class DependentesPage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public DependentesPage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public DependentesPage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
