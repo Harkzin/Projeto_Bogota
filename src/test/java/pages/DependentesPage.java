@@ -26,10 +26,6 @@ public class DependentesPage {
 
     public void validarPaginaDependentes() {
         driverQA.waitPageLoad("/dependents/claroDependents", 15);
-        validarTelaDependentes();
-    }
-
-    private void validarTelaDependentes() {
         btnAdicionarDependente = driverQA.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
         btnSeguirSemDependente = driverQA.findElement("//button[contains(text(),'Seguir sem dependentes')]","xpath");
 
