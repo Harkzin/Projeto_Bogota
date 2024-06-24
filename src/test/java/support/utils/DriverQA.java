@@ -200,8 +200,8 @@ public class DriverQA {
     }
 
     public void waitAttributeContainsText(WebElement element, String attribute, String value, long time){
-        WebDriverWait wait = new WebDriverWait(driver ,ofSeconds(time));
-        wait.until(ExpectedConditions.attributeContains(element,attribute, value));
+        WebDriverWait wait = new WebDriverWait(driver, ofSeconds(time));
+        wait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
 
 
