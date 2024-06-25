@@ -11,6 +11,7 @@ public class DependentesSteps {
 
     private final DependentesPage dependentesPage;
     private final CartOrder cartOrder;
+    private int numeroDependente;
 
     @Autowired
     public DependentesSteps(DependentesPage dependentesPage, CartOrder cartOrder) {
@@ -25,21 +26,24 @@ public class DependentesSteps {
 
     @E("o usuário adiciona um dependente de numero {string}")
     public void preencherDadosPessoais(String numero) {
-        dependentesPage.clicarAdicionarDependente();
+        //dependentesPage.clicarAdicionarDependente();
         dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o primeiro dependente, com número novo")
     public void adicionarPrimeiroDependente() {
-        dependentesPage.clicarAdicionarDependente();
+        numeroDependente = 1;
+        dependentesPage.clicarAdicionarDependente(numeroDependente);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
+
     }
 
     @E("adiciona o segundo dependente, com número novo")
     public void adicionarSegundoDependente() {
-        dependentesPage.clicarAdicionarOutroDependente();
+        numeroDependente = 2;
+        dependentesPage.clicarAdicionarOutroDependente(numeroDependente);
         dependentesPage.adicionarNovoNumeroSegundoDependente();
         dependentesPage.clicarConfirmarSegundoDependente();
     }
