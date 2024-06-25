@@ -206,4 +206,8 @@ public class CarrinhoPage {
         driverQA.waitElementVisibility(contentMessageError,10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
+
+    public void clicarAvisoTrocaPlano() {
+        driverQA.javaScriptClick("//button[contains(.,'Confirma')]", "xpath"); // ECCMAUT-491 Tela sem id
+    }
 }

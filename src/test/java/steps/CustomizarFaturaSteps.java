@@ -114,4 +114,9 @@ public class CustomizarFaturaSteps {
     public void oUsuárioClicarNoBotaoContinuarDaTelaDeClienteCombo() {
         customizarFaturaPage.clicarContinuar();
     }
+
+    @Quando("o usuário clicar no botão [Concordo], Escolha a melhor dorma de pagamento para sua fatura")
+    public void clicarConcordo() {
+        customizarFaturaPage.clicarConcordo();
+    }
 }

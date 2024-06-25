@@ -81,4 +81,9 @@ public class CarrinhoSteps {
     public void clicarEuQuero() {
         carrinhoPage.clicarEuQuero();
     }
+
+    @Quando("o usuário clicar no botão [Condordo] Aviso Troca de Plano")
+    public void clicarEmAvisoTrocaPlano() {
+        carrinhoPage.clicarAvisoTrocaPlano();
+    }
 }

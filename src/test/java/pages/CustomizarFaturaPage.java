@@ -310,4 +310,8 @@ public class CustomizarFaturaPage {
         driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
         Assert.assertNotNull(driverQA.findElement("txt-mensagem-multa", "id"));
     }
+
+    public void clicarConcordo() {
+        driverQA.javaScriptClick("btn-multa-concordo", "id");
+    }
 }
