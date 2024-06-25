@@ -4,6 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.CustomizarFaturaPage;
 import support.CartOrder;
 
@@ -15,7 +16,8 @@ public class CustomizarFaturaSteps {
     private final CustomizarFaturaPage customizarFaturaPage;
     private final CartOrder cartOrder;
 
-    public CustomizarFaturaSteps(CustomizarFaturaPage customizarFaturaPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public CustomizarFaturaSteps(CustomizarFaturaPage customizarFaturaPage, CartOrder cartOrder) {
         this.customizarFaturaPage = customizarFaturaPage;
         this.cartOrder = cartOrder;
     }

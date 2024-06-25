@@ -5,8 +5,8 @@ Funcionalidade: Planos - Gross
 
   @Aquisicao
   @Controle
-  @AquisicaoCtrlExpressaBoleto
-  Cenario: Aquisição Controle - Entrega expressa - Boleto
+  @AquisicaoCtrlEsim
+  Cenario: Aquisição Controle com e-Sim
     Dado que o usuário acesse a Loja Online
 
     Quando selecionar o plano de id "17218" do carrossel da Home
@@ -18,9 +18,10 @@ Funcionalidade: Planos - Gross
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSCTRL EXPRESBOL", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
-    E preenche os campos de endereço: [CEP] expressa "01001000", [Número] "65" e [Complemento] "AP202"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSCTRL ESIM", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
       E deve ser exibido os tipos de entrega
+    E o usuário seleciona o tipo de sim [Esim]
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura
@@ -28,8 +29,8 @@ Funcionalidade: Planos - Gross
       E deve ser exibido as opções de pagamento
       E deve ser exibido os meios de recebimento da fatura
       E deve ser exibido as datas de vencimento
-    E seleciona a forma de pagamento: "Boleto"
-    E seleciona o método de recebimento da fatura: "E-mail"
+    E seleciona a forma de pagamento: "Débito"
+    E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos

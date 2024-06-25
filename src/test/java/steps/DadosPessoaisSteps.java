@@ -4,6 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.DadosPessoaisPage;
 import support.CartOrder;
 
@@ -14,7 +15,8 @@ public class DadosPessoaisSteps {
     private final DadosPessoaisPage dadosPessoaisPage;
     private final CartOrder cartOrder;
 
-    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) {
         this.dadosPessoaisPage = dadosPessoaisPage;
         this.cartOrder = cartOrder;
     }
@@ -33,26 +35,31 @@ public class DadosPessoaisSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
+        cartOrder.delivery.deliveryMode = CONVENTIONAL;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        cartOrder.delivery.deliveryMode = CONVENTIONAL;
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
+        cartOrder.delivery.deliveryMode = EXPRESS;
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
-        cartOrder.delivery.deliveryMode = EXPRESS;
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(true, cartOrder.delivery.deliveryMode);
+        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
+    }
+
+    @E("o usuário seleciona o tipo de sim [Esim]")
+    public void selecionaEsim() {
+        dadosPessoaisPage.selecionarEsim();
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntrega(false, cartOrder.delivery.deliveryMode);
+        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

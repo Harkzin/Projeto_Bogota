@@ -2,8 +2,8 @@ package support.config;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.*;
+
 import support.CartOrder;
 import support.utils.DriverQA;
 
@@ -13,10 +13,9 @@ public final class CucumberSpringConfiguration {
 
     @TestConfiguration
     @ComponentScan({"support.config", "pages"})
-    @SuppressWarnings("UnusedDeclaration")
     public static class Configuration {
         @Bean
-        @SuppressWarnings("UnusedDeclaration")
+        @Scope("cucumber-glue")
         public DriverQA createDriverQA() {
             DriverQA driverQA = new DriverQA();
             driverQA.setupDriver(System.getProperty("browser", "chrome"));
@@ -25,7 +24,7 @@ public final class CucumberSpringConfiguration {
         }
 
         @Bean
-        @SuppressWarnings("UnusedDeclaration")
+        @Scope("cucumber-glue")
         public CartOrder createCartOrder() {
             return new CartOrder().initializeDefaultCartOrder();
         }

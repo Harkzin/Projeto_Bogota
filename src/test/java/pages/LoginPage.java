@@ -1,25 +1,32 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
 import static support.utils.Constants.Email.CONFIRMA_TOKEN;
 import static support.api.RestAPI.clearInbox;
 
+@Component
+@ScenarioScope
 public class LoginPage {
+
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public LoginPage(DriverQA stepDriver, CartOrder cartOrder) {
-        driverQA = stepDriver;
+    @Autowired
+    public LoginPage(DriverQA driverQA, CartOrder cartOrder) {
+        this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
+
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
-    private String emailAddress;
 
     public void validarPaginaLogin() {
         driverQA.waitPageLoad("/login", 10);
@@ -30,12 +37,29 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
         Assert.assertTrue(continuar.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
+    }
+
+    public void validarPaginaMinhaConta() {
+        driverQA.waitPageLoad("/my-account", 10);
+
+        Assert.assertTrue(driverQA.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
+        Assert.assertTrue(driverQA.findElement("lnk-claro-clube", "id").isDisplayed());
+    }
+
+    public void validarMensagemSaldoClaroClube(String mensagemClube) {
+        WebElement msgClaroClube = driverQA.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
+
+        Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
+        Assert.assertTrue(msgClaroClube.isDisplayed());
     }
 
     public void clicarAcompanharPedidos() {
         driverQA.javaScriptClick("lnk-acompanhar-pedidos", "id");
+    }
+
+    public void clicarClaroClube() {
+        driverQA.javaScriptClick("lnk-claro-clube", "id");
     }
 
     public void validarPaginaLoginCpf() {
@@ -46,9 +70,9 @@ public class LoginPage {
 
         Assert.assertTrue(driverQA.findElement("track-order-form", "id").isDisplayed());
         Assert.assertTrue(cpf.isDisplayed());
-
         Assert.assertFalse(continuar.isEnabled());
     }
+
 
     public void preencheCPF(String cpf) {
         driverQA.actionSendKeys(this.cpf, cpf);
@@ -59,7 +83,7 @@ public class LoginPage {
     }
 
     public void validarPaginaLoginToken() {
-        driverQA.waitPageLoad("/login/token", 10);
+        driverQA.waitPageLoad("/login/token", 15);
 
         Assert.assertTrue(driverQA.findElement("token-verification-method", "id").isDisplayed());
         Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-email", "id").isDisplayed());
@@ -67,28 +91,26 @@ public class LoginPage {
     }
 
     public void selecionaReceberCodigoEmail() {
-        clearInbox(emailAddress);
+        clearInbox(cartOrder.essential.user.email);
         driverQA.javaScriptClick("lnk-receber-codigo-email", "id");
     }
 
     public void validarPaginaLoginEmail() {
         driverQA.waitPageLoad("/login/token/email", 10);
-
         token = driverQA.findElement("txt-token", "id");
 
         Assert.assertTrue(token.isDisplayed());
-
     }
 
     public void inserirTokenEmail() {
-        driverQA.actionSendKeys(token, driverQA.getEmail(emailAddress, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        clearInbox(cartOrder.essential.user.email);
+        driverQA.actionSendKeys(token, driverQA.getEmail(cartOrder.essential.user.email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {
         driverQA.waitPageLoad("/my-account/orders", 10);
 
         Assert.assertTrue(driverQA.findElement("txt-lista-pedidos", "id").isDisplayed());
-
     }
 
     public void acessarPedidoRecente() {

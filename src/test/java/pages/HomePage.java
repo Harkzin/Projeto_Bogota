@@ -1,8 +1,10 @@
 package pages;
 
+import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.Constants;
@@ -10,15 +12,16 @@ import support.utils.DriverQA;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
+@ScenarioScope
 public class HomePage {
 
     private final DriverQA driverQA;
     private final CartOrder cartOrder;
 
-    public HomePage(DriverQA driverQA, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public HomePage(DriverQA driverQA, CartOrder cartOrder) {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
@@ -68,20 +71,7 @@ public class HomePage {
                     .map(webElement -> webElement.findElement(By.tagName("p")))
                     .collect(Collectors.toList());
 
-            //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
-            //A posição entre eles pode mudar, não servindo como referência.
-            if (cartOrder.getPlan().hasExtraPlayTitle()) {
-                planPortability.remove(planPortability
-                        .stream()
-                        .filter(webElement -> webElement.getText().equals(cartOrder.getPlan().getExtraPlayTitle()))
-                        .findFirst().orElseThrow());
-            }
-
-            IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-                Assert.assertEquals(cartOrder.getPlan().getPlanPortability().get(i), planPortability.get(i).getText());
-
-                Assert.assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
-            });
+            ComumPage.validarPlanPortability(planPortability, cartOrder.getPlan());
         }
     }
 
@@ -110,5 +100,9 @@ public class HomePage {
 
     public void clicaBotaoEntrar() {
         driverQA.javaScriptClick("btn-entrar", "id");
+    }
+
+    public void acessarMenuCelulares() {
+        driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }

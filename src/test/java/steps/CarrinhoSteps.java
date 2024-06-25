@@ -1,9 +1,7 @@
 package steps;
 
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.CarrinhoPage;
 import support.CartOrder;
 
@@ -14,7 +12,8 @@ public class CarrinhoSteps {
     private final CarrinhoPage carrinhoPage;
     private final CartOrder cartOrder;
 
-    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cartOrder) {
         this.carrinhoPage = carrinhoPage;
         this.cartOrder = cartOrder;
     }
@@ -73,9 +72,9 @@ public class CarrinhoSteps {
         carrinhoPage.inserirEmail();
     }
 
-    @Entao("será exibida a mensagem de erro Bloqueio Dependente")
-    public void eExibidaAMensagemDeErroBloqueioDependente() {
-        carrinhoPage.validaMsgBloqueioDependente();
+    @Então("será exibida a mensagem de erro: {string}")
+    public void eExibidaAMensagemDeErro(String msgExibida) {
+        carrinhoPage.validaMsgErro(msgExibida);
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do Carrinho")

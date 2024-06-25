@@ -3,6 +3,7 @@ package steps;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.springframework.beans.factory.annotation.Autowired;
 import pages.SmsPage;
 import support.CartOrder;
 
@@ -10,7 +11,8 @@ public class SmsSteps {
     private final SmsPage smsPage;
     private final CartOrder cartOrder;
 
-    public SmsSteps(SmsPage smsPage, CartOrder cartOrder) { //Spring Autowired
+    @Autowired
+    public SmsSteps(SmsPage smsPage, CartOrder cartOrder) {
         this.smsPage = smsPage;
         this.cartOrder = cartOrder;
     }

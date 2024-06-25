@@ -1,5 +1,7 @@
 package support.utils;
 
+import java.util.Map;
+
 public final class Constants {
 
     private Constants() {}
@@ -50,4 +52,14 @@ public final class Constants {
         TICKET,
         CREDIT_CARD
     }
+
+    public static final Map<String, String> planSingleToCombo = Map.of(
+            "17216", "17353",
+            "17218", "17354",
+            "17226", "17230",
+
+            "17270", "17260",
+            "17268", "17258",
+            "17266", "17256"
+    );
 }
