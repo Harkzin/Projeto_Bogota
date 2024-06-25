@@ -30,11 +30,18 @@ public class DependentesSteps {
         dependentesPage.clicarConfirmarDependente();
     }
 
-    @E("o usuário adiciona um dependente de numero novo")
-    public void preencherDadosPessoais() {
+    @E("adiciona o primeiro dependente, com número novo")
+    public void adicionarPrimeiroDependente() {
         dependentesPage.clicarAdicionarDependente();
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
+    }
+
+    @E("adiciona o segundo dependente, com número novo")
+    public void adicionarSegundoDependente() {
+        dependentesPage.clicarAdicionarOutroDependente();
+        dependentesPage.adicionarNovoNumeroSegundoDependente();
+        dependentesPage.clicarConfirmarSegundoDependente();
     }
 
     @E("o usuário clicar no botão [Continuar] na tela de Dependentes")

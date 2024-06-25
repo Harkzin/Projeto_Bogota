@@ -28,6 +28,11 @@ public class DependentesPage {
     private WebElement btnAdicionarDependente;
     private WebElement btnSeguirSemDependente;
 
+    private WebElement btnConfirmarDependente2;
+    private WebElement btnExcluir2;
+    private WebElement abaNumeroNovo2;
+    private WebElement abaPortabilidade2;
+
     public void validarPaginaDependentes() {
         driverQA.waitPageLoad("/dependents/claroDependents", 15);
         btnAdicionarDependente = driverQA.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
@@ -58,6 +63,21 @@ public class DependentesPage {
         Assert.assertTrue(btnExcluir.isDisplayed());
     }
 
+    private void validarBotoesDependenteDois() {
+        abaPortabilidade2 = driverQA.findElement("(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]","xpath");
+        btnConfirmarDependente2 = driverQA.findElement("//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]", "xpath");
+        abaNumeroNovo2 = driverQA.findElement("(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[2]","xpath");
+        btnExcluir2 = driverQA.findElement("(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[2]", "xpath");
+
+        driverQA.waitElementVisibility(abaPortabilidade2,10);
+
+        Assert.assertTrue(abaNumeroNovo2.isDisplayed());
+        Assert.assertTrue(abaPortabilidade2.isDisplayed());
+        Assert.assertTrue(abaPortabilidade2.getAttribute("class").contains("active"));
+        Assert.assertTrue(btnConfirmarDependente2.isDisplayed());
+        Assert.assertTrue(btnExcluir2.isDisplayed());
+    }
+
     public void inserirNumeroDependentes(String numero) {
         driverQA.actionSendKeys("phone_0", "id", numero);
     }
@@ -68,12 +88,25 @@ public class DependentesPage {
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
     }
 
-    public void clicarContinuar() {
-        driverQA.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
-    }
-
     public void adicionarNovoNumeroDependente() {
         driverQA.javaScriptClick(abaNumeroNovo);
     }
 
+    public void clicarAdicionarOutroDependente() {
+        driverQA.javaScriptClick("//div[@class='addingMoreDependent']//button","xpath");
+        validarBotoesDependenteDois();
+    }
+
+    public void adicionarNovoNumeroSegundoDependente() {
+        driverQA.javaScriptClick(abaNumeroNovo2);
+    }
+
+    public void clicarConfirmarSegundoDependente() {
+        driverQA.javaScriptClick(btnConfirmarDependente2);
+        driverQA.waitElementInvisibility(btnConfirmarDependente2,5);
+    }
+
+    public void clicarContinuar() {
+        driverQA.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
+    }
 }
