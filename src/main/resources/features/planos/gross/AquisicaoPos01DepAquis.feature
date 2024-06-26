@@ -4,7 +4,7 @@ Funcionalidade: Planos - Gross
 
   @Aquisicao
   @Pos
-  @AquisicaoPosPagoUmDependente
+  @AquisicaoPos01DepAquis
   Cenario: Aquisição Pós - 01 Dependente
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17270" do carrossel da Home
@@ -23,7 +23,7 @@ Funcionalidade: Planos - Gross
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E o usuário adiciona um dependente de numero novo
+    E adiciona o primeiro dependente, com número novo
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
