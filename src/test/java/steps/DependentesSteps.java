@@ -32,14 +32,14 @@ public class DependentesSteps {
 
     @E("adiciona o primeiro dependente, com número novo")
     public void adicionarPrimeiroDependente() {
-        dependentesPage.clicarAdicionarDependente();
+        dependentesPage.clicarAdicionarDependente(1);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o segundo dependente, com número novo")
     public void adicionarSegundoDependente() {
-        dependentesPage.clicarAdicionarSegundoDependente();
+        dependentesPage.clicarAdicionarOutroDependente(2);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
     }
