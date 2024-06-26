@@ -25,14 +25,21 @@ public class DependentesSteps {
 
     @E("o usuário adiciona um dependente de numero {string}")
     public void preencherDadosPessoais(String numero) {
-        dependentesPage.clicarAdicionarDependente();
+        //dependentesPage.clicarAdicionarDependente();
         dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();
     }
 
-    @E("o usuário adiciona um dependente de numero novo")
-    public void preencherDadosPessoais() {
-        dependentesPage.clicarAdicionarDependente();
+    @E("adiciona o primeiro dependente, com número novo")
+    public void adicionarPrimeiroDependente() {
+        dependentesPage.clicarAdicionarDependente(1);
+        dependentesPage.adicionarNovoNumeroDependente();
+        dependentesPage.clicarConfirmarDependente();
+    }
+
+    @E("adiciona o segundo dependente, com número novo")
+    public void adicionarSegundoDependente() {
+        dependentesPage.clicarAdicionarOutroDependente(2);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
     }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
+import java.util.Map;
+
 @Component
 @ScenarioScope
 public class DependentesPage {
@@ -21,10 +23,34 @@ public class DependentesPage {
         this.cartOrder = cartOrder;
     }
 
-    private WebElement btnConfirmarDependente;
-    private WebElement btnExcluir;
-    private WebElement abaNumeroNovo;
     private WebElement abaPortabilidade;
+    private WebElement btnConfirmarDependente;
+    private WebElement abaNumeroNovo;
+    private WebElement btnExcluir;
+
+
+
+    private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
+            1,"//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
+            2,"//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
+            3,"x"
+    ) ;
+    private final Map<Integer,String> mapBtnExcluir = Map.of(
+            1,"//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')]",
+            2,"(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[2]",
+            3,"x"
+    );
+    private final Map<Integer,String> mapAbaNumeroNovo = Map.of(
+            1,"//ul[@id='js-dependentList']//li[contains(text(),'Novo número')]",
+            2,"(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[2]",
+            3,"x"
+    );
+    private final Map<Integer,String> mapAbaPortabilidade = Map.of(
+            1,"//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
+            2,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
+            3,"x"
+    );
+
     private WebElement btnAdicionarDependente;
     private WebElement btnSeguirSemDependente;
 
@@ -37,17 +63,17 @@ public class DependentesPage {
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
 
-    public void clicarAdicionarDependente() {
+    public void clicarAdicionarDependente(int dependente) {
         driverQA.javaScriptClick("//div[@class='mdn-Row']//div//button", "xpath");
-        validarBotoesDependente();
+        validarBotoesDependente(dependente);
     }
 
 
-    private void validarBotoesDependente() {
-        abaPortabilidade = driverQA.findElement("//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]","xpath");
-        btnConfirmarDependente = driverQA.findElement("//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]", "xpath");
-        abaNumeroNovo = driverQA.findElement("//ul[@id='js-dependentList']//li[contains(text(),'Novo número')]","xpath");
-        btnExcluir = driverQA.findElement("//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')]", "xpath");
+    private void validarBotoesDependente(int dependente) {
+        abaPortabilidade = driverQA.findElement(mapAbaPortabilidade.get(dependente),"xpath");
+        btnConfirmarDependente = driverQA.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
+        abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
+        btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
 
         driverQA.waitElementVisibility(abaPortabilidade,10);
 
@@ -63,17 +89,21 @@ public class DependentesPage {
     }
 
     public void clicarConfirmarDependente() {
-        driverQA.javaScriptClick("//ul[@id='js-dependentList']//li//div//div//div//button[2]", "xpath");
+        driverQA.javaScriptClick(btnConfirmarDependente);
         driverQA.waitElementInvisibility(btnConfirmarDependente,5);
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
-    }
-
-    public void clicarContinuar() {
-        driverQA.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
     }
 
     public void adicionarNovoNumeroDependente() {
         driverQA.javaScriptClick(abaNumeroNovo);
     }
 
+    public void clicarAdicionarOutroDependente(int dependente) {
+        driverQA.javaScriptClick("//div[@class='addingMoreDependent']//button","xpath");
+        validarBotoesDependente(dependente);
+    }
+
+    public void clicarContinuar() {
+        driverQA.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
+    }
 }
