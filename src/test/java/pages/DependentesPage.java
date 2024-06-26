@@ -63,9 +63,9 @@ public class DependentesPage {
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
 
-    public void clicarAdicionarDependente(int dependente) {
+    public void clicarAdicionarDependente() {
         driverQA.javaScriptClick("//div[@class='mdn-Row']//div//button", "xpath");
-        validarBotoesDependente(dependente);
+        validarBotoesDependente(1);
     }
 
 
@@ -98,18 +98,9 @@ public class DependentesPage {
         driverQA.javaScriptClick(abaNumeroNovo);
     }
 
-    public void clicarAdicionarOutroDependente(int dependente) {
+    public void clicarAdicionarSegundoDependente() {
         driverQA.javaScriptClick("//div[@class='addingMoreDependent']//button","xpath");
-        validarBotoesDependente(dependente);
-    }
-
-    public void adicionarNovoNumeroSegundoDependente() {
-        driverQA.javaScriptClick(abaNumeroNovo);
-    }
-
-    public void clicarConfirmarSegundoDependente() {
-        driverQA.javaScriptClick(btnConfirmarDependente);
-        driverQA.waitElementInvisibility(btnConfirmarDependente,5);
+        validarBotoesDependente(2);
     }
 
     public void clicarContinuar() {
