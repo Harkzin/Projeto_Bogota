@@ -23,13 +23,13 @@ public class PdpPlanosSteps {
         pdpPlanosPage.validarPdpPlanos();
     }
 
-    @Quando("o usuário selecionar a forma de pagamento [Débito]")
+    @Quando("o usuário selecionar a forma de pagamento [Débito] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoDebito() {
         cartOrder.isDebitPaymentFlow = true;
         pdpPlanosPage.selecionarDebito();
     }
 
-    @Quando("o usuário selecionar a forma de pagamento [Boleto]")
+    @Quando("o usuário selecionar a forma de pagamento [Boleto] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoBoleto() {
         cartOrder.isDebitPaymentFlow = false;
         pdpPlanosPage.selecionarBoleto();
@@ -62,7 +62,7 @@ public class PdpPlanosSteps {
         pdpPlanosPage.validarAppsIlimitados(true);
     }
 
-    @Quando("o usuário clicar no botão Eu quero! da PDP")
+    @Quando("o usuário clicar no botão [Eu quero!] da PDP")
     public void clicarEuQuero() {
         pdpPlanosPage.clicarEuQuero();
     }

@@ -1,6 +1,5 @@
 package support.utils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public final class Constants {
@@ -40,6 +39,18 @@ public final class Constants {
     public enum DeliveryMode {
         CONVENTIONAL,
         EXPRESS
+    }
+
+    public enum InvoiceType {
+        WHATSAPP,
+        EMAIL,
+        PRINTED
+    }
+
+    public enum PlanPaymentMode {
+        DEBIT,
+        TICKET,
+        CREDIT_CARD
     }
 
     public static final Map<String, String> planSingleToCombo = Map.of(

@@ -83,7 +83,7 @@ public class ComumPage {
     }
 
     public void validarResumoCompraPlano() {
-        driverQA.actionPause(1000);
+        driverQA.actionPause(1500);
 
         String planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
 
