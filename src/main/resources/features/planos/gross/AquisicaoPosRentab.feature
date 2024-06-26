@@ -55,5 +55,4 @@ Funcionalidade: Planos - Gross
       #Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
 
-
   # Steps desabilitadas para cenários rentab. API para consulta das informações da promoção rentab com bug.

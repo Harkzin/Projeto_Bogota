@@ -61,3 +61,5 @@ Funcionalidade: Planos - Gross
     Então é direcionado para a tela de Parabéns
       #Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
+
+    #Steps desabilitados pelas validações do Resumo da compra não contemplarem as informções com depedentes ainda - ECCMAUT-351
