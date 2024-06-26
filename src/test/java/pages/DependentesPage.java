@@ -31,19 +31,19 @@ public class DependentesPage {
 
 
     private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
-            1,"//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
-            2,"//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
-            3,"//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]"
+            1, "//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
+            2, "//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
+            3, "//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]"
     ) ;
     private final Map<Integer,String> mapBtnExcluir = Map.of(
-            1,"//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')]",
-            2,"(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[2]",
-            3,"(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[3]"
+            1, "//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')]",
+            2, "(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[2]",
+            3, "(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[3]"
     );
     private final Map<Integer,String> mapAbaNumeroNovo = Map.of(
-            1,"//ul[@id='js-dependentList']//li[contains(text(),'Novo número')]",
-            2,"(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[2]",
-            3,"(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[3]"
+            1, "//ul[@id='js-dependentList']//li[contains(text(),'Novo número')]",
+            2, "(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[2]",
+            3, "(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[3]"
     );
     private final Map<Integer,String> mapAbaPortabilidade = Map.of(
             1,"//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
