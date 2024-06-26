@@ -63,6 +63,10 @@ public class DependentesPage {
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
 
+    public void clicarSeguirSemDependentes() {
+        driverQA.javaScriptClick(btnSeguirSemDependente);
+    }
+
     public void clicarAdicionarDependente(int dependente) {
         driverQA.javaScriptClick("//div[@class='mdn-Row']//div//button", "xpath");
         validarBotoesDependente(dependente);

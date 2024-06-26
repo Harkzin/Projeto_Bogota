@@ -17,6 +17,9 @@ Funcionalidade: Planos - Gross
       E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
+    Então é direcionado para a tela de Dependentes
+
+    Quando o usuário clicar no botão [Seguir sem dependentes]
     Então é direcionado para a tela de Customizar Fatura
       #Mas não deve haver alterações no valor e nem nas informações do Plano
       E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada

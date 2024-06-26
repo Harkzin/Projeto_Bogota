@@ -48,7 +48,6 @@ public class CustomizarFaturaPage {
 
     public void validarPaginaCustomizarFatura() {
         driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
-        System.out.println("cust page " + cartOrder.isDebitPaymentFlow);
 
         abaDebito = driverQA.findElement("tab-debito", "id");
         abaBoleto = driverQA.findElement("tab-boleto", "id");
@@ -113,8 +112,6 @@ public class CustomizarFaturaPage {
         whatsappTicket = driverQA.findElement("rdn-whatsapp-ticket", "id");
         emailTicket = driverQA.findElement("rdn-email-ticket", "id");
         correiosTicket = driverQA.findElement("rdn-correios-ticket", "id");
-
-        System.out.println("validarTip init " + cartOrder.isDebitPaymentFlow);
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {

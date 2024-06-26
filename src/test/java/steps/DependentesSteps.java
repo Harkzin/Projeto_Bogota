@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.DependentesPage;
 import support.CartOrder;
@@ -21,6 +22,11 @@ public class DependentesSteps {
     @Então("é direcionado para a tela de Dependentes")
     public void validarPaginaDadosPessoais() {
         dependentesPage.validarPaginaDependentes();
+    }
+
+    @Quando("o usuário clicar no botão [Seguir sem dependentes]")
+    public void clicarSeguirSemDependentes() {
+        dependentesPage.clicarSeguirSemDependentes();
     }
 
     @E("o usuário adiciona um dependente de numero {string}")
