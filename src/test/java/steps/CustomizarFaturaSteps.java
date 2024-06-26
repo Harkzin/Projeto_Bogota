@@ -29,37 +29,37 @@ public class CustomizarFaturaSteps {
 
     @E("deve ser exibido as opções de pagamento, com a opção [Débito] selecionada")
     public void exibePagamento() {
-        customizarFaturaPage.validarMeiosPagamento(DEBIT);
+        customizarFaturaPage.validarExibeMeiosPagamento(DEBIT);
     }
 
     @E("deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada")
     public void exibePagamentoBoleto() {
-        customizarFaturaPage.validarMeiosPagamento(TICKET);
+        customizarFaturaPage.validarExibeMeiosPagamento(TICKET);
     }
 
     @Mas("não deve ser exibido as opções de pagamento")
     public void naoExibePagamento() {
-        customizarFaturaPage.validarNaoExibeMeiosPagamento();
+        cartOrder.isDebitPaymentFlow = customizarFaturaPage.validarNaoExibeMeiosPagamento(); //Valida e já atualiza o isDebitPaymentFlow
     }
 
     @E("deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada")
     public void exibeRecebimentoFatura() {
-        customizarFaturaPage.validarTiposFatura(true);
+        customizarFaturaPage.validarTiposFatura(true, cartOrder.isDebitPaymentFlow, cartOrder.thab);
     }
 
     @Mas("não deve ser exibido os meios de recebimento da fatura")
     public void naoExibeRecebimentoFatura() {
-        customizarFaturaPage.validarTiposFatura(false);
+        customizarFaturaPage.validarTiposFatura(false, cartOrder.isDebitPaymentFlow, cartOrder.thab);
     }
 
     @E("deve ser exibido as datas de vencimento")
     public void exibeDatasVencimento() {
-        customizarFaturaPage.validarDatasVencimento(true);
+        customizarFaturaPage.validarDatasVencimento(true, cartOrder.isDebitPaymentFlow);
     }
 
-    @Mas("não deve ser exibido as datas de vencimento")
+    @E("não deve ser exibido as datas de vencimento")
     public void naoExibeDatasVencimento() {
-        customizarFaturaPage.validarDatasVencimento(false);
+        customizarFaturaPage.validarDatasVencimento(false, cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
@@ -81,22 +81,22 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar o método de recebimento da fatura [WhatsApp]")
     public void selecionarFaturaWhatsApp() {
-        customizarFaturaPage.selecionarTipoFatura(WHATSAPP);
+        customizarFaturaPage.selecionarTipoFatura(WHATSAPP, cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
-        customizarFaturaPage.selecionarTipoFatura(EMAIL);
+        customizarFaturaPage.selecionarTipoFatura(EMAIL, cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")
     public void selecionarFaturaCorreios() {
-        customizarFaturaPage.selecionarTipoFatura(PRINTED);
+        customizarFaturaPage.selecionarTipoFatura(PRINTED, cartOrder.isDebitPaymentFlow);
     }
 
     @Então("o valor do Plano será atualizado no Resumo da compra") //Débito fatura impressa = sem desconto, preço igual de boleto.
     public void validarValorFaturaImpressa() {
-        customizarFaturaPage.validarPrecoFaturaImpressaDebito();
+        customizarFaturaPage.validarPrecoFaturaImpressaDebito(cartOrder.getPlan().getFormattedPlanPrice(false, true));
     }
 
     @E("seleciona a data de vencimento {string}")
@@ -106,7 +106,7 @@ public class CustomizarFaturaSteps {
 
     @E("marca o checkbox de termos de aceite")
     public void marcarTermosDeAceite() {
-        customizarFaturaPage.aceitarTermos();
+        customizarFaturaPage.aceitarTermos(cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos")

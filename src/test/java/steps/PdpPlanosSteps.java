@@ -62,7 +62,7 @@ public class PdpPlanosSteps {
         pdpPlanosPage.validarAppsIlimitados(true);
     }
 
-    @Quando("o usuário clicar no botão Eu quero! da PDP")
+    @Quando("o usuário clicar no botão [Eu quero!] da PDP")
     public void clicarEuQuero() {
         pdpPlanosPage.clicarEuQuero();
     }

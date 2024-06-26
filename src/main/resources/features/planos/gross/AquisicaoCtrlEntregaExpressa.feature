@@ -5,7 +5,7 @@ Funcionalidade: Planos - Gross
 
   @Aquisicao
   @Controle
-  @AquisicaoCtrlExpressaBoleto
+  @AquisicaoCtrlEntregaExpressa
   Cenario: Aquisição Controle - Entrega expressa - Boleto
     Dado que o usuário acesse a Loja Online
 
@@ -25,11 +25,32 @@ Funcionalidade: Planos - Gross
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura
       Mas não deve haver alterações no valor e nem nas informações do Plano
-      E deve ser exibido as opções de pagamento
-      E deve ser exibido os meios de recebimento da fatura
+      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento
-    E seleciona a forma de pagamento: "Boleto"
-    E seleciona o método de recebimento da fatura: "E-mail"
+
+    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    Então não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário selecionar o método de recebimento da fatura [Correios]
+    Então o valor do Plano será atualizado no Resumo da compra
+
+    Quando o usuário selecionar a forma de pagamento [Boleto]
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    Então não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário selecionar o método de recebimento da fatura [Correios]
+    Então não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário selecionar a forma de pagamento [Débito]
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    E deve ser exibido as datas de vencimento
+    E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
