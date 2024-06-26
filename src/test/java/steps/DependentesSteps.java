@@ -50,6 +50,13 @@ public class DependentesSteps {
         dependentesPage.clicarConfirmarDependente();
     }
 
+    @E("adiciona o terceiro dependente, com número novo")
+    public void adicionarTerceiroDependente() {
+        dependentesPage.clicarAdicionarOutroDependente(3);
+        dependentesPage.adicionarNovoNumeroDependente();
+        dependentesPage.clicarConfirmarDependente();
+    }
+
     @E("o usuário clicar no botão [Continuar] na tela de Dependentes")
     public void clicarContinuar() {
         dependentesPage.clicarContinuar();
