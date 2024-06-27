@@ -29,7 +29,7 @@ public class DependentesSteps {
         dependentesPage.clicarSeguirSemDependentes();
     }
 
-    @E("o usuário adiciona um dependente de numero {string}")
+    @E("adiciona o primeiro dependente, com numero {string}")
     public void preencherDadosPessoais(String numero) {
         dependentesPage.clicarAdicionarDependente(1);
         dependentesPage.inserirNumeroDependentes(numero);

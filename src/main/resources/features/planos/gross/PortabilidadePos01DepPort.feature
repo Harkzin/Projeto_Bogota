@@ -23,7 +23,7 @@ Funcionalidade: Planos - Gross
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E o usuário adiciona um dependente de numero "910211959"
+    E adiciona o primeiro dependente, com numero "11910211960"
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
