@@ -333,12 +333,14 @@ public class CustomizarFaturaPage {
         driverQA.javaScriptClick(naoConcordo);
     }
 
-    public void direcionadoParaMulta() {
+    public void validarPaginaMulta() {
+        driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
+
         concordo = driverQA.findElement("btn-multa-concordo", "id");
         naoConcordo = driverQA.findElement("btn-multa-nao-concordo", "id");
 
-        driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
-        Assert.assertNotNull(driverQA.findElement("txt-mensagem-multa", "id"));
+        Assert.assertTrue(driverQA.findElement("txt-mensagem-multa", "id").isDisplayed());
+
         Assert.assertTrue(concordo.isDisplayed());
         Assert.assertTrue(naoConcordo.isDisplayed());
 

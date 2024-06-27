@@ -4,7 +4,6 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
-import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.CustomizarFaturaPage;
 import support.CartOrder;
@@ -127,7 +126,7 @@ public class CustomizarFaturaSteps {
 
     @Então("é direcionado pra tela de Customizar Fatura, com alerta de multa")
     public void direcionadoPraTelaDeMulta() {
-        customizarFaturaPage.direcionadoParaMulta();
+        customizarFaturaPage.validarPaginaMulta();
     }
 
     @Então("é direcionado para a tela de Customizar Fatura THAB")

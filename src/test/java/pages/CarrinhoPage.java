@@ -42,6 +42,8 @@ public class CarrinhoPage {
 
     private WebElement confirma;
 
+    private WebElement cancelar;
+
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {
         String cpf;
         String clearSaleRule = isApproved ? ".*[1348]$" : ".*5$"; //Regra do final do CPF da clearSale.
@@ -209,11 +211,12 @@ public class CarrinhoPage {
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 
-    public void validaAvisoTrocaPlano() {
-        confirma = driverQA.findElement("//button[contains(.,'Confirma')]", "xpath");
-        WebElement cancelar = driverQA.findElement("//button[contains(.,'Cancela')]", "xpath");
-
+    public void validarModalAvisoTrocaPlano() {
         driverQA.waitElementPresence("//div[@class='mdn-Modal mdn-Modal--warning mdn-Modal--sm mdn-isOpen mdn-isInitialized']", 10);
+
+        confirma = driverQA.findElement("//button[contains(.,'Confirma')]", "xpath"); //TODO Atualizar para id
+        cancelar = driverQA.findElement("//button[contains(.,'Cancela')]", "xpath"); //TODO Atualizar para id
+
         Assert.assertTrue(confirma.isDisplayed());
         Assert.assertTrue(cancelar.isDisplayed());
     }

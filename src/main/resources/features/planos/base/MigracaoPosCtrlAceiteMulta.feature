@@ -26,19 +26,17 @@ Funcionalidade: Planos - Base
     Quando o usuário clicar no botão [Concordo], Escolha a melhor forma de pagamento para sua fatura
     Então é direcionado para a tela de Customizar Fatura
      Mas não deve haver alterações no valor e nem nas informações do Plano
-     E deve ser exibido as opções de pagamento
-     E deve ser exibido os meios de recebimento da fatura
+     E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
      E deve ser exibido as datas de vencimento
-    E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
     E preenche os dados bancários
-    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E marca o checkbox de termos de aceite
 
-#    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-#    Entao é direcionado para a tela de SMS
-#    E preenche o campo [Código enviado Por SMS] com o token recebido
-#    Quando o usuário clicar no botão [Finalizar] da tela de SMS
-#
-#    Entao é direcionado para a tela de Parabéns
-#      Mas não deve haver alterações no valor e nem nas informações do Plano
-#    E os dados do pedido estão corretos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Entao é direcionado para a tela de SMS
+    E preenche o campo [Código enviado Por SMS] com o token recebido
+    Quando o usuário clicar no botão [Finalizar] da tela de SMS
+
+    Entao é direcionado para a tela de Parabéns
+      Mas não deve haver alterações no valor e nem nas informações do Plano
+    E os dados do pedido estão corretos
