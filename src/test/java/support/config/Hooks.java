@@ -33,8 +33,8 @@ public class Hooks {
         scenario.attach(screenshot, "image/png", "screenshot");
     }
 
-//    @After(order = 1)
-//    public void closeBrowser() {
-//        driverQA.getDriver().quit();
-//    }
+    @After(order = 1)
+    public void closeBrowser() {
+        driverQA.getDriver().quit();
+    }
 }
