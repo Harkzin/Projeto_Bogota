@@ -4,6 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Mas;
 import io.cucumber.java.pt.Quando;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.CustomizarFaturaPage;
 import support.CartOrder;
@@ -115,7 +116,7 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.clicarContinuar();
     }
 
-    @Quando("o usuário clicar no botão [Concordo], Escolha a melhor dorma de pagamento para sua fatura")
+    @Quando("o usuário clicar no botão [Concordo], Escolha a melhor forma de pagamento para sua fatura")
     public void clicarConcordo() {
         customizarFaturaPage.clicarConcordo();
     }

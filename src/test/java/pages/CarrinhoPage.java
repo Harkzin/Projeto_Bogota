@@ -40,6 +40,8 @@ public class CarrinhoPage {
     private WebElement cpfAquisicao;
     private WebElement email;
 
+    private WebElement confirma;
+
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {
         String cpf;
         String clearSaleRule = isApproved ? ".*[1348]$" : ".*5$"; //Regra do final do CPF da clearSale.
@@ -207,7 +209,16 @@ public class CarrinhoPage {
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 
+    public void validaAvisoTrocaPlano() {
+        confirma = driverQA.findElement("//button[contains(.,'Confirma')]", "xpath");
+        WebElement cancelar = driverQA.findElement("//button[contains(.,'Cancela')]", "xpath");
+
+        driverQA.waitElementPresence("//div[@class='mdn-Modal mdn-Modal--warning mdn-Modal--sm mdn-isOpen mdn-isInitialized']", 10);
+        Assert.assertTrue(confirma.isDisplayed());
+        Assert.assertTrue(cancelar.isDisplayed());
+    }
+
     public void clicarAvisoTrocaPlano() {
-        driverQA.javaScriptClick("//button[contains(.,'Confirma')]", "xpath"); // ECCMAUT-491 Tela sem id
+        driverQA.javaScriptClick(confirma);
     }
 }
