@@ -18,17 +18,21 @@ Funcionalidade: Planos - Base
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECCMAUT THAB", [Data de Nascimento] "20022000" e [Nome da Mãe] "Marta Silva"
-    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP 402"
+    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP402"
       Mas não deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura
       Mas não deve haver alterações no valor e nem nas informações do Plano
-      E deve ser exibido as opções de pagamento
-      E deve ser exibido os meios de recebimento da fatura
+      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento
-    E seleciona a forma de pagamento: "Boleto"
-    E seleciona o método de recebimento da fatura: "E-mail"
+
+    Quando o usuário selecionar a forma de pagamento [Boleto]
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+
+    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    Então não deve haver alterações no valor e nem nas informações do Plano
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
@@ -37,10 +41,12 @@ Funcionalidade: Planos - Base
     Quando seleciona o plano de controle antecipado ofertado
     Então é direcionado para a tela de Customizar Fatura THAB
       Mas não deve haver alterações no valor e nem nas informações do Plano
-      Mas não deve ser exibido as opções de pagamento
-      E deve ser exibido os meios de recebimento da fatura
-      Mas não deve ser exibido as datas de vencimento
-    E seleciona o método de recebimento da fatura: "E-mail"
+      E não deve ser exibido as opções de pagamento
+      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+      E não deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    Então não deve haver alterações no valor e nem nas informações do Plano
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
@@ -51,3 +57,6 @@ Funcionalidade: Planos - Base
     Entao é direcionado para a tela de Parabéns
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
+
+
+    #Cenário com bug na tela de Customizar Fatura versão THAB

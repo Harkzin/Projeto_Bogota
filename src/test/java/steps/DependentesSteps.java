@@ -2,6 +2,7 @@ package steps;
 
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.DependentesPage;
 import support.CartOrder;
@@ -23,6 +24,11 @@ public class DependentesSteps {
         dependentesPage.validarPaginaDependentes();
     }
 
+    @Quando("o usuário clicar no botão [Seguir sem dependentes]")
+    public void clicarSeguirSemDependentes() {
+        dependentesPage.clicarSeguirSemDependentes();
+    }
+
     @E("o usuário adiciona um dependente de numero {string}")
     public void preencherDadosPessoais(String numero) {
         //dependentesPage.clicarAdicionarDependente();
@@ -40,6 +46,13 @@ public class DependentesSteps {
     @E("adiciona o segundo dependente, com número novo")
     public void adicionarSegundoDependente() {
         dependentesPage.clicarAdicionarOutroDependente(2);
+        dependentesPage.adicionarNovoNumeroDependente();
+        dependentesPage.clicarConfirmarDependente();
+    }
+
+    @E("adiciona o terceiro dependente, com número novo")
+    public void adicionarTerceiroDependente() {
+        dependentesPage.clicarAdicionarOutroDependente(3);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
     }

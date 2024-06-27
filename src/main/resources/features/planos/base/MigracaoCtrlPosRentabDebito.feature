@@ -15,9 +15,9 @@ Funcionalidade: Planos - Base
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
       #Mas não deve haver alterações no valor e nem nas informações do Plano
-      Mas deve ser exibido as opções de pagamento
-      Mas deve ser exibido os meios de recebimento da fatura
-      Mas deve ser exibido as datas de vencimento
+      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+      E deve ser exibido as datas de vencimento
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
@@ -31,6 +31,4 @@ Funcionalidade: Planos - Base
       #Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
 
-  # Mas não deve haver alterações no valor...
-  # Desativado para cenários rentab,
-  # API para consulta das informações da promoção rentab com bug.
+  # Steps desabilitadas para cenários rentab. API para consulta das informações da promoção rentab com bug.

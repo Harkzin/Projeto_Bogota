@@ -13,7 +13,7 @@ Funcionalidade: Planos - Base
     Quando selecionar o plano de id "17266" do carrossel da Home
     Então é direcionado para a tela de Carrinho
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "11947720623", [E-mail] e [CPF] "71371060568"
+    E preenche os campos: [Telefone com DDD] "11947725638", [E-mail] e [CPF] "19398965178"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Termos Combo
