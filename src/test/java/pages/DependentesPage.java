@@ -27,7 +27,7 @@ public class DependentesPage {
     private WebElement btnConfirmarDependente;
     private WebElement abaNumeroNovo;
     private WebElement btnExcluir;
-
+    private WebElement txtTelefonePortabilidade;
 
 
     private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
@@ -49,6 +49,12 @@ public class DependentesPage {
             1,"//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
             2,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
             3,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
+    );
+
+    private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
+            1,"phone_0",
+            2,"phone_2",
+            3,"phone_3"
     );
 
     private WebElement btnAdicionarDependente;
@@ -78,6 +84,7 @@ public class DependentesPage {
         btnConfirmarDependente = driverQA.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
         abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
         btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
+        txtTelefonePortabilidade = driverQA.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
 
         driverQA.waitElementVisibility(abaPortabilidade,10);
 
@@ -89,7 +96,7 @@ public class DependentesPage {
     }
 
     public void inserirNumeroDependentes(String numero) {
-        driverQA.actionSendKeys("phone_0", "id", numero);
+        driverQA.actionSendKeys(txtTelefonePortabilidade, numero);
     }
 
     public void clicarConfirmarDependente() {
