@@ -81,4 +81,14 @@ public class CarrinhoSteps {
     public void clicarEuQuero() {
         carrinhoPage.clicarEuQuero();
     }
+
+    @Então("será exibido o modal [Aviso Troca de Plano]")
+    public void validarModalAvisoTrocaPlano() {
+        carrinhoPage.validarModalAvisoTrocaPlano();
+    }
+
+    @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
+    public void clicarEmAvisoTrocaPlano() {
+        carrinhoPage.clicarAvisoTrocaPlano();
+    }
 }
