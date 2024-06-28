@@ -27,6 +27,7 @@ public class DependentesPage {
     private WebElement btnConfirmarDependente;
     private WebElement abaNumeroNovo;
     private WebElement btnExcluir;
+    private WebElement txtTelefonePortabilidade;
 
 
 
@@ -50,6 +51,13 @@ public class DependentesPage {
             2,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
             3,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
     );
+
+    private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
+            1,"phone_0",
+            2,"phone_2",
+            3,"phone_3"
+    );
+
 
     private WebElement btnAdicionarDependente;
     private WebElement btnSeguirSemDependente;
@@ -88,13 +96,13 @@ public class DependentesPage {
         Assert.assertTrue(btnExcluir.isDisplayed());
     }
 
-    public void inserirNumeroDependentes(String numero) {
-        driverQA.actionSendKeys("phone_0", "id", numero);
+    public void inserirNumeroDependentes(int dependente, String numero) {
+        driverQA.actionSendKeys(mapCampoTelefonePortabilidade.get(dependente),"id",numero);
     }
 
     public void clicarConfirmarDependente() {
         driverQA.javaScriptClick(btnConfirmarDependente);
-        driverQA.waitElementInvisibility(btnConfirmarDependente,5);
+        driverQA.waitElementInvisibility(btnConfirmarDependente,10);
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
     }
 
