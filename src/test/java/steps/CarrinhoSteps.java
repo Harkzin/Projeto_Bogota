@@ -87,7 +87,7 @@ public class CarrinhoSteps {
         carrinhoPage.validarModalAvisoTrocaPlano();
     }
 
-    @Quando("o usuário clicar no botão [Concordo] do modal [Aviso Troca de Plano]")
+    @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
     public void clicarEmAvisoTrocaPlano() {
         carrinhoPage.clicarAvisoTrocaPlano();
     }

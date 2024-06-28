@@ -145,7 +145,7 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.clicarContinuar();
     }
 
-    @Quando("o usuário clicar no botão [Concordo], Escolha a melhor forma de pagamento para sua fatura")
+    @Quando("o usuário clicar no botão [Concordo] da tela de multa")
     public void clicarConcordo() {
         customizarFaturaPage.clicarConcordo();
     }
