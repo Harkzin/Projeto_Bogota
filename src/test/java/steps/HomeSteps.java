@@ -27,6 +27,7 @@ public class HomeSteps {
     @Quando("selecionar o plano de id {string} do carrossel da Home")
     public void selecionarPlano(String id) {
         cartOrder.setPlan(id);
+        homePage.validarCardPlano(cartOrder.getPlan());
         homePage.selecionarPlano(id);
     }
 
@@ -47,7 +48,7 @@ public class HomeSteps {
 
     @Quando("o usuário clicar na opção [Celulares] do header")
     public void acessarPlpCelulares() {
-        homePage.acessarMenuCelulares();
+        homePage.acessarPlpAparelhos();
     }
 
     @Quando("o usuário clicar na opção [Acessórios] do header")
@@ -58,6 +59,7 @@ public class HomeSteps {
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
         cartOrder.setPlan(id);
+        homePage.validarCardPlano(cartOrder.getPlan());
         homePage.acessarPdpPlano(id);
     }
 

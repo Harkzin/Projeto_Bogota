@@ -18,13 +18,14 @@ public class PlpAparelhosSteps {
     }
 
     @Então("é direcionado para a tela PLP de Aparelho")
-    public void validoQueFoiDirecionadoParaAPDPDeAparelhos() {
+    public void validarPLpAparelhos() {
         plpAparelhosPage.validarPlpAparelhos();
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
     public void clicarEuQuero(String id) {
         cartOrder.setDevice(id);
+        plpAparelhosPage.validarCardAparelho(cartOrder.getDevice());
         plpAparelhosPage.clicaBotaoEuQuero(id);
     }
 }

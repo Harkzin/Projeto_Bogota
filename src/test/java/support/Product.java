@@ -3,6 +3,7 @@ package support;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public final class Product {
@@ -10,13 +11,18 @@ public final class Product {
     @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @JsonProperty("classifications")
     private List<Classification> classifications;
+
     @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @JsonProperty("claroPaymentModePrices")
     private List<ClaroPaymentModePrice> claroPaymentModePrices;
+
     @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
     @JsonProperty("loyaltyClaroPrices")
     private List<LoyaltyClaroPrice> loyaltyClaroPrices;
+
+    @JsonProperty("price")
     private Price price;
+
     private String description;
     private String summary;
     private String code;
@@ -48,10 +54,6 @@ public final class Product {
                 .anyMatch(feature -> feature.code.contains(code));
     }
 
-    public Price getBaseDevicePrice() {
-        return price;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -72,6 +74,10 @@ public final class Product {
         return url;
     }
 
+    public double getPrice() {
+        return price.value;
+    }
+
     public String getFormattedPlanPrice(boolean isDebit, boolean hasLoyalty) {
         String paymentMode = isDebit ? "debitcard" : "ticket";
 
@@ -84,6 +90,10 @@ public final class Product {
                     .findFirst().orElseThrow()
                     .formattedValue.substring(3);
         }
+    }
+
+    public String getFormattedFullDevicePrice() {
+        return String.format(Locale.GERMAN, "%,.2f", (price.value - 10D)); //API retorna o valor com 10 reais a mais. Motivo desconhecido
     }
 
     public boolean hasPlanApps() {
@@ -142,9 +152,11 @@ public final class Product {
 
         @JsonProperty("code")
         private String code;
-        @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         @JsonProperty("features")
         private List<Feature> features;
+
         @JsonProperty("name")
         private String name;
 
@@ -156,8 +168,10 @@ public final class Product {
 
         @JsonProperty("formattedValue")
         private String formattedValue;
+
         @JsonProperty("promotionSource")
         private String promotionSource;
+
         @JsonProperty("value")
         private double value;
 
@@ -169,9 +183,11 @@ public final class Product {
 
         @JsonProperty("code")
         private String code;
-        @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         @JsonProperty("featureValues")
         private List<FeatureValue> featureValues;
+
         @JsonProperty("name")
         private String name;
 
@@ -192,8 +208,10 @@ public final class Product {
 
         @JsonProperty("formattedValue")
         private String formattedValue;
+
         @JsonProperty("promotionSource")
         private String promotionSource;
+
         @JsonProperty("value")
         private double value;
 
@@ -205,6 +223,7 @@ public final class Product {
 
         @JsonProperty("formattedValue")
         private String formattedValue;
+
         @JsonProperty("value")
         private double value;
 

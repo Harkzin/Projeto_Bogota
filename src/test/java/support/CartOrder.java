@@ -68,7 +68,7 @@ public class CartOrder {
         try {
             products.add(objMapper.readValue(getProductDetails(planId), Product.class));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando\n" + e);
         }
     }
 
@@ -82,7 +82,7 @@ public class CartOrder {
         try {
             products.add(objMapper.readValue(getProductDetails(deviceId), Product.class));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando\n" + e);
         }
     }
 

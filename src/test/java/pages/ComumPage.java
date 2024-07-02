@@ -76,7 +76,7 @@ public class ComumPage {
         }
 
         IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-            Assert.assertEquals(plan.getPlanPortability().get(i), planPortability.get(i).getText());
+            Assert.assertEquals("Texto planPortability igual ao configurado", plan.getPlanPortability().get(i), planPortability.get(i).getText());
 
             Assert.assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
         });
