@@ -28,18 +28,21 @@ public class DriverQA {
         String maximized = System.getProperty("maximized", "false");
 
         switch (browser) {
-            case "firefox":
+            case "firefox" -> {
                 WebDriverManager.firefoxdriver().clearDriverCache().setup();
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
+
                 if (headless.equals("true")) {
                     firefoxOptions.addArguments("--headless");
                 }
                 firefoxOptions.addArguments("--private");
+
                 driver = new FirefoxDriver(firefoxOptions);
-                break;
-            case "chrome":
+            }
+            case "chrome" -> {
                 WebDriverManager.chromedriver().setup();
                 ChromeOptions chromeOptions = new ChromeOptions();
+
                 if (headless.equals("true")) {
                     chromeOptions.addArguments("--headless");
                 }
@@ -51,10 +54,10 @@ public class DriverQA {
                 chromeOptions.addArguments("--disable-notifications");
                 chromeOptions.addArguments("--disable-dev-shm-usage");
                 chromeOptions.addArguments("--deny-permission-prompts");
+
                 driver = new ChromeDriver(chromeOptions);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid browser: " + browser);
+            }
+            default -> throw new IllegalArgumentException("Invalid browser: " + browser);
         }
 
         if (maximized.equals("true")) { //Local
@@ -69,34 +72,17 @@ public class DriverQA {
         WebElement element;
 
         try {
-            switch (selectorType) {
-                case "id":
-                    element = driver.findElement(By.id(selectorValue));
-                    break;
-                case "linkt":
-                    element = driver.findElement(By.linkText(selectorValue));
-                    break;
-                case "partialLink":
-                    element = driver.findElement(By.partialLinkText(selectorValue));
-                    break;
-                case "name":
-                    element = driver.findElement(By.name(selectorValue));
-                    break;
-                case "tag":
-                    element = driver.findElement(By.tagName(selectorValue));
-                    break;
-                case "xpath":
-                    element = driver.findElement(By.xpath(selectorValue));
-                    break;
-                case "class":
-                    element = driver.findElement(By.className(selectorValue));
-                    break;
-                case "css":
-                    element = driver.findElement(By.cssSelector(selectorValue));
-                    break;
-                default:
-                    throw new InvalidArgumentException("Invalid selector type: " + selectorType);
-            }
+            element = switch (selectorType) {
+                case "id" -> driver.findElement(By.id(selectorValue));
+                case "link" -> driver.findElement(By.linkText(selectorValue));
+                case "partialLink" -> driver.findElement(By.partialLinkText(selectorValue));
+                case "name" -> driver.findElement(By.name(selectorValue));
+                case "tag" -> driver.findElement(By.tagName(selectorValue));
+                case "xpath" -> driver.findElement(By.xpath(selectorValue));
+                case "class" -> driver.findElement(By.className(selectorValue));
+                case "css" -> driver.findElement(By.cssSelector(selectorValue));
+                default -> throw new InvalidArgumentException("Invalid selector type: " + selectorType);
+            };
             return element;
         } catch (Exception e) {
             return null;
@@ -104,37 +90,18 @@ public class DriverQA {
     }
 
     public List<WebElement> findElements(String selectorValue, String selectorType) {
-        List<WebElement> elements;
 
-        switch (selectorType) {
-            case "id":
-                elements = driver.findElements(By.id(selectorValue));
-                break;
-            case "link":
-                elements = driver.findElements(By.linkText(selectorValue));
-                break;
-            case "partialLink":
-                elements = driver.findElements(By.partialLinkText(selectorValue));
-                break;
-            case "name":
-                elements = driver.findElements(By.name(selectorValue));
-                break;
-            case "tag":
-                elements = driver.findElements(By.tagName(selectorValue));
-                break;
-            case "xpath":
-                elements = driver.findElements(By.xpath(selectorValue));
-                break;
-            case "class":
-                elements = driver.findElements(By.className(selectorValue));
-                break;
-            case "css":
-                elements = driver.findElements(By.cssSelector(selectorValue));
-                break;
-            default:
-                throw new InvalidArgumentException("Invalid selector type: " + selectorType);
-        }
-        return elements;
+        return switch (selectorType) {
+            case "id" -> driver.findElements(By.id(selectorValue));
+            case "link" -> driver.findElements(By.linkText(selectorValue));
+            case "partialLink" -> driver.findElements(By.partialLinkText(selectorValue));
+            case "name" -> driver.findElements(By.name(selectorValue));
+            case "tag" -> driver.findElements(By.tagName(selectorValue));
+            case "xpath" -> driver.findElements(By.xpath(selectorValue));
+            case "class" -> driver.findElements(By.className(selectorValue));
+            case "css" -> driver.findElements(By.cssSelector(selectorValue));
+            default -> throw new InvalidArgumentException("Invalid selector type: " + selectorType);
+        };
     }
 
     public void actionSendKeys(WebElement element, String text) {
@@ -199,7 +166,7 @@ public class DriverQA {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
     }
 
-    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time){
+    public void waitAttributeContainsText(WebElement element, String attribute, String value, int time){
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(time));
         wait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
