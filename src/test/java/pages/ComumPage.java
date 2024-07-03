@@ -88,7 +88,7 @@ public class ComumPage {
         String planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
 
         //Valida nome, caso configurado
-        if (!cartOrder.getPlan().getName().isEmpty()) {
+        if (!(cartOrder.getPlan().getName() == null)) {
             WebElement planName = driverQA.findElement(planContentParent + "//span[contains(@class, 'product-fullname')]", "xpath");
             validateElementText(cartOrder.getPlan().getName(), planName);
         }

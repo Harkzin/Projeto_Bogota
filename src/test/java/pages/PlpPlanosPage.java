@@ -28,11 +28,11 @@ public class PlpPlanosPage {
 
     //TODO Não testado, nenhum cenário passa pela PLP em 13/06/2024.
     private void validarCardPlano(String code) {
-        //TODO atualizar find para id quando for criado
+        //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
-        if (!cartOrder.getPlan().getName().isEmpty()) {
+        if (!(cartOrder.getPlan().getName() == null)) {
             WebElement planName = cardParent.findElement(By.xpath("h2"));
             ComumPage.validateElementText(cartOrder.getPlan().getName(), planName);
         }

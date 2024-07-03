@@ -20,7 +20,7 @@ public class PdpAparelhosSteps  {
 
     @Então("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
-        pdpAparelhosPage.validarPaginaPDPAparelho(cartOrder.getDevice().getCode());
+        pdpAparelhosPage.validarPdpAparelho(cartOrder.getDevice());
     }
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")

@@ -2,10 +2,18 @@ package pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
+import support.Product;
 import support.utils.DriverQA;
+
+import java.util.List;
+import java.util.stream.IntStream;
+
+import static pages.ComumPage.*;
 
 @Component
 @ScenarioScope
@@ -20,8 +28,47 @@ public class PdpAparelhosPage {
         this.cartOrder = cartOrder;
     }
 
-    public void validarPaginaPDPAparelho(String id) {
-        driverQA.waitPageLoad(id, 5);
+    private void validarInfosPlano() {}
+
+    public void validarPdpAparelho(Product device) {
+        driverQA.waitPageLoad(device.getCode(), 10);
+        driverQA.actionPause(1000);
+
+        //Validar fabricante
+        if (device.hasBrand()) {
+            validateElementText(device.getBrand(), driverQA.findElement("subtitle-marca-pdp", "id"));
+        }
+
+        //Validar nome
+        if (!(device.getName() == null)) {
+            validateElementText(device.getName(), driverQA.findElement("head-nome-aparelho-pdp", "id"));
+        }
+
+        //Validar cores
+        List<WebElement> variantColors = driverQA.findElements("//*[@id='txt-cor-do-produto']/following-sibling::div/div/div", "xpath");
+
+        IntStream.range(0, variantColors.size()).forEachOrdered(i -> {
+            WebElement variantUrl = variantColors.get(i).findElement(By.tagName("a"));
+            WebElement variantName = variantColors.get(i).findElement(By.tagName("p"));
+
+            Assert.assertTrue("Cor variante com url do modelo correto", variantUrl.getAttribute("href").contains(device.getVariants().get(i).get(0)));
+            Assert.assertEquals("Nome da cor variante igual ao configurado", device.getVariants().get(i).get(1), variantName.getText().toLowerCase());
+
+            Assert.assertTrue("Imagem com url da cor variante exibida", variantUrl.isDisplayed());
+            Assert.assertTrue("Nome da cor variante exibido", variantName.isDisplayed());
+        });
+
+        //Validar plano
+        validarInfosPlano();
+
+        //Validar preço base "De"
+        if (device.inStock()) {
+            WebElement fullPrice = driverQA.findElement("value-total-aparelho-pdp", "id");
+            driverQA.waitElementVisibility(fullPrice, 5);
+
+            Assert.assertEquals("Valor sem desconto (De) igual ao configurado", fullPrice.getText(), device.getFormattedFullDevicePrice());
+            Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
+        }
     }
 
     public void selecionarCorAparelho(String id) {

@@ -2,26 +2,36 @@ package support;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("UnusedDeclaration")
 public final class Product {
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("classifications")
     private List<Classification> classifications;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("claroPaymentModePrices")
     private List<ClaroPaymentModePrice> claroPaymentModePrices;
 
-    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection"})
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("loyaltyClaroPrices")
     private List<LoyaltyClaroPrice> loyaltyClaroPrices;
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    @JsonProperty("variantMatrix")
+    private List<VariantMatrix> variantMatrix;
+
     @JsonProperty("price")
     private Price price;
+
+    @JsonProperty("stock")
+    private Stock stock;
 
     private String description;
     private String summary;
@@ -29,9 +39,18 @@ public final class Product {
     private String name;
     private String url;
 
-    private Feature getPlanAttributes(String code) {
+    private Classification.Feature getPlanAttributes(String code) {
         return classifications.stream()
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
+                .findFirst().orElseThrow()
+                .features.stream()
+                .filter(feature -> feature.code.contains(code))
+                .findFirst().orElseThrow();
+    }
+
+    private Classification.Feature getDeviceAttributes(String code) {
+        return classifications.stream()
+                .filter(classification -> classification.code.contains("mobilephoneclassification"))
                 .findFirst().orElseThrow()
                 .features.stream()
                 .filter(feature -> feature.code.contains(code))
@@ -46,9 +65,9 @@ public final class Product {
                 .collect(Collectors.toList());
     }
 
-    private boolean hasAttribute(String code) {
+    private boolean hasAttribute(String classification, String code) {
         return classifications.stream()
-                .filter(classification -> classification.code.contains("serviceplanclassification"))
+                .filter(c -> c.code.contains(classification))
                 .findFirst().orElseThrow()
                 .features.stream()
                 .anyMatch(feature -> feature.code.contains(code));
@@ -93,11 +112,11 @@ public final class Product {
     }
 
     public String getFormattedFullDevicePrice() {
-        return String.format(Locale.GERMAN, "%,.2f", (price.value - 10D)); //API retorna o valor com 10 reais a mais. Motivo desconhecido
+        return "R$ " + String.format(Locale.GERMAN, "%,.2f", (price.value - 10D)); //API retorna o valor com 10 reais a mais. Motivo desconhecido
     }
 
     public boolean hasPlanApps() {
-        return hasAttribute("planapps");
+        return hasAttribute("serviceplanclassification", "planapps");
     }
 
     public String getPlanAppsTitle() {
@@ -109,11 +128,11 @@ public final class Product {
     }
 
     public boolean hasExtraPlayApps() {
-        return hasAttribute("planextraplayapps");
+        return hasAttribute("serviceplanclassification", "planextraplayapps");
     }
 
     public boolean hasExtraPlayTitle() {
-        return hasAttribute("clarotitleextraplay");
+        return hasAttribute("serviceplanclassification", "clarotitleextraplay");
     }
 
     public String getExtraPlayTitle() {
@@ -125,7 +144,7 @@ public final class Product {
     }
 
     public boolean hasClaroServices() {
-        return hasAttribute("claroservicespdp");
+        return hasAttribute("serviceplanclassification", "claroservicespdp");
     }
 
     public String getClaroServicesTitle() {
@@ -137,7 +156,7 @@ public final class Product {
     }
 
     public boolean hasPlanPortability() {
-        return hasAttribute("planportability");
+        return hasAttribute("serviceplanclassification", "planportability");
     }
 
     public List<String> getPlanPortability() {
@@ -148,7 +167,32 @@ public final class Product {
                 .collect(Collectors.toList());
     }
 
+    public boolean hasBrand() {
+        return hasAttribute("mobilephoneclassification", ".fabricante");
+    }
+
+    public String getBrand() {
+        return getDeviceAttributes(".fabricante").featureValues.get(0).value;
+    }
+
+    public boolean inStock() {
+        return stock.stockLevelStatus.equals("inStock");
+    }
+
+    public List<List<String>> getVariants() {
+        List<List<String>> variants = new ArrayList<>();
+
+        variantMatrix.forEach(variantColor -> {
+            List<String> variant = Arrays.asList(variantColor.variantOption.code, variantColor.variantValueCategory.name.toLowerCase());
+            variants.add(variant);
+        });
+
+        return variants;
+    }
+
     public static class Classification {
+
+        private Classification() {}
 
         @JsonProperty("code")
         private String code;
@@ -160,12 +204,30 @@ public final class Product {
         @JsonProperty("name")
         private String name;
 
-        private Classification() {
+        public static class Feature {
+
+            @JsonProperty("code")
+            private String code;
+
+            @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+            @JsonProperty("featureValues")
+            private List<FeatureValue> featureValues;
+
+            @JsonProperty("name")
+            private String name;
+
+            public static class FeatureValue {
+
+                @JsonProperty("value")
+                private String value;
+            }
         }
     }
 
     public static class ClaroPaymentModePrice {
 
+        private ClaroPaymentModePrice() {}
+
         @JsonProperty("formattedValue")
         private String formattedValue;
 
@@ -174,38 +236,12 @@ public final class Product {
 
         @JsonProperty("value")
         private double value;
-
-        private ClaroPaymentModePrice() {
-        }
-    }
-
-    public static class Feature {
-
-        @JsonProperty("code")
-        private String code;
-
-        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-        @JsonProperty("featureValues")
-        private List<FeatureValue> featureValues;
-
-        @JsonProperty("name")
-        private String name;
-
-        private Feature() {
-        }
-    }
-
-    public static class FeatureValue {
-
-        @JsonProperty("value")
-        private String value;
-
-        private FeatureValue() {
-        }
     }
 
     public static class LoyaltyClaroPrice {
 
+        private LoyaltyClaroPrice() {}
+
         @JsonProperty("formattedValue")
         private String formattedValue;
 
@@ -214,20 +250,47 @@ public final class Product {
 
         @JsonProperty("value")
         private double value;
-
-        private LoyaltyClaroPrice() {
-        }
     }
 
     public static class Price {
+
+        private Price() {}
 
         @JsonProperty("formattedValue")
         private String formattedValue;
 
         @JsonProperty("value")
         private double value;
+    }
 
-        private Price() {
+    public static class Stock {
+
+        private Stock() {}
+
+        @JsonProperty("stockLevelStatus")
+        private String stockLevelStatus;
+    }
+
+    public static class VariantMatrix {
+
+        private VariantMatrix() {}
+
+        @JsonProperty("variantOption")
+        private VariantOption variantOption;
+
+        @JsonProperty("variantValueCategory")
+        private VariantValueCategory variantValueCategory;
+
+        public static class VariantOption {
+
+            @JsonProperty("code")
+            String code;
+        }
+
+        public static class VariantValueCategory {
+
+            @JsonProperty("name")
+            String name;
         }
     }
 }

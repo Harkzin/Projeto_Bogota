@@ -37,11 +37,11 @@ public class HomePage {
     }
 
     public void validarCardPlano(Product plan) {
-        //TODO atualizar find para id quando for criado
+        //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
-        if (!plan.getName().isEmpty()) {
+        if (!(plan.getName() == null)) {
             WebElement planName = cardParent.findElement(By.xpath("h3"));
             ComumPage.validateElementText(plan.getName(), planName);
         }

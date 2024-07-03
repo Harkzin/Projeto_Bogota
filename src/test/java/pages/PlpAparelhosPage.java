@@ -3,7 +3,6 @@ package pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,9 +36,9 @@ public class PlpAparelhosPage {
         }
 
         //Valida preço base "De"
-        WebElement price = driverQA.findElement("//*[@id='btn-eu-quero-" + device.getCode() + "']/..//dt[contains(@class, 'mdn-Price-prefix')]", "xpath");
-        Assert.assertTrue("Valor sem desconto (De) igual ao configurado", price.getText().contains(String.format(Locale.GERMAN, "%,d", ((int) device.getPrice()) - 10)));
-        Assert.assertTrue("Valor sem desconto (De) é exibido", price.isDisplayed());
+        WebElement fullPrice = driverQA.findElement("//*[@id='btn-eu-quero-" + device.getCode() + "']/..//dt[contains(@class, 'mdn-Price-prefix')]", "xpath");
+        Assert.assertTrue("Valor sem desconto (De) igual ao configurado", fullPrice.getText().contains(String.format(Locale.GERMAN, "%,d", ((int) device.getPrice()) - 10)));
+        Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
     }
 
     public void clicaBotaoEuQuero(String id) {
