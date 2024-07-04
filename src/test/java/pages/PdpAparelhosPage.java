@@ -28,7 +28,11 @@ public class PdpAparelhosPage {
         this.cartOrder = cartOrder;
     }
 
-    private void validarInfosPlano() {}
+    private boolean prePaidPlanSelected;
+
+    private void validarInfosPlano() {
+
+    }
 
     public void validarPdpAparelho(Product device) {
         driverQA.waitPageLoad(device.getCode(), 10);
@@ -52,7 +56,7 @@ public class PdpAparelhosPage {
             WebElement variantName = variantColors.get(i).findElement(By.tagName("p"));
 
             Assert.assertTrue("Cor variante com url do modelo correto", variantUrl.getAttribute("href").contains(device.getVariants().get(i).get(0)));
-            Assert.assertEquals("Nome da cor variante igual ao configurado", device.getVariants().get(i).get(1), variantName.getText().toLowerCase());
+            Assert.assertEquals("Nome da cor variante igual ao configurado", device.getVariants().get(i).get(1).toLowerCase(), variantName.getText().toLowerCase());
 
             Assert.assertTrue("Imagem com url da cor variante exibida", variantUrl.isDisplayed());
             Assert.assertTrue("Nome da cor variante exibido", variantName.isDisplayed());
@@ -62,12 +66,28 @@ public class PdpAparelhosPage {
         validarInfosPlano();
 
         //Validar preço base "De"
-        if (device.inStock()) {
+        if (device.inStock() && !prePaidPlanSelected) {
             WebElement fullPrice = driverQA.findElement("value-total-aparelho-pdp", "id");
             driverQA.waitElementVisibility(fullPrice, 5);
 
             Assert.assertEquals("Valor sem desconto (De) igual ao configurado", fullPrice.getText(), device.getFormattedFullDevicePrice());
             Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
+        }
+
+        //Validar infos técnicas
+        if (device.hasDeviceFeatures()) {
+            driverQA.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
+            driverQA.waitElementVisibility(driverQA.findElement("especificationDevice", "id"), 2);
+
+            List<WebElement> features = driverQA.findElements("//*[@id='especificationDevice']/div/div", "xpath");
+
+            IntStream.range(0, features.size()).forEachOrdered(i -> {
+                WebElement featureType = features.get(i).findElement(By.xpath("div[1]/span"));
+                WebElement featureValue = features.get(i).findElement(By.xpath("div[2]/span"));
+
+                validateElementText(device.getDeviceFeatures().get(i).get(0) + ":", featureType);
+                validateElementText(device.getDeviceFeatures().get(i).get(1), featureValue);
+            });
         }
     }
 

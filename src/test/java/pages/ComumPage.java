@@ -26,8 +26,8 @@ public class ComumPage {
     }
 
     public static void validateElementText(String ref, WebElement element) {
-        Assert.assertEquals(ref, element.getText().trim());
-        Assert.assertTrue(element.isDisplayed());
+        Assert.assertEquals("Texto do elemento igual ao esperado", ref, element.getText().trim());
+        Assert.assertTrue("Exibe elemento", element.isDisplayed());
     }
 
     //Valida os ícones dos Apps e Países da composição do Plano

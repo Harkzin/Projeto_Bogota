@@ -2,10 +2,7 @@ package support;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -183,11 +180,28 @@ public final class Product {
         List<List<String>> variants = new ArrayList<>();
 
         variantMatrix.forEach(variantColor -> {
-            List<String> variant = Arrays.asList(variantColor.variantOption.code, variantColor.variantValueCategory.name.toLowerCase());
+            List<String> variant = Arrays.asList(variantColor.variantOption.code, variantColor.variantValueCategory.name);
             variants.add(variant);
         });
 
         return variants;
+    }
+
+    public boolean hasDeviceFeatures() {
+        return !(classifications == null) && classifications.stream().anyMatch(c -> c.code.equals("mobilephoneclassification"));
+    }
+
+    public List<List<String>> getDeviceFeatures() {
+        List<List<String>> features = new ArrayList<>();
+
+        classifications.stream()
+                .filter(c -> c.code.equals("mobilephoneclassification"))
+                .findFirst()
+                .orElseThrow()
+                .features
+                .forEach(feature -> features.add(Arrays.asList(feature.name, feature.featureUnit == null ? feature.featureValues.get(0).value : feature.featureValues.get(0).value + feature.featureUnit.unitType)));
+
+        return features;
     }
 
     public static class Classification {
@@ -209,12 +223,21 @@ public final class Product {
             @JsonProperty("code")
             private String code;
 
+            @JsonProperty("featureUnit")
+            private FeatureUnit featureUnit;
+
             @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
             @JsonProperty("featureValues")
             private List<FeatureValue> featureValues;
 
             @JsonProperty("name")
             private String name;
+
+            public static class FeatureUnit {
+
+                @JsonProperty("unitType")
+                private String unitType;
+            }
 
             public static class FeatureValue {
 
