@@ -37,7 +37,7 @@ public class ReadequacaoPage  {
         //Valida nome
         if (!(plan.getName() == null)) {
             WebElement name = driverQA.findElement("//*[@id='controle-antecipado']//h3[contains(@class, 'titulo-produto')]", "xpath");
-            validateElementText(cartOrder.getPlan().getName(), name);
+            validateElementText(plan.getName(), name);
         }
 
         //Valida preço

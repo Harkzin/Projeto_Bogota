@@ -20,7 +20,7 @@ public class PdpPlanosSteps {
 
     @Então("é direcionado para a PDP do plano")
     public void validarPDP() {
-        pdpPlanosPage.validarPdpPlanos();
+        pdpPlanosPage.validarPdpPlanos(cartOrder.getPlan());
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Débito] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
@@ -49,21 +49,21 @@ public class PdpPlanosSteps {
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        pdpPlanosPage.validarValorPlano(cartOrder.getPlan(), cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")
     public void ocultaAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitados(false);
+        pdpPlanosPage.validarAppsIlimitadosPdp(cartOrder.getPlan(), false);
     }
 
     @E("os aplicativos ilimitados são reexibidos na composição do plano")
     public void exibeAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitados(true);
+        pdpPlanosPage.validarAppsIlimitadosPdp(cartOrder.getPlan(), true);
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] da PDP")
     public void clicarEuQuero() {
-        pdpPlanosPage.clicarEuQuero();
+        pdpPlanosPage.clicarEuQuero(cartOrder.getPlan().getCode());
     }
 }

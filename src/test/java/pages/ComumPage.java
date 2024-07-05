@@ -49,20 +49,20 @@ public class ComumPage {
         });
     }
 
-    public static void validarAppsIlimitados(DriverQA driverQA, CartOrder cartOrder, WebElement planAppsTitle, List<WebElement> planApps) {
+    public static void validarAppsIlimitados(DriverQA driverQA, Product plan, WebElement planAppsTitle, List<WebElement> planApps) {
         //Valida título
-        validateElementText(cartOrder.getPlan().getPlanAppsTitle(), planAppsTitle);
+        validateElementText(plan.getPlanAppsTitle(), planAppsTitle);
 
         //Valida Apps
-        validarMidiasPlano(cartOrder.getPlan().getPlanApps(), planApps, driverQA);
+        validarMidiasPlano(plan.getPlanApps(), planApps, driverQA);
     }
 
-    public static void validarServicosClaro(DriverQA driverQA, CartOrder cartOrder, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
+    public static void validarServicosClaro(DriverQA driverQA, Product plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
         //Valida título
-        validateElementText(cartOrder.getPlan().getClaroServicesTitle(), claroServicesTitle);
+        validateElementText(plan.getClaroServicesTitle(), claroServicesTitle);
 
         //Valida Apps
-        validarMidiasPlano(cartOrder.getPlan().getClaroServices(), claroServicesApps, driverQA);
+        validarMidiasPlano(plan.getClaroServices(), claroServicesApps, driverQA);
     }
 
     public static void validarPlanPortability(List<WebElement> planPortability, Product plan) {
@@ -82,10 +82,15 @@ public class ComumPage {
         });
     }
 
-    public void validarResumoCompraPlano() {
-        driverQA.actionPause(1500);
+    public void validarResumoCompraPlano(CartOrder cartOrder) {
+        String planContentParent;
 
-        String planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
+        if (cartOrder.hasDevice) {
+            planContentParent = "//*[@id='render-claro-cart-entry-content']/div[2]/div";
+        } else {
+            planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
+            driverQA.actionPause(1500);
+        }
 
         //Valida nome, caso configurado
         if (!(cartOrder.getPlan().getName() == null)) {
@@ -101,7 +106,7 @@ public class ComumPage {
             //Apps
             List<WebElement> planApps = driverQA.findElements(planContentParent + "//div[contains(@class, ' apps-ilimitados')]//img", "xpath");
 
-            validarAppsIlimitados(driverQA, cartOrder, planAppsTitle, planApps);
+            validarAppsIlimitados(driverQA, cartOrder.getPlan(), planAppsTitle, planApps);
         }
 
         //Valida título extraPlay, caso configurado
@@ -126,7 +131,7 @@ public class ComumPage {
             //Apps
             List<WebElement> claroServicesApps = driverQA.findElements(planContentParent + "//div[contains(@class, 'claro-services')]//img", "xpath");
 
-            validarServicosClaro(driverQA, cartOrder, claroServicesTitle, claroServicesApps);
+            validarServicosClaro(driverQA, cartOrder.getPlan(), claroServicesTitle, claroServicesApps);
         }
 
         //Valida preço

@@ -19,6 +19,7 @@ public class PlpPlanosSteps {
     @Quando("selecionar o plano de id: {string}")
     public void selecionarPlano(String id) {
         cartOrder.setPlan(id);
+        plpPlanosPage.validarCardPlano(cartOrder.getPlan(), cartOrder.isDebitPaymentFlow);
         plpPlanosPage.selecionarPlano(id);
     }
 }
