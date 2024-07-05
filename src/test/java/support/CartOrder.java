@@ -63,6 +63,10 @@ public class CartOrder {
     }
 
     public void setPlan(String planId) {
+        if (!(this.planId == null)) {
+            products.remove(getProduct(this.planId));
+        }
+
         this.planId = planId;
 
         try {
@@ -77,6 +81,10 @@ public class CartOrder {
     }
 
     public void setDevice(String deviceId) {
+        if (!(this.deviceId == null)) {
+            products.remove(getProduct(this.deviceId));
+        }
+
         this.deviceId = deviceId;
 
         try {

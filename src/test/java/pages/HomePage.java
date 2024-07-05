@@ -14,6 +14,8 @@ import support.utils.DriverQA;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pages.ComumPage.*;
+
 @Component
 @ScenarioScope
 public class HomePage {
@@ -43,7 +45,7 @@ public class HomePage {
         //Valida nome
         if (!(plan.getName() == null)) {
             WebElement planName = cardParent.findElement(By.xpath("h3"));
-            ComumPage.validateElementText(plan.getName(), planName);
+            validateElementText(plan.getName(), planName);
         }
 
         //Valida preço
@@ -56,21 +58,21 @@ public class HomePage {
         if (plan.hasPlanApps()) {
             List<WebElement> planApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
-            ComumPage.validarMidiasPlano(plan.getPlanApps(), planApps, driverQA);
+            validarMidiasPlano(plan.getPlanApps(), planApps, driverQA);
         }
 
         //Valida título extraPlay
         if (plan.hasExtraPlayTitle()) {
             WebElement extraPlayTitle = cardParent
                     .findElement(By.xpath("div[@class='characteristics']/div[contains(@class, 'title-extra-play')][1]/p"));
-            ComumPage.validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
+            validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
         }
 
         //Valida apps extraPlay
         if (plan.hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            ComumPage.validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
+            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
         }
 
         //Valida planPortability (GB e bônus - antigo)
@@ -81,7 +83,7 @@ public class HomePage {
                     .map(webElement -> webElement.findElement(By.tagName("p")))
                     .collect(Collectors.toList());
 
-            ComumPage.validarPlanPortability(planPortability, plan);
+            validarPlanPortability(planPortability, plan);
         }
     }
 

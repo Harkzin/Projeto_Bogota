@@ -164,7 +164,7 @@ public final class Product {
                 .collect(Collectors.toList());
     }
 
-    public boolean hasBrand() {
+    public boolean hasManufacturer() {
         return hasAttribute("mobilephoneclassification", ".fabricante");
     }
 

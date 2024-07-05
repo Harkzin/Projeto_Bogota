@@ -161,9 +161,11 @@ public class DriverQA {
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
-    public void waitElementPresence(String xpath, int timeoutSeconds) {
+    public WebElement waitElementPresence(String xpath, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+
+        return driver.findElement(By.xpath(xpath));
     }
 
     public void waitAttributeContainsText(WebElement element, String attribute, String value, int time){
