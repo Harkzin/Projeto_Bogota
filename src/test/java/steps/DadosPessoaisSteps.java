@@ -35,31 +35,32 @@ public class DadosPessoaisSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
-        cartOrder.delivery.deliveryMode = CONVENTIONAL;
+        cartOrder.setDeliveryMode(CONVENTIONAL);
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
-        cartOrder.delivery.deliveryMode = EXPRESS;
+        cartOrder.setDeliveryMode(EXPRESS);
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
+        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.getDeliveryMode(), cartOrder.isDeviceCart());
     }
 
     @E("o usuário seleciona o tipo de sim [Esim]")
     public void selecionaEsim() {
-        dadosPessoaisPage.selecionarEsim();
+        cartOrder.setEsimChip();
+        dadosPessoaisPage.selecionarEsim(cartOrder.getDeliveryMode());
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
+        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.getDeliveryMode(), cartOrder.isDeviceCart());
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

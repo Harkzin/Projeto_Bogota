@@ -35,6 +35,7 @@ public class Hooks {
 
     @After(order = 1)
     public void closeBrowser() {
+        driverQA.getDriver().close();
         driverQA.getDriver().quit();
     }
 }

@@ -26,7 +26,7 @@ public final class CucumberSpringConfiguration {
         @Bean
         @Scope("cucumber-glue")
         public CartOrder createCartOrder() {
-            return new CartOrder().initializeDefaultCartOrder();
+            return new CartOrder();
         }
     }
 }

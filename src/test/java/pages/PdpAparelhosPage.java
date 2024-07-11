@@ -162,7 +162,7 @@ public class PdpAparelhosPage {
             WebElement fullPrice = driverQA.findElement("value-total-aparelho-pdp", "id");
             driverQA.waitElementVisibility(fullPrice, 5);
 
-            Assert.assertEquals("Valor sem desconto (De) igual ao configurado", fullPrice.getText(), device.getFormattedFullDevicePrice());
+            Assert.assertEquals("Valor sem desconto (De) igual ao configurado", fullPrice.getText(), device.getFormattedBaseDevicePrice());
             Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
         }
 

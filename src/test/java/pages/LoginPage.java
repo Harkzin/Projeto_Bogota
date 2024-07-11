@@ -90,8 +90,8 @@ public class LoginPage {
         Assert.assertTrue(driverQA.findElement("lnk-receber-codigo-sms", "id").isDisplayed());
     }
 
-    public void selecionaReceberCodigoEmail() {
-        clearInbox(cartOrder.essential.user.email);
+    public void selecionarCodigoEmail(String email) {
+        clearInbox(email);
         driverQA.javaScriptClick("lnk-receber-codigo-email", "id");
     }
 
@@ -102,14 +102,13 @@ public class LoginPage {
         Assert.assertTrue(token.isDisplayed());
     }
 
-    public void inserirTokenEmail() {
-        clearInbox(cartOrder.essential.user.email);
-        driverQA.actionSendKeys(token, driverQA.getEmail(cartOrder.essential.user.email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+    public void inserirTokenEmail(String email) {
+        clearInbox(email);
+        driverQA.actionSendKeys(token, driverQA.getEmail(email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {
         driverQA.waitPageLoad("/my-account/orders", 10);
-
         Assert.assertTrue(driverQA.findElement("txt-lista-pedidos", "id").isDisplayed());
     }
 

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.Constants;
-import support.utils.Constants.PlanPaymentMode;
+import support.utils.Constants.PaymentMode;
 import support.utils.DriverQA;
 
 import static pages.ComumPage.*;
@@ -78,11 +78,11 @@ public class CustomizarFaturaPage {
         Assert.assertTrue(conta.isDisplayed());
     }
 
-    public void validarExibeMeiosPagamento(PlanPaymentMode payment) { //Exibe nos fluxos: gross / base - cliente pagamento boleto / migra pré-ctrl
+    public void validarExibeMeiosPagamento(PaymentMode payment) { //Exibe nos fluxos: gross / base - cliente pagamento boleto / migra pré-ctrl
         isDebitClient = false;
 
         switch (payment) {
-            case DEBIT -> { //Fluxo está sendo débito. Default.
+            case DEBITCARD -> { //Fluxo está sendo débito. Default.
                 Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
                 Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
                 validarCamposDebito();
@@ -101,7 +101,7 @@ public class CustomizarFaturaPage {
         isDebitClient = true; //TODO caso combo = ?
         Assert.assertNull(abaDebito);
         Assert.assertNull(abaBoleto);
-        return !cartOrder.thab && !isComboFlow; //TODO combo funcionará apenas boleto
+        return !cartOrder.isThab() && !isComboFlow; //TODO combo funcionará apenas boleto
     }
 
     public void validarTiposFatura(boolean exibe, boolean isDebitPaymentFlow, boolean isThab) {
@@ -166,7 +166,7 @@ public class CustomizarFaturaPage {
                 }
             }
         } else { //fluxo base com fatura digital ou combo
-            if (!isComboFlow && (cartOrder.essential.processType == MIGRATE)) { //fluxo combo ou migração
+            if (!isComboFlow && (cartOrder.getProcessType() == MIGRATE)) { //fluxo combo ou migração
                 assertDebit.accept(false); //opções para débito existem no html, ocultas no front
 
                     if (isDebitClient) { //fluxo débito com cliente débito - existe no html apenas as opções para débito, ocultas no front

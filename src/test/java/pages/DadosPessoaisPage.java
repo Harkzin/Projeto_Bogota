@@ -168,12 +168,8 @@ public class DadosPessoaisPage {
         driverQA.actionSendKeys(complementoElement, complemento);
     }
 
-    public void clicarContinuar() {
-        driverQA.javaScriptClick("btn-continuar", "id");
-    }
-
-    public void selecionarEsim() {
-        if(cartOrder.delivery.deliveryMode == EXPRESS) {
+    public void selecionarEsim(DeliveryMode deliveryMode) {
+        if(deliveryMode == EXPRESS) {
             driverQA.javaScriptClick(chipEsimExpress);
             driverQA.waitElementInvisibility(entregaExpressa, 1);
         } else {
@@ -181,5 +177,9 @@ public class DadosPessoaisPage {
             driverQA.waitElementInvisibility(entregaConvencional, 1);
         }
         //TODO ECCMAUT-940
+    }
+
+    public void clicarContinuar() {
+        driverQA.javaScriptClick("btn-continuar", "id");
     }
 }

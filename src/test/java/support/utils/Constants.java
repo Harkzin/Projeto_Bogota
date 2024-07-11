@@ -47,10 +47,12 @@ public final class Constants {
         PRINTED
     }
 
-    public enum PlanPaymentMode {
-        DEBIT,
+    public enum PaymentMode {
+        DEBITCARD,
         TICKET,
-        CREDIT_CARD
+        PIX,
+        VOUCHER,
+        CLAROCLUBE
     }
 
     public static final Map<String, String> planSingleToCombo = Map.of(

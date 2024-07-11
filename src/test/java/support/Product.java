@@ -94,6 +94,11 @@ public final class Product {
         return price.value;
     }
 
+    public double getDebitPlanPrice() {
+        return loyaltyClaroPrices.stream().filter(price -> price.promotionSource.equals("debitcard"))
+                .findFirst().orElseThrow().value;
+    }
+
     public String getFormattedPlanPrice(boolean isDebit, boolean hasLoyalty) {
         String paymentMode = isDebit ? "debitcard" : "ticket";
 
@@ -108,7 +113,7 @@ public final class Product {
         }
     }
 
-    public String getFormattedFullDevicePrice() {
+    public String getFormattedBaseDevicePrice() {
         return "R$ " + String.format(Locale.GERMAN, "%,.2f", (price.value - 10D)); //API retorna o valor com 10 reais a mais. Motivo desconhecido
     }
 
@@ -220,6 +225,8 @@ public final class Product {
 
         public static class Feature {
 
+            private Feature() {}
+
             @JsonProperty("code")
             private String code;
 
@@ -235,11 +242,15 @@ public final class Product {
 
             public static class FeatureUnit {
 
+                private FeatureUnit() {}
+
                 @JsonProperty("unitType")
                 private String unitType;
             }
 
             public static class FeatureValue {
+
+                private FeatureValue() {}
 
                 @JsonProperty("value")
                 private String value;
@@ -306,11 +317,15 @@ public final class Product {
 
         public static class VariantOption {
 
+            private VariantOption() {}
+
             @JsonProperty("code")
             String code;
         }
 
         public static class VariantValueCategory {
+
+            private VariantValueCategory() {}
 
             @JsonProperty("name")
             String name;

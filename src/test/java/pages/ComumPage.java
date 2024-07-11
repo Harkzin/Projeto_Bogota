@@ -10,6 +10,7 @@ import support.Product;
 import support.utils.DriverQA;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.IntStream;
 
 @Component
@@ -85,7 +86,7 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cartOrder) {
         String planContentParent;
 
-        if (cartOrder.hasDevice) {
+        if (cartOrder.isDeviceCart()) {
             planContentParent = "//*[@id='render-claro-cart-entry-content']/div[2]/div";
         } else {
             planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
@@ -153,7 +154,32 @@ public class ComumPage {
         validateElementText(loyaltyRef, loyalty);
     }
 
-    public void validarResumoCompraAparelho() {
-        //TODO ECCMAUT-351
+    public void validarResumoCompraAparelho(CartOrder cart, boolean eSimFlow) {
+        driverQA.actionPause(1500);
+
+        String price = "R$ " + String.format(Locale.GERMAN, "%,.2f", cart.getCartProductPrice(cart.getDevice()));
+
+        //Subtotal
+        String subtotalSelector = "//*[@id='sidebar-resume']/div/div[1]/div/p[2]";
+        driverQA.javaScriptClick("//*[@id='sidebar-resume']/div/a", "xpath");
+        driverQA.waitElementVisibility(driverQA.findElement(subtotalSelector, "xpath"), 2);
+        Assert.assertEquals(price , driverQA.findElement(subtotalSelector, "xpath").getText());
+
+        //Valor Total a Pagar
+        validateElementText(price , driverQA.findElement("//*[@id='sidebar-resume']/div/div[2]/p[2]", "xpath"));
+
+        //Nome Aparelho
+        validateElementText(cart.getDevice().getName() , driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p", "xpath"));
+
+        //Valor Aparelho
+        validateElementText(price , driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]", "xpath"));
+
+        //Tipo Chip
+        String simType = eSimFlow ? "eSIM" : "Chip Comum";
+        validateElementText(simType , driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[1]/p", "xpath"));
+
+        //Valor Chip
+        String chipPrice = eSimFlow ? "Grátis" : "R$ 10,00";
+        validateElementText(chipPrice, driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]", "xpath"));
     }
 }

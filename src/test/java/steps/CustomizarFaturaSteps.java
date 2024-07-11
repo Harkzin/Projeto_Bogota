@@ -9,7 +9,7 @@ import pages.CustomizarFaturaPage;
 import support.CartOrder;
 
 import static support.utils.Constants.InvoiceType.*;
-import static support.utils.Constants.PlanPaymentMode.*;
+import static support.utils.Constants.PaymentMode.*;
 
 public class CustomizarFaturaSteps {
 
@@ -29,7 +29,7 @@ public class CustomizarFaturaSteps {
 
     @E("deve ser exibido as opções de pagamento, com a opção [Débito] selecionada")
     public void exibePagamento() {
-        customizarFaturaPage.validarExibeMeiosPagamento(DEBIT);
+        customizarFaturaPage.validarExibeMeiosPagamento(DEBITCARD);
     }
 
     @E("deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada")
@@ -44,12 +44,12 @@ public class CustomizarFaturaSteps {
 
     @E("deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada")
     public void exibeRecebimentoFatura() {
-        customizarFaturaPage.validarTiposFatura(true, cartOrder.isDebitPaymentFlow, cartOrder.thab);
+        customizarFaturaPage.validarTiposFatura(true, cartOrder.isDebitPaymentFlow, cartOrder.isThab());
     }
 
     @Mas("não deve ser exibido os meios de recebimento da fatura")
     public void naoExibeRecebimentoFatura() {
-        customizarFaturaPage.validarTiposFatura(false, cartOrder.isDebitPaymentFlow, cartOrder.thab);
+        customizarFaturaPage.validarTiposFatura(false, cartOrder.isDebitPaymentFlow, cartOrder.isThab());
     }
 
     @E("deve ser exibido as datas de vencimento")
@@ -132,7 +132,7 @@ public class CustomizarFaturaSteps {
     @Então("é direcionado para a tela de Customizar Fatura THAB")
     public void validarPagiaCustomizarFaturaTHAB() {
         customizarFaturaPage.validarPagiaCustomizarFaturaThab();
-        cartOrder.thab = true;
+        cartOrder.setThab();
     }
 
     @Então("é direcionado para a tela de Termos Combo")

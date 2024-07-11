@@ -31,26 +31,31 @@ public class CarrinhoSteps {
 
     @E("seleciona a opção [Migração], para o fluxo de troca de Plano")
     public void selecionaTrocaPlano() {
+        cartOrder.setProcessType(EXCHANGE);
         carrinhoPage.selecionarFluxo(EXCHANGE);
     }
 
     @E("seleciona a opção [Migração], para o fluxo de troca de promoção")
     public void selecionaTrocaPromo() {
+        cartOrder.setProcessType(EXCHANGE_PROMO);
         carrinhoPage.selecionarFluxo(EXCHANGE_PROMO);
     }
 
     @E("seleciona a opção [Migração], para o fluxo de migração de plataforma")
     public void selecionaMigra() {
+        cartOrder.setProcessType(MIGRATE);
         carrinhoPage.selecionarFluxo(MIGRATE);
     }
 
     @E("seleciona a opção [Portabilidade]")
     public void selecionaPortabilidade() {
+        cartOrder.setProcessType(PORTABILITY);
         carrinhoPage.selecionarFluxo(PORTABILITY);
     }
 
     @E("seleciona a opção [Aquisição]")
     public void selecionaAquisicao() {
+        cartOrder.setProcessType(ACQUISITION);
         carrinhoPage.selecionarFluxo(ACQUISITION);
     }
 

@@ -11,6 +11,7 @@ import org.junit.Assert;
 
 import java.util.UUID;
 
+import static support.utils.Constants.*;
 import static support.utils.Constants.ProcessType.ACQUISITION;
 import static support.utils.Constants.ProcessType.PORTABILITY;
 import static support.api.RestAPI.checkCpfDiretrix;
@@ -53,7 +54,7 @@ public class CarrinhoPage {
         return cpf;
     }
 
-    private void validarCamposBase(Boolean isDeviceCart) {
+    private void validarCamposBase(boolean isDeviceCart) {
         telefoneMigracao = driverQA.findElement("txt-telefone-migracao", "id");
         cpfMigracao = driverQA.findElement("txt-cpf-migracao", "id");
 
@@ -92,7 +93,7 @@ public class CarrinhoPage {
         Assert.assertEquals(cpfAquisicao.getAttribute("value"), "");
     }
 
-    private void validarCampoEmail(Boolean isDeviceCart) {
+    private void validarCampoEmail(boolean isDeviceCart) {
         email = driverQA.findElement("txt-email", "id");
 
         driverQA.waitElementVisibility(email, 1);
@@ -107,14 +108,14 @@ public class CarrinhoPage {
     public void validarPaginaCarrinho() {
         driverQA.waitPageLoad("/cart", 10);
 
-        if (!cartOrder.hasDevice) {
+        if (!cartOrder.isDeviceCart()) {
             String url = driverQA.getDriver().getCurrentUrl();
 
             fluxoBase = driverQA.findElement("rdn-migracao", "id");
             fluxoPortabilidade = driverQA.findElement("rdn-portabilidade", "id");
             fluxoAquisicao = driverQA.findElement("rdn-aquisicao", "id");
 
-            if (url.endsWith("cart")) {                         //cart planos normal
+            if (url.endsWith("cart")) { //cart planos normal
                 Assert.assertNotNull(fluxoBase);
                 Assert.assertNotNull(fluxoPortabilidade);
                 Assert.assertNotNull(fluxoAquisicao);
@@ -126,14 +127,14 @@ public class CarrinhoPage {
                 validarCamposBase(false);
                 validarCampoEmail(false);
             } else if (url.contains("targetCampaign=portin")) { //cart rentab port
-                cartOrder.essential.processType = PORTABILITY;
+                cartOrder.setProcessType(PORTABILITY);
                 Assert.assertNull(fluxoBase);
                 Assert.assertNotNull(fluxoPortabilidade);
                 Assert.assertNull(fluxoAquisicao);
                 validarCamposPortabilidade();
                 validarCampoEmail(false);
-            } else {                                            //cart rentab aquisição (targetCampaign=gross)
-                cartOrder.essential.processType = ACQUISITION;
+            } else { //cart rentab aquisição (targetCampaign=gross)
+                cartOrder.setProcessType(ACQUISITION);
                 Assert.assertNull(fluxoBase);
                 Assert.assertNull(fluxoPortabilidade);
                 Assert.assertNotNull(fluxoAquisicao);
@@ -141,7 +142,7 @@ public class CarrinhoPage {
                 validarCampoEmail(false);
             }
         } else { //aparelhos
-            switch (cartOrder.essential.processType) {
+            switch (cartOrder.getProcessType()) {
                 case ACQUISITION -> validarCamposAquisicao();
                 case APARELHO_TROCA_APARELHO, EXCHANGE, MIGRATE -> validarCamposBase(true);
                 case PORTABILITY -> validarCamposPortabilidade();
@@ -150,9 +151,7 @@ public class CarrinhoPage {
         }
     }
 
-    public void selecionarFluxo(Constants.ProcessType processType) {
-        cartOrder.essential.processType = processType;
-
+    public void selecionarFluxo(ProcessType processType) {
         switch (processType) {
             case EXCHANGE, EXCHANGE_PROMO, MIGRATE -> {
                 driverQA.javaScriptClick(fluxoBase);
@@ -171,7 +170,7 @@ public class CarrinhoPage {
     }
 
     public void acessarUrlRentabCarrinho(String url) {
-        driverQA.getDriver().get(Constants.urlAmbiente + url);
+        driverQA.getDriver().get(urlAmbiente + url);
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
@@ -190,9 +189,9 @@ public class CarrinhoPage {
     }
 
     public void inserirEmail() {
-        cartOrder.essential.user.email = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-
-        driverQA.actionSendKeys(email, cartOrder.essential.user.email);
+        String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
+        cartOrder.setUserEmail(userEmail);
+        driverQA.actionSendKeys(email, userEmail);
     }
 
     public void clicarEuQuero() {
