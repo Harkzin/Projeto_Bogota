@@ -10,7 +10,7 @@ Funcionalidade: Planos - Base
   @MigracaoCtrlPosRentabDebito
   Cenario: Migraçao Controle Pós - Rentabilização - Débito
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17270&coupon=c7c21130f16ac009e7f4819ef1e80611&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
-    E preenche os campos: [Telefone com DDD] "11947726224", [E-mail] e [CPF] " 93041484803"
+    E preenche os campos: [Telefone com DDD] "11940660390", [E-mail] e [CPF] "36163924894"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
@@ -18,6 +18,28 @@ Funcionalidade: Planos - Base
       E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
       E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    #Então não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário selecionar o método de recebimento da fatura [Correios]
+    #Então o valor do Plano será atualizado no Resumo da compra
+
+    Quando o usuário selecionar a forma de pagamento [Boleto]
+    #Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    #Então não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário selecionar o método de recebimento da fatura [Correios]
+    #Então não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário selecionar a forma de pagamento [Débito]
+    #Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    E deve ser exibido as datas de vencimento
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
