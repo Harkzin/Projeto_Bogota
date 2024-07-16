@@ -126,7 +126,7 @@ public class CustomizarFaturaSteps {
 
     @Então("é direcionado pra tela de Customizar Fatura, com alerta de multa")
     public void direcionadoPraTelaDeMulta() {
-        customizarFaturaPage.direcionadoParaMulta();
+        customizarFaturaPage.validarPaginaMulta();
     }
 
     @Então("é direcionado para a tela de Customizar Fatura THAB")
@@ -143,5 +143,10 @@ public class CustomizarFaturaSteps {
     @Quando("o usuário clicar no botão Continuar da tela de Cliente Combo")
     public void oUsuárioClicarNoBotaoContinuarDaTelaDeClienteCombo() {
         customizarFaturaPage.clicarContinuar();
+    }
+
+    @Quando("o usuário clicar no botão [Concordo] da tela de multa")
+    public void clicarConcordo() {
+        customizarFaturaPage.clicarConcordo();
     }
 }
