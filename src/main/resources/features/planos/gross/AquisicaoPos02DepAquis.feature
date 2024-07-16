@@ -1,11 +1,11 @@
 #language: pt
 @Regressivo
-Funcionalidade: Planos - Gross
+Funcionalidade: Aquisição Pos - 02 Dependente
 
   @Aquisicao
   @Pos
   @AquisicaoPos02DepAquis
-  Cenario: Aquisição Pós - 02 Dependente
+  Cenario: Aquisição Pos - 02 Dependente
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17268" do carrossel da Home
     Então é direcionado para a tela de Carrinho
