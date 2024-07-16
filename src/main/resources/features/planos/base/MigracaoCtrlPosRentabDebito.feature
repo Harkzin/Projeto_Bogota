@@ -1,14 +1,14 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Migracao Controle Pos - Rentabilizacao - Debito
 
   #Massa: Controle - pagamento boleto - fatura correios
 
   @Migracao
   @Pos
   @MigracaoCtrlPosRentabDebito
-  Cenario: Migraçao Controle Pós - Rentabilização - Débito
+  Cenario: Migracao Controle Pos - Rentabilizacao - Debito
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17270&coupon=c7c21130f16ac009e7f4819ef1e80611&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
     E preenche os campos: [Telefone com DDD] "11947726224", [E-mail] e [CPF] " 93041484803"
 

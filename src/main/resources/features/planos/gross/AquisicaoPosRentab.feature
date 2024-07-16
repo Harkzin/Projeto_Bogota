@@ -1,11 +1,11 @@
 #language: pt
 @Regressivo
-Funcionalidade: Planos - Gross
+Funcionalidade: Aquisicao Pos Pago - Rentabilizacao
 
   @Aquisicao
   @Pos
   @AquisicaoPosPagoRentabilizacao
-  Cenario: Aquisição Pós Pago - Rentabilização
+  Cenario: Aquisicao Pos Pago - Rentabilizacao
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17270&coupon=c7c21130f16ac009e7f4819ef1e80611&msisdn=msisdn&targetCampaign=gross&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=ACQUISITION"
     E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 

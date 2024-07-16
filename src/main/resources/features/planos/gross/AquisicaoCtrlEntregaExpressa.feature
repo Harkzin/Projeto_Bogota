@@ -1,12 +1,12 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Gross
+Funcionalidade: Aquisicao Controle - Entrega expressa - Boleto
 
   @Aquisicao
   @Controle
   @AquisicaoCtrlEntregaExpressa
-  Cenario: Aquisição Controle - Entrega expressa - Boleto
+  Cenario: Aquisicao Controle - Entrega expressa - Boleto
     Dado que o usuário acesse a Loja Online
 
     Quando selecionar o plano de id "17218" do carrossel da Home
