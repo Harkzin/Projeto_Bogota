@@ -1,12 +1,12 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Portabilidade Pos - Entrega Expressa (Mesmo endereco)
+Funcionalidade: Portabilidade - Numero Base
 
   @Portabilidade
   @Pos
   @PortabilidadeComNumeroBase
-  Cenario: Portabilidade Pos - Entrega Expressa (Mesmo endereco)
+  Cenario: Portabilidade - Numero Base
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17270" do carrossel da Home
     Então é direcionado para a tela de Carrinho
