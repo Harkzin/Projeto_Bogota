@@ -46,6 +46,10 @@ public class CustomizarFaturaPage {
     private WebElement emailTicket;
     private WebElement correiosTicket;
 
+    private WebElement concordo;
+
+    private WebElement naoConcordo;
+
     public void validarPaginaCustomizarFatura() {
         driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
 
@@ -326,11 +330,24 @@ public class CustomizarFaturaPage {
     }
 
     public void clickNaoConcordo() {
-        driverQA.javaScriptClick("btn-multa-nao-concordo", "id");
+        driverQA.javaScriptClick(naoConcordo);
     }
 
-    public void direcionadoParaMulta() {
+    public void validarPaginaMulta() {
         driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
-        Assert.assertNotNull(driverQA.findElement("txt-mensagem-multa", "id"));
+
+        concordo = driverQA.findElement("btn-multa-concordo", "id");
+        naoConcordo = driverQA.findElement("btn-multa-nao-concordo", "id");
+
+        Assert.assertTrue(driverQA.findElement("txt-mensagem-multa", "id").isDisplayed());
+
+        Assert.assertTrue(concordo.isDisplayed());
+        Assert.assertTrue(naoConcordo.isDisplayed());
+
+
+    }
+
+    public void clicarConcordo() {
+        driverQA.javaScriptClick(concordo);
     }
 }
