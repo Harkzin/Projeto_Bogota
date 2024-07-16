@@ -1,12 +1,12 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle com e-Sim
+Funcionalidade: Aquisicao Pos com e-Sim
 
   @Aquisicao
   @Controle
   @AquisicaoPosEsim
-  Cenario: Aquisicao Controle com e-Sim
+  Cenario: Aquisicao Pos com e-Sim
     Dado que o usuário acesse a Loja Online
 
     Quando selecionar o plano de id "17270" do carrossel da Home
