@@ -27,7 +27,6 @@ Funcionalidade: Planos - Gross
     E adiciona o segundo dependente, com numero "910211963"
     E adiciona o terceiro dependente, com numero "910211962"
 
-
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
       #Mas não deve haver alterações no valor e nem nas informações do Plano
