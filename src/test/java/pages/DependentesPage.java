@@ -27,8 +27,8 @@ public class DependentesPage {
     private WebElement btnConfirmarDependente;
     private WebElement abaNumeroNovo;
     private WebElement btnExcluir;
-    private WebElement txtTelefonePortabilidade;
-
+    private WebElement btnAdicionarDependente;
+    private WebElement btnSeguirSemDependente;
 
 
     private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
@@ -57,10 +57,6 @@ public class DependentesPage {
             2,"phone_2",
             3,"phone_3"
     );
-
-
-    private WebElement btnAdicionarDependente;
-    private WebElement btnSeguirSemDependente;
 
     public void validarPaginaDependentes() {
         driverQA.waitPageLoad("/dependents/claroDependents", 15);

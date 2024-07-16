@@ -4,14 +4,14 @@ Funcionalidade: Planos - Gross
 
   @Portabilidade
   @Pos
-  @PortabilidadePos02DepPort
-  Cenario: Aquisição Pós - 02 Dependente
+  @PortabilidadePos03DepPort
+  Cenario: Aquisição Pós - 03 Dependente
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17268" do carrossel da Home
+    Quando selecionar o plano de id "17266" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
-    E preenche os campos: [Celular de contato] "11910211968", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Celular de contato] "11910211965", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
@@ -23,8 +23,9 @@ Funcionalidade: Planos - Gross
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E adiciona o primeiro dependente, com numero "910211967"
-    E adiciona o segundo dependente, com numero "910211966"
+    E adiciona o primeiro dependente, com numero "910211964"
+    E adiciona o segundo dependente, com numero "910211963"
+    E adiciona o terceiro dependente, com numero "910211962"
 
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes

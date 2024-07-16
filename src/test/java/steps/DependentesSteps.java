@@ -43,6 +43,13 @@ public class DependentesSteps {
         dependentesPage.clicarConfirmarDependente();
     }
 
+    @E("adiciona o terceiro dependente, com numero {string}")
+    public void adicionarTerceiroDependentePort(String numero) {
+        dependentesPage.clicarAdicionarOutroDependente(3);
+        dependentesPage.inserirNumeroDependentes(3, numero);
+        dependentesPage.clicarConfirmarDependente();
+    }
+
     @E("adiciona o primeiro dependente, com número novo")
     public void adicionarPrimeiroDependente() {
         dependentesPage.clicarAdicionarDependente(1);
