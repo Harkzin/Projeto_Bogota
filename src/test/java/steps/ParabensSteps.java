@@ -22,6 +22,12 @@ public class ParabensSteps {
         parabensPage.validarPaginaParabens();
     }
 
+    @Então("o usuário clicar em [Ok, Entendi]")
+    public void ClicarOkEntendi() {
+        parabensPage.clicarOkEntendi();
+    }
+
+
     @Então("os dados do pedido estão corretos")
     public void validarDadosPedido() {
         parabensPage.validarCamposPedido();
