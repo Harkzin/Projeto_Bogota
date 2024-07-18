@@ -59,7 +59,7 @@ Funcionalidade: Aquisicao Pos - 01 Dependente
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Então é direcionado para a tela de Parabéns
       #Mas não deve haver alterações no valor e nem nas informações do Plano
-    E o usuário clicar em [Ok, Entendi]
+    E o usuário clicar em [Ok, Entendi] no modal de token
     E os dados do pedido estão corretos
 
     #Steps desabilitados pelas validações do Resumo da compra não contemplarem as informções com depedentes ainda - ECCMAUT-351
