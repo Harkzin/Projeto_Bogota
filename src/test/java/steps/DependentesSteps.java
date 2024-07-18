@@ -32,21 +32,21 @@ public class DependentesSteps {
     @E("adiciona o primeiro dependente, com numero {string}")
     public void adicionarPrimeiroDependentePort(String numero) {
         dependentesPage.clicarAdicionarDependente(1);
-        dependentesPage.inserirNumeroDependentes(1, numero);
+        dependentesPage.inserirNumeroDependentes( numero);
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o segundo dependente, com numero {string}")
     public void adicionarSegundoDependentePort(String numero) {
         dependentesPage.clicarAdicionarOutroDependente(2);
-        dependentesPage.inserirNumeroDependentes(2, numero);
+        dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o terceiro dependente, com numero {string}")
     public void adicionarTerceiroDependentePort(String numero) {
         dependentesPage.clicarAdicionarOutroDependente(3);
-        dependentesPage.inserirNumeroDependentes(3, numero);
+        dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();
     }
 

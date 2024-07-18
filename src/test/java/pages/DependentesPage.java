@@ -29,6 +29,7 @@ public class DependentesPage {
     private WebElement btnExcluir;
     private WebElement btnAdicionarDependente;
     private WebElement btnSeguirSemDependente;
+    private WebElement txtTelefonePortabilidade;
 
 
     private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
@@ -47,15 +48,15 @@ public class DependentesPage {
             3, "(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[3]"
     );
     private final Map<Integer,String> mapAbaPortabilidade = Map.of(
-            1,"//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
-            2,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
-            3,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
+            1, "//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
+            2, "(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
+            3, "(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
     );
 
     private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
-            1,"phone_0",
-            2,"phone_2",
-            3,"phone_3"
+            1, "phone_0",
+            2, "phone_2",
+            3, "phone_3"
     );
 
     public void validarPaginaDependentes() {
@@ -76,12 +77,12 @@ public class DependentesPage {
         validarBotoesDependente(dependente);
     }
 
-
     private void validarBotoesDependente(int dependente) {
         abaPortabilidade = driverQA.findElement(mapAbaPortabilidade.get(dependente),"xpath");
         btnConfirmarDependente = driverQA.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
         abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
         btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
+        txtTelefonePortabilidade = driverQA.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
 
         driverQA.waitElementVisibility(abaPortabilidade,10);
 
@@ -92,8 +93,8 @@ public class DependentesPage {
         Assert.assertTrue(btnExcluir.isDisplayed());
     }
 
-    public void inserirNumeroDependentes(int dependente, String numero) {
-        driverQA.actionSendKeys(mapCampoTelefonePortabilidade.get(dependente),"id",numero);
+    public void inserirNumeroDependentes(String numero) {
+        driverQA.actionSendKeys(txtTelefonePortabilidade,numero);
     }
 
     public void clicarConfirmarDependente() {
