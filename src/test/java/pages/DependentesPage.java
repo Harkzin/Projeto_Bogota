@@ -27,7 +27,9 @@ public class DependentesPage {
     private WebElement btnConfirmarDependente;
     private WebElement abaNumeroNovo;
     private WebElement btnExcluir;
-
+    private WebElement btnAdicionarDependente;
+    private WebElement btnSeguirSemDependente;
+    private WebElement txtTelefonePortabilidade;
 
 
     private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
@@ -46,13 +48,16 @@ public class DependentesPage {
             3, "(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[3]"
     );
     private final Map<Integer,String> mapAbaPortabilidade = Map.of(
-            1,"//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
-            2,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
-            3,"(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
+            1, "//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
+            2, "(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
+            3, "(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
     );
 
-    private WebElement btnAdicionarDependente;
-    private WebElement btnSeguirSemDependente;
+    private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
+            1, "phone_0",
+            2, "phone_2",
+            3, "phone_3"
+    );
 
     public void validarPaginaDependentes() {
         driverQA.waitPageLoad("/dependents/claroDependents", 15);
@@ -72,12 +77,12 @@ public class DependentesPage {
         validarBotoesDependente(dependente);
     }
 
-
     private void validarBotoesDependente(int dependente) {
         abaPortabilidade = driverQA.findElement(mapAbaPortabilidade.get(dependente),"xpath");
         btnConfirmarDependente = driverQA.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
         abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
         btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
+        txtTelefonePortabilidade = driverQA.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
 
         driverQA.waitElementVisibility(abaPortabilidade,10);
 
@@ -89,12 +94,12 @@ public class DependentesPage {
     }
 
     public void inserirNumeroDependentes(String numero) {
-        driverQA.actionSendKeys("phone_0", "id", numero);
+        driverQA.actionSendKeys(txtTelefonePortabilidade,numero);
     }
 
     public void clicarConfirmarDependente() {
         driverQA.javaScriptClick(btnConfirmarDependente);
-        driverQA.waitElementInvisibility(btnConfirmarDependente,5);
+        driverQA.waitElementInvisibility(btnConfirmarDependente,10);
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
     }
 

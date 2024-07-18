@@ -27,7 +27,6 @@ public class ParabensSteps {
         parabensPage.clicarOkEntendi();
     }
 
-
     @Então("os dados do pedido estão corretos")
     public void validarDadosPedido() {
         parabensPage.validarCamposPedido();
