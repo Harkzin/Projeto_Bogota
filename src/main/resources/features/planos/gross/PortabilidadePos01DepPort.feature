@@ -16,7 +16,7 @@ Funcionalidade: Aquisicao Pos - 01 Dependente
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORT 01DEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORT UMDEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
       E deve ser exibido os tipos de entrega
 

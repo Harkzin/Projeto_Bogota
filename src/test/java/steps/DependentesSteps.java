@@ -30,8 +30,22 @@ public class DependentesSteps {
     }
 
     @E("adiciona o primeiro dependente, com numero {string}")
-    public void preencherDadosPessoais(String numero) {
+    public void adicionarPrimeiroDependentePort(String numero) {
         dependentesPage.clicarAdicionarDependente(1);
+        dependentesPage.inserirNumeroDependentes( numero);
+        dependentesPage.clicarConfirmarDependente();
+    }
+
+    @E("adiciona o segundo dependente, com numero {string}")
+    public void adicionarSegundoDependentePort(String numero) {
+        dependentesPage.clicarAdicionarOutroDependente(2);
+        dependentesPage.inserirNumeroDependentes(numero);
+        dependentesPage.clicarConfirmarDependente();
+    }
+
+    @E("adiciona o terceiro dependente, com numero {string}")
+    public void adicionarTerceiroDependentePort(String numero) {
+        dependentesPage.clicarAdicionarOutroDependente(3);
         dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();
     }
