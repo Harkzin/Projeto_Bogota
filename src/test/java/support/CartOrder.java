@@ -119,7 +119,14 @@ public class CartOrder {
         positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getDebitPlanPrice())); //TODO Atualizar plan.getDebitPlanPrice() para pegar o preço da API (preço da promo, API sem definição ainda)
     }
 
-    public double getCartProductPrice(Product product) {
+    public double getProductBasePrice(Product product) {
+        return positionsAndPrices.entries.stream()
+                .filter(e -> e.product == product)
+                .findFirst().orElseThrow()
+                .basePrice;
+    }
+
+    public double getProductTotalPrice(Product product) {
         return positionsAndPrices.entries.stream()
                 .filter(e -> e.product == product)
                 .findFirst().orElseThrow()

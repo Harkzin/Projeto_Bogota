@@ -198,6 +198,10 @@ public class CarrinhoPage {
         driverQA.javaScriptClick("btn-eu-quero", "id");
     }
 
+    public void clicarContinuar() {
+        driverQA.javaScriptClick("btn-continuar", "id");
+    }
+
     public void validaMsgErro(String msgExibida) {
         driverQA.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
         WebElement contentMessageError =  driverQA.findElement("//*[@id='cboxLoadedContent']/p", "xpath");

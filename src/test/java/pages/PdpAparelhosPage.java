@@ -190,4 +190,8 @@ public class PdpAparelhosPage {
     public void validarProdutoSemEstoque() {
         Assert.assertEquals("Produto Esgotado", driverQA.findElement("produto-esgotado", "id").getText().trim());
     }
+
+    public void clicarComprar(String deviceId) {
+        driverQA.javaScriptClick("btn-eu-quero-" + deviceId, "id");
+    }
 }
