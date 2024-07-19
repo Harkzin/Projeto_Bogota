@@ -89,6 +89,10 @@ public class DriverQA {
         }
     }
 
+    public WebElement findById(String id) {
+        return findElement(id, "id");
+    }
+
     public List<WebElement> findElements(String selectorValue, String selectorType) {
 
         return switch (selectorType) {
