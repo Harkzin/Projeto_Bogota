@@ -1,5 +1,6 @@
 package steps;
 
+import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.ParabensPage;
@@ -22,7 +23,7 @@ public class ParabensSteps {
         parabensPage.validarPaginaParabens();
     }
 
-    @Então("o usuário clicar em [Ok, Entendi]")
+    @E("o usuário clicar em [Ok, Entendi] no modal de token")
     public void ClicarOkEntendi() {
         parabensPage.clicarOkEntendi();
     }
