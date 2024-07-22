@@ -1,12 +1,12 @@
 #language: pt
 
   @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Migracao Pre - Readequacao THAB
 
   @Migracao
   @Controle
   @MigracaoPreCtrlTHAB
-  Cenario: Migraçãao Pré - Readequação THAB
+  Cenario: Migracao Pre - Readequacao THAB
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17216" do carrossel da Home
     Então é direcionado para a tela de Carrinho

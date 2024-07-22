@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Gross
+Funcionalidade: Aquisicao Controle - Reprovacao Clear Sale
 
   @Aquisicao
   @Controle

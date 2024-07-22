@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Bloqueio cliente Dependente
 
   @Controle
   @Troca

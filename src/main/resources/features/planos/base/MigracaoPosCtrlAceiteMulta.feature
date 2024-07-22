@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Migracao - Downgrade Pos - Controle com Aceite de Multa
 
   #ECCMAUT-491
   #Massa: Pós - pagamento boleto - fatura correios
@@ -9,7 +9,7 @@ Funcionalidade: Planos - Base
   @Migracao
   @Controle
   @MigracaoPosCtrlAceiteMulta
-  Cenario: Migração - Downgrade Pós - Controle com Aceite de Multa
+  Cenario: Migracao - Downgrade Pos - Controle com Aceite de Multa
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17216" do carrossel da Home
     Então é direcionado para a tela de Carrinho

@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Validar Meus Pedidos Header
 
   @MeusPedidosHeader
   Cenario: Validar Meus Pedidos Header
