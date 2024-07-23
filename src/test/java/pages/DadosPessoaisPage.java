@@ -3,12 +3,15 @@ package pages;
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.utils.DriverQA;
 
+import java.time.Duration;
 import java.util.function.BiConsumer;
 
 import static support.utils.Constants.*;
@@ -35,6 +38,8 @@ public class DadosPessoaisPage {
     private WebElement entregaExpressa;
     private WebElement chipEsimConvencional;
     private WebElement chipEsimExpress;
+    private WebElement campoCEP;
+    private WebElement numeroCobranca;
 
     private void validarCampoCep() {
         cep = driverQA.findElement("txt-cep-endereco-entrega", "id");
@@ -171,6 +176,36 @@ public class DadosPessoaisPage {
     public void clicarContinuar() {
         driverQA.javaScriptClick("btn-continuar", "id");
     }
+
+    public void clicarUsarMesmoEnderecoEntrega() {
+        driverQA.javaScriptClick("endereco-cobranca_checkbox", "id");
+    }
+
+    public void validarExibicaoCampoCEP() {
+        campoCEP = driverQA.findElement("txt-cep-endereco-cobranca", "id");
+        Assert.assertTrue(campoCEP.isDisplayed());
+        Assert.assertEquals(campoCEP.getAttribute("value"),"");
+    }
+
+    public void inserirCepCobranca(String cep) {
+        driverQA.actionSendKeys("txt-cep-endereco-cobranca","id",cep);
+        numeroCobranca = driverQA.findElement("txt-numero-endereco-cobranca", "id");
+
+        WebDriverWait wait = new WebDriverWait(driverQA.getDriver(), Duration.ofSeconds(5));
+        wait.until(a -> numeroCobranca.getAttribute("readonly") == null);
+
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-endereco-endereco-cobranca", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-cidade-endereco-cobranca", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-bairro-endereco-cobranca", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático", driverQA.findElement("txt-estado-endereco-cobranca", "id").getAttribute("value"), "");
+    }
+
+    public void inserirDadosEnderecoCobranca(String numero, String complemento) {
+
+        driverQA.actionSendKeys("txt-numero-endereco-cobranca","id",numero);
+        driverQA.actionSendKeys("txt-complemento-endereco-cobranca","id",complemento);
+    }
+
 
     public void selecionarEsim() {
         if(cartOrder.delivery.deliveryMode == EXPRESS) {

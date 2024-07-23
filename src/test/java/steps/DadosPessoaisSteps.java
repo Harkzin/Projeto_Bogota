@@ -52,6 +52,22 @@ public class DadosPessoaisSteps {
         dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
+    @E("é desmarcado a opção [Usar o mesmo endereço de entrega]")
+    public void desmarcarOpcaoUsarMesmoEnderecoEntrega() {
+        dadosPessoaisPage.clicarUsarMesmoEnderecoEntrega();
+    }
+
+    @Então("será exibido o campo de [CEP] do endereço de cobrança")
+    public void seraExibidoCampoCepEnderecoCobranca() {
+        dadosPessoaisPage.validarExibicaoCampoCEP();
+    }
+
+    @E("preenche os campos de endereço de cobrança: [CEP] {string} [Número] {string} [Complemento] {string}")
+    public void preencherCamposEnderecoEntrega(String cep, String numero, String complemento) {
+        dadosPessoaisPage.inserirCepCobranca(cep);
+        dadosPessoaisPage.inserirDadosEnderecoCobranca(numero, complemento);
+    }
+
     @E("o usuário seleciona o tipo de sim [Esim]")
     public void selecionaEsim() {
         dadosPessoaisPage.selecionarEsim();
