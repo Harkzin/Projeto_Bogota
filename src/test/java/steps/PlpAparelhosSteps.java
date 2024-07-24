@@ -7,6 +7,10 @@ import pages.PlpAparelhosPage;
 import support.CartOrder;
 import support.utils.DriverQA;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
+
 public class PlpAparelhosSteps {
 
     private final PlpAparelhosPage plpAparelhosPage;
@@ -26,8 +30,8 @@ public class PlpAparelhosSteps {
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
-    public void clicarEuQuero(String id) {
-        cartOrder.setDevice(id, Double.parseDouble(driverQA.findElement("//*[@id='btn-eu-quero-" + id + "']/../../preceding-sibling::input[contains(@name, 'productPrice')]", "xpath").getAttribute("value"))); //TODO Voltar para cartOrder.setDevice(id); quando a API estiver pronta - ECCMAUT-806
+    public void clicarEuQuero(String id) throws ParseException {
+        cartOrder.setDevice(id, NumberFormat.getInstance(Locale.GERMAN).parse(driverQA.findElement("//*[@id='btn-eu-quero-" + id + "']/../../preceding-sibling::input[contains(@name, 'productPrice')]", "xpath").getAttribute("value") + ",00").doubleValue()); //TODO Voltar para cartOrder.setDevice(id); quando a API estiver pronta - ECCMAUT-806
         plpAparelhosPage.validarCardAparelho(cartOrder.getDevice());
         plpAparelhosPage.clicaBotaoEuQuero(id);
     }

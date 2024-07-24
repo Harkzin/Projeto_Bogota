@@ -93,6 +93,10 @@ public class DriverQA {
         return findElement(id, "id");
     }
 
+    public WebElement findByXpath(String xpath) {
+        return findElement(xpath, "xpath");
+    }
+
     public List<WebElement> findElements(String selectorValue, String selectorType) {
 
         return switch (selectorType) {

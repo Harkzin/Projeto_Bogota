@@ -29,12 +29,14 @@ public class Hooks {
 
     @After(order = 2)
     public void printScreen(Scenario scenario) {
+        driverQA.actionPause(1000);
         byte[] screenshot = (((TakesScreenshot) driverQA.getDriver()).getScreenshotAs(OutputType.BYTES));
         scenario.attach(screenshot, "image/png", "screenshot");
     }
 
     @After(order = 1)
     public void closeBrowser() {
+        driverQA.actionPause(1000);
         driverQA.getDriver().close();
         driverQA.getDriver().quit();
     }

@@ -48,6 +48,7 @@ public class FormaPagamentoPage {
 
     public void validarPaginaFormaPagamento() {
         driverQA.waitPageLoad("/payment-device-method", 60);
+        driverQA.actionPause(2000);
         PageFactory.initElements(driverQA.getDriver(), this);
 
         Assert.assertEquals("Campo cupom deve estar vazio ao abrir a pagina", cupom.getAttribute("value"), "");

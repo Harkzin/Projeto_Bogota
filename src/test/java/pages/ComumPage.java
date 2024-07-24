@@ -1,6 +1,7 @@
 package pages;
 
 import io.cucumber.spring.ScenarioScope;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,13 @@ public class ComumPage {
         this.cartOrder = cartOrder;
     }
 
+    private void validateElementText(String ref, String xpath) {
+        Assert.assertEquals("Texto do elemento igual ao esperado", ref, StringUtils.normalizeSpace(driverQA.findByXpath(xpath).getText()));
+        Assert.assertTrue("Elemento exibido", driverQA.findByXpath(xpath).isDisplayed());
+    }
+
     public static void validateElementText(String ref, WebElement element) {
-        Assert.assertEquals("Texto do elemento igual ao esperado", ref, element.getText().trim());
+        Assert.assertEquals("Texto do elemento igual ao esperado", ref, StringUtils.normalizeSpace(element.getText()));
         Assert.assertTrue("Elemento exibido", element.isDisplayed());
     }
 
@@ -92,17 +98,26 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cartOrder) {
         String planContentParent;
 
-        if (cartOrder.isDeviceCart()) {
-            planContentParent = "//*[@id='render-claro-cart-entry-content']/div[2]/div";
-        } else {
+        if (!cartOrder.isDeviceCart()) {
             planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
             driverQA.actionPause(1500);
+        } else {
+            //TODO Tela de Parabens tem outra classe. Remover este bloco e atualizar os xpath apos ter sido implementado os atributos seletores no front
+            ///////////////////////
+            if (driverQA.findElement("//*[@class='mdn-Container-fluid']", "xpath") != null) {
+                planContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
+            } else {
+                planContentParent = "//*[@class='mdn-Container']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
+            }
+            ///////////////////////
+
+            //TODO Atualizar seletor
+            //planContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
         }
 
         //Valida nome, caso configurado
         if (!(cartOrder.getPlan().getName() == null)) {
-            WebElement planName = driverQA.findElement(planContentParent + "//span[contains(@class, 'product-fullname')]", "xpath");
-            validateElementText(cartOrder.getPlan().getName(), planName);
+            validateElementText(cartOrder.getPlan().getName(), planContentParent + "//span[contains(@class, 'product-fullname')]");
         }
 
         //Valida app ilimitados, caso configurado
@@ -118,9 +133,7 @@ public class ComumPage {
 
         //Valida título extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayTitle()) {
-            WebElement claroTitleExtraPlay = driverQA.findElement(planContentParent + "//div[contains(@class, 'product-card-content')]/p", "xpath");
-
-            validateElementText(cartOrder.getPlan().getExtraPlayTitle(), claroTitleExtraPlay);
+            validateElementText(cartOrder.getPlan().getExtraPlayTitle(), planContentParent + "//div[contains(@class, 'product-card-content')]/p");
         }
 
         //Valida apps extraPlay, caso configurado
@@ -142,26 +155,34 @@ public class ComumPage {
         }
 
         //Valida preço
-        WebElement price = driverQA.findElement(planContentParent + "//span[contains(@class, 'js-entry-price-plan')]", "xpath");
-
         String priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
-        validateElementText(priceRef, price);
+        validateElementText(priceRef, planContentParent + "//span[contains(@class, 'js-entry-price-plan')]");
 
         //Valida método de pagamento
-        WebElement paymentMode = driverQA.findElement(planContentParent + "//dt[@class='mdn-Price-suffix']", "xpath");
-
         String paymentModeRef = cartOrder.isDebitPaymentFlow ? "Débito automático" : "Boleto";
-        validateElementText(paymentModeRef, paymentMode);
+        validateElementText(paymentModeRef, planContentParent + "//dt[@class='mdn-Price-suffix']");
 
         //Valida fidelização
-        WebElement loyalty = driverQA.findElement(planContentParent + "//dt[@class='mdn-Price-suffix hidden-xs hidden-sm']", "xpath");
-
         String loyaltyRef = cartOrder.hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
-        validateElementText(loyaltyRef, loyalty);
+        validateElementText(loyaltyRef, planContentParent + "//dt[@class='mdn-Price-suffix hidden-xs hidden-sm']");
     }
 
     public void validarResumoCompraAparelho(CartOrder cart, boolean eSimFlow) {
-        driverQA.actionPause(1500);
+        driverQA.actionPause(2000);
+
+        String deviceContentParent;
+
+        //TODO Tela de Parabens tem outra classe. Remover este bloco e atualizar os xpath apos ter sido implementado os atributos seletores no front
+        ///////////////////////
+        if (driverQA.findElement("//*[@class='mdn-Container-fluid']", "xpath") != null) {
+            deviceContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
+        } else {
+            deviceContentParent = "//*[@class='mdn-Container']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
+        }
+        ///////////////////////
+
+        //TODO Atualizar seletor
+        //deviceContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
 
         Function<Double, String> formatPrice = price -> "R$ " + String.format(Locale.GERMAN, "%,.2f", price);
 
@@ -170,27 +191,27 @@ public class ComumPage {
 
         //Subtotal
         double subTotalPrice = eSimFlow ? cartDevicePrice : cartDevicePrice + 10D;
-        String subtotalSelector = "//*[@id='sidebar-resume']/div/div[1]/div/p[2]";
-        driverQA.javaScriptClick("//*[@id='sidebar-resume']/div/a", "xpath");
-        driverQA.waitElementVisibility(driverQA.findElement(subtotalSelector, "xpath"), 2);
-        //Assert.assertEquals(formatPrice.apply(subTotalPrice) , driverQA.findElement(subtotalSelector, "xpath").getText()); //TODO Bug formatação front
+        String subtotalSelector = deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div/p[2]";
+        driverQA.javaScriptClick(deviceContentParent + "//*[@id='sidebar-resume']/div/a", "xpath");
+        driverQA.waitElementVisibility(driverQA.findElement(subtotalSelector, "xpath"), 5);
+        Assert.assertEquals(formatPrice.apply(subTotalPrice), StringUtils.normalizeSpace(driverQA.findElement(subtotalSelector, "xpath").getText()));
 
         //Valor Total a Pagar
         String totalPrice = eSimFlow ? devicePrice : formatPrice.apply(subTotalPrice);
-        validateElementText(totalPrice, driverQA.findElement("//*[@id='sidebar-resume']/div/div[2]/p[2]", "xpath"));
+        validateElementText(totalPrice, deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
 
         //Nome Aparelho
-        validateElementText(cart.getDevice().getName() , driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p", "xpath"));
+        validateElementText(cart.getDevice().getName(), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p");
 
         //Valor Aparelho
-        validateElementText(devicePrice , driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]", "xpath"));
+        validateElementText(devicePrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]");
 
         //Tipo Chip
         String simType = eSimFlow ? "eSIM" : "Chip Comum";
-        validateElementText(simType , driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[1]/p", "xpath"));
+        validateElementText(simType, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[1]/p");
 
         //Valor Chip
         String chipPrice = eSimFlow ? "Grátis" : "R$ 10,00";
-        validateElementText(chipPrice, driverQA.findElement("//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]", "xpath"));
+        validateElementText(chipPrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]");
     }
 }

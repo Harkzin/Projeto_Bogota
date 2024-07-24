@@ -1,7 +1,7 @@
 package steps;
 
 import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.PdpAparelhosPage;
@@ -20,7 +20,7 @@ public class PdpAparelhosSteps  {
         this.cartOrder = cartOrder;
     }
 
-    @Então("é direcionado para a PDP do Aparelho selecionado")
+    @Entao("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
         pdpAparelhosPage.validarPdpAparelho(cartOrder.getDevice());
     }
