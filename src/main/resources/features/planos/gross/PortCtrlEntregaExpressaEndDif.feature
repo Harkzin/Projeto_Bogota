@@ -5,7 +5,7 @@ Funcionalidade: Planos - Gross
 
   @Portabilidade
   @Controle
-  @PortabilidadeCtrlExpressa
+  @PortabilidadeCtrlExpressaEndDif
   Cenario: Portabilidade Controle - Entrega Expressa
     Dado que o usuário acesse a Loja Online
 
