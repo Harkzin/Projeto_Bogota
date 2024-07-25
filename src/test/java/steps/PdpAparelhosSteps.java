@@ -27,7 +27,7 @@ public class PdpAparelhosSteps  {
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")
     public void selecionoACordoAparelho(String id) {
-        cartOrder.setDevice(id, cartOrder.getProductTotalPrice(cartOrder.getDevice()));
+        cartOrder.setDevice(id, cartOrder.getEntryTotalPrice(cartOrder.getDevice()));
         pdpAparelhosPage.selecionarCorAparelho(id);
     }
 

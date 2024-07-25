@@ -14,6 +14,7 @@ import support.utils.DriverQA;
 import java.util.List;
 
 import static pages.ComumPage.validateElementActiveVisible;
+import static pages.ComumPage.validateElementText;
 
 @Component
 @ScenarioScope
@@ -65,6 +66,21 @@ public class FormaPagamentoPage {
 
     public void clicarAplicarCupom() {
         driverQA.javaScriptClick(aplicarCupom);
+    }
+
+    public void validarAplicarCupom(String voucher) {
+        //Botão Remover é injetado no html
+        validateElementActiveVisible(driverQA.waitElementPresence("//button[@data-analytics-custom-title='aplicar_cupom']", 10));
+
+        //Botão some do html após aplicar o cupom
+        Assert.assertNull(driverQA.findById("btn-aplicar-cupom"));
+
+        //Campo de texto
+        Assert.assertFalse(cupom.isEnabled());
+        Assert.assertEquals(voucher, cupom.getAttribute("value"));
+
+        //Mensagem de sucesso
+        validateElementText("Código do cupom aplicado com sucesso!", driverQA.findByXpath("//*[contains(@class, 'js-voucher-msg')]"));
     }
 
     public void clicarAdicionarCartao() {

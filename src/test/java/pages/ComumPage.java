@@ -47,7 +47,7 @@ public class ComumPage {
     public static void validarMidiasPlano(List<String> appRef, List<WebElement> appFront, DriverQA driverQA) {
         Assert.assertEquals("Mesma quantidade de [apps/países configurados] e [presentes no Front]", appRef.size(), appFront.size());
 
-        driverQA.waitElementVisibility(appFront.get(0), 2); //Lazy loading Front
+        driverQA.waitElementVisible(appFront.get(0), 2); //Lazy loading Front
         IntStream.range(0, appRef.size()).forEachOrdered(i -> {
             Assert.assertTrue("App/País do Front deve ser o mesmo da API - Front: <" + appFront.get(i)
                             .getAttribute("src")
@@ -186,25 +186,32 @@ public class ComumPage {
 
         Function<Double, String> formatPrice = price -> "R$ " + String.format(Locale.GERMAN, "%,.2f", price);
 
-        double cartDevicePrice = cart.getProductTotalPrice(cart.getDevice());
-        String devicePrice = formatPrice.apply(cartDevicePrice);
+        double basePrice = cart.getEntryBasePrice(cart.getDevice());
 
         //Subtotal
-        double subTotalPrice = eSimFlow ? cartDevicePrice : cartDevicePrice + 10D;
-        String subtotalSelector = deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div/p[2]";
+        double subTotal = eSimFlow ? basePrice : basePrice + 10D;
+        String subtotalSelector = deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[1]";
         driverQA.javaScriptClick(deviceContentParent + "//*[@id='sidebar-resume']/div/a", "xpath");
-        driverQA.waitElementVisibility(driverQA.findElement(subtotalSelector, "xpath"), 5);
-        Assert.assertEquals(formatPrice.apply(subTotalPrice), StringUtils.normalizeSpace(driverQA.findElement(subtotalSelector, "xpath").getText()));
+        driverQA.waitElementVisible(driverQA.findElement(subtotalSelector, "xpath"), 5);
+        Assert.assertEquals("Subtotal " + formatPrice.apply(subTotal), StringUtils.normalizeSpace(driverQA.findElement(subtotalSelector, "xpath").getText()));
+
+        //Desconto Cupom
+        if (cart.getAppliedCoupon() != null) {
+            validateElementText("Desconto Cupom -" + formatPrice.apply(cart.getEntryDiscount(cart.getDevice())), deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[2]");
+        }
 
         //Valor Total a Pagar
-        String totalPrice = eSimFlow ? devicePrice : formatPrice.apply(subTotalPrice);
-        validateElementText(totalPrice, deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
+        double totalPrice = cart.getEntryTotalPrice(cart.getDevice());
+        String totalPricea = eSimFlow ? formatPrice.apply(totalPrice) : formatPrice.apply(totalPrice + 10D);
+        validateElementText(totalPricea, deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
 
         //Nome Aparelho
-        validateElementText(cart.getDevice().getName(), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p");
+        if (!(cartOrder.getDevice().getName() == null)) {
+            validateElementText(cart.getDevice().getName(), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p");
+        }
 
         //Valor Aparelho
-        validateElementText(devicePrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]");
+        validateElementText(formatPrice.apply(basePrice), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]");
 
         //Tipo Chip
         String simType = eSimFlow ? "eSIM" : "Chip Comum";

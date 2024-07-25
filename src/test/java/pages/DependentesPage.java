@@ -79,7 +79,7 @@ public class DependentesPage {
         abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
         btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
 
-        driverQA.waitElementVisibility(abaPortabilidade,10);
+        driverQA.waitElementVisible(abaPortabilidade,10);
 
         Assert.assertTrue(abaNumeroNovo.isDisplayed());
         Assert.assertTrue(abaPortabilidade.isDisplayed());
@@ -94,7 +94,7 @@ public class DependentesPage {
 
     public void clicarConfirmarDependente() {
         driverQA.javaScriptClick(btnConfirmarDependente);
-        driverQA.waitElementInvisibility(btnConfirmarDependente,5);
+        driverQA.waitElementInvisible(btnConfirmarDependente,5);
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
     }
 

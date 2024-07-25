@@ -249,7 +249,7 @@ public class PdpPlanosPage {
                     .findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));
 
             if (exibe) {
-                driverQA.waitElementVisibility(planAppsParent, 2);
+                driverQA.waitElementVisible(planAppsParent, 2);
 
                 //Título
                 WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
@@ -257,7 +257,7 @@ public class PdpPlanosPage {
                 List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
                 validarAppsIlimitados(driverQA, plan, planAppsTitle, planApps);
             } else {
-                driverQA.waitElementInvisibility(planAppsParent, 2);
+                driverQA.waitElementInvisible(planAppsParent, 2);
             }
         }
     }

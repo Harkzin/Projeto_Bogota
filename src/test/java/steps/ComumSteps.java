@@ -1,13 +1,13 @@
 package steps;
 
-
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Mas;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.ComumPage;
 import support.CartOrder;
-import support.utils.Constants;
+
+import static support.utils.Constants.*;
 
 public class ComumSteps {
 
@@ -25,7 +25,7 @@ public class ComumSteps {
         comumPage.validarResumoCompraPlano(cartOrder);
     }
 
-    @Então("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra")
+    @Entao("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra")
     public void validarAlteraValorPagamento() {
         comumPage.validarResumoCompraPlano(cartOrder);
     }
@@ -37,7 +37,7 @@ public class ComumSteps {
 
     @E("o plano do carrinho será atualizado para o Plano Combo correspondente")
     public void atualizarParaPlanoCombo() {
-        cartOrder.setPlan(Constants.planSingleToCombo.get(cartOrder.getPlan().getCode()));
+        cartOrder.setPlan(planSingleToCombo.get(cartOrder.getPlan().getCode()));
         cartOrder.isDebitPaymentFlow = false; //TODO Valor deve ser de acordo com o tipo de pagamento da linha combo
         comumPage.validarResumoCompraPlano(cartOrder);
     }

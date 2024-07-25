@@ -78,7 +78,7 @@ public class DadosPessoaisPage {
         driverQA.actionSendKeys(cep, cepNumber);
 
         WebElement endereco = driverQA.findElement("txt-endereco-endereco-entrega", "id");
-        driverQA.waitElementVisibility(endereco, 12);
+        driverQA.waitElementVisible(endereco, 12);
         Assert.assertNotEquals("Preenchimento automático [endereço]", endereco.getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático [bairro]", driverQA.findElement("txt-bairro-endereco-entrega", "id").getAttribute("value"), "");
         Assert.assertNotEquals("Preenchimento automático [estado]", driverQA.findElement("txt-estado-endereco-entrega", "id").getAttribute("value"), "");
@@ -171,10 +171,10 @@ public class DadosPessoaisPage {
     public void selecionarEsim(DeliveryMode deliveryMode) {
         if(deliveryMode == EXPRESS) {
             driverQA.javaScriptClick(chipEsimExpress);
-            driverQA.waitElementInvisibility(entregaExpressa, 1);
+            driverQA.waitElementInvisible(entregaExpressa, 1);
         } else {
             driverQA.javaScriptClick(chipEsimConvencional);
-            driverQA.waitElementInvisibility(entregaConvencional, 1);
+            driverQA.waitElementInvisible(entregaConvencional, 1);
         }
         //TODO ECCMAUT-940
     }

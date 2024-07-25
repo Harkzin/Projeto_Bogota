@@ -40,10 +40,10 @@ public class CartOrder {
     private boolean passedByClearSale;
 
     private String allPromotionResults;
-    private String appliedCupomCodes;
+    private List<String> appliedCouponCodes = new ArrayList<>();
     private String children;
     private String chosenPlan;
-    private String claroDdd;
+    private int claroDdd;
     private String claroLegacyOrderId;
     private String creationtime;
     private String dayInvoiceExpiration;
@@ -119,18 +119,38 @@ public class CartOrder {
         positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getDebitPlanPrice())); //TODO Atualizar plan.getDebitPlanPrice() para pegar o preço da API (preço da promo, API sem definição ainda)
     }
 
-    public double getProductBasePrice(Product product) {
+    private PositionsAndPrices.Entry getEntry(Product product) {
         return positionsAndPrices.entries.stream()
                 .filter(e -> e.product == product)
-                .findFirst().orElseThrow()
-                .basePrice;
+                .findFirst().orElseThrow();
     }
 
-    public double getProductTotalPrice(Product product) {
-        return positionsAndPrices.entries.stream()
-                .filter(e -> e.product == product)
-                .findFirst().orElseThrow()
-                .totalPrice;
+    public double getEntryBasePrice(Product product) {
+        return getEntry(product).basePrice;
+    }
+
+    public double getEntryTotalPrice(Product product) {
+        return getEntry(product).totalPrice;
+    }
+
+    public double getEntryDiscount(Product product) {
+        return getEntry(product).discountValues.get(0);
+    }
+
+    public void addVoucherForDevice(String voucher) {
+        double amount = 100D; //TODO Mock para CUPOM100. Valor deve vir da API ECCMAUT-888
+        PositionsAndPrices.Entry deviceEntry = getEntry(getDevice());
+        deviceEntry.discountValues.add(amount);
+        deviceEntry.totalPrice -= amount;
+
+        appliedCouponCodes.add(voucher);
+    }
+
+    public String getAppliedCoupon() {
+        if (!appliedCouponCodes.isEmpty()) {
+            return appliedCouponCodes.get(0);
+        }
+        return null;
     }
 
     public void setEsimChip() {
@@ -207,7 +227,7 @@ public class CartOrder {
 
     public static class ClaroClube {
 
-        public String awardPoints;
+        public int awardPoints;
         public double discountValue;
         public boolean isClaroClubeApplied;
         public String redeemId;
@@ -340,7 +360,7 @@ public class CartOrder {
             public String account;
             public String agency;
             public String bank;
-            public String expireDate;
+            public int expireDate;
             public String invoiceType;
 
             private PaymentInfo() {}
@@ -359,7 +379,7 @@ public class CartOrder {
             public String amount;
             public String card;
             public String flag;
-            public int numberInstallments;
+            public String numberInstallments;
             public String responseDescription;
 
             private ClaroAuthenticationPaymentResponse() {}
@@ -368,7 +388,7 @@ public class CartOrder {
         public static class PixPaymentInfo {
 
             public String txId;
-            public double value;
+            public String value;
 
             private PixPaymentInfo() {}
         }
@@ -388,7 +408,7 @@ public class CartOrder {
             public int quantity;
             public double basePrice;
             public double totalPrice;
-            public List<String> discountValues;
+            public List<Double> discountValues = new ArrayList<>();
 
             public int entryNumber;
 

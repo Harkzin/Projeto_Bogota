@@ -153,18 +153,18 @@ public class DriverQA {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
     }
 
-    public void waitElementToBeClickable(WebElement element, int timeoutSeconds) {
+    public void waitElementClickable(WebElement element, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void waitElementVisibility(WebElement element, int timeoutSeconds) {
+    public void waitElementVisible(WebElement element, int timeoutSeconds) {
         javaScriptScrollTo(element);
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitElementInvisibility(WebElement element, int timeoutSeconds) {
+    public void waitElementInvisible(WebElement element, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
@@ -180,7 +180,6 @@ public class DriverQA {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(time));
         wait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
-
 
     public void waitPageLoad(String urlFraction, Integer timeout) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeout));

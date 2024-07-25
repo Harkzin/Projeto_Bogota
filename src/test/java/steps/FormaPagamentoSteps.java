@@ -4,6 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
+import pages.ComumPage;
 import pages.FormaPagamentoPage;
 import support.CartOrder;
 
@@ -18,15 +19,25 @@ public class FormaPagamentoSteps {
         this.formaPagamentoPage = formaPagamentoPage;
     }
 
+    @Autowired
+    private ComumPage comumPage;
+
     @Entao("será direcionado para a tela [Forma de Pagamento]")
     public void validarPaginaFormaPagamento() {
         formaPagamentoPage.validarPaginaFormaPagamento();
     }
 
-    @E("adiciona o cupom {string}")
-    public void adicionarCupom(String cupom) {
+    @Quando("o usuário adicionar o cupom {string} e clicar no botão [Aplicar]")
+    public void aplicarCupom(String cupom) {
         formaPagamentoPage.preencherCupom(cupom);
         formaPagamentoPage.clicarAplicarCupom();
+        cartOrder.addVoucherForDevice(cupom);
+    }
+
+    @Entao("o Aparelho receberá o desconto do cupom")
+    public void validarDescontoCupom() {
+        formaPagamentoPage.validarAplicarCupom(cartOrder.getAppliedCoupon());
+        comumPage.validarResumoCompraAparelho(cartOrder, cartOrder.isEsim());
     }
 
     @Quando("o usuário clicar no botão [Adicionar cartão de crédito]")

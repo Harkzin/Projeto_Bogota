@@ -283,7 +283,7 @@ public class CustomizarFaturaPage {
         if (bankId == 3) { //CAIXA
             WebElement caixaAccountType = driverQA.findElement("slc-tipo-conta", "id");
             Select caixaAccountTypeSelect = new Select(caixaAccountType);
-            driverQA.waitElementToBeClickable(caixaAccountType, 1);
+            driverQA.waitElementClickable(caixaAccountType, 1);
 
             String accountId = bankAccount.get(1).substring(0, 2);
 
@@ -297,7 +297,7 @@ public class CustomizarFaturaPage {
             caixaAccountTypeSelect.selectByValue(accountId);
         }
 
-        driverQA.waitElementToBeClickable(agencia, 1);
+        driverQA.waitElementClickable(agencia, 1);
         driverQA.actionSendKeys(agencia, bankAccount.get(0)); //.findElement(By.xpath("following-sibling::label"))
         Assert.assertEquals("Campo agência preenchido", bankAccount.get(0), agencia.getAttribute("value"));
 

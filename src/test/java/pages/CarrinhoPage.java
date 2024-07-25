@@ -5,7 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
-import support.utils.Constants;
 import support.utils.DriverQA;
 import org.junit.Assert;
 
@@ -58,7 +57,7 @@ public class CarrinhoPage {
         telefoneMigracao = driverQA.findElement("txt-telefone-migracao", "id");
         cpfMigracao = driverQA.findElement("txt-cpf-migracao", "id");
 
-        driverQA.waitElementVisibility(telefoneMigracao, 1);
+        driverQA.waitElementVisible(telefoneMigracao, 1);
         Assert.assertTrue(cpfMigracao.isDisplayed());
 
         if (!isDeviceCart) {
@@ -73,7 +72,7 @@ public class CarrinhoPage {
         telefonePortabilidade = driverQA.findElement("txt-telefone-portabilidade", "id");
         cpfPortabilidade = driverQA.findElement("txt-cpf-portabilidade", "id");
 
-        driverQA.waitElementVisibility(telefonePortabilidade, 1);
+        driverQA.waitElementVisible(telefonePortabilidade, 1);
         Assert.assertTrue(cpfPortabilidade.isDisplayed());
 
         Assert.assertEquals(telefonePortabilidade.getAttribute("value"), "");
@@ -85,7 +84,7 @@ public class CarrinhoPage {
         telefoneContatoAquisicao = driverQA.findElement("txt-telefone-aquisicao", "id");
         cpfAquisicao = driverQA.findElement("txt-cpf-aquisicao", "id");
 
-        driverQA.waitElementVisibility(dddAquisicao, 1);
+        driverQA.waitElementVisible(dddAquisicao, 1);
         Assert.assertTrue(telefoneContatoAquisicao.isDisplayed());
         Assert.assertTrue(cpfAquisicao.isDisplayed());
 
@@ -96,7 +95,7 @@ public class CarrinhoPage {
     private void validarCampoEmail(boolean isDeviceCart) {
         email = driverQA.findElement("txt-email", "id");
 
-        driverQA.waitElementVisibility(email, 1);
+        driverQA.waitElementVisible(email, 1);
 
         if (!isDeviceCart) {
             Assert.assertEquals(email.getAttribute("value"), "");
@@ -206,7 +205,7 @@ public class CarrinhoPage {
         driverQA.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
         WebElement contentMessageError =  driverQA.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
-        driverQA.waitElementVisibility(contentMessageError,10);
+        driverQA.waitElementVisible(contentMessageError,10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 }

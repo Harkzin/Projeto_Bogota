@@ -57,7 +57,7 @@ public class PdpAparelhosPage {
             driverQA.javaScriptClick(moreDetails);
 
             WebElement modal = driverQA.waitElementPresence("//*[@id='modal-more-details-" + plan.getCode() + "']", 2);
-            driverQA.waitElementVisibility(modal, 2);
+            driverQA.waitElementVisible(modal, 2);
 
             if (hasName) {
                 WebElement name = modal.findElement(By.xpath(".//h2"));
@@ -94,7 +94,7 @@ public class PdpAparelhosPage {
             }
 
             driverQA.javaScriptClick(modal.findElement(By.xpath(".//button")));
-            driverQA.waitElementInvisibility(modal, 2);
+            driverQA.waitElementInvisible(modal, 2);
         }
 
         //Seção [Plano Selecionado]
@@ -160,7 +160,7 @@ public class PdpAparelhosPage {
         //Preço base "De"
         if (device.inStock() && !prePaidPlanSelected) {
             WebElement fullPrice = driverQA.findElement("value-total-aparelho-pdp", "id");
-            driverQA.waitElementVisibility(fullPrice, 5);
+            driverQA.waitElementVisible(fullPrice, 5);
 
             Assert.assertEquals("Valor sem desconto (De) igual ao configurado", fullPrice.getText(), device.getFormattedBaseDevicePrice());
             Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
@@ -169,7 +169,7 @@ public class PdpAparelhosPage {
         //Infos Técnicas
         if (device.hasDeviceFeatures()) {
             driverQA.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
-            driverQA.waitElementVisibility(driverQA.findElement("especificationDevice", "id"), 2);
+            driverQA.waitElementVisible(driverQA.findElement("especificationDevice", "id"), 2);
 
             List<WebElement> features = driverQA.findElements("//*[@id='especificationDevice']/div/div", "xpath");
 
