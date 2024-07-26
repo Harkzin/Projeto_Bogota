@@ -1,9 +1,9 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Gross
+Funcionalidade: Portabilidade Pos - Entrega Expressa - Mesmo endereco
 
-  @Portabilidadej
+  @Portabilidade
   @Pos
   @PortPosExpressaMesmoEnd
   Cenario: Portabilidade Pós - Entrega Expressa (Mesmo endereço)
@@ -17,15 +17,15 @@ Funcionalidade: Planos - Gross
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSCTRL REPROVCLEAR", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORTPOS MESMOEND", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] expressa "01001900", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E o usuário clicar no botão [Seguir sem dependentes]
 
+    Quando o usuário clicar no botão [Seguir sem dependentes]
     Então é direcionado para a tela de Customizar Fatura
     Mas não deve haver alterações no valor e nem nas informações do Plano
       E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
