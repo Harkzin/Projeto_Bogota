@@ -7,6 +7,8 @@ import org.springframework.context.annotation.*;
 import support.CartOrder;
 import support.utils.DriverQA;
 
+import java.net.MalformedURLException;
+
 @CucumberContextConfiguration
 @SuppressWarnings("UnusedDeclaration")
 public final class CucumberSpringConfiguration {
@@ -16,7 +18,7 @@ public final class CucumberSpringConfiguration {
     public static class Configuration {
         @Bean
         @Scope("cucumber-glue")
-        public DriverQA createDriverQA() {
+        public DriverQA createDriverQA() throws MalformedURLException {
             DriverQA driverQA = new DriverQA();
             driverQA.setupDriver(System.getProperty("browser", "chrome"));
 

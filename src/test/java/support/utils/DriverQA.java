@@ -8,12 +8,16 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import support.utils.Constants.Email;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
@@ -23,7 +27,7 @@ public class DriverQA {
 
     private WebDriver driver;
 
-    public void setupDriver(String browser) {
+    public void setupDriver(String browser) throws MalformedURLException {
         String headless = System.getProperty("headless", "true");
         String maximized = System.getProperty("maximized", "false");
 
@@ -52,6 +56,18 @@ public class DriverQA {
                 chromeOptions.addArguments("--disable-dev-shm-usage");
                 chromeOptions.addArguments("--deny-permission-prompts");
                 driver = new ChromeDriver(chromeOptions);
+                break;
+            case "test":
+                ChromeOptions chromeOptionsBS = new ChromeOptions();
+                chromeOptionsBS.addArguments("--deny-permission-prompts");
+
+                HashMap<String, String> bstackOptions = new HashMap<>();
+                bstackOptions.put("source", "cucumber-java:sample-master:v1.2");
+
+                chromeOptionsBS.setCapability("bstack:options", bstackOptions);
+
+                driver = new RemoteWebDriver(
+                        new URL("https://hub.browserstack.com/wd/hub"), chromeOptionsBS);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid browser: " + browser);
@@ -144,6 +160,14 @@ public class DriverQA {
         text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
     }
 
+    public void sendKeys(WebElement element, String text) {
+//        javaScriptScrollTo(element);
+//        Actions action = new Actions(driver);
+//        action.pause(Duration.ofMillis(500)).click(element);
+        element.sendKeys(text);
+
+    }
+
     public void actionSendKeys(String selectorValue, String selectorType, String text) {
         actionSendKeys(findElement(selectorValue, selectorType), text);
     }
@@ -155,6 +179,11 @@ public class DriverQA {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public boolean isRunningOnIOS() {
+        String os = ((RemoteWebDriver) driver).getCapabilities().getPlatformName().toString();
+        return os.equals("IOS");
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {
@@ -199,7 +228,7 @@ public class DriverQA {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
     }
 
-    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time){
+    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(time));
         wait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
