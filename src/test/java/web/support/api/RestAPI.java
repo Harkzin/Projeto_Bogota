@@ -1,0 +1,175 @@
+package web.support.api;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import web.support.utils.Constants.Email;
+
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.io.IOException;
+import java.util.*;
+
+import static java.time.Duration.ofSeconds;
+import static web.support.utils.Constants.ambiente;
+
+public final class RestAPI {
+
+    private RestAPI() {}
+
+    private static final HttpClient clientHttp = HttpClient.newHttpClient();
+    private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
+    public static final ObjectMapper objMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    public static String getCpf() {
+        final HttpRequest getCpfRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://www.4devs.com.br/ferramentas_online.php"))
+                .timeout(ofSeconds(15))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("acao=gerar_cpf&pontuacao=N&cpf_estado=SP"))
+                .build();
+
+        long startTime = System.currentTimeMillis() + 200L; //200ms delay
+
+        try {
+            while (true) { //Delay para chamadas consecutivas
+                if (System.currentTimeMillis() >= startTime) {
+                    return clientHttp.send(getCpfRequest, HttpResponse.BodyHandlers.ofString()).body(); //Retorna um CPF como String.
+                }
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean checkCpfDiretrix(String cpf) {
+        final HttpRequest diretrixTokenRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api-lab.claro.com.br/oauth2/v1/token"))
+                .timeout(ofSeconds(15))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("X-Client-Auth", "Basic MWxKR1dqdkhsVzEzWkdmT0pxUVlHQ3JFTlRNY0x3Vno6QVowTTF3aVA5cFJSWGplTg==")
+                .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials"))
+                .build();
+
+        try {
+            String token = objMapper.readTree(clientHttp.send(diretrixTokenRequest, HttpResponse.BodyHandlers.ofString()).body())
+                    .get("access_token")
+                    .asText();
+
+            final HttpRequest diretrixRequest = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api-lab.claro.com.br/customers/v1/profiles/historical"))
+                    .timeout(ofSeconds(15))
+                    .header("X-Client-Auth", "Bearer " + token)
+                    .header("X-QueryString", "documentnumber=" + cpf)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = clientHttp.send(diretrixRequest, HttpResponse.BodyHandlers.ofString());
+            JsonNode node = objMapper.readTree(response.body());
+
+            return response.statusCode() != 422 || !node.at("/error").get("detailedMessage").asText().equalsIgnoreCase("CPF não encontrado"); //CPF na Diretrix? = true, fora da Diretrix? = false, para testes deve ser false.
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Document getEmailMessage(String emailAddress, Email emailSubject) {
+        final HttpRequest getMessages = HttpRequest.newBuilder()
+                .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
+                .timeout(ofSeconds(15))
+                .header("Mailsac-Key", MAILSAC_KEY)
+                .GET()
+                .build();
+
+        List<JsonNode> messageList;
+
+        try {
+            messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {
+            });
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Optional<JsonNode> message = messageList.stream().filter(node -> node.get("subject").asText().contains(emailSubject.getSubject())).findFirst();
+
+        if (message.isPresent()) {
+            final HttpRequest getMessage = HttpRequest.newBuilder()
+                    .uri(URI.create("https://mailsac.com/api/dirty/" + emailAddress + "/" + message.get().get("_id").asText()))
+                    .timeout(ofSeconds(15))
+                    .header("Mailsac-Key", MAILSAC_KEY)
+                    .GET()
+                    .build();
+
+            Document email;
+
+            try {
+                email = Jsoup.parseBodyFragment(clientHttp.send(getMessage, HttpResponse.BodyHandlers.ofString()).body());
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            return email;
+        } else {
+            return null;
+        }
+    }
+
+    public static void clearInbox(String emailAddress) {
+        final HttpRequest deleteMessages = HttpRequest.newBuilder()
+                .uri(URI.create("https://mailsac.com/api/addresses/" + emailAddress + "/messages"))
+                .timeout(ofSeconds(15))
+                .header("Mailsac-Key", MAILSAC_KEY)
+                .DELETE()
+                .build();
+
+        try {
+            clientHttp.send(deleteMessages, HttpResponse.BodyHandlers.discarding());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<String> getBankAccount(String bankId) {
+        final HttpRequest getAccount = HttpRequest.newBuilder()
+                .uri(URI.create("https://www.invertexto.com/ajax/gerar-conta-bancaria.php"))
+                .timeout(ofSeconds(15))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("banco=" + bankId + "&estado=SP"))
+                .build();
+
+        JsonNode response;
+        long startTime = System.currentTimeMillis() + 250L; //250ms delay
+
+        try {
+            while (true) { //Delay para chamadas consecutivas
+                if (System.currentTimeMillis() >= startTime) {
+                    response = objMapper.readTree(clientHttp.send(getAccount, HttpResponse.BodyHandlers.ofString()).body());
+                    break;
+                }
+            }
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Arrays.asList(response.get("agencia").asText(), response.get("conta").asText());
+    }
+
+    public static String getProductDetails(String product) {
+        final HttpRequest productDetails = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/products/" + product + "?fields=FULL"))
+                .timeout(ofSeconds(15))
+                .GET()
+                .build();
+
+        try {
+            return clientHttp.send(productDetails, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
