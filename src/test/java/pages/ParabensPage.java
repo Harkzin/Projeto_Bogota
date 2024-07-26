@@ -68,6 +68,10 @@ public class ParabensPage {
         return resultado.toString().trim();
     }
 
+    public void clicarOkEntendi() {
+        driverQA.javaScriptClick("//button[contains(text(),'Ok, Entendi')]","xpath");
+    }
+
     public void validarCamposPedido() {
         //TODO ECCMAUT-351
     }

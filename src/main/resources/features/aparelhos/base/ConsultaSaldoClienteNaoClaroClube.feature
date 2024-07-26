@@ -1,10 +1,10 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aparelhos - Base
+Funcionalidade: Consulta de saldo Claro Clube - Cliente nao Claro Clube - Header
 
   @ConsultaSaldoClienteNaoClaroClube
-  Cenario: Consulta de saldo Claro Clube - Cliente não Claro Clube - Header
+  Cenario: Consulta de saldo Claro Clube - Cliente nao Claro Clube - Header
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar no botão [Entrar] do header
     Entao é direcionado para a tela de opções da área logada

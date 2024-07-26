@@ -1,14 +1,14 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Troca Controle - Rentabilizacao - Debito
 
   #Massa: Controle - pagamento débito - fatura digital - sem multa ou com plano de menor valor ao que será usado
 
   @Troca
   @Controle
   @TrocaCtrlRentabDebito
-  Cenario: Troca Controle - Rentabilização - Débito
+  Cenario: Troca Controle - Rentabilizacao - Debito
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
     E preenche os campos: [Telefone com DDD] "11947726224", [E-mail] e [CPF] "93041484803"
 

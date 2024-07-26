@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aparelhos - Gross
+Funcionalidade: Aquisicao Controle Aparelho Sem Estoque
 
   @AparelhoSemEstoque
   Cenario: Aquisicao Controle Aparelho Sem Estoque

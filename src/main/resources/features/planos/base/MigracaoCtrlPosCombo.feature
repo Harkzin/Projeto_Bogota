@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Planos - Base
+Funcionalidade: Migracao Controle para Pos Combo Multi
 
   #Massa: Controle Combo - pagamento boleto
 
