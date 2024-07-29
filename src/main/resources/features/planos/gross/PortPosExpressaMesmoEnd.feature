@@ -3,10 +3,12 @@
 @Regressivo
 Funcionalidade: Portabilidade Pos - Entrega Expressa - Mesmo endereco
 
+  #ECCMAUT-528
+
   @Portabilidade
   @Pos
   @PortPosExpressaMesmoEnd
-  Cenario: Portabilidade Pós - Entrega Expressa (Mesmo endereço)
+  Cenario: Portabilidade Pos - Entrega Expressa - Mesmo endereco
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17270" do carrossel da Home
     Então é direcionado para a tela de Carrinho
