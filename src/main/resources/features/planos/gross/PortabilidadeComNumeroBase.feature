@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@RegressivoConsulta
 Funcionalidade: Portabilidade - Numero Base
 
   @Portabilidade

@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@RegressivoConsulta
 Funcionalidade: Validar Meus Pedidos Header
 
   @MeusPedidosHeader

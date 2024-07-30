@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@RegressivoConsulta
 Funcionalidade: Aquisicao Controle Aparelho Sem Estoque
 
   @AparelhoSemEstoque
