@@ -1,6 +1,6 @@
 #language: pt
 
-@RegressivoConsulta
+@Regressivo
 Funcionalidade: Consulta de saldo Claro Clube - Cliente nao Claro Clube - Header
 
   @ConsultaSaldoClienteNaoClaroClube
