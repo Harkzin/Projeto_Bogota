@@ -1,5 +1,5 @@
 #language: pt
-@Regressivo
+@Regressivo2
 Funcionalidade: Planos - Gross
 
   @Aquisicao
