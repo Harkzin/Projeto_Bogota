@@ -13,17 +13,16 @@ Funcionalidade: Portabilidade Controle - Entrega Expressa
 
     Quando selecionar o plano de id "17218" do carrossel da Home
     Então é direcionado para a tela de Carrinho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+     Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
-    E preenche os campos: [Telefone a ser portado com DDD] "11977222346", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] "11999934451", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+     Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORTCTRL EXPRESS ENDDIF", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] expressa "01001900", [Número] "65" e [Complemento] "AP202"
-      #deve ser alterado após corrigir os IDS
-    Mas deve ser exibido os tipos de entrega
+    E deve ser exibido os tipos de entrega
 
     Quando é desmarcado a opção [Usar o mesmo endereço de entrega]
     Entao será exibido o campo de [CEP] do endereço de cobrança
@@ -31,10 +30,10 @@ Funcionalidade: Portabilidade Controle - Entrega Expressa
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura
-    Mas não deve haver alterações no valor e nem nas informações do Plano
-    E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
-    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
+      Mas não deve haver alterações no valor e nem nas informações do Plano
+      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+      E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
