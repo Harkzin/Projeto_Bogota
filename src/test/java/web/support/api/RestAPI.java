@@ -22,7 +22,7 @@ public final class RestAPI {
 
     private RestAPI() {}
 
-    private static final HttpClient clientHttp = HttpClient.newHttpClient();
+    public static final HttpClient clientHttp = HttpClient.newHttpClient();
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
     public static final ObjectMapper objMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 

@@ -24,44 +24,46 @@ public class DriverQA {
     private WebDriver driver;
 
     public void setupDriver(String browser) {
-        String headless = System.getProperty("headless", "true");
-        String maximized = System.getProperty("maximized", "false");
+        if (System.getProperty("api","false").equals("false")) {
+            String headless = System.getProperty("headless", "true");
+            String maximized = System.getProperty("maximized", "false");
 
-        switch (browser) {
-            case "firefox":
-                WebDriverManager.firefoxdriver().clearDriverCache().setup();
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (headless.equals("true")) {
-                    firefoxOptions.addArguments("--headless");
-                }
-                firefoxOptions.addArguments("--private");
-                driver = new FirefoxDriver(firefoxOptions);
-                break;
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeOptions = new ChromeOptions();
-                if (headless.equals("true")) {
-                    chromeOptions.addArguments("--headless");
-                }
-                chromeOptions.addArguments("--incognito");
-                chromeOptions.addArguments("--no-sandbox");
-                chromeOptions.addArguments("--no-default-browser-check");
-                chromeOptions.addArguments("--disable-default-apps");
-                chromeOptions.addArguments("--disable-extensions");
-                chromeOptions.addArguments("--disable-notifications");
-                chromeOptions.addArguments("--disable-dev-shm-usage");
-                chromeOptions.addArguments("--deny-permission-prompts");
-                driver = new ChromeDriver(chromeOptions);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid browser: " + browser);
-        }
+            switch (browser) {
+                case "firefox":
+                    WebDriverManager.firefoxdriver().clearDriverCache().setup();
+                    FirefoxOptions firefoxOptions = new FirefoxOptions();
+                    if (headless.equals("true")) {
+                        firefoxOptions.addArguments("--headless");
+                    }
+                    firefoxOptions.addArguments("--private");
+                    driver = new FirefoxDriver(firefoxOptions);
+                    break;
+                case "chrome":
+                    WebDriverManager.chromedriver().setup();
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    if (headless.equals("true")) {
+                        chromeOptions.addArguments("--headless");
+                    }
+                    chromeOptions.addArguments("--incognito");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--no-default-browser-check");
+                    chromeOptions.addArguments("--disable-default-apps");
+                    chromeOptions.addArguments("--disable-extensions");
+                    chromeOptions.addArguments("--disable-notifications");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
+                    chromeOptions.addArguments("--deny-permission-prompts");
+                    driver = new ChromeDriver(chromeOptions);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid browser: " + browser);
+            }
 
-        if (maximized.equals("true")) { //Local
-            driver.manage().window().maximize();
-        } else { //Jenkins
-            driver.manage().window().setSize(new Dimension(1920, 1080));
-            driver.manage().window().setPosition(new Point(0, 0));
+            if (maximized.equals("true")) { //Local
+                driver.manage().window().maximize();
+            } else { //Jenkins
+                driver.manage().window().setSize(new Dimension(1920, 1080));
+                driver.manage().window().setPosition(new Point(0, 0));
+            }
         }
     }
 
@@ -199,7 +201,7 @@ public class DriverQA {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
     }
 
-    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time){
+    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(time));
         wait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
