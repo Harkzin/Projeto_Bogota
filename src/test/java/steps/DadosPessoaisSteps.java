@@ -1,9 +1,6 @@
 package steps;
 
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
-import io.cucumber.java.pt.Mas;
-import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.DadosPessoaisPage;
 import support.CartOrder;
@@ -57,7 +54,7 @@ public class DadosPessoaisSteps {
         dadosPessoaisPage.clicarUsarMesmoEnderecoEntrega();
     }
 
-    @Então("será exibido o campo de [CEP] do endereço de cobrança")
+    @Entao("será exibido o campo de [CEP] do endereço de cobrança")
     public void seraExibidoCampoCepEnderecoCobranca() {
         dadosPessoaisPage.exibirCepCobranca();
     }

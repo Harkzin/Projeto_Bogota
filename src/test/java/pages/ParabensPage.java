@@ -69,7 +69,6 @@ public class ParabensPage {
     }
 
     public void clicarOkEntendi() {
-        //driverQA.javaScriptClick("//button[contains(text(),'Ok, Entendi')]","xpath");
         driverQA.javaScriptClick("btn-entendi-modal-abr", "id");
     }
 

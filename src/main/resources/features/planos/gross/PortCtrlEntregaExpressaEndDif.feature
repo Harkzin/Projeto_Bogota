@@ -1,9 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Portabilidade Controle - Entrega Expressa - Endereco Diferente
-
-  #ECCMAUT-155
+Funcionalidade: ECCMAUT-155 - Portabilidade Controle - Entrega Expressa - Endereco Diferente
 
   @Portabilidade
   @Controle
