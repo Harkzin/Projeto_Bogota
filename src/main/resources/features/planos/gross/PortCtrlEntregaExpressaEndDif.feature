@@ -1,14 +1,14 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Portabilidade Controle - Entrega Expressa
+Funcionalidade: Portabilidade Controle - Entrega Expressa - Endereco Diferente
 
   #ECCMAUT-155
 
   @Portabilidade
   @Controle
   @PortabilidadeCtrlExpressaEndDif
-  Cenario: Portabilidade Controle - Entrega Expressa
+  Cenario: Portabilidade Controle - Entrega Expressa - Endereco Diferente
     Dado que o usuário acesse a Loja Online
 
     Quando selecionar o plano de id "17218" do carrossel da Home
@@ -26,7 +26,7 @@ Funcionalidade: Portabilidade Controle - Entrega Expressa
 
     Quando é desmarcado a opção [Usar o mesmo endereço de entrega]
     Entao será exibido o campo de [CEP] do endereço de cobrança
-    E preenche os campos de endereço de cobrança: [CEP] "03662010" [Número] "123" [Complemento] "AP22"
+    E preenche os campos de endereço de cobrança: [CEP] "01001001" [Número] "123" [Complemento] "AP22"
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura

@@ -37,14 +37,14 @@ public class DadosPessoaisSteps {
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
         cartOrder.delivery.deliveryMode = CONVENTIONAL;
         dadosPessoaisPage.inserirCep(cep);
-        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+        dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
         cartOrder.delivery.deliveryMode = EXPRESS;
         dadosPessoaisPage.inserirCep(cep);
-        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+        dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
@@ -59,7 +59,7 @@ public class DadosPessoaisSteps {
 
     @Então("será exibido o campo de [CEP] do endereço de cobrança")
     public void seraExibidoCampoCepEnderecoCobranca() {
-        dadosPessoaisPage.validarExibicaoCampoCEP();
+        dadosPessoaisPage.exibirCepCobranca();
     }
 
     @E("preenche os campos de endereço de cobrança: [CEP] {string} [Número] {string} [Complemento] {string}")
