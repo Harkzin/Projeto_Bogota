@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle com e-Sim
+Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
 
   @Aquisicao
   @Controle

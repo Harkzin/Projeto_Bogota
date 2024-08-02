@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Portabilidade Controle com e-Sim
+Funcionalidade: ECCMAUT-942 - Portabilidade Controle com e-Sim
 
   @Aquisicao
   @Controle

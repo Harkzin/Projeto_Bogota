@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Portabilidade Pos - Entrega Expressa - Mesmo endereco
+Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo endereco
 
   #ECCMAUT-528
 
