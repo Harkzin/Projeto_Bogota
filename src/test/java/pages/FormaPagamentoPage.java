@@ -52,7 +52,7 @@ public class FormaPagamentoPage {
         driverQA.actionPause(2000);
         PageFactory.initElements(driverQA.getDriver(), this);
 
-        Assert.assertEquals("Campo cupom deve estar vazio ao abrir a pagina", cupom.getAttribute("value"), "");
+        Assert.assertTrue("Campo cupom deve estar vazio ao abrir a pagina", cupom.getAttribute("value").isEmpty());
         validateElementActiveVisible(cupom);
         validateElementActiveVisible(aplicarCupom);
         validateElementActiveVisible(adicionarCartao);

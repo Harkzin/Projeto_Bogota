@@ -1,6 +1,6 @@
 package steps;
 
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.PlpAparelhosPage;
@@ -24,7 +24,7 @@ public class PlpAparelhosSteps {
         this.driverQA = driverQA;
     }
 
-    @Então("é direcionado para a tela PLP de Aparelho")
+    @Entao("é direcionado para a tela PLP de Aparelho")
     public void validarPLpAparelhos() {
         plpAparelhosPage.validarPlpAparelhos();
     }

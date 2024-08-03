@@ -11,6 +11,8 @@ Funcionalidade: Aparelhos - Gross
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "000000000000018006"
     Entao é direcionado para a PDP do Aparelho selecionado
     E seleciona a opção [Quero uma linha nova da Claro]
+    E seleciona a plataforma [Claro Pós]
+    E seleciona o plano "17268"
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho

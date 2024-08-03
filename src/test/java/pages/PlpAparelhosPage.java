@@ -12,6 +12,8 @@ import support.utils.DriverQA;
 
 import java.util.Locale;
 
+import static pages.ComumPage.*;
+
 @Component
 @ScenarioScope
 public class PlpAparelhosPage {
@@ -32,7 +34,7 @@ public class PlpAparelhosPage {
     public void validarCardAparelho(Product device) {
         //Valida nome
         if (!device.getName().isEmpty()) {
-            ComumPage.validateElementText(device.getName(), driverQA.findElement("//*[@id='btn-eu-quero-" + device.getCode() + "']/../..//h2", "xpath"));
+            validateElementText(device.getName(), driverQA.findElement("//*[@id='btn-eu-quero-" + device.getCode() + "']/../..//h2", "xpath"));
         }
 
         //Valida preço base "De"

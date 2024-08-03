@@ -4,10 +4,15 @@ import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import support.CartOrder;
 import support.Product;
+import support.utils.Constants;
+import support.utils.Constants.ProcessType;
 import support.utils.DriverQA;
 
 import java.util.List;
@@ -15,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static pages.ComumPage.*;
+import static support.utils.Constants.*;
 
 @Component
 @ScenarioScope
@@ -28,6 +34,18 @@ public class PdpAparelhosPage {
         this.driverQA = driverQA;
         this.cartOrder = cartOrder;
     }
+
+    @FindBy(id = "rdn-migracao")
+    private WebElement fluxoBase;
+
+    @FindBy(id = "rdn-portabilidade")
+    private WebElement fluxoPortabilidade;
+
+    @FindBy(id = "rdn-aquisicao")
+    private WebElement fluxoAquisicao;
+
+    @FindBy(id = "slc-plataforma-plano")
+    private WebElement plataforma;
 
     private boolean prePaidPlanSelected;
 
@@ -78,7 +96,7 @@ public class PdpAparelhosPage {
 
             //Valida apps extraPlay
             if (plan.hasExtraPlayApps()) {
-                List<WebElement> extraPlayApps = modal.findElements(By.xpath(".//div[contains(@class, 'title-extra-play')][1]//img"));
+                List<WebElement> extraPlayApps = modal.findElements(By.xpath(".//div[contains(@data-plan-content, 'extraplayapps')]//img"));
                 validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
             }
 
@@ -125,6 +143,8 @@ public class PdpAparelhosPage {
     public void validarPdpAparelho(Product device) {
         driverQA.waitPageLoad(device.getCode(), 10);
         driverQA.actionPause(1000);
+
+        PageFactory.initElements(driverQA.getDriver(), this);
 
         //Fabricante
         if (device.hasManufacturer()) {
@@ -189,6 +209,28 @@ public class PdpAparelhosPage {
 
     public void validarProdutoSemEstoque() {
         Assert.assertEquals("Produto Esgotado", driverQA.findElement("produto-esgotado", "id").getText().trim());
+    }
+
+    public void selecionarFluxo(ProcessType processType) {
+        switch (processType) {
+            case EXCHANGE, MIGRATE, APARELHO_TROCA_APARELHO -> driverQA.javaScriptClick(fluxoBase);
+            case PORTABILITY -> driverQA.javaScriptClick(fluxoPortabilidade);
+            case ACQUISITION -> driverQA.javaScriptClick(fluxoAquisicao);
+        }
+    }
+
+    public void selecionarPlataforma(String category) {
+        if (category.equals("prepago")) {
+            prePaidPlanSelected = true;
+        }
+
+        Select platform = new Select(plataforma);
+        platform.selectByValue(category);
+    }
+
+    public void selecionarPlano(String plan) {
+        driverQA.javaScriptClick("btn-selecionar-plano-" + plan, "id");
+        validarInfosPlano(cartOrder.getPlan());
     }
 
     public void clicarComprar(String deviceId) {
