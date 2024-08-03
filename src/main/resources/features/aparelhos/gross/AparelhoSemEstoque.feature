@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle Aparelho Sem Estoque
+Funcionalidade: ECCMAUT-517 - Aquisicao Controle Aparelho Sem Estoque
 
   @AparelhoSemEstoque
   Cenario: Aquisicao Controle Aparelho Sem Estoque

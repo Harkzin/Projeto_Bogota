@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle - Reprovacao Clear Sale
+Funcionalidade: ECCMAUT-340 - Aquisicao Controle - Reprovacao Clear Sale
 
   @Aquisicao
   @Controle
