@@ -1,7 +1,7 @@
 #language: pt
 
 @RegressivoConsulta
-Funcionalidade: Consulta de saldo Claro Clube - Cliente  Claro Clube - Header
+Funcionalidade: ECCMAUT-193 - Consulta de saldo Claro Clube - Cliente  Claro Clube - Header
 
   @ConsultaSaldoClienteClaroClube
   Cenario: Consulta de saldo Claro Clube - Cliente  Claro Clube - Header

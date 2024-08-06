@@ -1,9 +1,6 @@
 package steps;
 
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
-import io.cucumber.java.pt.Mas;
-import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import pages.DadosPessoaisPage;
 import support.CartOrder;
@@ -37,19 +34,35 @@ public class DadosPessoaisSteps {
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
         cartOrder.delivery.deliveryMode = CONVENTIONAL;
         dadosPessoaisPage.inserirCep(cep);
-        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+        dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
         cartOrder.delivery.deliveryMode = EXPRESS;
         dadosPessoaisPage.inserirCep(cep);
-        dadosPessoaisPage.inserirDadosEndereco(numero, complemento);
+        dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
         dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
+    }
+
+    @E("é desmarcado a opção [Usar o mesmo endereço de entrega]")
+    public void desmarcarOpcaoUsarMesmoEnderecoEntrega() {
+        dadosPessoaisPage.clicarUsarMesmoEnderecoEntrega();
+    }
+
+    @Entao("será exibido o campo de [CEP] do endereço de cobrança")
+    public void seraExibidoCampoCepEnderecoCobranca() {
+        dadosPessoaisPage.exibirCepCobranca();
+    }
+
+    @E("preenche os campos de endereço de cobrança: [CEP] {string} [Número] {string} [Complemento] {string}")
+    public void preencherCamposEnderecoEntrega(String cep, String numero, String complemento) {
+        dadosPessoaisPage.inserirCepCobranca(cep);
+        dadosPessoaisPage.inserirDadosEnderecoCobranca(numero, complemento);
     }
 
     @E("o usuário seleciona o tipo de sim [Esim]")

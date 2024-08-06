@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Pos com e-Sim
+Funcionalidade: ECCMAUT-956 - Aquisicao Pos com e-Sim
 
   @Aquisicao
   @Controle

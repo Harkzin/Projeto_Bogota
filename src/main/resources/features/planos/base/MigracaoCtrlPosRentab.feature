@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Migracao Controle Pos - Rentabilizacao
+Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
 
   #Massa: Controle - pagamento boleto - fatura correios
 

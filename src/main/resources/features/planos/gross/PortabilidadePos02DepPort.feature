@@ -1,6 +1,6 @@
 #language: pt
 @Regressivo
-Funcionalidade: Aquisicao Pos - 02 Dependente
+Funcionalidade: ECCMAUT-971 - Aquisicao Pos - 02 Dependente
 
   @Portabilidade
   @Pos

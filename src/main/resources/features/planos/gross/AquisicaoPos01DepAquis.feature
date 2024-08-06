@@ -1,6 +1,6 @@
 #language: pt
 @Regressivo
-Funcionalidade: Aquisicao Pos - 01 Dependente
+Funcionalidade: ECCMAUT-825 - Aquisicao Pos - 01 Dependente
 
   @Aquisicao
   @Pos

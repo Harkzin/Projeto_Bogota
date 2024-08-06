@@ -1,7 +1,7 @@
 #language: pt
 
 @RegressivoConsulta
-Funcionalidade: Validar Meus Pedidos Header
+Funcionalidade: ECCMAUT-255 - Validar Meus Pedidos Header
 
   @MeusPedidosHeader
   Cenario: Validar Meus Pedidos Header
