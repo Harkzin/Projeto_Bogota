@@ -17,9 +17,11 @@ public class CheckoutStepAddressRequest {
      @JsonProperty("cartGUID")
      private String cartGUID;
      @JsonProperty("deliveryAddress")
-     private DeliveryAddress deliveryAddress;
+     private DeliveryAddress deliveryAddress = new DeliveryAddress();
+     //MODELO
+     //FAZER ISSO QUANDO FOR ACESSAR O CAMPO DO OBJETO FILHO
      @JsonProperty("billingAddress")
-     private BillingAddress billingAddress;
+     private BillingAddress billingAddress = new BillingAddress();
      @JsonProperty("sameAddress")
      private boolean sameAddress;
 
@@ -30,12 +32,12 @@ public class CheckoutStepAddressRequest {
      public void setCartGUID(String cartGUID) {
           this.cartGUID = cartGUID;
      }
-     public void setDeliveryAddress(DeliveryAddress deliveryAddress) {
-          this.deliveryAddress = deliveryAddress;
+     public DeliveryAddress getDeliveryAddress() {
+          return deliveryAddress;
      }
 
-     public void setBillingAddress(BillingAddress billingAddress) {
-          this.billingAddress = billingAddress;
+     public BillingAddress getBillingAddress() {
+          return billingAddress;
      }
 
      public void setSameAddress(boolean sameAddress) {

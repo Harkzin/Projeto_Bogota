@@ -37,7 +37,7 @@ public class CheckoutStepPaymentsResponse {
     @JsonProperty("controleFacilUrl")
     private String controleFacilUrl;
     @JsonProperty("availablebanks")
-    private List<Availablebank> availablebanks = new ArrayList<Availablebank>();
+    private List<Availablebanks> availablebanks = new ArrayList<Availablebanks>();
     @JsonProperty("caixaaccountvalues")
     private List<Caixaaccountvalue> caixaaccountvalues = new ArrayList<Caixaaccountvalue>();
     @JsonProperty("expiredates")
@@ -119,7 +119,7 @@ public class CheckoutStepPaymentsResponse {
         return controleFacilUrl;
     }
 
-    public List<Availablebank> getAvailablebanks() {
+    public List<Availablebanks> getAvailablebanks() {
         return availablebanks;
     }
 
@@ -172,7 +172,7 @@ public class CheckoutStepPaymentsResponse {
             "analyticsCode",
             "selectedItem"
     })
-    public class Availablebank {
+    public static class Availablebanks {
 
         @JsonProperty("code")
         private String code;
@@ -217,7 +217,7 @@ public class CheckoutStepPaymentsResponse {
             "isocode",
             "name"
     })
-    public class Billingcountry {
+    public static class Billingcountry {
 
         @JsonProperty("isocode")
         private String isocode;
@@ -241,7 +241,7 @@ public class CheckoutStepPaymentsResponse {
             "analyticsCode",
             "selectedItem"
     })
-    public class Caixaaccountvalue {
+    public static class Caixaaccountvalue {
 
         @JsonProperty("code")
         private String code;
@@ -285,7 +285,7 @@ public class CheckoutStepPaymentsResponse {
             "code",
             "name"
     })
-    public class Cardtype {
+    public static class Cardtype {
 
         @JsonProperty("code")
         private String code;
@@ -309,7 +309,7 @@ public class CheckoutStepPaymentsResponse {
             "analyticsCode",
             "selectedItem"
     })
-    public class Expiredate {
+    public static class Expiredate {
 
         @JsonProperty("code")
         private String code;
@@ -355,7 +355,7 @@ public class CheckoutStepPaymentsResponse {
             "code",
             "name"
     })
-    public class PaymentMode {
+    public static class PaymentMode {
 
         @JsonProperty("code")
         private String code;
@@ -378,7 +378,7 @@ public class CheckoutStepPaymentsResponse {
             "diavencimento"
     })
 
-    public class AlternativaCredito {
+    public static class AlternativaCredito {
 
         @JsonProperty("diavencimentovalue")
         private String diavencimentovalue;

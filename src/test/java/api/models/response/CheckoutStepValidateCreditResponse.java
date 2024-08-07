@@ -82,7 +82,7 @@ public class CheckoutStepValidateCreditResponse {
         return creditApproved;
     }
 
-    public class Cart {
+    public static class Cart {
 
         @JsonProperty("code")
         private String code;
@@ -140,7 +140,7 @@ public class CheckoutStepValidateCreditResponse {
         }
     }
 
-    public class Entry {
+    public static class Entry {
 
         @JsonProperty("entryNumber")
         private int entryNumber;
@@ -169,7 +169,7 @@ public class CheckoutStepValidateCreditResponse {
         }
     }
 
-    public class Product {
+    public static class Product {
 
         @JsonProperty("code")
         private String code;
@@ -221,7 +221,7 @@ public class CheckoutStepValidateCreditResponse {
         }
     }
 
-    public class TotalPrice {
+    public static class TotalPrice {
 
         @JsonProperty("currencyIso")
         private String currencyIso;
@@ -243,7 +243,7 @@ public class CheckoutStepValidateCreditResponse {
         }
     }
 
-    public class TotalPriceWithTax {
+    public static class TotalPriceWithTax {
 
         @JsonProperty("currencyIso")
         private String currencyIso;
@@ -265,7 +265,7 @@ public class CheckoutStepValidateCreditResponse {
         }
     }
 
-    public class TotalPrice__1 {
+    public static class TotalPrice__1 {
 
         @JsonProperty("currencyIso")
         private String currencyIso;
