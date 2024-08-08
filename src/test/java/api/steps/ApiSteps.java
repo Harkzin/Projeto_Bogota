@@ -2,7 +2,6 @@ package api.steps;
 
 import api.models.request.*;
 import api.models.response.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.pt.Dado;
 import org.junit.Assert;
 import web.support.utils.Constants;
@@ -14,7 +13,6 @@ import java.net.http.HttpResponse;
 
 import static java.time.Duration.ofSeconds;
 import static web.support.api.RestAPI.*;
-import static web.support.api.RestAPI.checkCpfDiretrix;
 
 public class ApiSteps {
 
@@ -22,7 +20,7 @@ public class ApiSteps {
 
     //CheckoutStepAddressRequest checkoutStepAddressRequest = new CheckoutStepAddressRequest();
     //checkoutStepAddressRequest.getBillingAddress().setBuildingnumber("sdfasdf");
-
+    private String plan;
     private String guid;
     private String countryIso;
     private String neighbourhood;
@@ -42,9 +40,8 @@ public class ApiSteps {
     private CheckoutStepPaymentsResponse paymentsObjectResponse;
     private HttpResponse<String> PersonalInfoResponse;
     private CheckoutStepValidateCreditResponse validateCreditObjectResponse;
-    private String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente  + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
+    private String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
     private String token;
-
 
     @Dado("authorizationserver-oauth-token")
     public void gerarToken() {
@@ -82,7 +79,7 @@ public class ApiSteps {
         }
 
         guid = cartNewObjectResponse.getGuid();
-        Assert.assertEquals(0.0,cartNewObjectResponse.getOrderDiscounts().getValue(), 1e-3);
+        Assert.assertEquals(0.0, cartNewObjectResponse.getOrderDiscounts().getValue(), 1e-3);
         Assert.assertEquals(0.0, cartNewObjectResponse.getProductDiscounts().getValue(), 1e-3);
         Assert.assertEquals(0.0, cartNewObjectResponse.getSubTotal().getValue(), 1e-3);
         Assert.assertEquals(0.0, cartNewObjectResponse.getTotalDiscounts().getValue(), 1e-3);
@@ -93,10 +90,11 @@ public class ApiSteps {
         Assert.assertTrue(cartNewObjectResponse.getEntries().isEmpty());
     }
 
-    @Dado("add-offer-plan [fields {string}]")
-    public void AddOfferPlan(String fields) {
+    @Dado("add-offer-plan [plan {string}], [fields {string}]")
+    public void AddOfferPlan(String plan, String fields) {
+
         final HttpRequest addOfferPlan = HttpRequest.newBuilder()
-                .uri(URI.create(baseURI + "/cart/" + guid + fields))
+                .uri(URI.create(baseURI + "/cart/" + guid + "/" + plan + fields))
                 .timeout(ofSeconds(15))
                 .header("Authorization", token)
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -110,11 +108,10 @@ public class ApiSteps {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-        Assert.assertEquals("product of code 17218 added to cart" ,addPlanOfferObjectResponse.getMessage());
-
+        this.plan = plan;
+        Assert.assertEquals("product of code " + plan + " added to cart", addPlanOfferObjectResponse.getMessage());
+        Assert.assertTrue(addPlanOfferObjectResponse.isSuccess());
     }
-
 
 
     @Dado("identificar-cliente [msisdn {string}], [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}], [ddd {string}] e [service {string}]")
@@ -142,9 +139,13 @@ public class ApiSteps {
             identificarClienteResponse = clientHttp.send(identificarCliente, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, identificarClienteResponse.statusCode());
             idenfificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        Assert.assertTrue(idenfificarClienteObjectResponse.isSuccess());
+        Assert.assertFalse(idenfificarClienteObjectResponse.isContingency());
+        Assert.assertFalse(idenfificarClienteObjectResponse.isDiretrixCart());
+        Assert.assertFalse(idenfificarClienteObjectResponse.isDependent());
     }
 
     @Dado("personal-info [fullName {string}]")
@@ -170,10 +171,14 @@ public class ApiSteps {
             personalInfoResponse = clientHttp.send(personalInfo, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, personalInfoResponse.statusCode());
             personalInfoObjectResponse = objMapper.readValue(personalInfoResponse.body(), CheckoutStepPersonalInfoResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertEquals("Informações Adicionadas com Sucesso!", personalInfoObjectResponse.getMessage());
+        Assert.assertTrue(personalInfoObjectResponse.isSuccess());
     }
+
     @Dado("get-address [cep {string}]")
     public void getAddress(String cep) {
 
@@ -195,9 +200,15 @@ public class ApiSteps {
             addressResponse = clientHttp.send(address, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, addressResponse.statusCode());
             addressObjectResponse = objMapper.readValue(addressResponse.body(), CheckoutStepAddressResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertEquals("ACQUISITION", addressObjectResponse.getProcessType());
+        Assert.assertFalse(addressObjectResponse.isContingency());
+        Assert.assertTrue(addressObjectResponse.getErrorList().isEmpty());
+        Assert.assertFalse(addressObjectResponse.isDiretrixCart());
+        Assert.assertTrue(addressObjectResponse.isSuccess());
 
         countryIso = addressObjectResponse.getState().split("-")[0];
         neighbourhood = addressObjectResponse.getNeighbourhood();
@@ -205,7 +216,6 @@ public class ApiSteps {
         streetName = addressObjectResponse.getStreet();
         townCity = addressObjectResponse.getTown();
         zipCode = addressObjectResponse.getZipcode();
-
     }
 
     @Dado("save-address")
@@ -233,7 +243,6 @@ public class ApiSteps {
         checkoutStepAddressRequest.getDeliveryAddress().setZipcode(zipCode);
         checkoutStepAddressRequest.setSameAddress(true);
 
-
         final HttpResponse<String> addressResponse;
 
         try {
@@ -242,15 +251,21 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST( HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepAddressRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepAddressRequest)))
                     .build();
 
             addressResponse = clientHttp.send(address, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, addressResponse.statusCode());
             addressObjectResponse = objMapper.readValue(addressResponse.body(), CheckoutStepAddressResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertEquals("ACQUISITION", addressObjectResponse.getProcessType());
+        Assert.assertFalse(addressObjectResponse.isContingency());
+        Assert.assertFalse(addressObjectResponse.isDiretrixCart());
+        Assert.assertTrue(addressObjectResponse.getErrorList().isEmpty());
+        Assert.assertTrue(addressObjectResponse.isSuccess());
     }
 
     @Dado("get-payments")
@@ -267,15 +282,24 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST( HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPaymentsRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPaymentsRequest)))
                     .build();
 
             paymentsResponse = clientHttp.send(payments, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, paymentsResponse.statusCode());
             paymentsObjectResponse = objMapper.readValue(paymentsResponse.body(), CheckoutStepPaymentsResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertTrue(paymentsObjectResponse.isSuccess());
+        Assert.assertFalse(paymentsObjectResponse.isContingency());
+        Assert.assertTrue(paymentsObjectResponse.getAvailablebanks().size() > 1);
+        Assert.assertTrue(paymentsObjectResponse.getCaixaaccountvalues().size() > 1);
+        Assert.assertTrue(paymentsObjectResponse.getCardtypes().size() > 1);
+        Assert.assertTrue(paymentsObjectResponse.getExpiredates().size() > 1);
+        Assert.assertTrue(paymentsObjectResponse.getCaixaaccountvalues().size() > 1);
+        Assert.assertTrue(paymentsObjectResponse.getPaymentModeList().size() > 1);
     }
 
     @Dado("save-payments [invoiceType {string}] e [paymentMode {string}]")
@@ -288,6 +312,13 @@ public class ApiSteps {
         checkoutStepPaymentRequest.setPaymentMode(paymentMode);
         checkoutStepPaymentRequest.setTermsCheck(true);
 
+        if (paymentMode.equals("debitcard")) {
+            checkoutStepPaymentRequest.setBankNumber("001");
+            checkoutStepPaymentRequest.setAgencyNumber("0001");
+            checkoutStepPaymentRequest.setAccountNumber("0000001");
+            checkoutStepPaymentRequest.setCustomBankNumber("1");
+        }
+
         final HttpResponse<String> paymentResponse;
 
         try {
@@ -296,16 +327,18 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST( HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPaymentRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPaymentRequest)))
                     .build();
 
             paymentResponse = clientHttp.send(payment, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, paymentResponse.statusCode());
             paymentObjectResponse = objMapper.readValue(paymentResponse.body(), CheckoutStepPaymentResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
+        Assert.assertTrue(paymentsObjectResponse.isSuccess());
+        Assert.assertEquals("Pagamento Salvo com Sucesso!", paymentObjectResponse.getMessage());
     }
 
     @Dado("validate-credit")
@@ -322,15 +355,22 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST( HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepValidateCreditRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepValidateCreditRequest)))
                     .build();
 
             validateCreditResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, validateCreditResponse.statusCode());
             validateCreditObjectResponse = objMapper.readValue(validateCreditResponse.body(), CheckoutStepValidateCreditResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertTrue(validateCreditObjectResponse.isSuccess());
+        Assert.assertTrue(validateCreditObjectResponse.getErrorList().isEmpty());
+        Assert.assertEquals("Crédito Aprovado!", validateCreditObjectResponse.getMessage());
+        Assert.assertEquals(plan, validateCreditObjectResponse.getCart().getEntries().get(0).getProduct().getCode());
+        Assert.assertEquals(1, validateCreditObjectResponse.getCart().getTotalItems());
+        Assert.assertTrue(validateCreditObjectResponse.isCreditApproved());
     }
 
     @Dado("create-order")
@@ -346,15 +386,20 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST( HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepOrderRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepOrderRequest)))
                     .build();
 
             OrderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, OrderResponse.statusCode());
             OrderObjectResponse = objMapper.readValue(OrderResponse.body(), CheckoutStepOrderResponse.class);
-        } catch ( IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        Assert.assertTrue(OrderObjectResponse.isSuccess());
+        Assert.assertFalse(OrderObjectResponse.isContingency());
+        Assert.assertEquals("Pedido Gerado com Sucesso", OrderObjectResponse.getMessage());
+        Assert.assertNotNull(OrderObjectResponse.getOrdercode());
     }
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {

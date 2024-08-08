@@ -3,19 +3,19 @@
 
 
 @Regressivo
-Funcionalidade: Aquisicao Controle Boleto
+Funcionalidade: Aquisicao Pos Debito
 
   @API
-  @ApiAquisicaoControleBoleto
-  Cenario: Aquisicao Controle Boleto
+  @ApiAquisicaoPosDebito
+  Cenario: Aquisicao Pos Debito
     * authorizationserver-oauth-token
     * cart-new
-    * add-offer-plan [fields "/17218?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
+    * add-offer-plan [plan "17270"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
     * identificar-cliente [msisdn "11988887777"], [CPF aprovado na clearSale? "true", CPF na diretrix? "false"], [ddd "11"] e [service "NEWLINE"]
     * personal-info [fullName "NOME CENARIO"]
-    * get-address [cep "03662010"]
+    * get-address [cep "01001001"]
     * save-address
     * get-payments
-    * save-payments [invoiceType "DIGITAL"] e [paymentMode "ticket"]
+    * save-payments [invoiceType "DIGITAL"] e [paymentMode "debitcard"]
     * validate-credit
     * create-order
