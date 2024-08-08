@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle - Entrega expressa - Boleto
+Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa - Boleto
 
   @Aquisicao
   @Controle

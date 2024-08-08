@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Migracao - Downgrade Pos - Controle com Aceite de Multa
+Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de Multa
 
   #ECCMAUT-491
   #Massa: Pós - pagamento boleto - fatura correios

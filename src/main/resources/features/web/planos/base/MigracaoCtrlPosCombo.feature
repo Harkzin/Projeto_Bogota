@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Migracao Controle para Pos Combo Multi
+Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
 
   #Massa: Controle Combo - pagamento boleto
 

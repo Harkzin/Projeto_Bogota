@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Portabilidade - Numero Base
+Funcionalidade: ECCMAUT-510 - Portabilidade - Numero Base
 
   @Portabilidade
   @Pos

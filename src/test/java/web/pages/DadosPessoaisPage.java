@@ -35,11 +35,23 @@ public class DadosPessoaisPage {
     private WebElement entregaExpressa;
     private WebElement chipEsimConvencional;
     private WebElement chipEsimExpress;
+    private WebElement cepCobranca;
 
     private void validarCampoCep() {
         cep = driverQA.findElement("txt-cep-endereco-entrega", "id");
         Assert.assertTrue(cep.isDisplayed());
         Assert.assertEquals(cep.getAttribute("value"), "");
+    }
+
+    private void inserirDadosEndereco(String numeroId, String complementoId, String numero, String complemento) {
+        WebElement numeroElement = driverQA.findElement(numeroId, "id");
+        WebElement complementoElement = driverQA.findElement(complementoId, "id");
+
+        Assert.assertTrue(numeroElement.getAttribute("value").isEmpty());
+        Assert.assertTrue(complementoElement.getAttribute("value").isEmpty());
+
+        driverQA.actionSendKeys(numeroElement, numero);
+        driverQA.actionSendKeys(complementoElement, complemento);
     }
 
     public void validarPaginaDadosPessoais() {
@@ -157,19 +169,37 @@ public class DadosPessoaisPage {
         }
     }
 
-    public void inserirDadosEndereco(String numero, String complemento) {
-        WebElement numeroElement = driverQA.findElement("txt-numero-endereco-entrega", "id");
-        WebElement complementoElement = driverQA.findElement("txt-complemento-endereco-entrega", "id");
-
-        Assert.assertEquals(numeroElement.getAttribute("value"), "");
-        Assert.assertEquals(complementoElement.getAttribute("value"), "");
-
-        driverQA.actionSendKeys(numeroElement, numero);
-        driverQA.actionSendKeys(complementoElement, complemento);
+    public void inserirDadosEnderecoEntrega(String numero, String complemento) {
+        inserirDadosEndereco("txt-numero-endereco-entrega", "txt-complemento-endereco-entrega", numero, complemento);
     }
 
     public void clicarContinuar() {
         driverQA.javaScriptClick("btn-continuar", "id");
+    }
+
+    public void clicarUsarMesmoEnderecoEntrega() {
+        driverQA.javaScriptClick("endereco-cobranca_checkbox", "id");
+    }
+
+    public void exibirCepCobranca() {
+        cepCobranca = driverQA.findElement("txt-cep-endereco-cobranca", "id");
+        driverQA.waitElementVisibility(cepCobranca, 2);
+        Assert.assertTrue(cepCobranca.getAttribute("value").isEmpty());
+    }
+
+    public void inserirCepCobranca(String cep) {
+        driverQA.actionSendKeys("txt-cep-endereco-cobranca","id",cep);
+
+        WebElement endereco = driverQA.findElement("txt-endereco-endereco-cobranca", "id");
+        driverQA.waitElementVisibility(endereco, 12);
+        Assert.assertNotEquals("Preenchimento automático [endereço]", endereco.getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [bairro]", driverQA.findElement("txt-cidade-endereco-cobranca", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [estado]", driverQA.findElement("txt-bairro-endereco-cobranca", "id").getAttribute("value"), "");
+        Assert.assertNotEquals("Preenchimento automático [cidade]", driverQA.findElement("txt-estado-endereco-cobranca", "id").getAttribute("value"), "");
+    }
+
+    public void inserirDadosEnderecoCobranca(String numero, String complemento) {
+        inserirDadosEndereco("txt-numero-endereco-cobranca", "txt-complemento-endereco-cobranca", numero, complemento);
     }
 
     public void selecionarEsim() {

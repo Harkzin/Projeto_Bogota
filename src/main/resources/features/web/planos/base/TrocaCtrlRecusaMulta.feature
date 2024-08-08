@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Troca Controle recusa multa
+Funcionalidade: ECCMAUT-228 - Troca Controle recusa multa
 
   @Controle
   @Troca

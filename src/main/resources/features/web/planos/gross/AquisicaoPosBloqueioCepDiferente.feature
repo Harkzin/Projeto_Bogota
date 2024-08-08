@@ -2,7 +2,7 @@
 
 @Desativado
   #Cenário desabilitade da regressão por bug despriorizado em Prod (Front, Dados pessoais)
-Funcionalidade: Cenario de erro - Aquisicao Pos - Bloqueio para CEP diferente da regionalizacao
+Funcionalidade: ECCMAUT-303 - Cenario de erro - Aquisicao Pos - Bloqueio para CEP diferente da regionalizacao
 
   @Aquisicao
   @Pos

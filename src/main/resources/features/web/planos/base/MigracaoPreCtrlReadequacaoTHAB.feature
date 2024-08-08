@@ -1,7 +1,7 @@
 #language: pt
 
   @Regressivo
-Funcionalidade: Migracao Pre - Readequacao THAB
+Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 
   @Migracao
   @Controle
