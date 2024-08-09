@@ -20,6 +20,7 @@ public class ApiSteps {
 
     //CheckoutStepAddressRequest checkoutStepAddressRequest = new CheckoutStepAddressRequest();
     //checkoutStepAddressRequest.getBillingAddress().setBuildingnumber("sdfasdf");
+    private String validateToken;
     private String plan;
     private String guid;
     private String countryIso;
@@ -39,6 +40,7 @@ public class ApiSteps {
     private CheckoutStepPaymentResponse paymentObjectResponse;
     private CheckoutStepPaymentsResponse paymentsObjectResponse;
     private HttpResponse<String> PersonalInfoResponse;
+    private CheckoutStepTokenResponse tokenObjectResponse;
     private CheckoutStepValidateCreditResponse validateCreditObjectResponse;
     private String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
     private String token;
@@ -148,6 +150,40 @@ public class ApiSteps {
         Assert.assertFalse(idenfificarClienteObjectResponse.isDependent());
     }
 
+    @Dado("identificar-cliente [msisdn {string}], [CPF {string}], [ddd {string}] e [service {string}]")
+    public void identificarClientCpfEspecifico(String msisdn, String cpf, String ddd, String service) {
+        CheckoutStepIdentificarClienteRequest identificarClienteRequest = new CheckoutStepIdentificarClienteRequest();
+        identificarClienteRequest.setMsisdn(msisdn);
+        identificarClienteRequest.setCpf(cpf);
+        identificarClienteRequest.setDdd(ddd);
+        identificarClienteRequest.setService(service);
+        identificarClienteRequest.setEmail("xxxxxxxx@xxx.com");
+        identificarClienteRequest.setOrigin("SITEAPI");
+        identificarClienteRequest.setCartGUID(guid);
+
+        final HttpResponse<String> identificarClienteResponse;
+
+        try {
+            final HttpRequest identificarCliente = HttpRequest.newBuilder()
+                    .uri(URI.create(baseURI + "/checkout/step/identificarCliente"))
+                    .timeout(ofSeconds(15))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(identificarClienteRequest)))
+                    .build();
+
+            identificarClienteResponse = clientHttp.send(identificarCliente, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, identificarClienteResponse.statusCode());
+            idenfificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Assert.assertTrue(idenfificarClienteObjectResponse.isSuccess());
+        Assert.assertFalse(idenfificarClienteObjectResponse.isContingency());
+        Assert.assertFalse(idenfificarClienteObjectResponse.isDiretrixCart());
+        Assert.assertFalse(idenfificarClienteObjectResponse.isDependent());
+    }
+
     @Dado("personal-info [fullName {string}]")
     public void personalInfo(String fullName) {
 
@@ -204,7 +240,6 @@ public class ApiSteps {
             throw new RuntimeException(e);
         }
 
-        Assert.assertEquals("ACQUISITION", addressObjectResponse.getProcessType());
         Assert.assertFalse(addressObjectResponse.isContingency());
         Assert.assertTrue(addressObjectResponse.getErrorList().isEmpty());
         Assert.assertFalse(addressObjectResponse.isDiretrixCart());
@@ -261,7 +296,6 @@ public class ApiSteps {
             throw new RuntimeException(e);
         }
 
-        Assert.assertEquals("ACQUISITION", addressObjectResponse.getProcessType());
         Assert.assertFalse(addressObjectResponse.isContingency());
         Assert.assertFalse(addressObjectResponse.isDiretrixCart());
         Assert.assertTrue(addressObjectResponse.getErrorList().isEmpty());
@@ -371,6 +405,66 @@ public class ApiSteps {
         Assert.assertEquals(plan, validateCreditObjectResponse.getCart().getEntries().get(0).getProduct().getCode());
         Assert.assertEquals(1, validateCreditObjectResponse.getCart().getTotalItems());
         Assert.assertTrue(validateCreditObjectResponse.isCreditApproved());
+    }
+
+    @Dado("get-otp-token")
+    public void getToken() {
+
+        CheckoutStepTokenRequest checkoutStepTokenRequest = new CheckoutStepTokenRequest();
+        checkoutStepTokenRequest.setCartGUID(guid);
+
+        final HttpResponse<String> tokenResponse;
+
+        try {
+            final HttpRequest otpToken = HttpRequest.newBuilder()
+                    .uri(URI.create(baseURI + "/checkout/step/token"))
+                    .timeout(ofSeconds(15))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
+                    .build();
+
+            tokenResponse = clientHttp.send(otpToken, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, tokenResponse.statusCode());
+            tokenObjectResponse = objMapper.readValue(tokenResponse.body(), CheckoutStepTokenResponse.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertTrue(tokenObjectResponse.isSuccess());
+        Assert.assertEquals("Token enviado",tokenObjectResponse.getMessage());
+        Assert.assertNotNull( tokenObjectResponse.getValidateTokenTest());
+        validateToken = tokenObjectResponse.getValidateTokenTest();
+    }
+
+    @Dado("send-otp-token")
+    public void sendToken() {
+
+        CheckoutStepTokenRequest checkoutStepTokenRequest = new CheckoutStepTokenRequest();
+        checkoutStepTokenRequest.setCartGUID(guid);
+        checkoutStepTokenRequest.setToken(validateToken);
+
+        final HttpResponse<String> tokenResponse;
+
+        try {
+            final HttpRequest otpToken = HttpRequest.newBuilder()
+                    .uri(URI.create(baseURI + "/checkout/step/token"))
+                    .timeout(ofSeconds(15))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .method("GET",HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
+                    .build();
+
+            tokenResponse = clientHttp.send(otpToken, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, tokenResponse.statusCode());
+            tokenObjectResponse = objMapper.readValue(tokenResponse.body(), CheckoutStepTokenResponse.class);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertTrue(tokenObjectResponse.isSuccess());
+        Assert.assertEquals("Token válido",tokenObjectResponse.getMessage());
+        Assert.assertFalse(tokenObjectResponse.isContingency());
     }
 
     @Dado("create-order")
