@@ -1,9 +1,7 @@
 #language: pt
 
-
-
 @Regressivo
-Funcionalidade: Aquisicao Pos Fatura Impressa
+Funcionalidade: ECCMAUT-925 - Aquisicao Pos Fatura Impressa
 
   @API
   @ApiAquisicaoPosFaturaImpressa

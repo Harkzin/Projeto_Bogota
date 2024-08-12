@@ -1,9 +1,7 @@
 #language: pt
 
-
-
 @Regressivo
-Funcionalidade: Migracao Ctrl Pos Boleto Fatura Digital
+Funcionalidade: ECCMAUT-930 - Migracao Ctrl Pos Boleto Fatura Digital
 
   @API
   @ApiMigracaoCtrlPosBoletoFaturaDigital

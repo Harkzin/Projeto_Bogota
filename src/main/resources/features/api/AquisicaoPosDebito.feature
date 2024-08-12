@@ -1,9 +1,7 @@
 #language: pt
 
-
-
 @Regressivo
-Funcionalidade: Aquisicao Pos Debito
+Funcionalidade: ECCMAUT-1145 - Aquisicao Pos Debito
 
   @API
   @ApiAquisicaoPosDebito

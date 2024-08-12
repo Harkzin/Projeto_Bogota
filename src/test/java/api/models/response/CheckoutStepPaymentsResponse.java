@@ -90,7 +90,7 @@ public class CheckoutStepPaymentsResponse {
     }
 
 
-    public boolean isIsTroca() {
+    public boolean isTroca() {
         return isTroca;
     }
 
@@ -107,11 +107,11 @@ public class CheckoutStepPaymentsResponse {
         return validateTokenTest;
     }
 
-    public boolean isIsTokenOnlineForABrFlow() {
+    public boolean isTokenOnlineForABrFlow() {
         return isTokenOnlineForABrFlow;
     }
 
-    public boolean isIsDDDabr() {
+    public boolean isDDDabr() {
         return isDDDabr;
     }
 

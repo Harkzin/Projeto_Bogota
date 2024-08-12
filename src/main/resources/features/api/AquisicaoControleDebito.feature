@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle Debito
+Funcionalidade: ECCMAUT-924 - Aquisicao Controle Debito
 
   @API
   @ApiAquisicaoControleDebito

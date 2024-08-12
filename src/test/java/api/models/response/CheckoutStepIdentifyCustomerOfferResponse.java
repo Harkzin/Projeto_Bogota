@@ -53,11 +53,11 @@ public class CheckoutStepIdentifyCustomerOfferResponse {
         return errorList;
     }
 
-    public boolean isIsDDDabr() {
+    public boolean isDDDabr() {
         return isDDDabr;
     }
 
-    public boolean isIsTokenOnlineForABrFlow() {
+    public boolean isTokenOnlineForABrFlow() {
         return isTokenOnlineForABrFlow;
     }
 
@@ -138,11 +138,11 @@ public class CheckoutStepIdentifyCustomerOfferResponse {
             return checkoutStep;
         }
 
-        public boolean isIsControleAntecipado() {
+        public boolean isControleAntecipado() {
             return isControleAntecipado;
         }
 
-        public boolean isIsControleFacil() {
+        public boolean isControleFacil() {
             return isControleFacil;
         }
     }
@@ -215,15 +215,15 @@ public class CheckoutStepIdentifyCustomerOfferResponse {
             return code;
         }
 
-        public boolean isIsComponentEditable() {
+        public boolean isComponentEditable() {
             return isComponentEditable;
         }
 
-        public boolean isIsMaxLimitReachedForBundle() {
+        public boolean isMaxLimitReachedForBundle() {
             return isMaxLimitReachedForBundle;
         }
 
-        public boolean isIsRemovableEntry() {
+        public boolean isRemovableEntry() {
             return isRemovableEntry;
         }
 

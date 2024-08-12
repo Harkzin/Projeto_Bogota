@@ -76,7 +76,7 @@ public class CheckoutStepAddressResponse {
           return controleAntecipado;
      }
 
-     public boolean isIsTroca() {
+     public boolean isTroca() {
           return isTroca;
      }
 
@@ -92,11 +92,11 @@ public class CheckoutStepAddressResponse {
           return validateTokenTest;
      }
 
-     public boolean isIsTokenOnlineForABrFlow() {
+     public boolean isTokenOnlineForABrFlow() {
           return isTokenOnlineForABrFlow;
      }
 
-     public boolean isIsDDDabr() {
+     public boolean isDDDabr() {
           return isDDDabr;
      }
 

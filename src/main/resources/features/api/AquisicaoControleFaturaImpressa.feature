@@ -1,9 +1,7 @@
 #language: pt
 
-
-
 @Regressivo
-Funcionalidade: Aquisicao Controle Fatura Impressa
+Funcionalidade: ECCMAUT-1147 - Aquisicao Controle Fatura Impressa
 
   @API
   @ApiAquisicaoControleFaturaImpressa

@@ -1,7 +1,7 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: Aquisicao Controle Boleto
+Funcionalidade: ECCMAUT-1146 - Aquisicao Controle Boleto
 
   @API
   @ApiAquisicaoControleBoleto

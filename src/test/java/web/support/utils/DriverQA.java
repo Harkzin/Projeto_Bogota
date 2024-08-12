@@ -24,7 +24,7 @@ public class DriverQA {
     private WebDriver driver;
 
     public void setupDriver(String browser) {
-        if (System.getProperty("api","true").equals("false")) {
+        if (System.getProperty("api","false").equals("false")) {
             String headless = System.getProperty("headless", "true");
             String maximized = System.getProperty("maximized", "false");
 

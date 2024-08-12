@@ -66,7 +66,7 @@ public class CheckoutStepTokenResponse {
           return controleAntecipado;
      }
 
-     public boolean isIsTroca() {
+     public boolean isTroca() {
           return isTroca;
      }
 
@@ -82,11 +82,11 @@ public class CheckoutStepTokenResponse {
           return validateTokenTest;
      }
 
-     public boolean isIsTokenOnlineForABrFlow() {
+     public boolean isTokenOnlineForABrFlow() {
           return isTokenOnlineForABrFlow;
      }
 
-     public boolean isIsDDDabr() {
+     public boolean isDDDabr() {
           return isDDDabr;
      }
 

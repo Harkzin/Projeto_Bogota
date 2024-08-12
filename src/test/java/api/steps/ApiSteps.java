@@ -16,10 +16,6 @@ import static web.support.api.RestAPI.*;
 
 public class ApiSteps {
 
-    //MODELO
-
-    //CheckoutStepAddressRequest checkoutStepAddressRequest = new CheckoutStepAddressRequest();
-    //checkoutStepAddressRequest.getBillingAddress().setBuildingnumber("sdfasdf");
     private String validateToken;
     private String plan;
     private String guid;
@@ -30,19 +26,13 @@ public class ApiSteps {
     private String townCity;
     private String zipCode;
 
-    private CartNewResponse cartNewObjectResponse;
-    private AddOfferPlanResponse addPlanOfferObjectResponse;
-    private CheckoutStepIdentificarClienteResponse idenfificarClienteObjectResponse;
-    private CheckoutStepPersonalInfoResponse personalInfoObjectResponse;
+    private CheckoutStepIdentificarClienteResponse identificarClienteObjectResponse;
     private CheckoutStepAddressResponse addressObjectResponse;
     private HttpResponse<String> OfferResponse;
-    private CheckoutStepOrderResponse orderObjectResponse;
-    private CheckoutStepPaymentResponse paymentObjectResponse;
     private CheckoutStepPaymentsResponse paymentsObjectResponse;
     private HttpResponse<String> PersonalInfoResponse;
     private CheckoutStepTokenResponse tokenObjectResponse;
-    private CheckoutStepValidateCreditResponse validateCreditObjectResponse;
-    private String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
+    private final String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
     private String token;
 
     @Dado("authorizationserver-oauth-token")
@@ -63,7 +53,7 @@ public class ApiSteps {
     }
 
     @Dado("cart-new")
-    public void criarCarrino() {
+    public void criarCarrinho() {
         final HttpRequest createCart = HttpRequest.newBuilder()
                 .uri(URI.create(baseURI + "/cart/new?fields=FULL"))
                 .timeout(ofSeconds(15))
@@ -72,6 +62,7 @@ public class ApiSteps {
                 .build();
 
         final HttpResponse<String> cartNewResponse;
+        CartNewResponse cartNewObjectResponse;
         try {
             cartNewResponse = clientHttp.send(createCart, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, cartNewResponse.statusCode());
@@ -103,6 +94,7 @@ public class ApiSteps {
                 .build();
 
         final HttpResponse<String> addPlanOfferResponse;
+        AddOfferPlanResponse addPlanOfferObjectResponse;
         try {
             addPlanOfferResponse = clientHttp.send(addOfferPlan, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, addPlanOfferResponse.statusCode());
@@ -140,14 +132,14 @@ public class ApiSteps {
 
             identificarClienteResponse = clientHttp.send(identificarCliente, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, identificarClienteResponse.statusCode());
-            idenfificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
+            identificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Assert.assertTrue(idenfificarClienteObjectResponse.isSuccess());
-        Assert.assertFalse(idenfificarClienteObjectResponse.isContingency());
-        Assert.assertFalse(idenfificarClienteObjectResponse.isDiretrixCart());
-        Assert.assertFalse(idenfificarClienteObjectResponse.isDependent());
+        Assert.assertTrue(identificarClienteObjectResponse.isSuccess());
+        Assert.assertFalse(identificarClienteObjectResponse.isContingency());
+        Assert.assertFalse(identificarClienteObjectResponse.isDiretrixCart());
+        Assert.assertFalse(identificarClienteObjectResponse.isDependent());
     }
 
     @Dado("identificar-cliente [msisdn {string}], [CPF {string}], [ddd {string}] e [service {string}]")
@@ -174,14 +166,14 @@ public class ApiSteps {
 
             identificarClienteResponse = clientHttp.send(identificarCliente, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, identificarClienteResponse.statusCode());
-            idenfificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
+            identificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        Assert.assertTrue(idenfificarClienteObjectResponse.isSuccess());
-        Assert.assertFalse(idenfificarClienteObjectResponse.isContingency());
-        Assert.assertFalse(idenfificarClienteObjectResponse.isDiretrixCart());
-        Assert.assertFalse(idenfificarClienteObjectResponse.isDependent());
+        Assert.assertTrue(identificarClienteObjectResponse.isSuccess());
+        Assert.assertFalse(identificarClienteObjectResponse.isContingency());
+        Assert.assertFalse(identificarClienteObjectResponse.isDiretrixCart());
+        Assert.assertFalse(identificarClienteObjectResponse.isDependent());
     }
 
     @Dado("personal-info [fullName {string}]")
@@ -195,6 +187,7 @@ public class ApiSteps {
 
         final HttpResponse<String> personalInfoResponse;
 
+        CheckoutStepPersonalInfoResponse personalInfoObjectResponse;
         try {
             final HttpRequest personalInfo = HttpRequest.newBuilder()
                     .uri(URI.create(baseURI + "/checkout/step/personalInfo"))
@@ -355,6 +348,7 @@ public class ApiSteps {
 
         final HttpResponse<String> paymentResponse;
 
+        CheckoutStepPaymentResponse paymentObjectResponse;
         try {
             final HttpRequest payment = HttpRequest.newBuilder()
                     .uri(URI.create(baseURI + "/checkout/step/payment"))
@@ -383,6 +377,7 @@ public class ApiSteps {
 
         final HttpResponse<String> validateCreditResponse;
 
+        CheckoutStepValidateCreditResponse validateCreditObjectResponse;
         try {
             final HttpRequest validateCredit = HttpRequest.newBuilder()
                     .uri(URI.create(baseURI + "/checkout/step/validateCredit"))
@@ -474,6 +469,7 @@ public class ApiSteps {
 
         final HttpResponse<String> orderResponse;
 
+        CheckoutStepOrderResponse orderObjectResponse;
         try {
             final HttpRequest validateCredit = HttpRequest.newBuilder()
                     .uri(URI.create(baseURI + "/checkout/step/order"))
@@ -486,6 +482,7 @@ public class ApiSteps {
             orderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, orderResponse.statusCode());
             orderObjectResponse = objMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
+            // Log com número do pedido para posterior validação no BKO
             System.out.println("Numero do pedido: " + orderObjectResponse.getOrdercode());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

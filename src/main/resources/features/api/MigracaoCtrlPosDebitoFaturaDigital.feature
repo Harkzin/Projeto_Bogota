@@ -1,9 +1,7 @@
 #language: pt
 
-
-
 @Regressivo
-Funcionalidade: Migracao Ctrl Pos Debito Fatura Digital
+Funcionalidade: ECCMAUT-931 - Migracao Ctrl Pos Debito Fatura Digital
 
   @API
   @ApiMigracaoCtrlPosDebitoFaturaDigital

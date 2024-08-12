@@ -18,8 +18,6 @@ public class CheckoutStepAddressRequest {
      private String cartGUID;
      @JsonProperty("deliveryAddress")
      private DeliveryAddress deliveryAddress = new DeliveryAddress();
-     //MODELO
-     //FAZER ISSO QUANDO FOR ACESSAR O CAMPO DO OBJETO FILHO
      @JsonProperty("billingAddress")
      private BillingAddress billingAddress = new BillingAddress();
      @JsonProperty("sameAddress")

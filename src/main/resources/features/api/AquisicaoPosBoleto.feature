@@ -1,9 +1,7 @@
 #language: pt
 
-
-
 @Regressivo
-Funcionalidade: Aquisicao Pos Boleto
+Funcionalidade: ECCMAUT-923 - Aquisicao Pos Boleto
 
   @API
   @ApiAquisicaoPosBoleto
