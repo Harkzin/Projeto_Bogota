@@ -36,7 +36,7 @@ public class ApiSteps {
     private CheckoutStepPersonalInfoResponse personalInfoObjectResponse;
     private CheckoutStepAddressResponse addressObjectResponse;
     private HttpResponse<String> OfferResponse;
-    private CheckoutStepOrderResponse OrderObjectResponse;
+    private CheckoutStepOrderResponse orderObjectResponse;
     private CheckoutStepPaymentResponse paymentObjectResponse;
     private CheckoutStepPaymentsResponse paymentsObjectResponse;
     private HttpResponse<String> PersonalInfoResponse;
@@ -472,7 +472,7 @@ public class ApiSteps {
         CheckoutStepOrderRequest checkoutStepOrderRequest = new CheckoutStepOrderRequest();
         checkoutStepOrderRequest.setCartGUID(guid);
 
-        final HttpResponse<String> OrderResponse;
+        final HttpResponse<String> orderResponse;
 
         try {
             final HttpRequest validateCredit = HttpRequest.newBuilder()
@@ -483,17 +483,18 @@ public class ApiSteps {
                     .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepOrderRequest)))
                     .build();
 
-            OrderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
-            Assert.assertEquals(200, OrderResponse.statusCode());
-            OrderObjectResponse = objMapper.readValue(OrderResponse.body(), CheckoutStepOrderResponse.class);
+            orderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, orderResponse.statusCode());
+            orderObjectResponse = objMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
+            System.out.println("Numero do pedido: " + orderObjectResponse.getOrdercode());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        Assert.assertTrue(OrderObjectResponse.isSuccess());
-        Assert.assertFalse(OrderObjectResponse.isContingency());
-        Assert.assertEquals("Pedido Gerado com Sucesso", OrderObjectResponse.getMessage());
-        Assert.assertNotNull(OrderObjectResponse.getOrdercode());
+        Assert.assertTrue(orderObjectResponse.isSuccess());
+        Assert.assertFalse(orderObjectResponse.isContingency());
+        Assert.assertEquals("Pedido Gerado com Sucesso", orderObjectResponse.getMessage());
+        Assert.assertNotNull(orderObjectResponse.getOrdercode());
     }
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {

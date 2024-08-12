@@ -1,7 +1,5 @@
 #language: pt
 
-
-
 @Regressivo
 Funcionalidade: Aquisicao Controle Debito
 
