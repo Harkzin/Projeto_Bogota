@@ -6,17 +6,17 @@ platforms:
     osVersion: 17
     browserName: safari
     deviceOrientation: portrait
-#  - os: Windows
-#    osVersion: 10
-#    browserName: Chrome
-#    browserVersion: latest
-#  - deviceName: Motorola Moto G71 5G
-#    osVersion: 11.0
-#    browserName: chrome
-#    deviceOrientation: portrait
+  - os: Windows
+    osVersion: 10
+    browserName: Chrome
+    browserVersion: latest
+  - deviceName: Motorola Moto G71 5G
+    osVersion: 11.0
+    browserName: chrome
+    deviceOrientation: portrait
 browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true
-buildName: browserstack-build-2
-projectName: BrowserStack Sample
+buildName: nic-bogota-aut
+projectName: bogota-aut
 acceptInsecureCerts: true

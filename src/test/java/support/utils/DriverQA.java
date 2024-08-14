@@ -27,53 +27,41 @@ public class DriverQA {
 
     private WebDriver driver;
 
-    public void setupDriver(String browser) throws MalformedURLException {
+    public void setupDriver() {
         String headless = System.getProperty("headless", "true");
         String maximized = System.getProperty("maximized", "false");
+        String browserstack = System.getProperty("browserstack", "false");
 
-        switch (browser) {
-            case "firefox":
-                WebDriverManager.firefoxdriver().clearDriverCache().setup();
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                if (headless.equals("true")) {
-                    firefoxOptions.addArguments("--headless");
-                }
-                firefoxOptions.addArguments("--private");
-                driver = new FirefoxDriver(firefoxOptions);
-                break;
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions chromeOptions = new ChromeOptions();
-                if (headless.equals("true")) {
-                    chromeOptions.addArguments("--headless");
-                }
-                chromeOptions.addArguments("--incognito");
-                chromeOptions.addArguments("--no-sandbox");
-                chromeOptions.addArguments("--no-default-browser-check");
-                chromeOptions.addArguments("--disable-default-apps");
-                chromeOptions.addArguments("--disable-extensions");
-                chromeOptions.addArguments("--disable-notifications");
-                chromeOptions.addArguments("--disable-dev-shm-usage");
-                chromeOptions.addArguments("--deny-permission-prompts");
-                driver = new ChromeDriver(chromeOptions);
-                break;
-            case "test":
-                ChromeOptions chromeOptionsBS = new ChromeOptions();
-                chromeOptionsBS.addArguments("--deny-permission-prompts");
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions chromeOptions = new ChromeOptions();
+        if (headless.equals("true")) {
+            chromeOptions.addArguments("--headless");
+        }
+        chromeOptions.addArguments("--incognito");
+        chromeOptions.addArguments("--no-sandbox");
+        chromeOptions.addArguments("--no-default-browser-check");
+        chromeOptions.addArguments("--disable-default-apps");
+        chromeOptions.addArguments("--disable-extensions");
+        chromeOptions.addArguments("--disable-notifications");
+        chromeOptions.addArguments("--disable-dev-shm-usage");
+        chromeOptions.addArguments("--deny-permission-prompts");
+        if (browserstack.equals("true")) {
+            HashMap<String, String> bstackOptions = new HashMap<>();
+            bstackOptions.put("source", "cucumber-java:sample-master:v1.2");
 
-                HashMap<String, String> bstackOptions = new HashMap<>();
-                bstackOptions.put("source", "cucumber-java:sample-master:v1.2");
+            chromeOptions.setCapability("bstack:options", bstackOptions);
 
-                chromeOptionsBS.setCapability("bstack:options", bstackOptions);
-
+            try {
                 driver = new RemoteWebDriver(
-                        new URL("https://hub.browserstack.com/wd/hub"), chromeOptionsBS);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid browser: " + browser);
+                        new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            driver = new ChromeDriver(chromeOptions);
         }
 
-        if (maximized.equals("true")) { //Local
+        if (maximized.equals("true") || browserstack.equals("true")) { //Local ou browser
             driver.manage().window().maximize();
         } else { //Jenkins
             driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -181,9 +169,13 @@ public class DriverQA {
         return driver;
     }
 
-    public boolean isRunningOnIOS() {
-        String os = ((RemoteWebDriver) driver).getCapabilities().getPlatformName().toString();
-        return os.equals("IOS");
+//    public boolean isRunningOnIOS() {
+//        String os = ((RemoteWebDriver) driver).getCapabilities().getPlatformName().toString();
+//        return os.equals("IOS");
+//    }
+
+    public Platform getPlataformName() {
+        return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {
