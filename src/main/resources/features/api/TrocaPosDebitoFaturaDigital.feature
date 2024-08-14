@@ -4,8 +4,8 @@
 Funcionalidade: ECCMAUT-933 - Troca Pos Debito Fatura Digital
 
   @API
-  @ApiMigracaoPreCtrlDebitoFaturaDigital
-  Cenario: Migracao Pre Ctrl Debito Fatura Digital
+  @ApiTrocaCtrlDebitoFaturaDigital
+  Cenario: Troca Pos Debito Fatura Digital
     * authorizationserver-oauth-token
     * cart-new
     * add-offer-plan [plan "17270"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]

@@ -4,8 +4,8 @@
 Funcionalidade: ECCMAUT-932 - Troca Pos Boleto Fatura Digital
 
   @API
-  @ApiMigracaoCtrlPosBoletoFaturaDigital
-  Cenario: Migracao Ctrl Pos Boleto Fatura Digital
+  @ApiTrocaPosBoletoFaturaDigital
+  Cenario: Troca Pos Boleto Fatura Digital
     * authorizationserver-oauth-token
     * cart-new
     * add-offer-plan [plan "17270"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]

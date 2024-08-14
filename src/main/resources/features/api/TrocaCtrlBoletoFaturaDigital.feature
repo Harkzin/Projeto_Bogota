@@ -4,8 +4,8 @@
 Funcionalidade: ECCMAUT-934 - Troca Ctrl Boleto Fatura Digital
 
   @API
-  @ApiMigracaoPreCtrlBoletoFaturaDigital
-  Cenario: Migracao Pre Ctrl Boleto Fatura Digital
+  @ApiTrocaCtrlBoletoFaturaDigital
+  Cenario: Troca Ctrl Boleto Fatura Digital
     * authorizationserver-oauth-token
     * cart-new
     * add-offer-plan [plan "17558"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
