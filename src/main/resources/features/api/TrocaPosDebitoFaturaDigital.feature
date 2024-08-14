@@ -8,7 +8,7 @@ Funcionalidade: ECCMAUT-933 - Troca Pos Debito Fatura Digital
   Cenario: Troca Pos Debito Fatura Digital
     * authorizationserver-oauth-token
     * cart-new
-    * add-offer-plan [plan "17270"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
+    * add-offer-plan [plan "17515"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
     * identificar-cliente [msisdn "11940664333"], [CPF "42811814744"], [ddd "11"] e [service "MIGRATE"]
     * personal-info [fullName "NOME CENARIO"]
     * get-address [cep "01001001"]
