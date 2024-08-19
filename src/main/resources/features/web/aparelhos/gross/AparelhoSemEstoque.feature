@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@RegressivoConsulta
 Funcionalidade: ECCMAUT-517 - Aquisicao Controle Aparelho Sem Estoque
 
   @AparelhoSemEstoque

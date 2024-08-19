@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@RegressivoConsulta
 Funcionalidade: ECCMAUT-510 - Portabilidade - Numero Base
 
   @Portabilidade

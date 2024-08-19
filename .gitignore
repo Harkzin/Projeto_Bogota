@@ -16,3 +16,5 @@ performance-report.csv
 /out
 /target
 /logs
+browserstack.err
+performance-report.csv

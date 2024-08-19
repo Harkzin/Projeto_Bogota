@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@RegressivoConsulta
 Funcionalidade: ECCMAUT-489 - Portabilidade - Bilhete Aberto
 
   @Portabilidade

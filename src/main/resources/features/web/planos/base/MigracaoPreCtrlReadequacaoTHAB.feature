@@ -1,6 +1,6 @@
 #language: pt
 
-  @Regressivo
+@Regressivo
 Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 
   @Migracao
