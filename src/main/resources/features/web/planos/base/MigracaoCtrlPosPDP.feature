@@ -10,7 +10,7 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
   @MigracaoCtrlPosPDP
   Cenario: Migracao de Plano Controle - PDP - Cliente Boleto para Debito
     Dado que o usuário acesse a Loja Online
-    Quando o usuário clicar no botão [Mais detalhes] do plano "17268"
+    Quando o usuário clicar no botão [Mais detalhes] do plano "17536"
     Então é direcionado para a PDP do plano
 
     Quando o usuário selecionar a forma de pagamento [Boleto] na PDP

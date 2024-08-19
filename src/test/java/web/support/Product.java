@@ -28,7 +28,8 @@ public final class Product {
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
                 .findFirst().orElseThrow()
                 .features.stream()
-                .filter(feature -> feature.code.contains(code))
+                //Alterado para equals por conta do claroGames, tem claroGamesText e claroGames (com contains estava pegando o claroGamesText)
+                .filter(feature -> feature.code.equals("claroClassification/1.0/serviceplanclassification." + code))
                 .findFirst().orElseThrow();
     }
 
@@ -102,6 +103,10 @@ public final class Product {
         return hasAttribute("planextraplayapps");
     }
 
+    public boolean hasClaroGames() {
+        return hasAttribute("clarogames");
+    }
+
     public boolean hasExtraPlayTitle() {
         return hasAttribute("clarotitleextraplay");
     }
@@ -114,6 +119,10 @@ public final class Product {
         return getMediaFeatureValues("planextraplayapps");
     }
 
+    public List<String> getClaroGames() {
+        return getMediaFeatureValues("clarogames");
+    }
+
     public boolean hasClaroServices() {
         return hasAttribute("claroservicespdp");
     }
@@ -123,6 +132,7 @@ public final class Product {
     }
 
     public List<String> getClaroServices() {
+        System.out.println("getMediaFeatureValues: " + getMediaFeatureValues("claroservicespdp"));
         return getMediaFeatureValues("claroservicespdp");
     }
 

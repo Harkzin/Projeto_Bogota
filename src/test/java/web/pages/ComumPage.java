@@ -132,7 +132,14 @@ public class ComumPage {
         //Valida preço
         WebElement price = driverQA.findElement(planContentParent + "//span[contains(@class, 'js-entry-price-plan')]", "xpath");
 
-        String priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        String priceRef = null;
+        String planCode = cartOrder.getPlan().getCode();
+        if (planCode.equals("17536") || planCode.equals("17558") || planCode.equals(("17528"))) {
+            priceRef = cartOrder.getPlan().getFormattedPlanPrice(false, cartOrder.hasLoyalty);
+        } else {
+            priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        }
+
         validateElementText(priceRef, price);
 
         //Valida método de pagamento

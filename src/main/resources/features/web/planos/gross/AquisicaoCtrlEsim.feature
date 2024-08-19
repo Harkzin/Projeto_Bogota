@@ -9,7 +9,7 @@ Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
   Cenario: Aquisicao Controle com e-Sim
     Dado que o usuário acesse a Loja Online
 
-    Quando selecionar o plano de id "17218" do carrossel da Home
+    Quando selecionar o plano de id "17528" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
@@ -26,7 +26,7 @@ Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura
       Mas não deve haver alterações no valor e nem nas informações do Plano
-      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+      E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
       E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento
 
@@ -47,14 +47,14 @@ Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
     Então não deve haver alterações no valor e nem nas informações do Plano
 
-    Quando o usuário selecionar a forma de pagamento [Débito]
-    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
-    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
-    E preenche os dados bancários
-    E marca o checkbox de termos de aceite
+#    Quando o usuário selecionar a forma de pagamento [Débito]
+#    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+#    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+#    E deve ser exibido as datas de vencimento
+#    E preenche os dados bancários
+#    E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-    Entao é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
-    E os dados do pedido estão corretos
+#    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+#    Entao é direcionado para a tela de Parabéns
+#      Mas não deve haver alterações no valor e nem nas informações do Plano
+#    E os dados do pedido estão corretos

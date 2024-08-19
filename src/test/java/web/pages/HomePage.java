@@ -39,7 +39,13 @@ public class HomePage {
         //Valida preço
         WebElement price = cardParent
                 .findElement(By.xpath("div[@data-price-for]/div/div[@class='preco-home bestPrice']/div/p[2]"));
-        Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(true, true), price.getText().trim());
+        if (code.equals("17536") || code.equals("17558") || code.equals("17528")) {
+            cartOrder.isDebitPaymentFlow = false;
+            Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(false, true), price.getText().trim());
+        } else {
+            Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(true, true), price.getText().trim());
+        }
+
         Assert.assertTrue(price.isDisplayed());
 
         //Valida apps ilimitados
@@ -60,9 +66,16 @@ public class HomePage {
         if (cartOrder.getPlan().hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
-        }
+            if (cartOrder.getPlan().hasClaroGames()) {
+                //TODO Claro Games (Free Fire, Asphalt)
+                List<String> totalExtraPlayApps = cartOrder.getPlan().getExtraPlayApps();
+                totalExtraPlayApps.addAll(cartOrder.getPlan().getClaroGames());
+                ComumPage.validarMidiasPlano(totalExtraPlayApps, extraPlayApps, driverQA);
+            } else {
+                ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
+            }
 
+        }
         //Valida planPortability (GB e bônus - antigo)
         if (cartOrder.getPlan().hasPlanPortability()) {
             List<WebElement> planPortability = cardParent

@@ -9,7 +9,7 @@ Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
   @Controle
   @TrocaCtrlRentabDebito
   Cenario: Troca Controle - Rentabilizacao - Debito
-    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17218&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
+    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17536&coupon=09fd42fef86f8e0ea86d085f64a3696be6b4e91307c59913b172ddb5f60d0aaa&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
     E preenche os campos: [Telefone com DDD] "11947726224", [E-mail] e [CPF] "93041484803"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
