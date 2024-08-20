@@ -17,6 +17,6 @@ platforms:
 browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true
-buildName: nic-bogota-aut
-projectName: bogota-aut
+buildName: Browser vs Jenkins
+projectName: Bogota
 acceptInsecureCerts: true
