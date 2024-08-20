@@ -19,6 +19,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.time.Duration.ofSeconds;
 import static support.api.RestAPI.getEmailMessage;
@@ -28,9 +29,9 @@ public class DriverQA {
     private WebDriver driver;
 
     public void setupDriver() {
-        String headless = System.getProperty("headless", "true");
-        String maximized = System.getProperty("maximized", "false");
         String browserstack = System.getProperty("browserstack", "false");
+        String headless = browserstack.equals("true") ? System.getProperty("headless", "false") : System.getProperty("headless", "true");
+        String mobileLocal = System.getProperty("mobileLocal", "false");
 
         WebDriverManager.chromedriver().setup();
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -57,16 +58,26 @@ public class DriverQA {
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
+        } else if (mobileLocal.equals("true")) {
+            Map<String, String> mobileEmulation = new HashMap<>();
+            HashMap<String, Integer> contentSettings = new HashMap<>();
+            HashMap<String, Object> profile = new HashMap<>();
+            HashMap<String, Object> prefs = new HashMap<>();
+            contentSettings.put("geolocation", 2);
+            profile.put("managed_default_content_settings", contentSettings);
+            prefs.put("profile", profile);
+            chromeOptions.setExperimentalOption("prefs", prefs);
+            mobileEmulation.put("deviceName", "Samsung Galaxy S8+");
+            chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
+            driver = new ChromeDriver(chromeOptions);
         } else {
             driver = new ChromeDriver(chromeOptions);
         }
+        if (getPlataformName().toString().equals("windows")) {
+            driver.manage().window().setSize(new Dimension(1920, 1080));
+            driver.manage().window().setPosition(new Point(0, 0));
+        }
 
-//        if (maximized.equals("true") || browserstack.equals("true")) { //Local ou browser
-//            driver.manage().window().maximize();
-//        } else { //Jenkins
-//            driver.manage().window().setSize(new Dimension(1920, 1080));
-//            driver.manage().window().setPosition(new Point(0, 0));
-//        }
     }
 
     public WebElement findElement(String selectorValue, String selectorType) {
@@ -168,11 +179,6 @@ public class DriverQA {
     public WebDriver getDriver() {
         return driver;
     }
-
-//    public boolean isRunningOnIOS() {
-//        String os = ((RemoteWebDriver) driver).getCapabilities().getPlatformName().toString();
-//        return os.equals("IOS");
-//    }
 
     public Platform getPlataformName() {
         return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
