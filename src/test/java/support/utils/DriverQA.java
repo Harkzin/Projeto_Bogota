@@ -62,7 +62,7 @@ public class DriverQA {
         }
 
 //        if (maximized.equals("true") || browserstack.equals("true")) { //Local ou browser
-            driver.manage().window().maximize();
+//            driver.manage().window().maximize();
 //        } else { //Jenkins
 //            driver.manage().window().setSize(new Dimension(1920, 1080));
 //            driver.manage().window().setPosition(new Point(0, 0));
