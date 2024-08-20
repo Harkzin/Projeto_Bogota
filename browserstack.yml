@@ -17,6 +17,6 @@ platforms:
 browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true
-buildName: Browser vs Jenkins
-projectName: Bogota
+buildName: Regressivo
+projectName: Squad Bogotá Automação
 acceptInsecureCerts: true
