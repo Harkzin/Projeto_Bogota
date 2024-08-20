@@ -11,7 +11,7 @@ Funcionalidade: Consulta de saldo Claro Clube - Cliente nao Claro Clube - Header
 
     Quando o usuário clicar na opção [Claro clube]
     Entao é direcionado para a tela de Claro Clube
-    E preenche o campo [Numero do seu celular Claro] "11947724610"
+    E preenche o campo [Numero do seu celular Claro] "11940665630"
 
     Quando o usuário clicar no botão [Continuar] Claro Clube
     Então é direcionado para a tela de opções de token
