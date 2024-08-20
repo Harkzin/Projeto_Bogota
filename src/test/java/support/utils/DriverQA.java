@@ -61,12 +61,12 @@ public class DriverQA {
             driver = new ChromeDriver(chromeOptions);
         }
 
-        if (maximized.equals("true") || browserstack.equals("true")) { //Local ou browser
+//        if (maximized.equals("true") || browserstack.equals("true")) { //Local ou browser
             driver.manage().window().maximize();
-        } else { //Jenkins
-            driver.manage().window().setSize(new Dimension(1920, 1080));
-            driver.manage().window().setPosition(new Point(0, 0));
-        }
+//        } else { //Jenkins
+//            driver.manage().window().setSize(new Dimension(1920, 1080));
+//            driver.manage().window().setPosition(new Point(0, 0));
+//        }
     }
 
     public WebElement findElement(String selectorValue, String selectorType) {
