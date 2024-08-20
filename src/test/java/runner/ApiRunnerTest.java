@@ -7,11 +7,11 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/main/resources/features",
-        glue = {"web.steps", "web.support.config"},
+        features = "src/main/resources/features/api",
+        glue = {"api.steps", "web.support.config"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
         tags = "@Regressivo")
 
-public class RunnerTest {
+public class ApiRunnerTest {
 }
