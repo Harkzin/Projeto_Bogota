@@ -17,6 +17,6 @@ platforms:
 browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true
-buildName: Browser vs Jenkins
+buildName: ${BUILD_NAME}
 projectName: Bogota
 acceptInsecureCerts: true
