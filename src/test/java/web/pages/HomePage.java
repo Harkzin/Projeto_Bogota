@@ -117,6 +117,10 @@ public class HomePage {
     }
 
     public void acessarMenuCelulares() {
+//       if(driverQA.getPlataformName().equals("ios") || android){
+//           jsclick(hamburguer)
+//        }
+        System.out.println("CLIQUE NO HAMBURUGER");
         driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }
