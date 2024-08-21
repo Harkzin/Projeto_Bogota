@@ -8,13 +8,18 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import web.support.utils.Constants.Email;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.time.Duration.ofSeconds;
 import static web.support.api.RestAPI.getEmailMessage;
@@ -23,47 +28,57 @@ public class DriverQA {
 
     private WebDriver driver;
 
-    public void setupDriver(String browser) {
-        if (System.getProperty("api","false").equals("false")) {
-            String headless = System.getProperty("headless", "true");
-            String maximized = System.getProperty("maximized", "false");
+    public void setupDriver() {
+        if (System.getProperty("api", "false").equals("false")) {
+            String browserstack = System.getProperty("browserstack", "false");
+            String headless = browserstack.equals("true") ? System.getProperty("headless", "false") : System.getProperty("headless", "true");
+            String mobileLocal = System.getProperty("mobileLocal", "false");
 
-            switch (browser) {
-                case "firefox":
-                    WebDriverManager.firefoxdriver().clearDriverCache().setup();
-                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    if (headless.equals("true")) {
-                        firefoxOptions.addArguments("--headless");
-                    }
-                    firefoxOptions.addArguments("--private");
-                    driver = new FirefoxDriver(firefoxOptions);
-                    break;
-                case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    if (headless.equals("true")) {
-                        chromeOptions.addArguments("--headless");
-                    }
-                    chromeOptions.addArguments("--incognito");
-                    chromeOptions.addArguments("--no-sandbox");
-                    chromeOptions.addArguments("--no-default-browser-check");
-                    chromeOptions.addArguments("--disable-default-apps");
-                    chromeOptions.addArguments("--disable-extensions");
-                    chromeOptions.addArguments("--disable-notifications");
-                    chromeOptions.addArguments("--disable-dev-shm-usage");
-                    chromeOptions.addArguments("--deny-permission-prompts");
-                    driver = new ChromeDriver(chromeOptions);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid browser: " + browser);
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            if (headless.equals("true")) {
+                chromeOptions.addArguments("--headless");
             }
+            chromeOptions.addArguments("--incognito");
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--no-default-browser-check");
+            chromeOptions.addArguments("--disable-default-apps");
+            chromeOptions.addArguments("--disable-extensions");
+            chromeOptions.addArguments("--disable-notifications");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--deny-permission-prompts");
+            if (browserstack.equals("true")) {
+                HashMap<String, String> bstackOptions = new HashMap<>();
+                bstackOptions.put("source", "cucumber-java:sample-master:v1.2");
 
-            if (maximized.equals("true")) { //Local
-                driver.manage().window().maximize();
-            } else { //Jenkins
+                chromeOptions.setCapability("bstack:options", bstackOptions);
+
+                try {
+                    driver = new RemoteWebDriver(
+                            new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else if (mobileLocal.equals("true")) {
+                Map<String, String> mobileEmulation = new HashMap<>();
+                HashMap<String, Integer> contentSettings = new HashMap<>();
+                HashMap<String, Object> profile = new HashMap<>();
+                HashMap<String, Object> prefs = new HashMap<>();
+                contentSettings.put("geolocation", 2);
+                profile.put("managed_default_content_settings", contentSettings);
+                prefs.put("profile", profile);
+                chromeOptions.setExperimentalOption("prefs", prefs);
+                mobileEmulation.put("deviceName", "Samsung Galaxy S8+");
+                chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
+                driver = new ChromeDriver(chromeOptions);
+            } else {
+                driver = new ChromeDriver(chromeOptions);
+            }
+            if (getPlataformName().toString().equals("windows")) {
                 driver.manage().window().setSize(new Dimension(1920, 1080));
                 driver.manage().window().setPosition(new Point(0, 0));
             }
+
         }
     }
 
@@ -146,6 +161,14 @@ public class DriverQA {
         text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
     }
 
+    public void sendKeys(WebElement element, String text) {
+//        javaScriptScrollTo(element);
+//        Actions action = new Actions(driver);
+//        action.pause(Duration.ofMillis(500)).click(element);
+        element.sendKeys(text);
+
+    }
+
     public void actionSendKeys(String selectorValue, String selectorType, String text) {
         actionSendKeys(findElement(selectorValue, selectorType), text);
     }
@@ -157,6 +180,10 @@ public class DriverQA {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public Platform getPlataformName() {
+        return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {
