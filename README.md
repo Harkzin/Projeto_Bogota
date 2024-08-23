@@ -6,7 +6,7 @@ Exemplo de comando para execução local dos testes web:
 mvn clean test "-Denv=S6" "-Dheadless=false" "-Dcucumber.filter.tags=@Regressivo"
 
 Exemplo de comando para execução na browserstack:
-mvn clean test "-Denv=S6" "-Dbrowserstack=true" "-Dcucumber.filter.tags=@Regressivo"
+export BUILD_NAME="RELEASE19.0.0" && mvn clean test "-Denv=S6" "-Dbrowserstack=true" "-Dcucumber.filter.tags=@MeusPedidosHeader"
 
 Exemplo de comando para execução das apis:
 mvn clean test "-Denv=S6" "-Dapi=true" "-Dcucumber.filter.tags=@Regressivo"
