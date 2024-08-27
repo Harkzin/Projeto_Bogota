@@ -9,7 +9,7 @@ Funcionalidade: ECCMAUT-155 - Portabilidade Controle - Entrega Expressa - Endere
   Cenario: Portabilidade Controle - Entrega Expressa - Endereco Diferente
     Dado que o usuário acesse a Loja Online
 
-    Quando selecionar o plano de id "17218" do carrossel da Home
+    Quando selecionar o plano de id "17536" do carrossel da Home
     Então é direcionado para a tela de Carrinho
      Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
