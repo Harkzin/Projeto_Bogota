@@ -20,7 +20,7 @@ public class Hooks {
     }
 
     @After (order = 3)
-    public void alterName(Scenario scenario) {
+    public void printPlataform(Scenario scenario) {
         if (System.getProperty("api", "false").equals("false")) {
             if(driverQA.getPlataformName().toString().equals("ANDROID")){
                 scenario.attach("", "text/plain", "ANDROID");
@@ -39,8 +39,6 @@ public class Hooks {
             scenario.attach(screenshot, "image/png", "screenshot");
         }
     }
-
-
 
     @After(order = 1)
     public void closeBrowser() {

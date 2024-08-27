@@ -75,7 +75,7 @@ public class LoginPage {
 
 
     public void preencheCPF(String cpf) {
-        driverQA.sendKeys(this.cpf, cpf);
+        driverQA.actionSendKeys(this.cpf, cpf);
     }
 
     public void clicarBotaoContinuar() {

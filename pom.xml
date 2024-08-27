@@ -89,13 +89,6 @@
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>io.appium</groupId>
-            <artifactId>java-client</artifactId>
-            <version>9.2.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

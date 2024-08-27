@@ -32,7 +32,6 @@ public class DriverQA {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
             String headless = browserstack.equals("true") ? System.getProperty("headless", "false") : System.getProperty("headless", "true");
-            String mobileLocal = System.getProperty("mobileLocal", "false");
 
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
@@ -59,18 +58,7 @@ public class DriverQA {
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-            } else if (mobileLocal.equals("true")) {
-                Map<String, String> mobileEmulation = new HashMap<>();
-                HashMap<String, Integer> contentSettings = new HashMap<>();
-                HashMap<String, Object> profile = new HashMap<>();
-                HashMap<String, Object> prefs = new HashMap<>();
-                contentSettings.put("geolocation", 2);
-                profile.put("managed_default_content_settings", contentSettings);
-                prefs.put("profile", profile);
-                chromeOptions.setExperimentalOption("prefs", prefs);
-                mobileEmulation.put("deviceName", "Samsung Galaxy S8+");
-                chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
-                driver = new ChromeDriver(chromeOptions);
+
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
@@ -159,14 +147,6 @@ public class DriverQA {
         Actions action = new Actions(driver);
         action.pause(Duration.ofMillis(500)).click(element);
         text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
-    }
-
-    public void sendKeys(WebElement element, String text) {
-//        javaScriptScrollTo(element);
-//        Actions action = new Actions(driver);
-//        action.pause(Duration.ofMillis(500)).click(element);
-        element.sendKeys(text);
-
     }
 
     public void actionSendKeys(String selectorValue, String selectorType, String text) {

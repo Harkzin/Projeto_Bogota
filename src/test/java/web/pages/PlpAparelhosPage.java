@@ -21,7 +21,7 @@ public class PlpAparelhosPage {
     }
 
     public void validarPlpAparelhos() {
-        driverQA.waitPageLoad("/celulares", 5);
+        driverQA.waitPageLoad("/smartphone", 5);
     }
 
     public void clicaBotaoEuQuero(String id) {

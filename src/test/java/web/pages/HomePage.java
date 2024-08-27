@@ -85,8 +85,7 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-//        driverQA.actionSendKeys("txt-telefone", "id", msisdn);
-        driverQA.sendKeys(driverQA.findElement("txt-telefone", "id"), msisdn);
+        driverQA.actionSendKeys("txt-telefone", "id", msisdn);
     }
 
     public void acessarPdpPlano(String id) {
