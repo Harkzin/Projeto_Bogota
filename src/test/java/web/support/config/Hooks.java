@@ -25,9 +25,10 @@ public class Hooks {
             if(driverQA.getPlataformName().toString().equals("ANDROID")){
                 scenario.attach("", "text/plain", "ANDROID");
             }else if(driverQA.getPlataformName().toString().equals("IOS")){
-                scenario.attach("iOS", "text/plain", "IOS");
+                scenario.attach("", "text/plain", "IOS");
             }else{
-                scenario.attach("Plataforma: Windows", "text/plain", "WINDOWS");
+                scenario.attach("", "text/plain", "Esse texto:" + driverQA.getPlataformName().toString());
+
             }
         }
     }

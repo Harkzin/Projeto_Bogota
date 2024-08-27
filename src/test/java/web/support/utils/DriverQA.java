@@ -62,7 +62,7 @@ public class DriverQA {
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (getPlataformName().toString().equals("windows")) {
+            if (getPlataformName().toString().equals("windows") || getPlataformName().toString().equals("Windows")) {
                 driver.manage().window().setSize(new Dimension(1920, 1080));
                 driver.manage().window().setPosition(new Point(0, 0));
             }
