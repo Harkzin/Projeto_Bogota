@@ -1,6 +1,6 @@
 #language: pt
 
-@RegressivoConsulta
+@Regressivo
 Funcionalidade: ECCMAUT-255 - Validar Meus Pedidos Header
 
   @MeusPedidosHeader

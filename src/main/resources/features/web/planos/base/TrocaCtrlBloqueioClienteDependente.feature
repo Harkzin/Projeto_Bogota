@@ -1,7 +1,6 @@
 #language: pt
 
-
-@RegressivoConsulta
+@Regressivo
 Funcionalidade: ECCMAUT-301 - Bloqueio cliente Dependente
 
   @Controle
