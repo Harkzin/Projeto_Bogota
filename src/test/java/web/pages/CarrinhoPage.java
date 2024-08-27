@@ -1,6 +1,7 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -179,8 +180,8 @@ public class CarrinhoPage {
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
-        driverQA.actionSendKeys(telefoneMigracao, telefone);
-        driverQA.actionSendKeys(cpfMigracao, cpf);
+        driverQA.actionSendKeys("txt-cpf-migracao", "id", cpf);
+        driverQA.actionSendKeys("txt-telefone-migracao", "id", telefone);
     }
 
     public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
@@ -195,8 +196,7 @@ public class CarrinhoPage {
 
     public void inserirEmail() {
         cartOrder.essential.user.email = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-
-        driverQA.actionSendKeys(email, cartOrder.essential.user.email);
+        driverQA.actionSendKeys("txt-email", "id", cartOrder.essential.user.email);
     }
 
     public void clicarEuQuero() {
@@ -205,9 +205,9 @@ public class CarrinhoPage {
 
     public void validaMsgErro(String msgExibida) {
         driverQA.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
-        WebElement contentMessageError =  driverQA.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+        WebElement contentMessageError = driverQA.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
-        driverQA.waitElementVisibility(contentMessageError,10);
+        driverQA.waitElementVisibility(contentMessageError, 10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 

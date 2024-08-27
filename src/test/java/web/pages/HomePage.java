@@ -3,6 +3,7 @@ package web.pages;
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,18 @@ public class HomePage {
 
     private void validarCardPlano(String code) {
         //TODO atualizar find para id quando for criado
+        WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]","xpath");
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
+
+        //puxa carrossel, caso seja mobile
+        if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+            if (code.equals("17536")) {
+                driverQA.javaScriptClick(nextCarrossel);
+            } else if (code.equals("17558")) {
+                driverQA.javaScriptClick(nextCarrossel);
+                driverQA.javaScriptClick(nextCarrossel);
+            }
+        }
 
         //Valida nome
         if (!cartOrder.getPlan().getName().isEmpty()) {
@@ -91,6 +103,13 @@ public class HomePage {
     public void acessarLojaHome() {
         driverQA.getDriver().get(Constants.urlAmbiente);
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
+
+        WebElement btnFecharModal = driverQA.findElement("//a[@class='closeModal gtm-link-event']","xpath");
+
+        if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+            driverQA.waitElementVisibility(btnFecharModal, 10);
+            driverQA.javaScriptClick(btnFecharModal);
+        }
     }
 
     public void validarHomePage() {
@@ -117,9 +136,11 @@ public class HomePage {
     }
 
     public void acessarMenuCelulares() {
-//       if(driverQA.getPlataformName().equals("ios") || android){
-//           jsclick(hamburguer)
-//        }
+
+       if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)){
+           driverQA.javaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-mobile-action']","xpath");
+        }
+
         System.out.println("CLIQUE NO HAMBURUGER");
         driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }

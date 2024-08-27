@@ -2,6 +2,7 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -84,20 +85,18 @@ public class ComumPage {
 
     public void validarResumoCompraPlano() {
         driverQA.actionPause(1500);
+        driverQA.mobileClick("(//div[@class='js-cart-entry-update']//a)[1]", "xpath");
 
         String planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
 
         //Valida nome, caso configurado
-        if (!cartOrder.getPlan().getName().isEmpty()) {
-            WebElement planName = driverQA.findElement(planContentParent + "//span[contains(@class, 'product-fullname')]", "xpath");
-            validateElementText(cartOrder.getPlan().getName(), planName);
-        }
+                WebElement planName = driverQA.findElement(planContentParent + "//span[contains(@class, 'product-fullname')]", "xpath");
+                validateElementText(cartOrder.getPlan().getName(), planName);
 
         //Valida app ilimitados, caso configurado
         if (cartOrder.getPlan().hasPlanApps() && cartOrder.hasLoyalty) {
             //Título
             WebElement planAppsTitle = driverQA.findElement(planContentParent + "//div[contains(@class, ' apps-ilimitados')]/div[1]/div", "xpath");
-
             //Apps
             List<WebElement> planApps = driverQA.findElements(planContentParent + "//div[contains(@class, ' apps-ilimitados')]//img", "xpath");
 
@@ -107,14 +106,12 @@ public class ComumPage {
         //Valida título extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayTitle()) {
             WebElement claroTitleExtraPlay = driverQA.findElement(planContentParent + "//div[contains(@class, 'product-card-content')]/p", "xpath");
-
             validateElementText(cartOrder.getPlan().getExtraPlayTitle(), claroTitleExtraPlay);
         }
 
         //Valida apps extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = driverQA.findElements(planContentParent + "//div[contains(@class, 'extra-play')]//img", "xpath");
-
             validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
         }
 

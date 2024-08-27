@@ -155,9 +155,8 @@ public class DriverQA {
     }
 
     public void actionSendKeys(WebElement element, String text) {
-        javaScriptScrollTo(element);
         Actions action = new Actions(driver);
-        action.pause(Duration.ofMillis(500)).click(element);
+        action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
         text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
     }
 
@@ -167,6 +166,12 @@ public class DriverQA {
 //        action.pause(Duration.ofMillis(500)).click(element);
         element.sendKeys(text);
 
+    }
+
+    public void mobileClick(String element, String selector){
+        if(getPlataformName().equals(Platform.ANDROID) || getPlataformName().equals(Platform.IOS)){
+            javaScriptClick(element, selector);
+        }
     }
 
     public void actionSendKeys(String selectorValue, String selectorType, String text) {
