@@ -1,8 +1,6 @@
 package web.support.config;
 
-import io.cucumber.core.gherkin.Feature;
 import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -19,16 +17,15 @@ public class Hooks {
         this.driverQA = driverQA;
     }
 
-    @After (order = 3)
+    @After(order = 3)
     public void printPlataform(Scenario scenario) {
         if (System.getProperty("api", "false").equals("false")) {
-            if(driverQA.getPlataformName().toString().equals("ANDROID")){
+            if (driverQA.getPlataformName().toString().equals("ANDROID")) {
                 scenario.attach("", "text/plain", "ANDROID");
-            }else if(driverQA.getPlataformName().toString().equals("IOS")){
+            } else if (driverQA.getPlataformName().toString().equals("IOS")) {
                 scenario.attach("", "text/plain", "IOS");
-            }else{
-                scenario.attach("", "text/plain", "Esse texto:" + driverQA.getPlataformName().toString());
-
+            } else {
+                scenario.attach("", "text/plain", "WINDOWS DESKTOP");
             }
         }
     }
