@@ -6,7 +6,7 @@ Funcionalidade: ECCMAUT-1069 - Aquisicao Pos Pago - Rentabilizacao
   @Pos
   @AquisicaoPosPagoRentabilizacao
   Cenario: Aquisicao Pos Pago - Rentabilizacao
-    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17270&coupon=c7c21130f16ac009e7f4819ef1e80611&msisdn=msisdn&targetCampaign=gross&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=ACQUISITION"
+    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=2f32ad67fb014807268c284b61facdfd&msisdn=msisdn&targetCampaign=gross&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=ACQUISITION"
     E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
