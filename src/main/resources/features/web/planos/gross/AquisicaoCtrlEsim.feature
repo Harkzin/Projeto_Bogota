@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
 
   @Aquisicao

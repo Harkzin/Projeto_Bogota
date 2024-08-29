@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo endereco
 
   #ECCMAUT-528

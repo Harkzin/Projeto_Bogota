@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-155 - Portabilidade Controle - Entrega Expressa - Endereco Diferente
 
   @Portabilidade

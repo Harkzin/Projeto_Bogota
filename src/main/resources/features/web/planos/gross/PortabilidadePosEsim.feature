@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-942 - Portabilidade Controle com e-Sim
 
   @Aquisicao

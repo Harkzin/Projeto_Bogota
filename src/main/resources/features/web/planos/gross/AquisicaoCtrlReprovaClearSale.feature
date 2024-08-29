@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-340 - Aquisicao Controle - Reprovacao Clear Sale
 
   @Aquisicao

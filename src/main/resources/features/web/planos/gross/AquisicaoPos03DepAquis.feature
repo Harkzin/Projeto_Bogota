@@ -1,5 +1,6 @@
 #language: pt
-@Regressivo
+
+@Web
 Funcionalidade: ECCMAUT-892 - Aquisicao Pos - 03 Dependente
 
   @Aquisicao

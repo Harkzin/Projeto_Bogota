@@ -10,10 +10,10 @@ platforms:
       osVersion: 10
       browserName: Chrome
       browserVersion: latest
-#  - deviceName: Motorola Moto G71 5G
-#    osVersion: 11.0
-#    browserName: chrome
-#    deviceOrientation: portrait
+#    - deviceName: Motorola Moto G71 5G
+#      osVersion: 11.0
+#      browserName: chrome
+#      deviceOrientation: portrait
 browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true

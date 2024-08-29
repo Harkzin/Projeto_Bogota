@@ -29,6 +29,7 @@ public class DriverQA {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
             String headless = browserstack.equals("true") ? System.getProperty("headless", "false") : System.getProperty("headless", "true");
+            String maximized = System.getProperty("maximized", "false");
 
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
@@ -44,24 +45,23 @@ public class DriverQA {
             chromeOptions.addArguments("--disable-dev-shm-usage");
             chromeOptions.addArguments("--deny-permission-prompts");
             if (browserstack.equals("true")) {
-                HashMap<String, String> bstackOptions = new HashMap<>();
-                bstackOptions.put("source", "cucumber-java:sample-master:v1.2");
-
-                chromeOptions.setCapability("bstack:options", bstackOptions);
-
                 try {
-                    driver = new RemoteWebDriver(
-                            new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
+                    driver = new RemoteWebDriver(new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
+                maximized = "true";
 
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (getPlataformName().toString().equals("windows") || getPlataformName().toString().equals("linux")) {
-                driver.manage().window().setSize(new Dimension(1920, 1080));
-                driver.manage().window().setPosition(new Point(0, 0));
+            if (!getPlataformName().toString().matches("ANDROID|IOS")) {
+                if (maximized.equals("true")) { //Local
+                    driver.manage().window().maximize();
+                } else { //Jenkins
+                    driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().setPosition(new Point(0, 0));
+                }
             }
 
         }
@@ -164,10 +164,7 @@ public class DriverQA {
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver)
-                .withTimeout(ofSeconds(60))
-                .withMessage("Aguardando recebimento do e-mail")
-                .pollingEvery(ofSeconds(5));
+        FluentWait<WebDriver> wait = new FluentWait<>(driver).withTimeout(ofSeconds(60)).withMessage("Aguardando recebimento do e-mail").pollingEvery(ofSeconds(5));
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
     }
 

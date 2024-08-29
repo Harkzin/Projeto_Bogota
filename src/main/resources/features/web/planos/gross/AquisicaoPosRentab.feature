@@ -1,5 +1,6 @@
 #language: pt
-@Regressivo
+
+@Web
 Funcionalidade: ECCMAUT-1069 - Aquisicao Pos Pago - Rentabilizacao
 
   @Aquisicao

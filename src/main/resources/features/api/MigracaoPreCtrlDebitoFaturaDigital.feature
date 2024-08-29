@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-928 - Migracao Pre Ctrl Debito Fatura Digital
 
-  @API
   @ApiMigracaoPreCtrlDebitoFaturaDigital
   Cenario: Migracao Pre Ctrl Debito Fatura Digital
     * authorizationserver-oauth-token

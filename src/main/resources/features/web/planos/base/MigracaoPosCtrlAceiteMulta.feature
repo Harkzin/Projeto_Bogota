@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de Multa
 
   #ECCMAUT-491
