@@ -7,7 +7,7 @@ Funcionalidade: ECCMAUT-892 - Aquisicao Pos - 03 Dependente
   @AquisicaoPos03DepAquis
   Cenario: Aquisicao Pos - 03 Dependente
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17266" do carrossel da Home
+    Quando selecionar o plano de id "17524" do carrossel da Home
     Então é direcionado para a tela de Carrinho
     Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
