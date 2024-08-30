@@ -140,8 +140,6 @@ public class HomePage {
        if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)){
            driverQA.javaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-mobile-action']","xpath");
         }
-
-        System.out.println("CLIQUE NO HAMBURUGER");
         driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }

@@ -10,7 +10,7 @@ Funcionalidade: ECCMAUT-228 - Troca Controle recusa multa
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17536" do carrossel da Home
     Então é direcionado para a tela de Carrinho
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de troca de Plano
     E preenche os campos: [Telefone com DDD] "11947629986", [E-mail] e [CPF] "46768527703"
 

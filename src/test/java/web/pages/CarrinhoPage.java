@@ -180,8 +180,8 @@ public class CarrinhoPage {
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
-        driverQA.actionSendKeys("txt-cpf-migracao", "id", cpf);
         driverQA.actionSendKeys("txt-telefone-migracao", "id", telefone);
+        driverQA.actionSendKeys("txt-cpf-migracao", "id", cpf);
     }
 
     public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
