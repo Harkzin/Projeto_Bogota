@@ -250,10 +250,10 @@ public class CustomizarFaturaPage {
         driverQA.actionPause(1500);
     }
 
-    public void validarPrecoFaturaImpressaDebito(String expectedPrice) {
-        WebElement pricePrinted = driverQA
+    public void validarPrecoFatura(String expectedPrice) {
+        WebElement price = driverQA
                 .findElement("//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div//span[contains(@class, 'js-entry-price-plan')]", "xpath");
-        validateElementText(expectedPrice, pricePrinted); //Preço débito fatura impressa = boleto (sem desconto)
+        validateElementText(expectedPrice, price); //Preço débito fatura impressa = boleto (sem desconto)
     }
 
     public void preencherDadosBancarios() {

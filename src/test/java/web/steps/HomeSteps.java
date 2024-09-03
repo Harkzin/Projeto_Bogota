@@ -30,6 +30,12 @@ public class HomeSteps {
         homePage.selecionarPlano(id);
     }
 
+    @Quando("selecionar o plano Controle de id {string} na Home")
+    public void selecionarPlanoControle(String id) {
+        cartOrder.setPlan(id);
+        homePage.selecionarPlanoControle(id);
+    }
+
     @E("preencher o campo Seu telefone Claro com o msidn {string}")
     public void preencherOCampoSeuTelefoneClaroComOMsidn(String msisdn) {
         homePage.preencherCampoSeuTelefoneHeader(msisdn);

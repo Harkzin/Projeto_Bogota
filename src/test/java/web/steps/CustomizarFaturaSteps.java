@@ -1,9 +1,6 @@
 package web.steps;
 
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
-import io.cucumber.java.pt.Mas;
-import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.CustomizarFaturaPage;
 import web.support.CartOrder;
@@ -94,9 +91,14 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.selecionarTipoFatura(PRINTED, cartOrder.isDebitPaymentFlow);
     }
 
-    @Então("o valor do Plano será atualizado no Resumo da compra") //Débito fatura impressa = sem desconto, preço igual de boleto.
+    @Entao("o valor do Plano será atualizado no Resumo da compra para fatura impressa") //Fatura impressa = sem desconto, preço igual de boleto.
     public void validarValorFaturaImpressa() {
-        customizarFaturaPage.validarPrecoFaturaImpressaDebito(cartOrder.getPlan().getFormattedPlanPrice(false, true));
+        customizarFaturaPage.validarPrecoFatura(cartOrder.getPlan().getFormattedPlanPrice(false, true));
+    }
+
+    @Entao("o valor do Plano será atualizado no Resumo da compra para fatura digital")
+    public void validarValorFaturaDigital() {
+        customizarFaturaPage.validarPrecoFatura(cartOrder.getPlan().getFormattedPlanPrice(true, true));
     }
 
     @E("seleciona a data de vencimento {string}")
