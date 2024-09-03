@@ -494,6 +494,41 @@ public class ApiSteps {
         Assert.assertNotNull(orderObjectResponse.getOrdercode());
     }
 
+    @Dado("create-order-wibpush [msisdn {string}], [plan {string}] e [promotionCode {string}]")
+    public void createOrderWibPush(String msisdn, String plan, String promotionCode) {
+        CheckoutStepOrderRequest checkoutStepOrderRequest = new CheckoutStepOrderRequest();
+        checkoutStepOrderRequest.setOrigin("WIBPUSH");
+        checkoutStepOrderRequest.setOfferProduct(plan);
+        checkoutStepOrderRequest.setPromotionCode(promotionCode);
+        checkoutStepOrderRequest.setMsisdn(msisdn);
+
+        final HttpResponse<String> orderResponse;
+
+        CheckoutStepOrderResponse orderObjectResponse;
+        try {
+            final HttpRequest validateCredit = HttpRequest.newBuilder()
+                    .uri(URI.create(baseURI + "/checkout/step/order"))
+                    .timeout(ofSeconds(15))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepOrderRequest)))
+                    .build();
+
+            orderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, orderResponse.statusCode());
+            orderObjectResponse = objMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
+            // Log com número do pedido para posterior validação no BKO
+            System.out.println("Numero do pedido: " + orderObjectResponse.getOrdercode());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assert.assertTrue(orderObjectResponse.isSuccess());
+        Assert.assertFalse(orderObjectResponse.isContingency());
+        Assert.assertEquals("Pedido Gerado com Sucesso", orderObjectResponse.getMessage());
+        Assert.assertNotNull(orderObjectResponse.getOrdercode());
+    }
+
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {
         String cpf;
         String clearSaleRule = isApproved ? ".*[1348]$" : ".*5$"; //Regra do final do CPF da clearSale.
