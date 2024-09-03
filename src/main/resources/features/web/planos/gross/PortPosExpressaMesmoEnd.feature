@@ -10,7 +10,7 @@ Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo ender
   @PortPosExpressaMesmoEnd
   Cenario: Portabilidade Pos - Entrega Expressa - Mesmo endereco
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17270" do carrossel da Home
+    Quando selecionar o plano de id "17522" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]

@@ -9,7 +9,7 @@ Funcionalidade: ECCMAUT-303 - Cenario de erro - Aquisicao Pos - Bloqueio para CE
   @AquisicaoPosBloqueioCepDiferente
   Cenario: Cenario de erro - Aquisicao Pos - Bloqueio para CEP diferente da regionalizacao
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17268" do carrossel da Home
+    Quando selecionar o plano de id "17522" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]

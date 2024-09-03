@@ -8,7 +8,7 @@ Funcionalidade: ECCMAUT-340 - Aquisicao Controle - Reprovacao Clear Sale
   @AquisicaoCtrlReprovaClearSale
   Cenario: Aquisicao Controle - Reprovacao Clear Sale
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17218" do carrossel da Home
+    Quando selecionar o plano de id "17536" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]

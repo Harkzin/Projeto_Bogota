@@ -1,13 +1,13 @@
 #language: pt
 
 @Api
-Funcionalidade: ECCMAUT-930 - Migracao Ctrl Pos Boleto Fatura Digital
+Funcionalidade: ECCMAUT-929 - Migracao Pre Ctrl Boleto Fatura Digital
 
-  @ApiMigracaoCtrlPosBoletoFaturaDigital
-  Cenario: Migracao Ctrl Pos Boleto Fatura Digital
+  @ApiMigracaoPreCtrlBoletoFaturaDigital
+  Cenario: Migracao Pre Ctrl Boleto Fatura Digital
     * authorizationserver-oauth-token
     * cart-new
-    * add-offer-plan [plan "17270"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
+    * add-offer-plan [plan "17558"], [fields "?fields=FULL&paymentMethod=debitcard&loyalty=false&invoiceType=DIGITAL&state=BR-SP&city=sao_paulo-SP"]
     * identificar-cliente [msisdn "11940664333"], [CPF "42811814744"], [ddd "11"] e [service "MIGRATE"]
     * personal-info [fullName "NOME CENARIO"]
     * get-address [cep "01001001"]
