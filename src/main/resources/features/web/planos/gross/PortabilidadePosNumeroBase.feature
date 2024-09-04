@@ -1,11 +1,11 @@
 #language: pt
 
 @Regressivo
-Funcionalidade: ECCMAUT-510 - Portabilidade - Numero Base
+Funcionalidade: ECCMAUT-510 - Portabilidade Pos com numero Base
 
   @Portabilidade
   @Pos
-  @PortabilidadeComNumeroBase
+  @PortPosComNumeroBase
   Cenario: Portabilidade - Numero Base
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17522" do carrossel da Home
