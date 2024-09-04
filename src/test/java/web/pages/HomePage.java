@@ -26,6 +26,8 @@ public class HomePage {
         this.cartOrder = cartOrder;
     }
 
+    private boolean isDebit;
+
     private void validarCardPlano(String code) {
         //TODO atualizar find para id quando for criado
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
@@ -39,7 +41,7 @@ public class HomePage {
         //Valida preço
         WebElement price = cardParent
                 .findElement(By.xpath("div[@data-price-for]/div/div[@class='preco-home bestPrice']/div/p[2]"));
-        Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(true, true), price.getText().trim());
+        Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(isDebit, true), price.getText().trim());
         Assert.assertTrue(price.isDisplayed());
 
         //Valida apps ilimitados
@@ -96,6 +98,13 @@ public class HomePage {
     public void selecionarPlano(String id) {
         validarCardPlano(id);
         driverQA.javaScriptClick("btn-eu-quero-" + id, "id");
+    }
+
+    public void selecionarPlanoControle(String id) {
+        isDebit = false;
+        cartOrder.isDebitPaymentFlow = false;
+
+        selecionarPlano(id);
     }
 
     public void clicaBotaoEntrar() {

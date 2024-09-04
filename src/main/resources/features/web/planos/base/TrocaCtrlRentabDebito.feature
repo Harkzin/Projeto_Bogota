@@ -15,9 +15,9 @@ Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
       #Mas não deve haver alterações no valor e nem nas informações do Plano
-      E não deve ser exibido as opções de pagamento
-      E não deve ser exibido os meios de recebimento da fatura
-      E não deve ser exibido as datas de vencimento
+    E não deve ser exibido as opções de pagamento
+    E não deve ser exibido os meios de recebimento da fatura
+    E não deve ser exibido as datas de vencimento
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos

@@ -2,7 +2,7 @@ package web.steps;
 
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.HomePage;
@@ -28,6 +28,12 @@ public class HomeSteps {
     public void selecionarPlano(String id) {
         cartOrder.setPlan(id);
         homePage.selecionarPlano(id);
+    }
+
+    @Quando("selecionar o plano Controle de id {string} na Home")
+    public void selecionarPlanoControle(String id) {
+        cartOrder.setPlan(id);
+        homePage.selecionarPlanoControle(id);
     }
 
     @E("preencher o campo Seu telefone Claro com o msidn {string}")
@@ -66,7 +72,7 @@ public class HomeSteps {
         homePage.clicaBotaoEntrar();
     }
 
-    @Então("é direcionado para a Home")
+    @Entao("é direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
     }

@@ -49,7 +49,7 @@ public class DadosPessoaisSteps {
         dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
     }
 
-    @E("é desmarcado a opção [Usar o mesmo endereço de entrega]")
+    @E("o usuário desmarcar a opção [Usar o mesmo endereço de entrega]")
     public void desmarcarOpcaoUsarMesmoEnderecoEntrega() {
         dadosPessoaisPage.clicarUsarMesmoEnderecoEntrega();
     }
