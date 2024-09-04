@@ -4,6 +4,7 @@
 Funcionalidade: ECCMAUT-489 - Portabilidade - Bilhete Aberto
 
   @Portabilidade
+  @TESTE
   @Pos
   @PortabilidadePosBilheteAberto
   Cenario: Portabilidade - Bilhete Aberto

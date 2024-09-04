@@ -4,6 +4,7 @@
 Funcionalidade: ECCMAUT-942 - Portabilidade Controle com e-Sim
 
   @Aquisicao
+  @TESTE
   @Controle
   @PortabilidadePosEsim
   Cenario: Portabilidade Controle com e-Sim

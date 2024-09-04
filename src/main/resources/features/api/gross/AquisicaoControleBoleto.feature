@@ -1,6 +1,6 @@
 #language: pt
 
-@API
+@Api
 Funcionalidade: ECCMAUT-1146 - Aquisicao Controle Boleto
 
   @ApiAquisicaoControleBoleto

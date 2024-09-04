@@ -5,6 +5,7 @@ Funcionalidade: ECCMAUT-510 - Portabilidade - Numero Base
 
   @Portabilidade
   @Pos
+  @TESTE
   @PortabilidadeComNumeroBase
   Cenario: Portabilidade - Numero Base
     Dado que o usuário acesse a Loja Online

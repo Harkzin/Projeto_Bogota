@@ -3,7 +3,7 @@
 @Desativado
 Funcionalidade: ECCMAUT-927 - Troca Ctrl WibPush
 
-  @API
+  #@Api
   @ApiTrocaCtrlWibPush
   Cenario: Troca WibPush
     * authorizationserver-oauth-token

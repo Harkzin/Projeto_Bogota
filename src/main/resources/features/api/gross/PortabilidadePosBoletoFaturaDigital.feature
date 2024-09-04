@@ -3,7 +3,7 @@
 @Desativado
 Funcionalidade: ECCMAUT-936 - Portabilidade Ctrl Debito Fatura Digital
 
-  #@API
+  #@Api
   @ApiPortabilidadeCtrlDebitoFaturaDigital
   Cenario: Portabilidade Ctrl Debito Fatura Digital
     * authorizationserver-oauth-token
