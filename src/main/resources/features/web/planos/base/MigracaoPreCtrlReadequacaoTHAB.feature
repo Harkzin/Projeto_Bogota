@@ -8,23 +8,23 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
   @MigracaoPreCtrlTHAB
   Cenario: Migracao Pre - Readequacao THAB
     Dado que o usuário acesse a Loja Online
-
+    
     Quando selecionar o plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
     E preenche os campos: [Telefone com DDD] "11947726232", [E-mail] e [CPF] "96687136801"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECCMAUT THAB", [Data de Nascimento] "20022000" e [Nome da Mãe] "Marta Silva"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP402"
     Mas não deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Customizar Fatura
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
@@ -56,7 +56,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 
     Quando o usuário selecionar o plano de controle antecipado ofertado
     Então é direcionado para a tela de Customizar Fatura THAB
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E não deve ser exibido as opções de pagamento
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E não deve ser exibido as datas de vencimento
@@ -71,7 +71,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Então é direcionado para a tela de Parabéns
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
 
 

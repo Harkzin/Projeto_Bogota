@@ -29,7 +29,7 @@ Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo ender
 
     Quando o usuário clicar no botão [Seguir sem dependentes]
     Então é direcionado para a tela de Customizar Fatura
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
       E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
       E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento

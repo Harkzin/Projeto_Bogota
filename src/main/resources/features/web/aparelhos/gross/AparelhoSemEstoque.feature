@@ -4,7 +4,6 @@
 Funcionalidade: ECCMAUT-517 - Aquisicao Controle Aparelho Sem Estoque
 
   @AparelhoSemEstoque
-    @TESTE
   Cenario: Aquisicao Controle Aparelho Sem Estoque
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header

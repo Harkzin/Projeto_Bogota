@@ -15,7 +15,6 @@ import web.support.utils.Constants.Email;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
@@ -28,7 +27,7 @@ public class DriverQA {
     public void setupDriver() {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
-            String headless = browserstack.equals("true") ? System.getProperty("headless", "false") : System.getProperty("headless", "true");
+            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");
             String maximized = System.getProperty("maximized", "false");
 
             WebDriverManager.chromedriver().setup();
@@ -164,7 +163,10 @@ public class DriverQA {
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver).withTimeout(ofSeconds(60)).withMessage("Aguardando recebimento do e-mail").pollingEvery(ofSeconds(5));
+        FluentWait<WebDriver> wait = new FluentWait<>(driver)
+                .withTimeout(ofSeconds(60))
+                .withMessage("Aguardando recebimento do e-mail")
+                .pollingEvery(ofSeconds(5));
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
     }
 
