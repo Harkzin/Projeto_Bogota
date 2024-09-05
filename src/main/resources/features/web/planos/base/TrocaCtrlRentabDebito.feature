@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
 
   #Massa: Controle - pagamento débito - fatura digital - sem multa ou com plano de menor valor ao que será usado

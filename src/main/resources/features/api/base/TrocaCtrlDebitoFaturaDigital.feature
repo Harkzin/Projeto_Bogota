@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-935 - Troca Ctrl Debito Fatura Digital
 
-  @API
   @ApiTrocaCtrlDebitoFaturaDigital
   Cenario: Troca Ctrl Debito Fatura Digital
     * authorizationserver-oauth-token

@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-924 - Aquisicao Controle Debito
 
-  @API
   @ApiAquisicaoControleDebito
   Cenario: Aquisicao Controle Debito
     * authorizationserver-oauth-token

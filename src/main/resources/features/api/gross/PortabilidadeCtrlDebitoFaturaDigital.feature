@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-937 - Portabilidade Pre Ctrl Debito Fatura Digital
 
-  @API
   @ApiPortabilidadeCtrlDebitoFaturaDigital
   Cenario: Migracao Pre Ctrl Debito Fatura Digital
     * authorizationserver-oauth-token

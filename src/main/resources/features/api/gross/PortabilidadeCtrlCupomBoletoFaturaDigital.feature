@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-933 - Portabilidade Pos Debito Fatura Digital
 
-  @API
   @ApiPortabilidadeCtrlDebitoFaturaDigital
   Cenario: Portabilidade Pos Debito Fatura Digital
     * authorizationserver-oauth-token

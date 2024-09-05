@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-923 - Aquisicao Pos Boleto
 
-  @API
   @ApiAquisicaoPosBoleto
   Cenario: Aquisicao Pos Boleto
     * authorizationserver-oauth-token

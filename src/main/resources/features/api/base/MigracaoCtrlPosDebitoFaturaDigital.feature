@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-931 - Migracao Ctrl Pos Debito Fatura Digital
 
-  @API
   @ApiMigracaoCtrlPosDebitoFaturaDigital
   Cenario: Migracao Ctrl Pos Debito Fatura Digital
     * authorizationserver-oauth-token

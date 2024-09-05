@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-933 - Troca Pos Debito Fatura Digital
 
-  @API
   @ApiTrocaCtrlDebitoFaturaDigital
   Cenario: Troca Pos Debito Fatura Digital
     * authorizationserver-oauth-token

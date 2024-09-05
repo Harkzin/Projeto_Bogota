@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-956 - Aquisicao Pos com e-Sim
 
   @Aquisicao

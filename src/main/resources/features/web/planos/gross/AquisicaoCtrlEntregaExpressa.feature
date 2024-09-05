@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
 
   @Aquisicao

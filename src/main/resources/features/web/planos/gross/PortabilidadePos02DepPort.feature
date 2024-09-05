@@ -1,5 +1,6 @@
 #language: pt
-@Regressivo
+
+@Web
 Funcionalidade: ECCMAUT-971 - Aquisicao Pos - 02 Dependente
 
   @Portabilidade

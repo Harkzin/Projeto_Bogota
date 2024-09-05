@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-1146 - Aquisicao Controle Boleto
 
-  @API
   @ApiAquisicaoControleBoleto
     Cenario: Aquisicao Controle Boleto
       * authorizationserver-oauth-token

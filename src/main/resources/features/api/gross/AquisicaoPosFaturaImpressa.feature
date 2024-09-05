@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-925 - Aquisicao Pos Fatura Impressa
 
-  @API
   @ApiAquisicaoPosFaturaImpressa
   Cenario: Aquisicao Pos Fatura Impressa
     * authorizationserver-oauth-token

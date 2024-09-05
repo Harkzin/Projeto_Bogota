@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-926 - Troca Pos WibPush
 
-  @API
   @ApiTrocaPosWibPush
   Cenario: Troca WibPush
     * authorizationserver-oauth-token

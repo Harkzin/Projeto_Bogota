@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-1147 - Aquisicao Controle Fatura Impressa
 
-  @API
   @ApiAquisicaoControleFaturaImpressa
   Cenario: Aquisicao Controle Fatura Impressa
     * authorizationserver-oauth-token

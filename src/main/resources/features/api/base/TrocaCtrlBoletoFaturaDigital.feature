@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-934 - Troca Ctrl Boleto Fatura Digital
 
-  @API
   @ApiTrocaCtrlBoletoFaturaDigital
   Cenario: Troca Ctrl Boleto Fatura Digital
     * authorizationserver-oauth-token

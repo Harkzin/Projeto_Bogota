@@ -17,6 +17,19 @@ public class Hooks {
         this.driverQA = driverQA;
     }
 
+    @After(order = 3)
+    public void printPlataform(Scenario scenario) {
+        if (System.getProperty("api", "false").equals("false")) {
+            if (driverQA.getPlataformName().toString().equals("ANDROID")) {
+                scenario.attach("", "text/plain", "ANDROID");
+            } else if (driverQA.getPlataformName().toString().equals("IOS")) {
+                scenario.attach("", "text/plain", "IOS");
+            } else {
+                scenario.attach("", "text/plain", "WINDOWS DESKTOP");
+            }
+        }
+    }
+
     @After(order = 2)
     public void printScreen(Scenario scenario) {
         if (System.getProperty("api", "false").equals("false")) {

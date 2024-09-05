@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-932 - Troca Pos Boleto Fatura Digital
 
-  @API
   @ApiTrocaPosBoletoFaturaDigital
   Cenario: Troca Pos Boleto Fatura Digital
     * authorizationserver-oauth-token

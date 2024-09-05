@@ -1,9 +1,8 @@
 #language: pt
 
-@Regressivo
+@Api
 Funcionalidade: ECCMAUT-1145 - Aquisicao Pos Debito
 
-  @API
   @ApiAquisicaoPosDebito
   Cenario: Aquisicao Pos Debito
     * authorizationserver-oauth-token
