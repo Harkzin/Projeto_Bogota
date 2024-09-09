@@ -36,6 +36,7 @@ public class HomeSteps {
         cartOrder.isDebitPaymentFlow = false;
 
         cartOrder.setPlan(id);
+        homePage.validarCardPlano(cartOrder.getPlan());
         homePage.selecionarPlanoControle(id);
     }
 
