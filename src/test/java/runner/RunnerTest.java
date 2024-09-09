@@ -11,7 +11,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
         glue = {"web.steps", "api.steps", "web.support.config"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
-        tags = "@ApiAquisicaoControle")
+        tags = "@Regressivo")
 
 public class RunnerTest {
 }

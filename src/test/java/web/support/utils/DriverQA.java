@@ -5,14 +5,15 @@ import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import web.support.utils.Constants.Email;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 
@@ -23,47 +24,45 @@ public class DriverQA {
 
     private WebDriver driver;
 
-    public void setupDriver(String browser) {
-        if (System.getProperty("api","false").equals("false")) {
-            String headless = System.getProperty("headless", "true");
+    public void setupDriver() {
+        if (System.getProperty("api", "false").equals("false")) {
+            String browserstack = System.getProperty("browserstack", "false");
+            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");
             String maximized = System.getProperty("maximized", "false");
 
-            switch (browser) {
-                case "firefox":
-                    WebDriverManager.firefoxdriver().clearDriverCache().setup();
-                    FirefoxOptions firefoxOptions = new FirefoxOptions();
-                    if (headless.equals("true")) {
-                        firefoxOptions.addArguments("--headless");
-                    }
-                    firefoxOptions.addArguments("--private");
-                    driver = new FirefoxDriver(firefoxOptions);
-                    break;
-                case "chrome":
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    if (headless.equals("true")) {
-                        chromeOptions.addArguments("--headless");
-                    }
-                    chromeOptions.addArguments("--incognito");
-                    chromeOptions.addArguments("--no-sandbox");
-                    chromeOptions.addArguments("--no-default-browser-check");
-                    chromeOptions.addArguments("--disable-default-apps");
-                    chromeOptions.addArguments("--disable-extensions");
-                    chromeOptions.addArguments("--disable-notifications");
-                    chromeOptions.addArguments("--disable-dev-shm-usage");
-                    chromeOptions.addArguments("--deny-permission-prompts");
-                    driver = new ChromeDriver(chromeOptions);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid browser: " + browser);
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions chromeOptions = new ChromeOptions();
+            if (headless.equals("true")) {
+                chromeOptions.addArguments("--headless");
+            }
+            chromeOptions.addArguments("--incognito");
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--no-default-browser-check");
+            chromeOptions.addArguments("--disable-default-apps");
+            chromeOptions.addArguments("--disable-extensions");
+            chromeOptions.addArguments("--disable-notifications");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--deny-permission-prompts");
+            if (browserstack.equals("true")) {
+                try {
+                    driver = new RemoteWebDriver(new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+                maximized = "true";
+
+            } else {
+                driver = new ChromeDriver(chromeOptions);
+            }
+            if (!getPlataformName().toString().matches("ANDROID|IOS")) {
+                if (maximized.equals("true")) { //Local
+                    driver.manage().window().maximize();
+                } else { //Jenkins
+                    driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().setPosition(new Point(0, 0));
+                }
             }
 
-            if (maximized.equals("true")) { //Local
-                driver.manage().window().maximize();
-            } else { //Jenkins
-                driver.manage().window().setSize(new Dimension(1920, 1080));
-                driver.manage().window().setPosition(new Point(0, 0));
-            }
         }
     }
 
@@ -157,6 +156,10 @@ public class DriverQA {
 
     public WebDriver getDriver() {
         return driver;
+    }
+
+    public Platform getPlataformName() {
+        return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {

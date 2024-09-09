@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 
   @Migracao
@@ -8,7 +8,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
   @MigracaoPreCtrlTHAB
   Cenario: Migracao Pre - Readequacao THAB
     Dado que o usuário acesse a Loja Online
-
+    
     Quando selecionar o plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano

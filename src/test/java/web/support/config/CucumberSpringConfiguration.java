@@ -18,7 +18,7 @@ public final class CucumberSpringConfiguration {
         @Scope("cucumber-glue")
         public DriverQA createDriverQA() {
             DriverQA driverQA = new DriverQA();
-            driverQA.setupDriver(System.getProperty("browser", "chrome"));
+            driverQA.setupDriver();
 
             return driverQA;
         }
