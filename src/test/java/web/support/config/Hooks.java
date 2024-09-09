@@ -9,8 +9,7 @@ import web.support.utils.DriverQA;
 
 public class Hooks {
 
-    @Autowired
-    private DriverQA driverQA;
+    private final DriverQA driverQA;
 
     @Autowired
     public Hooks(DriverQA driverQA) {
@@ -20,13 +19,7 @@ public class Hooks {
     @After(order = 3)
     public void printPlataform(Scenario scenario) {
         if (System.getProperty("api", "false").equals("false")) {
-            if (driverQA.getPlataformName().toString().equals("ANDROID")) {
-                scenario.attach("", "text/plain", "ANDROID");
-            } else if (driverQA.getPlataformName().toString().equals("IOS")) {
-                scenario.attach("", "text/plain", "IOS");
-            } else {
-                scenario.attach("", "text/plain", "WINDOWS DESKTOP");
-            }
+            scenario.attach(driverQA.getPlataformName().toString(), "text/plain", "Plataform");
         }
     }
 
