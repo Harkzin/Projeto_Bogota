@@ -54,7 +54,7 @@ public class DriverQA {
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (!getPlataformName().toString().matches("ANDROID|IOS")) {
+            if (!getPlatformName().toString().matches("ANDROID|IOS")) {
                 if (maximized.equals("true")) { //Local
                     driver.manage().window().maximize();
                 } else { //Jenkins
@@ -129,7 +129,7 @@ public class DriverQA {
         return driver;
     }
 
-    public Platform getPlataformName() {
+    public Platform getPlatformName() {
         return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
     }
 

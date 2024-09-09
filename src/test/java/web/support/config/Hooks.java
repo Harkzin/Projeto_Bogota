@@ -19,7 +19,7 @@ public class Hooks {
     @After(order = 3)
     public void printPlataform(Scenario scenario) {
         if (System.getProperty("api", "false").equals("false")) {
-            scenario.attach(driverQA.getPlataformName().toString(), "text/plain", "Plataform");
+            scenario.attach(driverQA.getPlatformName().toString(), "text/plain", "Platform");
         }
     }
 
