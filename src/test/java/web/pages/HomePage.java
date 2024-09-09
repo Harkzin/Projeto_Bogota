@@ -29,7 +29,7 @@ public class HomePage {
         this.cartOrder = cartOrder;
     }
 
-    private boolean isDebit;
+    private boolean isDebit = true;
 
     public void acessarLojaHome() {
         driverQA.getDriver().get(Constants.urlAmbiente);
@@ -103,8 +103,6 @@ public class HomePage {
 
     public void selecionarPlanoControle(String id) {
         isDebit = false;
-        cartOrder.isDebitPaymentFlow = false;
-
         selecionarPlano(id);
     }
 
