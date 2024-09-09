@@ -6,7 +6,7 @@ import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.springframework.beans.factory.annotation.Autowired;
-import support.utils.DriverQA;
+import web.support.utils.DriverQA;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -8,10 +8,10 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         features = "src/main/resources/features",
-        glue = {"steps", "support.config"},
+        glue = {"web.steps", "api.steps", "web.support.config"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,
-        tags = "@TrocaControleRentabilizacaoDebito")
+        tags = "@Regressivo")
 
 public class RunnerTest {
 }
