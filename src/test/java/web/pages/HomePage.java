@@ -26,7 +26,7 @@ public class HomePage {
         this.cartOrder = cartOrder;
     }
 
-    private boolean isDebit;
+    private boolean isDebit = true;
 
     private void validarCardPlano(String code) {
         //TODO atualizar find para id quando for criado
@@ -102,8 +102,6 @@ public class HomePage {
 
     public void selecionarPlanoControle(String id) {
         isDebit = false;
-        cartOrder.isDebitPaymentFlow = false;
-
         selecionarPlano(id);
     }
 
