@@ -161,9 +161,9 @@ public class DriverQA {
 
     public Document getEmail(String emailAddress, Email emailSubject) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
-                .withTimeout(ofSeconds(60))
+                .withTimeout(ofSeconds(90))
                 .withMessage("Aguardando recebimento do e-mail")
-                .pollingEvery(ofSeconds(5));
+                .pollingEvery(ofSeconds(30));
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
     }
 

@@ -32,6 +32,8 @@ public class HomeSteps {
 
     @Quando("selecionar o plano Controle de id {string} na Home")
     public void selecionarPlanoControle(String id) {
+        cartOrder.isDebitPaymentFlow = false;
+
         cartOrder.setPlan(id);
         homePage.selecionarPlanoControle(id);
     }
