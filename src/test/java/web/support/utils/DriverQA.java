@@ -23,6 +23,7 @@ import static web.support.api.RestAPI.getEmailMessage;
 public class DriverQA {
 
     private WebDriver driver;
+    private boolean mobilePlatform;
 
     public void setupDriver() {
         if (System.getProperty("api", "false").equals("false")) {
@@ -43,6 +44,7 @@ public class DriverQA {
             chromeOptions.addArguments("--disable-notifications");
             chromeOptions.addArguments("--disable-dev-shm-usage");
             chromeOptions.addArguments("--deny-permission-prompts");
+
             if (browserstack.equals("true")) {
                 try {
                     driver = new RemoteWebDriver(new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
@@ -54,13 +56,16 @@ public class DriverQA {
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (!getPlatformName().toString().matches("ANDROID|IOS")) {
+
+            if (!getPlatformName().name().matches("ANDROID|IOS")) {
                 if (maximized.equals("true")) { //Local
                     driver.manage().window().maximize();
                 } else { //Jenkins
                     driver.manage().window().setSize(new Dimension(1920, 1080));
                     driver.manage().window().setPosition(new Point(0, 0));
                 }
+            } else {
+                mobilePlatform = true;
             }
         }
     }
@@ -133,6 +138,10 @@ public class DriverQA {
         return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
     }
 
+    public boolean isMobile() {
+        return mobilePlatform;
+    }
+
     public Document getEmail(String emailAddress, Email emailSubject) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(ofSeconds(90))
@@ -152,6 +161,10 @@ public class DriverQA {
 
     public void javaScriptScrollTo(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
+    }
+
+    public void javaScriptScrollToTop() {
+        ((JavascriptExecutor) driver).executeScript("window.scrollTo({top: 0, left: 0, behavior: 'smooth'})");
     }
 
     public void waitElementClickable(WebElement element, int timeoutSeconds) {

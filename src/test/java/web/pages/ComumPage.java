@@ -96,51 +96,38 @@ public class ComumPage {
     }
 
     public void validarResumoCompraPlano(CartOrder cartOrder) {
-        String planContentParent;
+        String contentParent = driverQA.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
 
-        if (!cartOrder.isDeviceCart()) {
-            planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
-            driverQA.actionPause(1500);
-        } else {
-            //TODO Tela de Parabens tem outra classe. Remover este bloco e atualizar os xpath apos ter sido implementado os atributos seletores no front
-            ///////////////////////
-            if (driverQA.findElement("//*[@class='mdn-Container-fluid']", "xpath") != null) {
-                planContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
-            } else {
-                planContentParent = "//*[@class='mdn-Container']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
-            }
-            ///////////////////////
-
-            //TODO Atualizar seletor
-            //planContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
-        }
+        //Força carregamento Lazy Loading
+        driverQA.javaScriptScrollTo(driverQA.findById("footer-claro"));
+        driverQA.actionPause(500);
+        driverQA.javaScriptScrollToTop();
 
         //Valida nome, caso configurado
         if (!(cartOrder.getPlan().getName() == null)) {
-            //TODO Desativado até correção do front 04/09/24
-            // HTML está diferente para cada plano
-            // validateElementText(cartOrder.getPlan().getName(), planContentParent + "//span[contains(@class, 'product-fullname')]");
+            validateElementText(cartOrder.getPlan().getName(), contentParent + "//*[@data-plan-content='name']");
         }
 
         //Valida app ilimitados, caso configurado
         if (cartOrder.getPlan().hasPlanApps() && cartOrder.hasLoyalty) {
             //Título
-            WebElement planAppsTitle = driverQA.findElement(planContentParent + "//div[contains(@class, ' apps-ilimitados')]/div[1]/div", "xpath");
+            WebElement planAppsTitle = driverQA.findByXpath(contentParent + "//*[@data-plan-content='planappstitle']");
+            driverQA.waitElementVisible(planAppsTitle, 2);
 
             //Apps
-            List<WebElement> planApps = driverQA.findElements(planContentParent + "//div[contains(@class, ' apps-ilimitados')]//img", "xpath");
+            List<WebElement> planApps = driverQA.findElements(contentParent + "//*[@data-plan-content='planapps']//img", "xpath");
 
             validarAppsIlimitados(driverQA, cartOrder.getPlan(), planAppsTitle, planApps);
         }
 
         //Valida título extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayTitle()) {
-            validateElementText(cartOrder.getPlan().getExtraPlayTitle(), planContentParent + "//div[contains(@class, 'product-card-content')]/p");
+            validateElementText(cartOrder.getPlan().getExtraPlayTitle(), contentParent + "//*[@data-plan-content='extraplaytitle']");
         }
 
         //Valida apps extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayApps()) {
-            List<WebElement> extraPlayApps = driverQA.findElements(planContentParent + "//div[contains(@class, 'extra-play')]//img", "xpath");
+            List<WebElement> extraPlayApps = driverQA.findElements(contentParent + "//*[@data-plan-content='extraplayapps']//img", "xpath");
 
             validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
         }
@@ -148,25 +135,26 @@ public class ComumPage {
         //Valida serviços Claro, caso configurado
         if (cartOrder.getPlan().hasClaroServices()) {
             //Título
-            WebElement claroServicesTitle = driverQA.findElement(planContentParent + "//div[contains(@class, 'claro-services')]/p", "xpath");
+            WebElement claroServicesTitle = driverQA.findByXpath(contentParent + "//*[@data-plan-content='services']/p");
 
             //Apps
-            List<WebElement> claroServicesApps = driverQA.findElements(planContentParent + "//div[contains(@class, 'claro-services')]//img", "xpath");
+            List<WebElement> claroServicesApps = driverQA.findElements(contentParent + "//*[@data-plan-content='services']//img", "xpath");
 
             validarServicosClaro(driverQA, cartOrder.getPlan(), claroServicesTitle, claroServicesApps);
         }
 
         //Valida preço
         String priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
-        validateElementText(priceRef, planContentParent + "//span[contains(@class, 'js-entry-price-plan')]");
+        validateElementText(priceRef, contentParent + "//span[contains(@class, 'js-entry-price-plan')]"); //TODO seletor
 
         //Valida método de pagamento
         String paymentModeRef = cartOrder.isDebitPaymentFlow ? "Débito automático" : "Boleto";
-        validateElementText(paymentModeRef, planContentParent + "//dt[@class='mdn-Price-suffix']");
+        validateElementText(paymentModeRef, contentParent + "//*[@data-plan-content='paymentmode']");
 
         //Valida fidelização
         String loyaltyRef = cartOrder.hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
-        validateElementText(loyaltyRef, planContentParent + "//dt[@class='mdn-Price-suffix hidden-xs hidden-sm']");
+        String loyaltyPlatform = driverQA.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
+        validateElementText(loyaltyRef, contentParent + loyaltyPlatform);
     }
 
     public void validarResumoCompraAparelho(CartOrder cart, boolean eSimFlow) {
