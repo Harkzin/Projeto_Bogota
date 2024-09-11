@@ -95,7 +95,7 @@ public class ComumPage {
         });
     }
 
-    public void validarResumoCompraPlano(CartOrder cartOrder) {
+    public void validarResumoCompraPlano(Product plan, boolean isDebit, boolean hasLoyalty) {
         String contentParent = driverQA.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
 
         //Força carregamento Lazy Loading
@@ -104,12 +104,12 @@ public class ComumPage {
         driverQA.javaScriptScrollToTop();
 
         //Valida nome, caso configurado
-        if (!(cartOrder.getPlan().getName() == null)) {
-            validateElementText(cartOrder.getPlan().getName(), contentParent + "//*[@data-plan-content='name']");
+        if (!(plan.getName() == null)) {
+            validateElementText(plan.getName(), contentParent + "//*[@data-plan-content='name']");
         }
 
         //Valida app ilimitados, caso configurado
-        if (cartOrder.getPlan().hasPlanApps() && cartOrder.hasLoyalty) {
+        if (plan.hasPlanApps() && hasLoyalty) {
             //Título
             WebElement planAppsTitle = driverQA.findByXpath(contentParent + "//*[@data-plan-content='planappstitle']");
             driverQA.waitElementVisible(planAppsTitle, 2);
@@ -117,42 +117,42 @@ public class ComumPage {
             //Apps
             List<WebElement> planApps = driverQA.findElements(contentParent + "//*[@data-plan-content='planapps']//img", "xpath");
 
-            validarAppsIlimitados(driverQA, cartOrder.getPlan(), planAppsTitle, planApps);
+            validarAppsIlimitados(driverQA, plan, planAppsTitle, planApps);
         }
 
         //Valida título extraPlay, caso configurado
-        if (cartOrder.getPlan().hasExtraPlayTitle()) {
-            validateElementText(cartOrder.getPlan().getExtraPlayTitle(), contentParent + "//*[@data-plan-content='extraplaytitle']");
+        if (plan.hasExtraPlayTitle()) {
+            validateElementText(plan.getExtraPlayTitle(), contentParent + "//*[@data-plan-content='extraplaytitle']");
         }
 
         //Valida apps extraPlay, caso configurado
-        if (cartOrder.getPlan().hasExtraPlayApps()) {
+        if (plan.hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = driverQA.findElements(contentParent + "//*[@data-plan-content='extraplayapps']//img", "xpath");
 
-            validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
+            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
         }
 
         //Valida serviços Claro, caso configurado
-        if (cartOrder.getPlan().hasClaroServices()) {
+        if (plan.hasClaroServices()) {
             //Título
             WebElement claroServicesTitle = driverQA.findByXpath(contentParent + "//*[@data-plan-content='services']/p");
 
             //Apps
             List<WebElement> claroServicesApps = driverQA.findElements(contentParent + "//*[@data-plan-content='services']//img", "xpath");
 
-            validarServicosClaro(driverQA, cartOrder.getPlan(), claroServicesTitle, claroServicesApps);
+            validarServicosClaro(driverQA, plan, claroServicesTitle, claroServicesApps);
         }
 
         //Valida preço
-        String priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        String priceRef = plan.getFormattedPlanPrice(isDebit, hasLoyalty);
         validateElementText(priceRef, contentParent + "//span[contains(@class, 'js-entry-price-plan')]"); //TODO seletor
 
         //Valida método de pagamento
-        String paymentModeRef = cartOrder.isDebitPaymentFlow ? "Débito automático" : "Boleto";
+        String paymentModeRef = isDebit ? "Débito automático" : "Boleto";
         validateElementText(paymentModeRef, contentParent + "//*[@data-plan-content='paymentmode']");
 
         //Valida fidelização
-        String loyaltyRef = cartOrder.hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
+        String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
         String loyaltyPlatform = driverQA.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
         validateElementText(loyaltyRef, contentParent + loyaltyPlatform);
     }
