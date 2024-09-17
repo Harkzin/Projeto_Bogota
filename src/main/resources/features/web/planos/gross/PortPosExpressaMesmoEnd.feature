@@ -38,10 +38,10 @@ Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo ender
     Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    Então o valor do Plano será atualizado no Resumo da compra
+    Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
 
     Quando o usuário selecionar a forma de pagamento [Boleto]
-    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Boleto
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
@@ -52,7 +52,7 @@ Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo ender
     Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar a forma de pagamento [Débito]
-    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
     E preenche os dados bancários

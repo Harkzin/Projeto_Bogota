@@ -98,32 +98,37 @@ public class DadosPessoaisPage {
     }
 
     public void validarTiposEntregaEChip(boolean showDeliveryModes, DeliveryMode deliveryMode, boolean isDeviceCart) {
+        String conventionalParent = "//*[@id='conventional-parent']";
+        String expressParent = "//*[@id='express-parent']";
+
         //Chip comum
-        chipComumConvencional = driverQA.findElement("rdn-chipTypeCommom", "id");
-        chipComumExpressa = driverQA.findElement("rdn-chipTypeCommomExpress", "id");
+        String commonChip = "//*[@id='rdn-chipTypeCommom']";
+        chipComumConvencional = driverQA.findElement(conventionalParent + commonChip, "xpath");
+        chipComumExpressa = driverQA.findElement(expressParent + commonChip, "xpath");
 
         //eSIM
-        chipEsimConvencional = driverQA.findElement("rdn-chipTypeEsim", "id");
-        chipEsimExpress = driverQA.findElement("rdn-chipTypeEsimExpress", "id");
+        String eSimChip = "//*[@id='rdn-chipTypeEsim']";
+        chipEsimConvencional = driverQA.findElement(conventionalParent + eSimChip, "xpath");
+        chipEsimExpress = driverQA.findElement(expressParent + eSimChip, "xpath");
 
         //Entrega
-        entregaConvencional = driverQA.findElement("rdn-convencional", "id");
+        entregaConvencional = driverQA.findElement("rdn-entrega-convencional", "id");
         entregaExpressa = driverQA.findElement("rdn-entrega-expressa", "id");
 
         WebElement usarMesmoEnderecoCobranca = driverQA.findElement("endereco-cobranca_checkbox", "id");
 
         if (showDeliveryModes) {
             //Elementos pai dos inputs para validar a exibição
-            WebElement entregaConvencionalParent = entregaConvencional.findElement(By.xpath("../../..")); //div pai do pai do pai do input
-            WebElement entregaExpressaParent = entregaExpressa.findElement(By.xpath("../../../..")); //div pai do pai do pai do pai do input
+            WebElement entregaConvencionalParent = driverQA.findElement(conventionalParent, "xpath");
+            WebElement entregaExpressaParent = driverQA.findElement(expressParent, "xpath");
             WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
 
-            BiConsumer<WebElement, WebElement> validateChipTypes = (commonChip, eSim) -> {
+            BiConsumer<WebElement, WebElement> validateChipTypes = (common, eSim) -> {
                 if (!isDeviceCart) {
-                    Assert.assertTrue("Chip comum selecionado", commonChip.isSelected());
+                    Assert.assertTrue("Chip comum selecionado", common.isSelected());
                     Assert.assertFalse("Chip eSim desmarcado", eSim.isSelected());
                 } else {
-                    Assert.assertNull("Escolha de chip para Aparelho acontece na PDP", commonChip);
+                    Assert.assertNull("Escolha de chip para Aparelho acontece na PDP", common);
                     Assert.assertNull("Escolha de chip para Aparelho acontece na PDP", eSim);
                 }
             };
