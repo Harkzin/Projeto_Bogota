@@ -25,9 +25,8 @@ public class ComumSteps {
         comumPage.validarResumoCompraPlano();
     }
 
-    @Entao("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito")
+    @Entao("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito/Boleto")
     public void validarAlteraValorPagamento() {
-        cartOrder.isDebitPaymentFlow = true;
         comumPage.validarResumoCompraPlano();
     }
 
