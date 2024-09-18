@@ -1,5 +1,6 @@
 #language: pt
-@Regressivo
+
+@Web
 Funcionalidade: ECCMAUT-855 - Aquisicao Pos - 02 Dependente
 
   @Aquisicao
@@ -7,15 +8,15 @@ Funcionalidade: ECCMAUT-855 - Aquisicao Pos - 02 Dependente
   @AquisicaoPos02DepAquis
   Cenario: Aquisicao Pos - 02 Dependente
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17268" do carrossel da Home
+    Quando selecionar o plano de id "17522" do carrossel da Home
     Então é direcionado para a tela de Carrinho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
     E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSC DOISDEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega

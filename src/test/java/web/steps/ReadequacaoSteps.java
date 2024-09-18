@@ -20,7 +20,7 @@ public class ReadequacaoSteps {
     public void eDirecionadoParaATelaDeTHAB() {
         readequacaoPage.validarPaginaReadequacaoTHAB(cartOrder.getPlan());
     }
-    @Quando("seleciona o plano de controle antecipado ofertado")
+    @Quando("o usuário selecionar o plano de controle antecipado ofertado")
     public void selecionaOPlanoDeControleAntecipadoOfertadoClicandoNoBotaoEuQueroDele() {
         readequacaoPage.clicarEuQuero();
     }

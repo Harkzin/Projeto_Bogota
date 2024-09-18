@@ -1,7 +1,7 @@
 package web.steps;
 
 
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Mas;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class ComumSteps {
         comumPage.validarResumoCompraPlano();
     }
 
-    @Então("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra")
+    @Entao("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito/Boleto")
     public void validarAlteraValorPagamento() {
         comumPage.validarResumoCompraPlano();
     }

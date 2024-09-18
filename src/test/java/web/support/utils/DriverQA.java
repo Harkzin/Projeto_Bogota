@@ -29,8 +29,8 @@ public class DriverQA {
     public void setupDriver() {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
-            String headless = browserstack.equals("true") ? System.getProperty("headless", "false") : System.getProperty("headless", "true");
-            String mobileLocal = System.getProperty("mobileLocal", "false");
+            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");
+            String maximized = System.getProperty("maximized", "false");
 
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
@@ -46,35 +46,23 @@ public class DriverQA {
             chromeOptions.addArguments("--disable-dev-shm-usage");
             chromeOptions.addArguments("--deny-permission-prompts");
             if (browserstack.equals("true")) {
-                HashMap<String, String> bstackOptions = new HashMap<>();
-                bstackOptions.put("source", "cucumber-java:sample-master:v1.2");
-
-                chromeOptions.setCapability("bstack:options", bstackOptions);
-
                 try {
-                    driver = new RemoteWebDriver(
-                            new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
+                    driver = new RemoteWebDriver(new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-            } else if (mobileLocal.equals("true")) {
-                Map<String, String> mobileEmulation = new HashMap<>();
-                HashMap<String, Integer> contentSettings = new HashMap<>();
-                HashMap<String, Object> profile = new HashMap<>();
-                HashMap<String, Object> prefs = new HashMap<>();
-                contentSettings.put("geolocation", 2);
-                profile.put("managed_default_content_settings", contentSettings);
-                prefs.put("profile", profile);
-                chromeOptions.setExperimentalOption("prefs", prefs);
-                mobileEmulation.put("deviceName", "Samsung Galaxy S8+");
-                chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
-                driver = new ChromeDriver(chromeOptions);
+                maximized = "true";
+
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (getPlataformName().toString().equals("windows")) {
-                driver.manage().window().setSize(new Dimension(1920, 1080));
-                driver.manage().window().setPosition(new Point(0, 0));
+            if (!getPlataformName().toString().matches("ANDROID|IOS")) {
+                if (maximized.equals("true")) { //Local
+                    driver.manage().window().maximize();
+                } else { //Jenkins
+                    driver.manage().window().setSize(new Dimension(1920, 1080));
+                    driver.manage().window().setPosition(new Point(0, 0));
+                }
             }
 
         }
@@ -164,12 +152,8 @@ public class DriverQA {
         }
     }
 
-    public void sendKeys(WebElement element, String text) {
-//         javaScriptScrollTo(element);
-//         Actions action = new Actions(driver);
-//         action.pause(Duration.ofMillis(500)).click(element);
-        element.sendKeys(text);
-
+    public void actionSendKeys(String selectorValue, String selectorType, String text) {
+        actionSendKeys(findElement(selectorValue, selectorType), text);
     }
 
     public void sendKeysLogin(WebElement element, String text) {
@@ -184,9 +168,6 @@ public class DriverQA {
         }
     }
 
-    public void actionSendKeys(String selectorValue, String selectorType, String text) {
-        actionSendKeys(findElement(selectorValue, selectorType), text);
-    }
 
     public void actionPause(int miliseconds) {
         Actions action = new Actions(driver);
@@ -203,7 +184,7 @@ public class DriverQA {
 
     public Document getEmail(String emailAddress, Email emailSubject) {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
-                .withTimeout(ofSeconds(60))
+                .withTimeout(ofSeconds(90))
                 .withMessage("Aguardando recebimento do e-mail")
                 .pollingEvery(ofSeconds(30));
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));

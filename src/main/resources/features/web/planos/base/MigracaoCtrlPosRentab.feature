@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
 
   #Massa: Controle - pagamento boleto - fatura correios
@@ -9,15 +9,15 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
   @Pos
   @MigracaoCtrlPosRentab
   Cenario: Migracao Controle Pos - Rentabilizacao
-    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17536&coupon=c7c21130f16ac009e7f4819ef1e80611&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
+    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=2f32ad67fb014807268c284b61facdfd&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
     E preenche os campos: [Telefone com DDD] "11940660390", [E-mail] e [CPF] "36163924894"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
       #Mas não deve haver alterações no valor e nem nas informações do Plano
-      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
-      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-      E deve ser exibido as datas de vencimento
+    E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #Então não deve haver alterações no valor e nem nas informações do Plano

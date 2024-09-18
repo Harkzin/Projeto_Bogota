@@ -1,5 +1,6 @@
 #language: pt
-@Regressivo
+
+@Web
 Funcionalidade: ECCMAUT-970 - Aquisicao Pos - 01 Dependente
 
   @Aquisicao
@@ -7,7 +8,7 @@ Funcionalidade: ECCMAUT-970 - Aquisicao Pos - 01 Dependente
   @PortabilidadePos01DepPort
   Cenario: Aquisicao Pos - 01 Dependente
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17270" do carrossel da Home
+    Quando selecionar o plano de id "17515" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]

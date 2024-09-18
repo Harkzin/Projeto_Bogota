@@ -89,13 +89,6 @@
             <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>io.appium</groupId>
-            <artifactId>java-client</artifactId>
-            <version>9.2.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -202,28 +195,6 @@
                         <configuration>
                             <testFailureIgnore>true</testFailureIgnore>
                             <argLine>-javaagent:${com.browserstack:browserstack-java-sdk:jar}</argLine>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>api-tests</id>
-            <activation>
-                <property>
-                    <name>api</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <includes>
-                                <include>**/ApiRunnerTest.java</include>
-                            </includes>
                         </configuration>
                     </plugin>
                 </plugins>

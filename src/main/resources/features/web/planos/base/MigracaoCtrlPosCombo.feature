@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
 
   #Massa: Controle Combo - pagamento boleto
@@ -10,7 +10,7 @@ Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
   @MigracaoCtrlPosCombo
   Cenario: Migracao Controle para Pos Combo Multi
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17266" do carrossel da Home
+    Quando selecionar o plano de id "17522" do carrossel da Home
     Então é direcionado para a tela de Carrinho
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
     E preenche os campos: [Telefone com DDD] "11947725638", [E-mail] e [CPF] "19398965178"
