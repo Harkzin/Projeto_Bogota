@@ -17,7 +17,8 @@ platforms:
 browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true
-parallelsPerPlatform: 5
+#parallelsPerPlatform: 5 //Descomentar para rodar em 5 threads no desktop
 buildName: ${BUILD_NAME}
+buildIdentifier: ${DATE_TIME}
 projectName: Squad Bogota
 acceptInsecureCerts: true

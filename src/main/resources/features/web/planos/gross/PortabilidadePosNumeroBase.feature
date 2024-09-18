@@ -1,6 +1,6 @@
 #language: pt
 
-@Web
+@Regressivo
 Funcionalidade: ECCMAUT-510 - Portabilidade Pos com numero Base
 
   @Portabilidade

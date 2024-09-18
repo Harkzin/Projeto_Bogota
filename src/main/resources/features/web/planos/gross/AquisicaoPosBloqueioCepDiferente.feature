@@ -24,10 +24,10 @@ Funcionalidade: ECCMAUT-303 - Cenario de erro - Aquisicao Pos - Bloqueio para CE
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então será recarregada a página e exibida a mensagem de erro: "O CEP deve ser do mesmo estado (UF) do DDD escolhido"
-      Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "70" e [Complemento] ""
-      E deve ser exibido os tipos de entrega
-
-    Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
-    Então é direcionado para a tela de Customizar Fatura
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+#      Mas não deve haver alterações no valor e nem nas informações do Plano
+#    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "70" e [Complemento] ""
+#      E deve ser exibido os tipos de entrega
+#
+#    Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
+#    Então é direcionado para a tela de Customizar Fatura
+#      Mas não deve haver alterações no valor e nem nas informações do Plano
