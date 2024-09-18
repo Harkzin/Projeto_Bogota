@@ -1,4 +1,5 @@
 # Automação de Testes E-commerce
+
 planoscelular.claro.com.br
 
 Exemplo de comando para execução local dos testes web:

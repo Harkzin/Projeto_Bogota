@@ -483,6 +483,7 @@ public class ApiSteps {
             Assert.assertEquals(200, orderResponse.statusCode());
             orderObjectResponse = objMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
             // Log com número do pedido para posterior validação no BKO
+            System.out.println("Numero do pedido: " + orderObjectResponse.getOrdercode());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

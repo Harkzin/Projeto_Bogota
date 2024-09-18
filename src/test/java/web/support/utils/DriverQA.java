@@ -153,23 +153,23 @@ public class DriverQA {
     }
 
     public void actionSendKeys(WebElement element, String text) {
-        if (getPlataformName().equals(Platform.IOS)) {
+        if (getPlataformName().equals(Platform.IOS) || getPlataformName().equals(Platform.ANDROID)) {
             element.sendKeys(text);
         } else {
+            javaScriptScrollTo(element);
             Actions action = new Actions(driver);
-            action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
+            action.pause(Duration.ofMillis(500)).click(element);
             text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+
         }
     }
 
     public void sendKeys(WebElement element, String text) {
-        if (getPlataformName().equals(Platform.IOS)) {
-            element.sendKeys(text);
-        } else {
-            Actions action = new Actions(driver);
-            action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
-            text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
-        }
+//         javaScriptScrollTo(element);
+//         Actions action = new Actions(driver);
+//         action.pause(Duration.ofMillis(500)).click(element);
+        element.sendKeys(text);
+
     }
 
     public void sendKeysLogin(WebElement element, String text) {

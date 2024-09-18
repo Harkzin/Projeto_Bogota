@@ -6,7 +6,6 @@
 browserstack.err
 performance-report.csv
 
-
 # IntelliJ project files
 /.idea
 .idea

@@ -29,11 +29,11 @@ public class HomePage {
 
     private void validarCardPlano(String code) {
         //TODO atualizar find para id quando for criado
-        WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]","xpath");
+        WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
-        //puxa carrossel, caso seja mobile
-        if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+        //Puxa carrossel, caso seja mobile
+        if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
             if (code.equals("17536")) {
                 driverQA.javaScriptClick(nextCarrossel);
             } else if (code.equals("17558")) {
@@ -51,13 +51,7 @@ public class HomePage {
         //Valida preço
         WebElement price = cardParent
                 .findElement(By.xpath("div[@data-price-for]/div/div[@class='preco-home bestPrice']/div/p[2]"));
-        if (code.equals("17536") || code.equals("17558") || code.equals("17528")) {
-            cartOrder.isDebitPaymentFlow = false;
-            Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(false, true), price.getText().trim());
-        } else {
-            Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(true, true), price.getText().trim());
-        }
-
+        Assert.assertEquals(cartOrder.getPlan().getFormattedPlanPrice(true, true), price.getText().trim());
         Assert.assertTrue(price.isDisplayed());
 
         //Valida apps ilimitados
@@ -78,16 +72,10 @@ public class HomePage {
         if (cartOrder.getPlan().hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            if (cartOrder.getPlan().hasClaroGames()) {
-                //TODO Claro Games (Free Fire, Asphalt)
-                List<String> totalExtraPlayApps = cartOrder.getPlan().getExtraPlayApps();
-                totalExtraPlayApps.addAll(cartOrder.getPlan().getClaroGames());
-                ComumPage.validarMidiasPlano(totalExtraPlayApps, extraPlayApps, driverQA);
-            } else {
-                ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
-            }
 
-        }
+            ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
+    }
+
         //Valida planPortability (GB e bônus - antigo)
         if (cartOrder.getPlan().hasPlanPortability()) {
             List<WebElement> planPortability = cardParent
@@ -104,9 +92,9 @@ public class HomePage {
         driverQA.getDriver().get(Constants.urlAmbiente);
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
 
-        WebElement btnFecharModal = driverQA.findElement("//a[@class='closeModal gtm-link-event']","xpath");
+        WebElement btnFecharModal = driverQA.findElement("//a[@class='closeModal gtm-link-event']", "xpath");
 
-        if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+        if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
             driverQA.waitElementVisibility(btnFecharModal, 10);
             driverQA.javaScriptClick(btnFecharModal);
         }
@@ -136,9 +124,8 @@ public class HomePage {
     }
 
     public void acessarMenuCelulares() {
-
-       if(driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)){
-           driverQA.javaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-mobile-action']","xpath");
+        if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+            driverQA.javaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-mobile-action']", "xpath");
         }
         driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }

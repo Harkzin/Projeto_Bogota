@@ -85,18 +85,21 @@ public class ComumPage {
 
     public void validarResumoCompraPlano() {
         driverQA.actionPause(1500);
-        driverQA.mobileClick("(//div[@class='js-cart-entry-update']//a)[1]", "xpath");
 
         String planContentParent = "//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div";
 
         //Valida nome, caso configurado
-                WebElement planName = driverQA.findElement(planContentParent + "//span[contains(@class, 'product-fullname')]", "xpath");
-                validateElementText(cartOrder.getPlan().getName(), planName);
+        if (!cartOrder.getPlan().getName().isEmpty()) {
+            WebElement planName = driverQA.findElement(planContentParent + "//span[contains(@class, 'product-fullname')]", "xpath");
+            validateElementText(cartOrder.getPlan().getName(), planName);
+        }
+
 
         //Valida app ilimitados, caso configurado
         if (cartOrder.getPlan().hasPlanApps() && cartOrder.hasLoyalty) {
             //Título
             WebElement planAppsTitle = driverQA.findElement(planContentParent + "//div[contains(@class, ' apps-ilimitados')]/div[1]/div", "xpath");
+
             //Apps
             List<WebElement> planApps = driverQA.findElements(planContentParent + "//div[contains(@class, ' apps-ilimitados')]//img", "xpath");
 
@@ -129,14 +132,7 @@ public class ComumPage {
         //Valida preço
         WebElement price = driverQA.findElement(planContentParent + "//span[contains(@class, 'js-entry-price-plan')]", "xpath");
 
-        String priceRef = null;
-        String planCode = cartOrder.getPlan().getCode();
-        if (planCode.equals("17536") || planCode.equals("17558") || planCode.equals(("17528"))) {
-            priceRef = cartOrder.getPlan().getFormattedPlanPrice(false, cartOrder.hasLoyalty);
-        } else {
-            priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
-        }
-
+        String priceRef = cartOrder.getPlan().getFormattedPlanPrice(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
         validateElementText(priceRef, price);
 
         //Valida método de pagamento
