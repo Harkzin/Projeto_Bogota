@@ -15,9 +15,9 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
       #Mas não deve haver alterações no valor e nem nas informações do Plano
-    E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
-    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
+      E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+      E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+      E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #Então não deve haver alterações no valor e nem nas informações do Plano

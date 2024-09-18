@@ -35,25 +35,25 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
-    Mas não deve haver alterações no valor e nem nas informações do Plano
-    E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
-    E não deve ser exibido os meios de recebimento da fatura
-    E deve ser exibido as datas de vencimento
+      Mas não deve haver alterações no valor e nem nas informações do Plano
+      E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
+      E não deve ser exibido os meios de recebimento da fatura
+      E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar a forma de pagamento [Débito]
     Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
-    E não deve ser exibido os meios de recebimento da fatura
-    E deve ser exibido as datas de vencimento
+      E não deve ser exibido os meios de recebimento da fatura
+      E deve ser exibido as datas de vencimento
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de SMS
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código enviado Por SMS] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao é direcionado para a tela de Parabéns
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
 

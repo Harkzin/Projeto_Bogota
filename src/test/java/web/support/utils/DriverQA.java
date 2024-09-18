@@ -158,8 +158,9 @@ public class DriverQA {
 
     public void sendKeysLogin(WebElement element, String text) {
         if (getPlataformName().equals(Platform.ANDROID)) {
+            javaScriptScrollTo(element);
             Actions action = new Actions(driver);
-            action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
+            action.pause(Duration.ofMillis(500)).click(element);
             text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
         } else {
             JavascriptExecutor js = (JavascriptExecutor) driver;
