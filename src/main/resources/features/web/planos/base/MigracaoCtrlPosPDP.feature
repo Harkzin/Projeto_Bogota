@@ -29,7 +29,7 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
 
     Quando o usuário clicar no botão [Eu quero!] da PDP
     Então é direcionado para a tela de Carrinho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
     E preenche os campos: [Telefone com DDD] "11947727032", [E-mail] e [CPF] "68647989848"
 
@@ -56,3 +56,4 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
     Entao é direcionado para a tela de Parabéns
     Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
+

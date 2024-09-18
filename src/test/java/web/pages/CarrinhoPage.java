@@ -180,8 +180,8 @@ public class CarrinhoPage {
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
-        driverQA.actionSendKeys("txt-telefone-migracao", "id", telefone);
-        driverQA.actionSendKeys("txt-cpf-migracao", "id", cpf);
+        driverQA.actionSendKeys(telefoneMigracao, telefone);
+        driverQA.actionSendKeys(cpfMigracao, cpf);
     }
 
     public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
@@ -196,7 +196,7 @@ public class CarrinhoPage {
 
     public void inserirEmail() {
         cartOrder.essential.user.email = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-        driverQA.actionSendKeys("txt-email", "id", cartOrder.essential.user.email);
+        driverQA.actionSendKeys(email, cartOrder.essential.user.email);
     }
 
     public void clicarEuQuero() {

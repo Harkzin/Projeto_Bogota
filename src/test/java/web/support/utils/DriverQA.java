@@ -141,7 +141,7 @@ public class DriverQA {
     }
 
     public void actionSendKeys(WebElement element, String text) {
-        if (getPlataformName().equals(Platform.IOS) || getPlataformName().equals(Platform.ANDROID)) {
+        if (getPlataformName().equals(Platform.IOS)) {
             element.sendKeys(text);
         } else {
             javaScriptScrollTo(element);

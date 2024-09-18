@@ -96,7 +96,6 @@ public class ComumPage {
             // validateElementText(cartOrder.getPlan().getName(), planName);
         }
 
-
         //Valida app ilimitados, caso configurado
         if (cartOrder.getPlan().hasPlanApps() && cartOrder.hasLoyalty) {
             //Título
