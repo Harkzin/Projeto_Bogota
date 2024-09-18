@@ -5,8 +5,6 @@ import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -155,22 +153,34 @@ public class DriverQA {
     }
 
     public void actionSendKeys(WebElement element, String text) {
-        Actions action = new Actions(driver);
-        action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
-        text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+        if (getPlataformName().equals(Platform.IOS)) {
+            element.sendKeys(text);
+        } else {
+            Actions action = new Actions(driver);
+            action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
+            text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+        }
     }
 
     public void sendKeys(WebElement element, String text) {
-//        javaScriptScrollTo(element);
-//        Actions action = new Actions(driver);
-//        action.pause(Duration.ofMillis(500)).click(element);
-        element.sendKeys(text);
-
+        if (getPlataformName().equals(Platform.IOS)) {
+            element.sendKeys(text);
+        } else {
+            Actions action = new Actions(driver);
+            action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
+            text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+        }
     }
 
-    public void mobileClick(String element, String selector){
-        if(getPlataformName().equals(Platform.ANDROID) || getPlataformName().equals(Platform.IOS)){
-            javaScriptClick(element, selector);
+    public void sendKeysLogin(WebElement element, String text) {
+        if (getPlataformName().equals(Platform.ANDROID)) {
+            Actions action = new Actions(driver);
+            action.scrollToElement(element).pause(Duration.ofMillis(500)).click(element);
+            text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+        } else {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].value=arguments[1];", element, text);
+            element.sendKeys(text);
         }
     }
 
@@ -195,7 +205,7 @@ public class DriverQA {
         FluentWait<WebDriver> wait = new FluentWait<>(driver)
                 .withTimeout(ofSeconds(60))
                 .withMessage("Aguardando recebimento do e-mail")
-                .pollingEvery(ofSeconds(5));
+                .pollingEvery(ofSeconds(30));
         return wait.until(a -> getEmailMessage(emailAddress, emailSubject));
     }
 

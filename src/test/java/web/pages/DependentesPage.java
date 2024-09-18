@@ -54,9 +54,9 @@ public class DependentesPage {
     );
 
     private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
-            1, "phone_0",
-            2, "phone_2",
-            3, "phone_3"
+            1, "dep0",
+            2, "dep2",
+            3, "dep3"
     );
 
     public void validarPaginaDependentes() {
@@ -82,7 +82,7 @@ public class DependentesPage {
         btnConfirmarDependente = driverQA.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
         abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
         btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
-        txtTelefonePortabilidade = driverQA.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
+        txtTelefonePortabilidade = driverQA.findElement("txt-telefone-" + mapCampoTelefonePortabilidade.get(dependente),"id");
 
         driverQA.waitElementVisibility(abaPortabilidade,10);
 

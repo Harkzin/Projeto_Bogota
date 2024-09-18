@@ -47,14 +47,14 @@ Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
     Então não deve haver alterações no valor e nem nas informações do Plano
 
-#    Quando o usuário selecionar a forma de pagamento [Débito]
-#    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
-#    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-#    E deve ser exibido as datas de vencimento
-#    E preenche os dados bancários
-#    E marca o checkbox de termos de aceite
+    Quando o usuário selecionar a forma de pagamento [Débito]
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    E deve ser exibido as datas de vencimento
+    E preenche os dados bancários
+    E marca o checkbox de termos de aceite
 
-#    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-#    Entao é direcionado para a tela de Parabéns
-#      Mas não deve haver alterações no valor e nem nas informações do Plano
-#    E os dados do pedido estão corretos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Entao é direcionado para a tela de Parabéns
+      Mas não deve haver alterações no valor e nem nas informações do Plano
+    E os dados do pedido estão corretos

@@ -1,11 +1,11 @@
 userName: browserstacklocamHzTR
 accessKey: Juo9yNg8pxCpQbwjuaPB
-framework: cucumber
+framework: cucumber-junit4
 platforms:
- # - deviceName: Motorola Moto G71 5G
- #   osVersion: 11.0
- #   browserName: chrome
- #   deviceOrientation: portrait
+#  - deviceName: Motorola Moto G71 5G
+#    osVersion: 11.0
+#    browserName: chrome
+#    deviceOrientation: portrait
   - deviceName: iPhone 15 Pro
     osVersion: 17
     browserName: safari
@@ -14,5 +14,7 @@ browserstackLocal: true
 browserStackLocalOptions:
   forceLocal: true
 buildName: ${BUILD_NAME}
+parallelsPerPlatform: 5
+buildIdentifier: ${DATE_TIME}
 projectName: Bogota
 acceptInsecureCerts: true

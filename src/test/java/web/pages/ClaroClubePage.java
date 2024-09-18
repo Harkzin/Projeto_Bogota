@@ -32,7 +32,7 @@ public class ClaroClubePage {
     }
 
     public void preencheTelefone(String phone) {
-        driverQA.actionSendKeys(this.phone, phone);
+        driverQA.sendKeysLogin(this.phone, phone);
     }
 
     public void clicarBotaoContinuarClaroClube() {
