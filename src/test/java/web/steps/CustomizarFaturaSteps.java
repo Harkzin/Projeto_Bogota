@@ -78,27 +78,20 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar o método de recebimento da fatura [WhatsApp]")
     public void selecionarFaturaWhatsApp() {
+        cartOrder.setSelectedInvoiceType(WHATSAPP);
         customizarFaturaPage.selecionarTipoFatura(WHATSAPP, cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
+        cartOrder.setSelectedInvoiceType(EMAIL);
         customizarFaturaPage.selecionarTipoFatura(EMAIL, cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")
     public void selecionarFaturaCorreios() {
+        cartOrder.setSelectedInvoiceType(PRINTED);
         customizarFaturaPage.selecionarTipoFatura(PRINTED, cartOrder.isDebitPaymentFlow);
-    }
-
-    @Entao("o valor do Plano será atualizado no Resumo da compra para fatura impressa") //Fatura impressa = sem desconto, preço igual de boleto.
-    public void validarValorFaturaImpressa() {
-        customizarFaturaPage.validarPrecoFatura(cartOrder.getPlan().getFormattedPlanPrice(false, true));
-    }
-
-    @Entao("o valor do Plano será atualizado no Resumo da compra para fatura digital")
-    public void validarValorFaturaDigital() {
-        customizarFaturaPage.validarPrecoFatura(cartOrder.getPlan().getFormattedPlanPrice(true, true));
     }
 
     @E("seleciona a data de vencimento {string}")

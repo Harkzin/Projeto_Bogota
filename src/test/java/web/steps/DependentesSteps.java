@@ -52,6 +52,8 @@ public class DependentesSteps {
 
     @E("adiciona o primeiro dependente, com número novo")
     public void adicionarPrimeiroDependente() {
+        cartOrder.addNewLineDependent("DEP1");
+
         dependentesPage.clicarAdicionarDependente(1);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
@@ -59,6 +61,8 @@ public class DependentesSteps {
 
     @E("adiciona o segundo dependente, com número novo")
     public void adicionarSegundoDependente() {
+        cartOrder.addNewLineDependent("DEP2");
+
         dependentesPage.clicarAdicionarOutroDependente(2);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();
@@ -66,6 +70,8 @@ public class DependentesSteps {
 
     @E("adiciona o terceiro dependente, com número novo")
     public void adicionarTerceiroDependente() {
+        cartOrder.addNewLineDependent("DEP3");
+
         dependentesPage.clicarAdicionarOutroDependente(3);
         dependentesPage.adicionarNovoNumeroDependente();
         dependentesPage.clicarConfirmarDependente();

@@ -22,12 +22,22 @@ public class ComumSteps {
 
     @Mas("não deve haver alterações no valor e nem nas informações do Plano")
     public void validarResumoCompraPlano() {
-        comumPage.validarResumoCompraPlano(cartOrder.getPlan(), cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        comumPage.validarResumoCompraPlano(cartOrder);
     }
 
     @Entao("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito/Boleto")
     public void validarAlteraValorPagamento() {
-        comumPage.validarResumoCompraPlano(cartOrder.getPlan(), true, cartOrder.hasLoyalty);
+        comumPage.validarResumoCompraPlano(cartOrder);
+    }
+
+    @Entao("o valor do Plano será atualizado no Resumo da compra para fatura impressa")
+    public void validarValorFaturaImpressa() {
+        comumPage.validarResumoCompraPlano(cartOrder);
+    }
+
+    @Entao("o valor do Plano será atualizado no Resumo da compra para fatura digital")
+    public void validarValorFaturaDigital() {
+        comumPage.validarResumoCompraPlano(cartOrder);
     }
 
     @Mas("não deve haver alterações no valor e nem nas informações do Aparelho")
@@ -39,6 +49,6 @@ public class ComumSteps {
     public void atualizarParaPlanoCombo() {
         cartOrder.setPlan(planSingleToCombo.get(cartOrder.getPlan().getCode()));
         cartOrder.isDebitPaymentFlow = false; //TODO Valor deve ser de acordo com o tipo de pagamento da linha combo
-        comumPage.validarResumoCompraPlano(cartOrder.getPlan(), cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        comumPage.validarResumoCompraPlano(cartOrder);
     }
 }

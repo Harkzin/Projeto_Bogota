@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.support.CartOrder;
 import web.support.Product;
+import web.support.utils.Constants;
 import web.support.utils.DriverQA;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.stream.IntStream;
+
+import static web.support.utils.Constants.DEPENDENT_PRICE;
 
 @Component
 @ScenarioScope
@@ -95,16 +98,21 @@ public class ComumPage {
         });
     }
 
-    public void validarResumoCompraPlano(Product plan, boolean isDebit, boolean hasLoyalty) {
-        String contentParent = driverQA.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
+    public static String formatPrice(double price) {
+        return String.format(Locale.GERMAN, "%,.2f", price);
+    }
 
-        //Força carregamento Lazy Loading
-        driverQA.javaScriptScrollTo(driverQA.findById("footer-claro"));
-        driverQA.actionPause(500);
-        driverQA.javaScriptScrollToTop();
+    public void validarResumoCompraPlano(CartOrder cart) {
+        driverQA.actionPause(2000);
+
+        Product plan = cart.getPlan();
+        boolean isDebit = cart.isDebitPaymentFlow;
+        boolean hasLoyalty = cart.hasLoyalty;;
+        String contentParent = driverQA.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
 
         //Valida nome, caso configurado
         if (!(plan.getName() == null)) {
+            driverQA.waitElementPresence(contentParent + "//*[@data-plan-content='name']", 10);
             validateElementText(plan.getName(), contentParent + "//*[@data-plan-content='name']");
         }
 
@@ -112,7 +120,7 @@ public class ComumPage {
         if (plan.hasPlanApps() && hasLoyalty) {
             //Título
             WebElement planAppsTitle = driverQA.findByXpath(contentParent + "//*[@data-plan-content='planappstitle']");
-            driverQA.waitElementVisible(planAppsTitle, 2);
+            //driverQA.waitElementVisible(planAppsTitle, 2);
 
             //Apps
             List<WebElement> planApps = driverQA.findElements(contentParent + "//*[@data-plan-content='planapps']//img", "xpath");
@@ -143,9 +151,22 @@ public class ComumPage {
             validarServicosClaro(driverQA, plan, claroServicesTitle, claroServicesApps);
         }
 
+        //Valida dependentes adicionados
+        int depQtt = cart.hasDependent();
+        if (depQtt > 0) {
+            String depQuantityRef = String.format("+ %d %s", depQtt, depQtt == 1 ? "dependente" : "dependentes");
+            validateElementText(depQuantityRef, contentParent + "//*[@data-plan-content='dependentquantity']");
+
+            String depPriceAndChipRef = String.format("R$ %s ( + %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
+            validateElementText(depPriceAndChipRef, contentParent + "//*[@data-plan-content='dependentprice']");
+        }
+
         //Valida preço
-        String priceRef = plan.getFormattedPlanPrice(isDebit, hasLoyalty);
-        validateElementText(priceRef, contentParent + "//span[contains(@class, 'js-entry-price-plan')]"); //TODO seletor
+        double priceRef = cart.getEntry(cart.getPlan().getCode()).getTotalPrice();
+        if (depQtt > 0) { //Com dep
+            priceRef += cart.getEntry("dependente").getTotalPrice();
+        }
+        validateElementText(formatPrice(priceRef), contentParent + "//*[@data-plan-content='price']");
 
         //Valida método de pagamento
         String paymentModeRef = isDebit ? "Débito automático" : "Boleto";

@@ -247,13 +247,7 @@ public class CustomizarFaturaPage {
             case EMAIL -> driverQA.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
             case PRINTED -> driverQA.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
-        driverQA.actionPause(1500);
-    }
-
-    public void validarPrecoFatura(String expectedPrice) {
-        WebElement price = driverQA
-                .findElement("//*[contains(@class, 'col-layout-plan') and not(contains(@class, 'visible-mobile'))]/div/div//span[contains(@class, 'js-entry-price-plan')]", "xpath");
-        validateElementText(expectedPrice, price); //Preço débito fatura impressa = boleto (sem desconto)
+        driverQA.actionPause(3000);
     }
 
     public void preencherDadosBancarios() {

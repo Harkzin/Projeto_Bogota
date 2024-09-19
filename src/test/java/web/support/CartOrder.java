@@ -1,6 +1,7 @@
 package web.support;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import web.support.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import static web.support.utils.Constants.*;
 import static web.support.api.RestAPI.getProductDetails;
 import static web.support.api.RestAPI.objMapper;
+import static web.support.utils.Constants.InvoiceType.*;
 
 public class CartOrder {
 
@@ -22,7 +24,6 @@ public class CartOrder {
 
     private Essential essential;
     private PositionsAndPrices positionsAndPrices;
-    private Dependent dependent;
     private Status status;
     private Payment payment;
     private Delivery delivery;
@@ -39,14 +40,16 @@ public class CartOrder {
     private boolean offerRealized;
     private boolean passedByClearSale;
 
+    private int claroDdd;
+
     private String allPromotionResults;
-    private List<String> appliedCouponCodes = new ArrayList<>();
+    private final List<String> appliedCouponCodes = new ArrayList<>();
     private String children;
     private String chosenPlan;
-    private int claroDdd;
     private String claroLegacyOrderId;
     private String creationtime;
     private String dayInvoiceExpiration;
+    private final List<DependentsInformation> dependentsInformation = new ArrayList<>();
     private String eaTicket;
     private String eventId;
     private String gradePlan;
@@ -56,7 +59,8 @@ public class CartOrder {
     private String orderTrackingUrl;
     private String portabilityClaroTicket;
     private String rentabilizationCoupon;
-    private String selectedInvoiceType;
+
+    private Constants.InvoiceType selectedInvoiceType;
 
     private Product getProduct(String id) {
         return positionsAndPrices.entries.stream()
@@ -116,13 +120,17 @@ public class CartOrder {
 
         Product plan = createProduct(planId);
         initializePositionAndPrices();
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getDebitPlanPrice())); //TODO Atualizar plan.getDebitPlanPrice() para pegar o preço da API (preço da promo, API sem definição ainda)
+        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getDebitPlanPrice())); //TODO Atualizar plan.getDebitPlanPrice() para pegar o preço da API (preço da promo, ECCMAUT-888)
     }
 
     private PositionsAndPrices.Entry getEntry(Product product) {
         return positionsAndPrices.entries.stream()
                 .filter(e -> e.product == product)
                 .findFirst().orElseThrow();
+    }
+
+    public PositionsAndPrices.Entry getEntry(String id) {
+        return getEntry(getProduct(id));
     }
 
     public double getEntryBasePrice(Product product) {
@@ -214,6 +222,45 @@ public class CartOrder {
         return essential.user.email;
     }
 
+    public int hasDependent() {
+        return dependentsInformation.size();
+    }
+
+    private void addDependent(String id, String msisdn, ProcessType processType) {
+        if (hasDependent() == 0) { //Cria entry caso seja o primeiro dependente
+            Product dependente = createProduct("dependente");
+            positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), dependente.getPrice()));
+        } else { //Atualiza a quantidade e preço na entry caso já tenha dependentes adicionados
+            PositionsAndPrices.Entry depEntry = getEntry(getProduct("dependente"));
+            depEntry.quantity++;
+            depEntry.totalPrice += depEntry.basePrice;
+        }
+
+        DependentsInformation dep = new DependentsInformation();
+        dep.id = id;
+        dep.msisdn = msisdn;
+        dep.processTypeOfDependent = processType;
+        dependentsInformation.add(dep);
+    }
+
+    public void addNewLineDependent(String id) {
+        addDependent(id, null, ProcessType.ACQUISITION);
+    }
+
+    public void addPortabilityDependent(String id, String msisdn) {
+        addDependent(id, msisdn, ProcessType.PORTABILITY);
+    }
+
+    public void setSelectedInvoiceType(Constants.InvoiceType invoiceType) {
+        selectedInvoiceType = invoiceType;
+
+        getEntry(planId).totalPrice = getPlan().getPlanPrice(isDebitPaymentFlow, invoiceType == PRINTED);
+    }
+
+    public Constants.InvoiceType getSelectedInvoiceType() {
+        return selectedInvoiceType;
+    }
+
     public static class ClaroChip {
 
         public String activationCode;
@@ -284,21 +331,13 @@ public class CartOrder {
         }
     }
 
-    public static class Dependent {
+    public static class DependentsInformation {
 
-        public boolean hasDependent;
-        public List<DependentsInformation> dependentsInformation;
+        public String id;
+        public String msisdn;
+        public ProcessType processTypeOfDependent;
 
-        private Dependent() {}
-
-        public static class DependentsInformation {
-
-            public String id;
-            public String msisdn;
-            public String processTypeOfDependent;
-
-            private DependentsInformation() {}
-        }
+        private DependentsInformation() {}
     }
 
     public static class Essential {
@@ -422,6 +461,18 @@ public class CartOrder {
                 this.quantity = quantity;
                 this.basePrice = basePrice;
                 this.totalPrice = totalPrice;
+            }
+
+            public double getBasePrice() {
+                return basePrice;
+            }
+
+            public double getTotalPrice() {
+                return totalPrice;
+            }
+
+            public double getDiscount() {
+                return discountValues.get(0);
             }
         }
     }

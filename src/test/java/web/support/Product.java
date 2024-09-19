@@ -113,6 +113,14 @@ public final class Product {
         }
     }
 
+    public double getPlanPrice(boolean isDebit, boolean isPrintedInvoice) {
+        String paymentMode = isDebit && !isPrintedInvoice ? "debitcard" : "ticket";
+
+        return loyaltyClaroPrices.stream().filter(price -> price.promotionSource.equals(paymentMode))
+                .findFirst().orElseThrow()
+                .value;
+    }
+
     public String getFormattedBaseDevicePrice() {
         return "R$ " + String.format(Locale.GERMAN, "%,.2f", (price.value - 10D)); //API retorna o valor com 10 reais a mais. Motivo desconhecido
     }

@@ -163,10 +163,6 @@ public class DriverQA {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
     }
 
-    public void javaScriptScrollToTop() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo({top: 0, left: 0, behavior: 'smooth'})");
-    }
-
     public void waitElementClickable(WebElement element, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));

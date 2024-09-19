@@ -64,4 +64,6 @@ public final class Constants {
             "17522", "17538",
             "17524", "17540"
     );
+
+    public static final double DEPENDENT_PRICE = 50D;
 }
