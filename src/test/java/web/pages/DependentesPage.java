@@ -64,6 +64,7 @@ public class DependentesPage {
         btnAdicionarDependente = driverQA.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
         btnSeguirSemDependente = driverQA.findElement("//button[contains(text(),'Seguir sem dependentes')]","xpath");
 
+        Assert.assertTrue(driverQA.findElement("//span[@class='mdn-Icon-comunidade mdn-Icon--md steps-icon']","xpath").isDisplayed());
         Assert.assertTrue(btnAdicionarDependente.isDisplayed());
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
