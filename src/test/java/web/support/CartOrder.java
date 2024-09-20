@@ -120,7 +120,8 @@ public class CartOrder {
 
         Product plan = createProduct(planId);
         initializePositionAndPrices();
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getDebitPlanPrice())); //TODO Atualizar plan.getDebitPlanPrice() para pegar o preço da API (preço da promo, ECCMAUT-888)
+        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getPlanPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED)));
+        //TODO Atualizar plan.getPlanPrice() para pegar o preço da API (preço da promo, ECCMAUT-888)
     }
 
     private PositionsAndPrices.Entry getEntry(Product product) {

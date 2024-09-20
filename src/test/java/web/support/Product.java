@@ -94,11 +94,6 @@ public final class Product {
         return price.value;
     }
 
-    public double getDebitPlanPrice() {
-        return loyaltyClaroPrices.stream().filter(price -> price.promotionSource.equals("debitcard"))
-                .findFirst().orElseThrow().value;
-    }
-
     public String getFormattedPlanPrice(boolean isDebit, boolean hasLoyalty) {
         String paymentMode = isDebit ? "debitcard" : "ticket";
 

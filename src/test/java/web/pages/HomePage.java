@@ -29,8 +29,6 @@ public class HomePage {
         this.cartOrder = cartOrder;
     }
 
-    private boolean isDebit = true;
-
     public void acessarLojaHome() {
         driverQA.getDriver().get(Constants.urlAmbiente);
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
@@ -40,7 +38,7 @@ public class HomePage {
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
     }
 
-    public void validarCardPlano(Product plan) {
+    public void validarCardPlano(Product plan, boolean isDebit) {
         //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
@@ -102,7 +100,6 @@ public class HomePage {
     }
 
     public void selecionarPlanoControle(String id) {
-        isDebit = false;
         selecionarPlano(id);
     }
 
