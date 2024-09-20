@@ -1,6 +1,7 @@
 #language: pt
 
 @Regressivo
+@Web
 Funcionalidade: ECCMAUT-489 - Portabilidade - Bilhete Aberto
 
   @Portabilidade
