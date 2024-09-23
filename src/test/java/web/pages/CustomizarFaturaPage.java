@@ -12,7 +12,6 @@ import web.support.utils.Constants;
 import web.support.utils.Constants.PaymentMode;
 import web.support.utils.DriverQA;
 
-import static web.pages.ComumPage.*;
 import static web.support.utils.Constants.ProcessType.MIGRATE;
 import static web.support.api.RestAPI.getBankAccount;
 
@@ -34,6 +33,7 @@ public class CustomizarFaturaPage {
 
     private boolean isComboFlow = false;
     private boolean isDebitClient;
+
     private WebElement abaDebito;
     private WebElement abaBoleto;
     private Select banco;

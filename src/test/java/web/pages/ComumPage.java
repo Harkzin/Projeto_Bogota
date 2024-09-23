@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.support.CartOrder;
 import web.support.Product;
-import web.support.utils.Constants;
 import web.support.utils.DriverQA;
 
 import java.util.List;
@@ -107,7 +106,7 @@ public class ComumPage {
 
         Product plan = cart.getPlan();
         boolean isDebit = cart.isDebitPaymentFlow;
-        boolean hasLoyalty = cart.hasLoyalty;;
+        boolean hasLoyalty = cart.hasLoyalty;
         String contentParent = driverQA.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
 
         //Valida nome, caso configurado
@@ -120,7 +119,6 @@ public class ComumPage {
         if (plan.hasPlanApps() && hasLoyalty) {
             //Título
             WebElement planAppsTitle = driverQA.findByXpath(contentParent + "//*[@data-plan-content='planappstitle']");
-            //driverQA.waitElementVisible(planAppsTitle, 2);
 
             //Apps
             List<WebElement> planApps = driverQA.findElements(contentParent + "//*[@data-plan-content='planapps']//img", "xpath");
