@@ -37,6 +37,8 @@ public class DadosPessoaisPage {
     private WebElement chipEsimExpress;
     private WebElement cepCobranca;
 
+    private boolean bloqueioCepDiferente;
+
     private void validarCampoCep() {
         cep = driverQA.findElement("txt-cep-endereco-entrega", "id");
         Assert.assertTrue(cep.isDisplayed());
@@ -72,6 +74,7 @@ public class DadosPessoaisPage {
         Assert.assertNull(driverQA.findElement("txt-nome-completo", "id"));
         Assert.assertNull(driverQA.findElement("txt-nascimento", "id"));
         Assert.assertNull(driverQA.findElement("txt-nome-mae", "id"));
+        bloqueioCepDiferente = true;
     }
 
     public void inserirNome(String nomeCompleto) {
@@ -121,7 +124,6 @@ public class DadosPessoaisPage {
             //Elementos pai dos inputs para validar a exibição
             WebElement entregaConvencionalParent = driverQA.findElement(conventionalParent, "xpath");
             WebElement entregaExpressaParent = driverQA.findElement(expressParent, "xpath");
-            WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
 
             BiConsumer<WebElement, WebElement> validateChipTypes = (common, eSim) -> {
                 if (!isDeviceCart) {
@@ -143,8 +145,13 @@ public class DadosPessoaisPage {
                 //Exibe apenas o bloco de entrega convencional. Ambos existem no html (convencional e expressa) mas só um é exibido
                 Assert.assertFalse(entregaExpressaParent.isDisplayed());
 
-                //Endereço de cobrança apenas em entrega expressa
-                Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
+                if (bloqueioCepDiferente) {
+                    Assert.assertNull(usarMesmoEnderecoCobranca);
+                } else {
+                    //Endereço de cobrança apenas em entrega expressa
+                    Assert.assertFalse(usarMesmoEnderecoCobranca.findElement(By.xpath("../../..")).isDisplayed());
+                }
+
             } else {
                 validateChipTypes.accept(chipComumExpressa, chipEsimExpress);
 
@@ -153,7 +160,7 @@ public class DadosPessoaisPage {
                 Assert.assertTrue(entregaExpressaParent.isDisplayed());
 
                 //Exibe a seção para endereço de cobrança com o checkbox marcado
-                Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
+                Assert.assertTrue(usarMesmoEnderecoCobranca.findElement(By.xpath("../../..")).isDisplayed());
                 Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
 
                 //Exibe apenas o bloco de entrega expressa. Ambos existem no html (convencional e expressa) mas só um é exibido
@@ -193,7 +200,7 @@ public class DadosPessoaisPage {
     }
 
     public void inserirCepCobranca(String cep) {
-        driverQA.actionSendKeys("txt-cep-endereco-cobranca","id",cep);
+        driverQA.actionSendKeys("txt-cep-endereco-cobranca", "id", cep);
 
         WebElement endereco = driverQA.findElement("txt-endereco-endereco-cobranca", "id");
         driverQA.waitElementVisibility(endereco, 12);
@@ -208,7 +215,7 @@ public class DadosPessoaisPage {
     }
 
     public void selecionarEsim() {
-        if(cartOrder.delivery.deliveryMode == EXPRESS) {
+        if (cartOrder.delivery.deliveryMode == EXPRESS) {
             driverQA.javaScriptClick(chipEsimExpress);
             driverQA.waitElementInvisibility(entregaExpressa, 1);
         } else {
