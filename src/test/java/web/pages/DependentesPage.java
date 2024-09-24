@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.util.Map;
 
@@ -14,12 +14,12 @@ import java.util.Map;
 @ScenarioScope
 public class DependentesPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public DependentesPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public DependentesPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
@@ -60,31 +60,31 @@ public class DependentesPage {
     );
 
     public void validarPaginaDependentes() {
-        driverQA.waitPageLoad("/dependents/claroDependents", 15);
-        btnAdicionarDependente = driverQA.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
-        btnSeguirSemDependente = driverQA.findElement("//button[contains(text(),'Seguir sem dependentes')]","xpath");
+        driverWeb.waitPageLoad("/dependents/claroDependents", 15);
+        btnAdicionarDependente = driverWeb.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
+        btnSeguirSemDependente = driverWeb.findElement("//button[contains(text(),'Seguir sem dependentes')]","xpath");
 
         Assert.assertTrue(btnAdicionarDependente.isDisplayed());
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
 
     public void clicarSeguirSemDependentes() {
-        driverQA.javaScriptClick(btnSeguirSemDependente);
+        driverWeb.javaScriptClick(btnSeguirSemDependente);
     }
 
     public void clicarAdicionarDependente(int dependente) {
-        driverQA.javaScriptClick("//div[@class='mdn-Row']//div//button", "xpath");
+        driverWeb.javaScriptClick("//div[@class='mdn-Row']//div//button", "xpath");
         validarBotoesDependente(dependente);
     }
 
     private void validarBotoesDependente(int dependente) {
-        abaPortabilidade = driverQA.findElement(mapAbaPortabilidade.get(dependente),"xpath");
-        btnConfirmarDependente = driverQA.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
-        abaNumeroNovo = driverQA.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
-        btnExcluir = driverQA.findElement(mapBtnExcluir.get(dependente), "xpath");
-        txtTelefonePortabilidade = driverQA.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
+        abaPortabilidade = driverWeb.findElement(mapAbaPortabilidade.get(dependente),"xpath");
+        btnConfirmarDependente = driverWeb.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
+        abaNumeroNovo = driverWeb.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
+        btnExcluir = driverWeb.findElement(mapBtnExcluir.get(dependente), "xpath");
+        txtTelefonePortabilidade = driverWeb.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
 
-        driverQA.waitElementVisible(abaPortabilidade,10);
+        driverWeb.waitElementVisible(abaPortabilidade,10);
 
         Assert.assertTrue(abaNumeroNovo.isDisplayed());
         Assert.assertTrue(abaPortabilidade.isDisplayed());
@@ -94,25 +94,25 @@ public class DependentesPage {
     }
 
     public void inserirNumeroDependentes(String numero) {
-        driverQA.actionSendKeys(txtTelefonePortabilidade,numero);
+        driverWeb.actionSendKeys(txtTelefonePortabilidade,numero);
     }
 
     public void clicarConfirmarDependente() {
-        driverQA.javaScriptClick(btnConfirmarDependente);
-        driverQA.waitElementInvisible(btnConfirmarDependente,10);
+        driverWeb.javaScriptClick(btnConfirmarDependente);
+        driverWeb.waitElementInvisible(btnConfirmarDependente,10);
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
     }
 
     public void adicionarNovoNumeroDependente() {
-        driverQA.javaScriptClick(abaNumeroNovo);
+        driverWeb.javaScriptClick(abaNumeroNovo);
     }
 
     public void clicarAdicionarOutroDependente(int dependente) {
-        driverQA.javaScriptClick("//div[@class='addingMoreDependent']//button","xpath");
+        driverWeb.javaScriptClick("//div[@class='addingMoreDependent']//button","xpath");
         validarBotoesDependente(dependente);
     }
 
     public void clicarContinuar() {
-        driverQA.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
+        driverWeb.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
     }
 }

@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.util.List;
 
@@ -20,12 +20,12 @@ import static web.pages.ComumPage.validateElementText;
 @ScenarioScope
 public class FormaPagamentoPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    FormaPagamentoPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    FormaPagamentoPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
@@ -48,9 +48,9 @@ public class FormaPagamentoPage {
     private WebElement cardConfirm;
 
     public void validarPaginaFormaPagamento() {
-        driverQA.waitPageLoad("/payment-device-method", 60);
-        driverQA.actionPause(2000);
-        PageFactory.initElements(driverQA.getDriver(), this);
+        driverWeb.waitPageLoad("/payment-device-method", 60);
+        driverWeb.actionPause(2000);
+        PageFactory.initElements(driverWeb.getDriver(), this);
 
         Assert.assertTrue("Campo cupom deve estar vazio ao abrir a pagina", cupom.getAttribute("value").isEmpty());
         validateElementActiveVisible(cupom);
@@ -61,39 +61,39 @@ public class FormaPagamentoPage {
     }
 
     public void preencherCupom(String voucher) {
-        driverQA.actionSendKeys(cupom, voucher);
+        driverWeb.actionSendKeys(cupom, voucher);
     }
 
     public void clicarAplicarCupom() {
-        driverQA.javaScriptClick(aplicarCupom);
+        driverWeb.javaScriptClick(aplicarCupom);
     }
 
     public void validarAplicarCupom(String voucher) {
         //Botão Remover é injetado no html
-        validateElementActiveVisible(driverQA.waitElementPresence("//button[@data-analytics-custom-title='aplicar_cupom']", 10));
+        validateElementActiveVisible(driverWeb.waitElementPresence("//button[@data-analytics-custom-title='aplicar_cupom']", 10));
 
         //Botão some do html após aplicar o cupom
-        Assert.assertNull(driverQA.findById("btn-aplicar-cupom"));
+        Assert.assertNull(driverWeb.findById("btn-aplicar-cupom"));
 
         //Campo de texto
         Assert.assertFalse(cupom.isEnabled());
         Assert.assertEquals(voucher, cupom.getAttribute("value"));
 
         //Mensagem de sucesso
-        validateElementText("Código do cupom aplicado com sucesso!", driverQA.findByXpath("//*[contains(@class, 'js-voucher-msg')]"));
+        validateElementText("Código do cupom aplicado com sucesso!", driverWeb.findByXpath("//*[contains(@class, 'js-voucher-msg')]"));
     }
 
     public void clicarAdicionarCartao() {
-        driverQA.javaScriptClick(adicionarCartao);
+        driverWeb.javaScriptClick(adicionarCartao);
     }
 
     public void validarIframe() {
-        driverQA.getDriver().switchTo().frame(driverQA.findById("credit-card-payment-iframe")); //Acessa o iframe
-        cardName = driverQA.waitElementPresence("//*[@id='root']//input[contains(@name, 'name')]", 30);
-        cardNumber = driverQA.findById("cardNumber");
-        cardExpireDate = driverQA.findById("cardExpiration");
-        cardCVV = driverQA.findById("cardSecurityCode");
-        cardConfirm = driverQA.findById("validateButton");
+        driverWeb.getDriver().switchTo().frame(driverWeb.findById("credit-card-payment-iframe")); //Acessa o iframe
+        cardName = driverWeb.waitElementPresence("//*[@id='root']//input[contains(@name, 'name')]", 30);
+        cardNumber = driverWeb.findById("cardNumber");
+        cardExpireDate = driverWeb.findById("cardExpiration");
+        cardCVV = driverWeb.findById("cardSecurityCode");
+        cardConfirm = driverWeb.findById("validateButton");
 
         List<WebElement> cardElements = List.of(cardName, cardNumber, cardExpireDate, cardCVV);
         cardElements.forEach(e -> {
@@ -105,22 +105,22 @@ public class FormaPagamentoPage {
     }
 
     public void preencherDadosCartao(String name, String number, String date, String cvv, String installments) {
-        driverQA.actionSendKeys(cardName, name);
-        driverQA.actionSendKeys(cardNumber, number);
-        driverQA.actionSendKeys(cardExpireDate, date);
-        driverQA.actionSendKeys(cardCVV, cvv);
+        driverWeb.actionSendKeys(cardName, name);
+        driverWeb.actionSendKeys(cardNumber, number);
+        driverWeb.actionSendKeys(cardExpireDate, date);
+        driverWeb.actionSendKeys(cardCVV, cvv);
 
         //Select só aparece após preencher os dados anteriores
-        Select cardInstallments = new Select(driverQA.waitElementPresence("//*[@id='root']//select[contains(@name, 'comboParcelas')]", 10));
+        Select cardInstallments = new Select(driverWeb.waitElementPresence("//*[@id='root']//select[contains(@name, 'comboParcelas')]", 10));
         cardInstallments.selectByValue(installments);
     }
 
     public void clicarConfirmarCartao() {
-        driverQA.javaScriptClick(cardConfirm);
-        driverQA.getDriver().switchTo().defaultContent(); //Sai do iframe
+        driverWeb.javaScriptClick(cardConfirm);
+        driverWeb.getDriver().switchTo().defaultContent(); //Sai do iframe
     }
 
     public void clicarFinalizarPix() {
-        driverQA.javaScriptClick(finalizarPix);
+        driverWeb.javaScriptClick(finalizarPix);
     }
 }

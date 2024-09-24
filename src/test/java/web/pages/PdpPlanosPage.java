@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.Product;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -21,12 +21,12 @@ import static web.pages.ComumPage.*;
 @ScenarioScope
 public class PdpPlanosPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public PdpPlanosPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public PdpPlanosPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
@@ -37,13 +37,13 @@ public class PdpPlanosPage {
     private WebElement planCharacteristics;
 
     public void validarPdpPlanos(Product plan) {
-        driverQA.waitPageLoad(plan.getUrl(), 10);
+        driverWeb.waitPageLoad(plan.getUrl(), 10);
 
-        debitPayment = driverQA.findElement("rdn-debitcard", "id");
-        ticketPayment = driverQA.findElement("rdn-ticket", "id");
-        loyalty = driverQA.findElement("rdn-loyalty-true", "id");
-        noLoyalty = driverQA.findElement("rdn-loyalty-false", "id");
-        planCharacteristics = driverQA.findElement("plan-characteristics", "id");
+        debitPayment = driverWeb.findElement("rdn-debitcard", "id");
+        ticketPayment = driverWeb.findElement("rdn-ticket", "id");
+        loyalty = driverWeb.findElement("rdn-loyalty-true", "id");
+        noLoyalty = driverWeb.findElement("rdn-loyalty-false", "id");
+        planCharacteristics = driverWeb.findElement("plan-characteristics", "id");
 
         //Valida opções default
         validarDebito();
@@ -52,7 +52,7 @@ public class PdpPlanosPage {
 
         //Valida resumo, caso configurado
         if (!plan.getSummary().isEmpty()) {
-            WebElement summary = driverQA.findElement("//*[@id='plan-name']/following-sibling::p[1]", "xpath");
+            WebElement summary = driverWeb.findElement("//*[@id='plan-name']/following-sibling::p[1]", "xpath");
 
             Assert.assertTrue(summary.isDisplayed());
             Assert.assertTrue(plan.getSummary().contains(summary.getText()));
@@ -60,7 +60,7 @@ public class PdpPlanosPage {
 
         //Valida descrição, caso configurado
         if (!plan.getDescription().isEmpty()) {
-            List<WebElement> descriptionElements = driverQA.findElements("//*[@id='product-page-description']/div[2]/div/p", "xpath");
+            List<WebElement> descriptionElements = driverWeb.findElements("//*[@id='product-page-description']/div[2]/div/p", "xpath");
 
             descriptionElements.forEach(webElement -> { //Valida a exibição de cada parágrafo da descrição, pode haver um ou vários.
                 if (!webElement.getText().isEmpty()) {
@@ -79,12 +79,12 @@ public class PdpPlanosPage {
         //Valida nome do Plano, caso configurado
         if (!plan.getName().isEmpty()) {
             //Nome principal
-            WebElement planName = driverQA.findElement("//*[@id='plan-name']/span", "xpath");
+            WebElement planName = driverWeb.findElement("//*[@id='plan-name']/span", "xpath");
             validateElementText(plan.getName(), planName);
 
             //Nome nav (barra horizontal superior)
             showNav();
-            WebElement planNameNav = driverQA.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
+            WebElement planNameNav = driverWeb.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
             Assert.assertEquals(plan.getName(), planNameNav.getText());
             Assert.assertTrue(planNameNav.isDisplayed());
         }
@@ -104,7 +104,7 @@ public class PdpPlanosPage {
             List<WebElement> extraPlayApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' extra-play ')]//img"));
 
-            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
+            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida serviços Claro, caso configurado
@@ -115,13 +115,13 @@ public class PdpPlanosPage {
             List<WebElement> claroServicesApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' claro-services')]//img"));
 
-            validarServicosClaro(driverQA, plan, claroServicesTitle, claroServicesApps);
+            validarServicosClaro(driverWeb, plan, claroServicesTitle, claroServicesApps);
         }
     }
 
     private void showNav() {
         //Scroll forçado para exibir o nav (barra suspensa superior). Só aparece ao descer na página.
-        driverQA.javaScriptScrollTo(driverQA.findElement("footer-claro", "id"));
+        driverWeb.javaScriptScrollTo(driverWeb.findElement("footer-claro", "id"));
     }
 
     private void validarDebito() {
@@ -135,38 +135,38 @@ public class PdpPlanosPage {
     }
 
     public void selecionarDebito() {
-        driverQA.javaScriptClick(debitPayment);
+        driverWeb.javaScriptClick(debitPayment);
         validarDebito();
     }
 
     public void selecionarBoleto() {
-        driverQA.javaScriptClick(ticketPayment);
+        driverWeb.javaScriptClick(ticketPayment);
         Assert.assertTrue(ticketPayment.isSelected());
         Assert.assertFalse(debitPayment.isSelected());
     }
 
     public void selecionarFidelidade() {
-        driverQA.javaScriptClick(loyalty);
+        driverWeb.javaScriptClick(loyalty);
         validarFidelidade();
     }
 
     public void selecionarSemFidelidade() {
-        driverQA.javaScriptClick(noLoyalty);
+        driverWeb.javaScriptClick(noLoyalty);
         Assert.assertTrue(noLoyalty.isSelected());
         Assert.assertFalse(loyalty.isSelected());
     }
 
     public void validarValorPlano(Product plan, boolean isDebit, boolean hasLoyalty) {
         //Valores do Front
-        WebElement debitLoyalty = driverQA.findElement("price-debit-loyalty", "id");
-        WebElement ticketLoyalty = driverQA.findElement("price-ticket-loyalty", "id");
-        WebElement debitNotLoyalty = driverQA.findElement("price-debit-not-loyalty", "id");
-        WebElement ticketNotLoyalty = driverQA.findElement("price-ticket-not-loyalty", "id");
+        WebElement debitLoyalty = driverWeb.findElement("price-debit-loyalty", "id");
+        WebElement ticketLoyalty = driverWeb.findElement("price-ticket-loyalty", "id");
+        WebElement debitNotLoyalty = driverWeb.findElement("price-debit-not-loyalty", "id");
+        WebElement ticketNotLoyalty = driverWeb.findElement("price-ticket-not-loyalty", "id");
 
-        WebElement debitLoyaltyNav = driverQA.findElement("price-debit-loyalty-nav", "id");
-        WebElement ticketLoyaltyNav = driverQA.findElement("price-ticket-loyalty-nav", "id");
-        WebElement debitNotLoyaltyNav = driverQA.findElement("price-debit-not-loyalty-nav", "id");
-        WebElement ticketNotLoyaltyNav = driverQA.findElement("price-ticket-not-loyalty-nav", "id");
+        WebElement debitLoyaltyNav = driverWeb.findElement("price-debit-loyalty-nav", "id");
+        WebElement ticketLoyaltyNav = driverWeb.findElement("price-ticket-loyalty-nav", "id");
+        WebElement debitNotLoyaltyNav = driverWeb.findElement("price-debit-not-loyalty-nav", "id");
+        WebElement ticketNotLoyaltyNav = driverWeb.findElement("price-ticket-not-loyalty-nav", "id");
 
         //Valores de referência API
         String debitLoyaltyPrice = plan.getFormattedPlanPrice(true, true);
@@ -249,20 +249,20 @@ public class PdpPlanosPage {
                     .findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));
 
             if (exibe) {
-                driverQA.waitElementVisible(planAppsParent, 2);
+                driverWeb.waitElementVisible(planAppsParent, 2);
 
                 //Título
                 WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
                 //Apps
                 List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
-                validarAppsIlimitados(driverQA, plan, planAppsTitle, planApps);
+                validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
             } else {
-                driverQA.waitElementInvisible(planAppsParent, 2);
+                driverWeb.waitElementInvisible(planAppsParent, 2);
             }
         }
     }
 
     public void clicarEuQuero(String id) {
-        driverQA.javaScriptClick("btn-eu-quero-" + id, "id");
+        driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.support.utils.Constants;
 import web.support.utils.Constants.PaymentMode;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import static web.support.utils.Constants.ProcessType.MIGRATE;
 import static web.support.api.RestAPI.getBankAccount;
@@ -22,12 +22,12 @@ import java.util.function.Consumer;
 @ScenarioScope
 public class CustomizarFaturaPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public CustomizarFaturaPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public CustomizarFaturaPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
@@ -51,25 +51,25 @@ public class CustomizarFaturaPage {
     private WebElement naoConcordo;
 
     public void validarPaginaCustomizarFatura() {
-        driverQA.waitPageLoad("/checkout/multi/payment-method", 60);
+        driverWeb.waitPageLoad("/checkout/multi/payment-method", 60);
 
-        abaDebito = driverQA.findElement("tab-debito", "id");
-        abaBoleto = driverQA.findElement("tab-boleto", "id");
+        abaDebito = driverWeb.findElement("tab-debito", "id");
+        abaBoleto = driverWeb.findElement("tab-boleto", "id");
     }
 
     public void validarPagiaCustomizarFaturaThab() {
-        driverQA.waitPageLoad("checkout/multi/payment-method/add", 10);
+        driverWeb.waitPageLoad("checkout/multi/payment-method/add", 10);
     }
 
     public void validarPaginaTermosCombo() {
-        driverQA.waitPageLoad("checkout/multi/terms-and-conditions", 60);
+        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 60);
         isComboFlow = true;
     }
 
     private void validarCamposDebito() {
-        banco = new Select(driverQA.findElement("slc-banco", "id"));
-        agencia = driverQA.findElement("txt-agencia", "id");
-        conta = driverQA.findElement("txt-conta", "id");
+        banco = new Select(driverWeb.findElement("slc-banco", "id"));
+        agencia = driverWeb.findElement("txt-agencia", "id");
+        conta = driverWeb.findElement("txt-conta", "id");
 
         Assert.assertEquals(banco.getFirstSelectedOption().getText(), "Banco");
 
@@ -109,13 +109,13 @@ public class CustomizarFaturaPage {
     }
 
     public void validarTiposFatura(boolean exibe, boolean isDebitPaymentFlow, boolean isThab) {
-        whatsappDebit = driverQA.findElement("rdn-whatsapp-debit", "id");
-        emailDebit = driverQA.findElement("rdn-email-debit", "id");
-        correiosDebit = driverQA.findElement("rdn-correios-debit", "id");
+        whatsappDebit = driverWeb.findElement("rdn-whatsapp-debit", "id");
+        emailDebit = driverWeb.findElement("rdn-email-debit", "id");
+        correiosDebit = driverWeb.findElement("rdn-correios-debit", "id");
 
-        whatsappTicket = driverQA.findElement("rdn-whatsapp-ticket", "id");
-        emailTicket = driverQA.findElement("rdn-email-ticket", "id");
-        correiosTicket = driverQA.findElement("rdn-correios-ticket", "id");
+        whatsappTicket = driverWeb.findElement("rdn-whatsapp-ticket", "id");
+        emailTicket = driverWeb.findElement("rdn-email-ticket", "id");
+        correiosTicket = driverWeb.findElement("rdn-correios-ticket", "id");
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {
@@ -186,8 +186,8 @@ public class CustomizarFaturaPage {
     }
 
     public void validarDatasVencimento(boolean exibe, boolean isDebitPaymentFlow) {
-        WebElement datasDebit = driverQA.findElement("datas-vencimento-debit", "id");
-        WebElement datasTicket = driverQA.findElement("datas-vencimento-ticket", "id");
+        WebElement datasDebit = driverWeb.findElement("datas-vencimento-debit", "id");
+        WebElement datasTicket = driverWeb.findElement("datas-vencimento-ticket", "id");
 
         if (exibe) { //fluxo gross ou base em migra pré-ctrl e ctrl-pós
             List<WebElement> dias;
@@ -225,29 +225,29 @@ public class CustomizarFaturaPage {
     }
 
     public void selecionarDebito() {
-        driverQA.javaScriptClick(abaDebito.findElement(By.tagName("div")));
+        driverWeb.javaScriptClick(abaDebito.findElement(By.tagName("div")));
         Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
 
-        driverQA.actionPause(2000);
+        driverWeb.actionPause(2000);
         validarCamposDebito();
     }
 
     public void selecionarBoleto() {
-        driverQA.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
+        driverWeb.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
         Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
 
-        driverQA.actionPause(2000);
+        driverWeb.actionPause(2000);
     }
 
     public void selecionarTipoFatura(Constants.InvoiceType invoiceType, boolean isDebitPaymentFlow) {
         switch (invoiceType) {
-            case WHATSAPP -> driverQA.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
-            case EMAIL -> driverQA.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
-            case PRINTED -> driverQA.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
+            case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+            case EMAIL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
+            case PRINTED -> driverWeb.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
-        driverQA.actionPause(3000);
+        driverWeb.actionPause(3000);
     }
 
     public void preencherDadosBancarios() {
@@ -279,9 +279,9 @@ public class CustomizarFaturaPage {
         banco.selectByValue(banks.get(bankId));
 
         if (bankId == 3) { //CAIXA
-            WebElement caixaAccountType = driverQA.findElement("slc-tipo-conta", "id");
+            WebElement caixaAccountType = driverWeb.findElement("slc-tipo-conta", "id");
             Select caixaAccountTypeSelect = new Select(caixaAccountType);
-            driverQA.waitElementClickable(caixaAccountType, 1);
+            driverWeb.waitElementClickable(caixaAccountType, 1);
 
             String accountId = bankAccount.get(1).substring(0, 2);
 
@@ -295,11 +295,11 @@ public class CustomizarFaturaPage {
             caixaAccountTypeSelect.selectByValue(accountId);
         }
 
-        driverQA.waitElementClickable(agencia, 1);
-        driverQA.actionSendKeys(agencia, bankAccount.get(0)); //.findElement(By.xpath("following-sibling::label"))
+        driverWeb.waitElementClickable(agencia, 1);
+        driverWeb.actionSendKeys(agencia, bankAccount.get(0)); //.findElement(By.xpath("following-sibling::label"))
         Assert.assertEquals("Campo agência preenchido", bankAccount.get(0), agencia.getAttribute("value"));
 
-        driverQA.actionSendKeys(conta, bankAccount.get(1));
+        driverWeb.actionSendKeys(conta, bankAccount.get(1));
         Assert.assertEquals("Campo conta preenchido", bankAccount.get(1), conta.getAttribute("value"));
     }
 
@@ -308,38 +308,38 @@ public class CustomizarFaturaPage {
     }
 
     public void aceitarTermos(boolean isDebitPaymentFlow) {
-        WebElement termos = driverQA.findElement(isComboFlow ? "chk-termos" : isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
+        WebElement termos = driverWeb.findElement(isComboFlow ? "chk-termos" : isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
         Assert.assertFalse(termos.isSelected());
 
-        driverQA.javaScriptClick(termos);
+        driverWeb.javaScriptClick(termos);
         Assert.assertTrue(termos.isSelected());
     }
 
     public void clicarContinuar() {
-        driverQA.javaScriptClick("btn-continuar", "id");
+        driverWeb.javaScriptClick("btn-continuar", "id");
     }
 
     public void clickOkEntendi() {
-        driverQA.javaScriptClick("btn-multa-entendi", "id");
+        driverWeb.javaScriptClick("btn-multa-entendi", "id");
     }
 
     public void clickNaoConcordo() {
-        driverQA.javaScriptClick(naoConcordo);
+        driverWeb.javaScriptClick(naoConcordo);
     }
 
     public void validarPaginaMulta() {
-        driverQA.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
+        driverWeb.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
 
-        concordo = driverQA.findElement("btn-multa-concordo", "id");
-        naoConcordo = driverQA.findElement("btn-multa-nao-concordo", "id");
+        concordo = driverWeb.findElement("btn-multa-concordo", "id");
+        naoConcordo = driverWeb.findElement("btn-multa-nao-concordo", "id");
 
-        Assert.assertTrue(driverQA.findElement("txt-mensagem-multa", "id").isDisplayed());
+        Assert.assertTrue(driverWeb.findElement("txt-mensagem-multa", "id").isDisplayed());
 
         Assert.assertTrue(concordo.isDisplayed());
         Assert.assertTrue(naoConcordo.isDisplayed());
     }
 
     public void clicarConcordo() {
-        driverQA.javaScriptClick(concordo);
+        driverWeb.javaScriptClick(concordo);
     }
 }

@@ -1,5 +1,6 @@
 package web.support.utils;
 
+import io.cucumber.spring.ScenarioScope;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
@@ -10,6 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.stereotype.Component;
 import web.support.utils.Constants.Email;
 
 import java.net.MalformedURLException;
@@ -20,12 +22,14 @@ import java.util.List;
 import static java.time.Duration.ofSeconds;
 import static web.support.api.RestAPI.getEmailMessage;
 
-public class DriverQA {
+@Component
+@ScenarioScope
+public class DriverWeb {
 
     private WebDriver driver;
     private boolean mobilePlatform;
 
-    public void setupDriver() {
+    public DriverWeb() {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
             String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");

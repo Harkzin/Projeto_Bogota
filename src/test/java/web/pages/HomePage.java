@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.Product;
 import web.support.utils.Constants;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,27 +20,27 @@ import static web.pages.ComumPage.*;
 @ScenarioScope
 public class HomePage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public HomePage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public HomePage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
     public void acessarLojaHome() {
-        driverQA.getDriver().get(Constants.urlAmbiente);
-        driverQA.waitPageLoad(Constants.urlAmbiente, 20);
+        driverWeb.getDriver().get(Constants.urlAmbiente);
+        driverWeb.waitPageLoad(Constants.urlAmbiente, 20);
     }
 
     public void validarHomePage() {
-        driverQA.waitPageLoad(Constants.urlAmbiente, 20);
+        driverWeb.waitPageLoad(Constants.urlAmbiente, 20);
     }
 
     public void validarCardPlano(Product plan, boolean isDebit) {
         //TODO Atualizar seletores quando forem criados
-        WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
+        WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
         if (!(plan.getName() == null)) {
@@ -58,7 +58,7 @@ public class HomePage {
         if (plan.hasPlanApps()) {
             List<WebElement> planApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
-            validarMidiasPlano(plan.getPlanApps(), planApps, driverQA);
+            validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
         }
 
         //Valida título extraPlay
@@ -72,7 +72,7 @@ public class HomePage {
         if (plan.hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
+            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida planPortability (GB e bônus - antigo)
@@ -88,15 +88,15 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-        driverQA.actionSendKeys("txt-telefone", "id", msisdn);
+        driverWeb.actionSendKeys("txt-telefone", "id", msisdn);
     }
 
     public void acessarPdpPlano(String id) {
-        driverQA.javaScriptClick("lnk-mais-detalhes-" + id, "id");
+        driverWeb.javaScriptClick("lnk-mais-detalhes-" + id, "id");
     }
 
     public void selecionarPlano(String id) {
-        driverQA.javaScriptClick("btn-eu-quero-" + id, "id");
+        driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
     }
 
     public void selecionarPlanoControle(String id) {
@@ -104,10 +104,10 @@ public class HomePage {
     }
 
     public void clicaBotaoEntrar() {
-        driverQA.javaScriptClick("btn-entrar", "id");
+        driverWeb.javaScriptClick("btn-entrar", "id");
     }
 
     public void acessarPlpAparelhos() {
-        driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
+        driverWeb.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.Product;
 import web.support.utils.Constants.ProcessType;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +24,12 @@ import static web.pages.ComumPage.*;
 @ScenarioScope
 public class PdpAparelhosPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public PdpAparelhosPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public PdpAparelhosPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
@@ -52,28 +52,28 @@ public class PdpAparelhosPage {
 
         //Nome card
         if (hasName) {
-            WebElement name = driverQA.waitElementPresence("//*[@id='" + plan.getCode() + "']/div/div/h3", 5);
+            WebElement name = driverWeb.waitElementPresence("//*[@id='" + plan.getCode() + "']/div/div/h3", 5);
             validateElementText(plan.getName(), name);
         }
 
         //PlanPortability
         if (plan.hasPlanPortability()) {
-            WebElement planPortability = driverQA.findElement("//*[@id='" + plan.getCode() + "']/div/div/p", "xpath");
+            WebElement planPortability = driverWeb.findElement("//*[@id='" + plan.getCode() + "']/div/div/p", "xpath");
             Assert.assertEquals(String.join(" + ", plan.getPlanPortability()), planPortability.getText());
             Assert.assertTrue("PlanPortability exibido no card", planPortability.isDisplayed());
         }
 
         //Preço
-        WebElement priceCard = driverQA.findElement("//*[@id='" + plan.getCode() + "']/div/dl/dd", "xpath");
+        WebElement priceCard = driverWeb.findElement("//*[@id='" + plan.getCode() + "']/div/dl/dd", "xpath");
         validateElementText("R$ " + plan.getFormattedPlanPrice(true, true) + " / mês", priceCard);
 
         //Mais detalhes
         if (!prePaidPlanSelected) {
-            WebElement moreDetails = driverQA.findElement("//*[@id='lnk-mais-detalhes-" + plan.getCode() + "']/a", "xpath");
-            driverQA.javaScriptClick(moreDetails);
+            WebElement moreDetails = driverWeb.findElement("//*[@id='lnk-mais-detalhes-" + plan.getCode() + "']/a", "xpath");
+            driverWeb.javaScriptClick(moreDetails);
 
-            WebElement modal = driverQA.waitElementPresence("//*[@id='modal-more-details-" + plan.getCode() + "']", 2);
-            driverQA.waitElementVisible(modal, 2);
+            WebElement modal = driverWeb.waitElementPresence("//*[@id='modal-more-details-" + plan.getCode() + "']", 2);
+            driverWeb.waitElementVisible(modal, 2);
 
             if (hasName) {
                 WebElement name = modal.findElement(By.xpath(".//h2"));
@@ -83,7 +83,7 @@ public class PdpAparelhosPage {
             //Valida apps ilimitados
             if (plan.hasPlanApps()) {
                 List<WebElement> planApps = modal.findElements(By.xpath(".//div[contains(@class, ' apps-ilimitados')]//img"));
-                validarMidiasPlano(plan.getPlanApps(), planApps, driverQA);
+                validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
             }
 
             //Valida título extraPlay
@@ -95,7 +95,7 @@ public class PdpAparelhosPage {
             //Valida apps extraPlay
             if (plan.hasExtraPlayApps()) {
                 List<WebElement> extraPlayApps = modal.findElements(By.xpath(".//div[contains(@data-plan-content, 'extraplayapps')]//img"));
-                validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
+                validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
             }
 
             //Valida planPortability (GB e bônus - antigo)
@@ -109,19 +109,19 @@ public class PdpAparelhosPage {
                 validarPlanPortability(planPortability, plan);
             }
 
-            driverQA.javaScriptClick(modal.findElement(By.xpath(".//button")));
-            driverQA.waitElementInvisible(modal, 2);
+            driverWeb.javaScriptClick(modal.findElement(By.xpath(".//button")));
+            driverWeb.waitElementInvisible(modal, 2);
         }
 
         //Seção [Plano Selecionado]
         if (hasName) {
-            WebElement name = driverQA.findElement("plano-selecionado", "id");
+            WebElement name = driverWeb.findElement("plano-selecionado", "id");
             validateElementText(plan.getName(), name);
         }
 
         //Seções [Valor do plano] e [Modalidade de Pagamento]
-        WebElement price = driverQA.findElement("js-valor-plano", "id");
-        WebElement paymentMode = driverQA.findElement("js-modalidade-pagamento-debitcard", "id");
+        WebElement price = driverWeb.findElement("js-valor-plano", "id");
+        WebElement paymentMode = driverWeb.findElement("js-modalidade-pagamento-debitcard", "id");
 
         if (prePaidPlanSelected) {
             //[Valor do plano]
@@ -139,23 +139,23 @@ public class PdpAparelhosPage {
     }
 
     public void validarPdpAparelho(Product device) {
-        driverQA.waitPageLoad(device.getCode(), 10);
-        driverQA.actionPause(1000);
+        driverWeb.waitPageLoad(device.getCode(), 10);
+        driverWeb.actionPause(1000);
 
-        PageFactory.initElements(driverQA.getDriver(), this);
+        PageFactory.initElements(driverWeb.getDriver(), this);
 
         //Fabricante
         if (device.hasManufacturer()) {
-            validateElementText(device.getBrand(), driverQA.findElement("subtitle-marca-pdp", "id"));
+            validateElementText(device.getBrand(), driverWeb.findElement("subtitle-marca-pdp", "id"));
         }
 
         //Nome Aparelho
         if (!(device.getName() == null)) {
-            validateElementText(device.getName(), driverQA.findElement("head-nome-aparelho-pdp", "id"));
+            validateElementText(device.getName(), driverWeb.findElement("head-nome-aparelho-pdp", "id"));
         }
 
         //Cores
-        List<WebElement> variantColors = driverQA.findElements("//*[@id='txt-cor-do-produto']/following-sibling::div/div/div", "xpath");
+        List<WebElement> variantColors = driverWeb.findElements("//*[@id='txt-cor-do-produto']/following-sibling::div/div/div", "xpath");
 
         IntStream.range(0, variantColors.size()).forEachOrdered(i -> {
             WebElement variantUrl = variantColors.get(i).findElement(By.tagName("a"));
@@ -170,15 +170,15 @@ public class PdpAparelhosPage {
 
         //Plano
         if (device.inStock()) {
-            String defaultPlan = driverQA.findElement("//*[@id='addToCartForm" + device.getCode() + "']/input[@name='planForDevice']", "xpath").getAttribute("value");
+            String defaultPlan = driverWeb.findElement("//*[@id='addToCartForm" + device.getCode() + "']/input[@name='planForDevice']", "xpath").getAttribute("value");
             cartOrder.setPlan(defaultPlan);
             validarInfosPlano(cartOrder.getPlan());
         }
 
         //Preço base "De"
         if (device.inStock() && !prePaidPlanSelected) {
-            WebElement fullPrice = driverQA.findElement("value-total-aparelho-pdp", "id");
-            driverQA.waitElementVisible(fullPrice, 5);
+            WebElement fullPrice = driverWeb.findElement("value-total-aparelho-pdp", "id");
+            driverWeb.waitElementVisible(fullPrice, 5);
 
             Assert.assertEquals("Valor sem desconto (De) igual ao configurado", fullPrice.getText(), device.getFormattedBaseDevicePrice());
             Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
@@ -186,10 +186,10 @@ public class PdpAparelhosPage {
 
         //Infos Técnicas
         if (device.hasDeviceFeatures()) {
-            driverQA.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
-            driverQA.waitElementVisible(driverQA.findElement("especificationDevice", "id"), 2);
+            driverWeb.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
+            driverWeb.waitElementVisible(driverWeb.findElement("especificationDevice", "id"), 2);
 
-            List<WebElement> features = driverQA.findElements("//*[@id='especificationDevice']/div/div", "xpath");
+            List<WebElement> features = driverWeb.findElements("//*[@id='especificationDevice']/div/div", "xpath");
 
             IntStream.range(0, features.size()).forEachOrdered(i -> {
                 WebElement featureType = features.get(i).findElement(By.xpath("div[1]/span"));
@@ -202,18 +202,18 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarCorAparelho(String id) {
-        driverQA.javaScriptClick("//a[contains(@href, '" + id + "')]", "xpath");
+        driverWeb.javaScriptClick("//a[contains(@href, '" + id + "')]", "xpath");
     }
 
     public void validarProdutoSemEstoque() {
-        Assert.assertEquals("Produto Esgotado", driverQA.findElement("produto-esgotado", "id").getText().trim());
+        Assert.assertEquals("Produto Esgotado", driverWeb.findElement("produto-esgotado", "id").getText().trim());
     }
 
     public void selecionarFluxo(ProcessType processType) {
         switch (processType) {
-            case EXCHANGE, MIGRATE, APARELHO_TROCA_APARELHO -> driverQA.javaScriptClick(fluxoBase);
-            case PORTABILITY -> driverQA.javaScriptClick(fluxoPortabilidade);
-            case ACQUISITION -> driverQA.javaScriptClick(fluxoAquisicao);
+            case EXCHANGE, MIGRATE, APARELHO_TROCA_APARELHO -> driverWeb.javaScriptClick(fluxoBase);
+            case PORTABILITY -> driverWeb.javaScriptClick(fluxoPortabilidade);
+            case ACQUISITION -> driverWeb.javaScriptClick(fluxoAquisicao);
         }
     }
 
@@ -227,11 +227,11 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarPlano(String plan) {
-        driverQA.javaScriptClick("btn-selecionar-plano-" + plan, "id");
+        driverWeb.javaScriptClick("btn-selecionar-plano-" + plan, "id");
         validarInfosPlano(cartOrder.getPlan());
     }
 
     public void clicarComprar(String deviceId) {
-        driverQA.javaScriptClick("btn-eu-quero-" + deviceId, "id");
+        driverWeb.javaScriptClick("btn-eu-quero-" + deviceId, "id");
     }
 }

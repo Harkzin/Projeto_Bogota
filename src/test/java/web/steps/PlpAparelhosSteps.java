@@ -5,7 +5,7 @@ import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PlpAparelhosPage;
 import web.models.CartOrder;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -15,13 +15,13 @@ public class PlpAparelhosSteps {
 
     private final PlpAparelhosPage plpAparelhosPage;
     private final CartOrder cartOrder;
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
 
     @Autowired
-    public PlpAparelhosSteps (PlpAparelhosPage plpAparelhosPage, CartOrder cartOrder, DriverQA driverQA) { //TODO Remover DriverQA quando ECCMAUT-806 finalizada
+    public PlpAparelhosSteps (PlpAparelhosPage plpAparelhosPage, CartOrder cartOrder, DriverWeb driverWeb) { //TODO Remover DriverQA quando ECCMAUT-806 finalizada
         this.plpAparelhosPage = plpAparelhosPage;
         this.cartOrder = cartOrder;
-        this.driverQA = driverQA;
+        this.driverWeb = driverWeb;
     }
 
     @Entao("é direcionado para a tela PLP de Aparelho")
@@ -31,7 +31,7 @@ public class PlpAparelhosSteps {
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
     public void clicarEuQuero(String id) throws ParseException {
-        cartOrder.setDevice(id, NumberFormat.getInstance(Locale.GERMAN).parse(driverQA.findElement("//*[@id='btn-eu-quero-" + id + "']/../../preceding-sibling::input[contains(@name, 'productPrice')]", "xpath").getAttribute("value") + ",00").doubleValue()); //TODO Voltar para cartOrder.setDevice(id); quando a API estiver pronta - ECCMAUT-806
+        cartOrder.setDevice(id, NumberFormat.getInstance(Locale.GERMAN).parse(driverWeb.findElement("//*[@id='btn-eu-quero-" + id + "']/../../preceding-sibling::input[contains(@name, 'productPrice')]", "xpath").getAttribute("value") + ",00").doubleValue()); //TODO Voltar para cartOrder.setDevice(id); quando a API estiver pronta - ECCMAUT-806
         plpAparelhosPage.validarCardAparelho(cartOrder.getDevice());
         plpAparelhosPage.clicaBotaoEuQuero(id);
     }

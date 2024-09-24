@@ -6,36 +6,36 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 @Component
 @ScenarioScope
 public class SmsPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
 
     @Autowired
-    public SmsPage(DriverQA driverQA) {
-        this.driverQA = driverQA;
+    public SmsPage(DriverWeb driverWeb) {
+        this.driverWeb = driverWeb;
     }
 
     private WebElement token;
 
     public void validarPaginaSms() {
-        driverQA.waitPageLoad("/checkout/multi/summary/view", 15);
+        driverWeb.waitPageLoad("/checkout/multi/summary/view", 15);
 
-        token = driverQA.findElement("txt-token", "id");
+        token = driverWeb.findElement("txt-token", "id");
         Assert.assertEquals(token.getAttribute("value"), "");
     }
 
     public void inserirToken() {
-        String htmlComment = ((JavascriptExecutor) driverQA.getDriver()).executeScript("return document.documentElement.lastChild").toString();
+        String htmlComment = ((JavascriptExecutor) driverWeb.getDriver()).executeScript("return document.documentElement.lastChild").toString();
         int tokenStartIndex = htmlComment.indexOf("TOKEN_SEND_TO_CLIENT") + 25;
 
-        driverQA.actionSendKeys(token, htmlComment.substring(tokenStartIndex, tokenStartIndex + 4));
+        driverWeb.actionSendKeys(token, htmlComment.substring(tokenStartIndex, tokenStartIndex + 4));
     }
 
     public void clicarFinalizar() {
-        driverQA.javaScriptClick("btn-finalizar", "id");
+        driverWeb.javaScriptClick("btn-finalizar", "id");
     }
 }

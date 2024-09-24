@@ -4,27 +4,27 @@ import io.cucumber.spring.ScenarioScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 @Component
 @ScenarioScope
 public class ParabensPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public ParabensPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public ParabensPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
     public void validarPaginaParabens() {
-        driverQA.waitPageLoad("/checkout/orderConfirmation", 60);
+        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
     }
 
     public void clicarOkEntendi() {
-        driverQA.javaScriptClick("btn-entendi-modal-abr", "id");
+        driverWeb.javaScriptClick("btn-entendi-modal-abr", "id");
     }
 
     public void validarCamposPedido() {

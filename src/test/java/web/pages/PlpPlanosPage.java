@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.Product;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,19 +18,19 @@ import java.util.stream.IntStream;
 @ScenarioScope
 public class PlpPlanosPage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
     private final CartOrder cartOrder;
 
     @Autowired
-    public PlpPlanosPage(DriverQA driverQA, CartOrder cartOrder) {
-        this.driverQA = driverQA;
+    public PlpPlanosPage(DriverWeb driverWeb, CartOrder cartOrder) {
+        this.driverWeb = driverWeb;
         this.cartOrder = cartOrder;
     }
 
     //TODO Não testado, nenhum cenário passa pela PLP em 13/06/2024.
     public void validarCardPlano(Product plan, boolean isDebitPaymentFlow) {
         //TODO Atualizar seletores quando forem criados
-        WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
+        WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
         if (!(plan.getName() == null)) {
@@ -48,7 +48,7 @@ public class PlpPlanosPage {
         if (plan.hasPlanApps()) {
             List<WebElement> planApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
-            ComumPage.validarMidiasPlano(plan.getPlanApps(), planApps, driverQA);
+            ComumPage.validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
         }
 
         //Valida título extraPlay
@@ -62,7 +62,7 @@ public class PlpPlanosPage {
         if (plan.hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            ComumPage.validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverQA);
+            ComumPage.validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida planPortability (GB e bônus - antigo)
@@ -91,6 +91,6 @@ public class PlpPlanosPage {
     }
 
     public void selecionarPlano(String id) {
-        driverQA.javaScriptClick("btn-eu-quero-" + id, "id");
+        driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
     }
 }
