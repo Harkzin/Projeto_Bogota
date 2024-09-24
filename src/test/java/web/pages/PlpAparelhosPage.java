@@ -6,8 +6,8 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.support.CartOrder;
-import web.support.Product;
+import web.models.CartOrder;
+import web.models.Product;
 import web.support.utils.DriverQA;
 
 import java.util.Locale;
@@ -28,7 +28,7 @@ public class PlpAparelhosPage {
     }
 
     public void validarPlpAparelhos() {
-        driverQA.waitPageLoad("/smartphone", 5);
+        driverQA.waitPageLoad("/celulares", 10);
     }
 
     public void validarCardAparelho(Product device) {

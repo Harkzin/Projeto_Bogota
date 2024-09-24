@@ -1,4 +1,4 @@
-package web.support;
+package web.models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import web.support.utils.Constants;

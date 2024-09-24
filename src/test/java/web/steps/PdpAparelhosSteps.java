@@ -5,7 +5,7 @@ import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PdpAparelhosPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 import static web.support.utils.Constants.ProcessType.*;
 

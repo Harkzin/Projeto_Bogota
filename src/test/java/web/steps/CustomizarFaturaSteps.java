@@ -3,7 +3,7 @@ package web.steps;
 import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.CustomizarFaturaPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 import static web.support.utils.Constants.InvoiceType.*;
 import static web.support.utils.Constants.PaymentMode.*;

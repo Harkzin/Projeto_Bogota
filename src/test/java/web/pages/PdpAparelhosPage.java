@@ -9,8 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.support.CartOrder;
-import web.support.Product;
+import web.models.CartOrder;
+import web.models.Product;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverQA;
 

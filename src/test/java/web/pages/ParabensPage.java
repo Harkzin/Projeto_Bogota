@@ -3,7 +3,7 @@ package web.pages;
 import io.cucumber.spring.ScenarioScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.support.CartOrder;
+import web.models.CartOrder;
 import web.support.utils.DriverQA;
 
 @Component

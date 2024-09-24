@@ -6,8 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.support.CartOrder;
-import web.support.Product;
+import web.models.CartOrder;
+import web.models.Product;
 import web.support.utils.Constants;
 import web.support.utils.DriverQA;
 

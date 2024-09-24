@@ -4,7 +4,7 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.ParabensPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 
 public class ParabensSteps {

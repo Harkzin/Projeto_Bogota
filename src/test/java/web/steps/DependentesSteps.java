@@ -5,7 +5,7 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.DependentesPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 
 public class DependentesSteps {
