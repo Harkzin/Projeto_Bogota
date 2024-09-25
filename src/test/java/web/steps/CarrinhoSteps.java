@@ -10,12 +10,12 @@ import static web.support.utils.Constants.ProcessType.*;
 public class CarrinhoSteps {
 
     private final CarrinhoPage carrinhoPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cartOrder) {
+    public CarrinhoSteps(CarrinhoPage carrinhoPage, CartOrder cart) {
         this.carrinhoPage = carrinhoPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Dado("que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização {string}")
@@ -31,31 +31,31 @@ public class CarrinhoSteps {
 
     @E("seleciona a opção [Migração], para o fluxo de troca de Plano")
     public void selecionaTrocaPlano() {
-        cartOrder.setProcessType(EXCHANGE);
+        cart.setProcessType(EXCHANGE);
         carrinhoPage.selecionarFluxo(EXCHANGE);
     }
 
     @E("seleciona a opção [Migração], para o fluxo de troca de promoção")
     public void selecionaTrocaPromo() {
-        cartOrder.setProcessType(EXCHANGE_PROMO);
+        cart.setProcessType(EXCHANGE_PROMO);
         carrinhoPage.selecionarFluxo(EXCHANGE_PROMO);
     }
 
     @E("seleciona a opção [Migração], para o fluxo de migração de plataforma")
     public void selecionaMigra() {
-        cartOrder.setProcessType(MIGRATE);
+        cart.setProcessType(MIGRATE);
         carrinhoPage.selecionarFluxo(MIGRATE);
     }
 
     @E("seleciona a opção [Portabilidade]")
     public void selecionaPortabilidade() {
-        cartOrder.setProcessType(PORTABILITY);
+        cart.setProcessType(PORTABILITY);
         carrinhoPage.selecionarFluxo(PORTABILITY);
     }
 
     @E("seleciona a opção [Aquisição]")
     public void selecionaAquisicao() {
-        cartOrder.setProcessType(ACQUISITION);
+        cart.setProcessType(ACQUISITION);
         carrinhoPage.selecionarFluxo(ACQUISITION);
     }
 

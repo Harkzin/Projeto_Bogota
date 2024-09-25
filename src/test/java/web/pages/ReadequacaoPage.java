@@ -6,8 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -20,15 +19,13 @@ import static web.pages.ComumPage.*;
 public class ReadequacaoPage  {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public ReadequacaoPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public ReadequacaoPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
-    public void validarPaginaReadequacaoTHAB(Product plan) {
+    public void validarPaginaReadequacaoTHAB(PlanProduct plan) {
         driverWeb.waitPageLoad("claro/pt/cart?THAB=true", 10);
 
         Assert.assertNotNull(driverWeb.findElement("controle-antecipado", "id"));

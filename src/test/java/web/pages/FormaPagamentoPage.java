@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -21,12 +20,10 @@ import static web.pages.ComumPage.validateElementText;
 public class FormaPagamentoPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    FormaPagamentoPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    FormaPagamentoPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     @FindBy(id = "txt-cupom")

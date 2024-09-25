@@ -1,6 +1,9 @@
 package web.models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import web.models.product.DeviceProduct;
+import web.models.product.PlanProduct;
+import web.models.product.Product;
 import web.support.utils.Constants;
 
 import java.util.ArrayList;
@@ -13,6 +16,13 @@ import static web.support.utils.Constants.InvoiceType.*;
 
 public class CartOrder {
 
+    public CartOrder() {
+        essential = new Essential();
+        positionsAndPrices = new PositionsAndPrices();
+        payment = new Payment();
+        delivery = new Delivery();
+    }
+
     private boolean eSim;
     private boolean thab;
 
@@ -22,11 +32,11 @@ public class CartOrder {
     public boolean isDebitPaymentFlow = true;
     public boolean hasLoyalty = true;
 
-    private Essential essential;
-    private PositionsAndPrices positionsAndPrices;
+    private final Essential essential;
+    private final PositionsAndPrices positionsAndPrices;
     private Status status;
-    private Payment payment;
-    private Delivery delivery;
+    private final Payment payment;
+    private final Delivery delivery;
     private ClaroChip claroChip;
     private ClaroClube claroClube;
     private ClaroSapResponse claroSapResponse;
@@ -64,17 +74,17 @@ public class CartOrder {
 
     private Product getProduct(String id) {
         return positionsAndPrices.entries.stream()
-                .map(e -> e.product)
+                .map(e ->  e.product)
                 .filter(product -> product.getCode().equals(id))
                 .findFirst().orElseThrow();
     }
 
-    public Product getDevice() {
-        return getProduct(deviceId);
+    public DeviceProduct getDevice() {
+        return (DeviceProduct) getProduct(deviceId);
     }
 
-    public Product getPlan() {
-        return getProduct(planId);
+    public PlanProduct getPlan() {
+        return (PlanProduct) getProduct(planId);
     }
 
     private void removeProduct(String id) {
@@ -82,21 +92,13 @@ public class CartOrder {
                 .filter(e -> e.product.getCode().equals(id))
                 .findFirst()
                 .orElseThrow());
-    };
-
-    private Product createProduct(String id) {
-        try {
-            return objMapper.readValue(getProductDetails(id), Product.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando\n" + e);
-        }
     }
 
-    private void initializePositionAndPrices() {
-        if (positionsAndPrices == null) {
-            positionsAndPrices = new PositionsAndPrices();
-            positionsAndPrices.entries = new ArrayList<>();
-            positionsAndPrices.entryGroups = new ArrayList<>();
+    private <T> T createProduct(String id, Class<T> cls) {
+        try {
+            return objMapper.readValue(getProductDetails(id), cls);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando\n" + e);
         }
     }
 
@@ -107,8 +109,8 @@ public class CartOrder {
 
         this.deviceId = deviceId;
 
-        initializePositionAndPrices();
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(createProduct(deviceId), 1, price, price)); //TODO Deve pegar o preço da API ECCMAUT-806
+        DeviceProduct device = createProduct(deviceId, DeviceProduct.class);
+        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(device, 1, price, price)); //TODO Deve pegar o preço da API ECCMAUT-806
     }
 
     public void setPlan(String planId) {
@@ -118,8 +120,7 @@ public class CartOrder {
 
         this.planId = planId;
 
-        Product plan = createProduct(planId);
-        initializePositionAndPrices();
+        PlanProduct plan = createProduct(planId, PlanProduct.class);
         positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getPlanPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED)));
         //TODO Atualizar plan.getPlanPrice() para pegar o preço da API (preço da promo, ECCMAUT-888)
     }
@@ -182,15 +183,7 @@ public class CartOrder {
         return !(deviceId == null);
     }
 
-    private void initializeDelivery() {
-        if (delivery == null) {
-            delivery = new Delivery();
-            delivery.deliveryAddress = new Delivery.DeliveryAddress();
-        }
-    }
-
     public void setDeliveryMode(DeliveryMode deliveryMode) {
-        initializeDelivery();
         delivery.deliveryMode = deliveryMode;
     }
 
@@ -198,15 +191,7 @@ public class CartOrder {
         return delivery.deliveryMode;
     }
 
-    private void initializeEssential() {
-        if (essential == null) {
-            essential = new Essential();
-            essential.user = new Essential.User();
-        }
-    }
-
     public void setProcessType(ProcessType processType) {
-        initializeEssential();
         essential.processType = processType;
     }
 
@@ -215,7 +200,6 @@ public class CartOrder {
     }
 
     public void setUserEmail(String email) {
-        initializeEssential();
         essential.user.email = email;
     }
 
@@ -229,7 +213,7 @@ public class CartOrder {
 
     private void addDependent(String id, String msisdn, ProcessType processType) {
         if (hasDependent() == 0) { //Cria entry caso seja o primeiro dependente
-            Product dependente = createProduct("dependente");
+            Product dependente = createProduct("dependente", Product.class);
             positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), dependente.getPrice()));
         } else { //Atualiza a quantidade e preço na entry caso já tenha dependentes adicionados
             PositionsAndPrices.Entry depEntry = getEntry(getProduct("dependente"));
@@ -314,7 +298,9 @@ public class CartOrder {
         public DeliveryAddress deliveryAddress;
         public DeliveryMode deliveryMode;
 
-        private Delivery() {}
+        private Delivery() {
+            deliveryAddress = new Delivery.DeliveryAddress();
+        }
 
         public static class DeliveryAddress {
 
@@ -348,7 +334,9 @@ public class CartOrder {
         public String telephone;
         public ProcessType processType;
 
-        private Essential() {}
+        private Essential() {
+            user = new Essential.User();
+        }
 
         public static class User {
 
@@ -440,7 +428,10 @@ public class CartOrder {
         public List<String> entryGroups;
         public double totalPrice;
 
-        private PositionsAndPrices() {}
+        private PositionsAndPrices() {
+            entries = new ArrayList<>();
+            entryGroups = new ArrayList<>();
+        }
 
         public static class Entry {
 

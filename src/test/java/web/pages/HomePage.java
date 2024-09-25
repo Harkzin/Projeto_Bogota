@@ -6,8 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.PlanProduct;
 import web.support.utils.Constants;
 import web.support.utils.DriverWeb;
 
@@ -21,12 +20,10 @@ import static web.pages.ComumPage.*;
 public class HomePage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public HomePage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public HomePage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     public void acessarLojaHome() {
@@ -38,7 +35,7 @@ public class HomePage {
         driverWeb.waitPageLoad(Constants.urlAmbiente, 20);
     }
 
-    public void validarCardPlano(Product plan, boolean isDebit) {
+    public void validarCardPlano(PlanProduct plan, boolean isDebit) {
         //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 

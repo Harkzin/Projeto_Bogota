@@ -6,8 +6,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.Product;
 import web.support.utils.DriverWeb;
 
 import java.util.Locale;
@@ -19,12 +18,10 @@ import static web.pages.ComumPage.*;
 public class PlpAparelhosPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public PlpAparelhosPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public PlpAparelhosPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     public void validarPlpAparelhos() {

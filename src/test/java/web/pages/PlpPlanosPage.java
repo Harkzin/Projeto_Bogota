@@ -6,8 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -19,16 +18,14 @@ import java.util.stream.IntStream;
 public class PlpPlanosPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public PlpPlanosPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public PlpPlanosPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     //TODO Não testado, nenhum cenário passa pela PLP em 13/06/2024.
-    public void validarCardPlano(Product plan, boolean isDebitPaymentFlow) {
+    public void validarCardPlano(PlanProduct plan, boolean isDebitPaymentFlow) {
         //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 

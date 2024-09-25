@@ -10,60 +10,60 @@ import web.models.CartOrder;
 public class PdpPlanosSteps {
 
     private final PdpPlanosPage pdpPlanosPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public PdpPlanosSteps(PdpPlanosPage pdpPlanosPage, CartOrder cartOrder) {
+    public PdpPlanosSteps(PdpPlanosPage pdpPlanosPage, CartOrder cart) {
         this.pdpPlanosPage = pdpPlanosPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Então("é direcionado para a PDP do plano")
     public void validarPDP() {
-        pdpPlanosPage.validarPdpPlanos(cartOrder.getPlan());
+        pdpPlanosPage.validarPdpPlanos(cart.getPlan());
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Débito] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoDebito() {
-        cartOrder.isDebitPaymentFlow = true;
+        cart.isDebitPaymentFlow = true;
         pdpPlanosPage.selecionarDebito();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoBoleto() {
-        cartOrder.isDebitPaymentFlow = false;
+        cart.isDebitPaymentFlow = false;
         pdpPlanosPage.selecionarBoleto();
     }
 
     @E("selecionar Fidelidade de 12 meses")
     public void selecionarFidelidade() {
-        cartOrder.hasLoyalty = true;
+        cart.hasLoyalty = true;
         pdpPlanosPage.selecionarFidelidade();
     }
 
     @Quando("o usuário selecionar Sem fidelidade")
     public void selecionarSemFidelidade() {
-        cartOrder.hasLoyalty = false;
+        cart.hasLoyalty = false;
         pdpPlanosPage.selecionarSemFidelidade();
     }
 
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(cartOrder.getPlan(), cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
+        pdpPlanosPage.validarValorPlano(cart.getPlan(), cart.isDebitPaymentFlow, cart.hasLoyalty);
     }
 
     @Então("os aplicativos ilimitados são removidos da composição do plano")
     public void ocultaAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitadosPdp(cartOrder.getPlan(), false);
+        pdpPlanosPage.validarAppsIlimitadosPdp(cart.getPlan(), false);
     }
 
     @E("os aplicativos ilimitados são reexibidos na composição do plano")
     public void exibeAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitadosPdp(cartOrder.getPlan(), true);
+        pdpPlanosPage.validarAppsIlimitadosPdp(cart.getPlan(), true);
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] da PDP")
     public void clicarEuQuero() {
-        pdpPlanosPage.clicarEuQuero(cartOrder.getPlan().getCode());
+        pdpPlanosPage.clicarEuQuero(cart.getPlan().getCode());
     }
 }

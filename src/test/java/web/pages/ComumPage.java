@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class ComumPage {
         });
     }
 
-    public static void validarAppsIlimitados(DriverWeb driverWeb, Product plan, WebElement planAppsTitle, List<WebElement> planApps) {
+    public static void validarAppsIlimitados(DriverWeb driverWeb, PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps) {
         //Valida título
         validateElementText(plan.getPlanAppsTitle(), planAppsTitle);
 
@@ -72,7 +72,7 @@ public class ComumPage {
         validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
     }
 
-    public static void validarServicosClaro(DriverWeb driverWeb, Product plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
+    public static void validarServicosClaro(DriverWeb driverWeb, PlanProduct plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
         //Valida título
         validateElementText(plan.getClaroServicesTitle(), claroServicesTitle);
 
@@ -80,7 +80,7 @@ public class ComumPage {
         validarMidiasPlano(plan.getClaroServices(), claroServicesApps, driverWeb);
     }
 
-    public static void validarPlanPortability(List<WebElement> planPortability, Product plan) {
+    public static void validarPlanPortability(List<WebElement> planPortability, PlanProduct plan) {
         //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
         //A posição entre eles pode mudar, não servindo como referência.
         if (plan.hasExtraPlayTitle()) {
@@ -104,7 +104,7 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        Product plan = cart.getPlan();
+        PlanProduct plan = cart.getPlan();
         boolean isDebit = cart.isDebitPaymentFlow;
         boolean hasLoyalty = cart.hasLoyalty;
         String contentParent = driverWeb.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
@@ -215,7 +215,7 @@ public class ComumPage {
         validateElementText(totalPricea, deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
 
         //Nome Aparelho
-        if (!(cartOrder.getDevice().getName() == null)) {
+        if (!(cart.getDevice().getName() == null)) {
             validateElementText(cart.getDevice().getName(), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p");
         }
 

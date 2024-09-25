@@ -12,22 +12,22 @@ import static web.support.utils.Constants.ProcessType.*;
 public class PdpAparelhosSteps  {
 
     private final PdpAparelhosPage pdpAparelhosPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public PdpAparelhosSteps(PdpAparelhosPage pdpAparelhosPage, CartOrder cartOrder) {
+    public PdpAparelhosSteps(PdpAparelhosPage pdpAparelhosPage, CartOrder cart) {
         this.pdpAparelhosPage = pdpAparelhosPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Entao("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
-        pdpAparelhosPage.validarPdpAparelho(cartOrder.getDevice());
+        pdpAparelhosPage.validarPdpAparelho(cart.getDevice());
     }
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")
     public void selecionoACordoAparelho(String id) {
-        cartOrder.setDevice(id, cartOrder.getEntryTotalPrice(cartOrder.getDevice()));
+        cart.setDevice(id, cart.getEntryTotalPrice(cart.getDevice()));
         pdpAparelhosPage.selecionarCorAparelho(id);
     }
 
@@ -38,31 +38,31 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Troca de Plano + Aparelho")
     public void selecionarFluxoBaseTroca() {
-        cartOrder.setProcessType(EXCHANGE);
+        cart.setProcessType(EXCHANGE);
         pdpAparelhosPage.selecionarFluxo(EXCHANGE);
     }
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
     public void selecionarFluxoBaseMigra() {
-        cartOrder.setProcessType(MIGRATE);
+        cart.setProcessType(MIGRATE);
         pdpAparelhosPage.selecionarFluxo(MIGRATE);
     }
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Manter o Plano + Aparelho")
     public void selecionarFluxoBaseManter() {
-        cartOrder.setProcessType(APARELHO_TROCA_APARELHO);
+        cart.setProcessType(APARELHO_TROCA_APARELHO);
         pdpAparelhosPage.selecionarFluxo(APARELHO_TROCA_APARELHO);
     }
 
     @E("seleciona a opção [Trazer meu número para Claro]")
     public void selecionarFluxoPortabilidade() {
-        cartOrder.setProcessType(PORTABILITY);
+        cart.setProcessType(PORTABILITY);
         pdpAparelhosPage.selecionarFluxo(PORTABILITY);
     }
 
     @E("seleciona a opção [Quero uma linha nova da Claro]")
     public void selecionarFluxoAquisicao() {
-        cartOrder.setProcessType(ACQUISITION);
+        cart.setProcessType(ACQUISITION);
         pdpAparelhosPage.selecionarFluxo(ACQUISITION);
     }
 
@@ -83,12 +83,12 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona o plano {string}")
     public void selecionarPlano(String plan) {
-        cartOrder.setPlan(plan);
+        cart.setPlan(plan);
         pdpAparelhosPage.selecionarPlano(plan);
     }
 
     @Quando("o usuário clicar no botão [Comprar] da PDP do Aparelho")
     public void clicarComprar(){
-        pdpAparelhosPage.clicarComprar(cartOrder.getDevice().getCode());
+        pdpAparelhosPage.clicarComprar(cart.getDevice().getCode());
     }
 }

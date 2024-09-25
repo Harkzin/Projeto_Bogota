@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 import java.util.function.BiConsumer;
@@ -20,12 +19,10 @@ import static web.support.utils.Constants.DeliveryMode.EXPRESS;
 public class DadosPessoaisPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public DadosPessoaisPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public DadosPessoaisPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     private WebElement cep;

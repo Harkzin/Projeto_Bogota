@@ -11,12 +11,12 @@ import web.models.CartOrder;
 public class LoginSteps {
 
     private final LoginPage loginPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public LoginSteps(LoginPage loginPage, CartOrder cartOrder) {
+    public LoginSteps(LoginPage loginPage, CartOrder cart) {
         this.loginPage = loginPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Entao("é direcionado para a tela de opções da área logada")
@@ -66,7 +66,7 @@ public class LoginSteps {
 
     @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
-        cartOrder.setUserEmail(email);
+        cart.setUserEmail(email);
         loginPage.selecionarCodigoEmail(email);
     }
 
@@ -77,7 +77,7 @@ public class LoginSteps {
 
     @E("preenche o campo [Digite o código recebido] com o token")
     public void preencherToken() {
-        loginPage.inserirTokenEmail(cartOrder.getUserEmail());
+        loginPage.inserirTokenEmail(cart.getUserEmail());
     }
 
     @Quando("o usuário clicar no botão [Confirmar]")

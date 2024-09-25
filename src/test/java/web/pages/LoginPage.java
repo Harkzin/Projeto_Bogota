@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 import static web.support.utils.Constants.Email.CONFIRMA_TOKEN;
@@ -16,12 +15,10 @@ import static web.support.api.RestAPI.clearInbox;
 public class LoginPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public LoginPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public LoginPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     private WebElement continuar;

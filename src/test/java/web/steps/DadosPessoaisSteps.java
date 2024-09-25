@@ -10,12 +10,12 @@ import static web.support.utils.Constants.DeliveryMode.*;
 public class DadosPessoaisSteps {
 
     private final DadosPessoaisPage dadosPessoaisPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) {
+    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cart) {
         this.dadosPessoaisPage = dadosPessoaisPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Então("é direcionado para a tela de Dados Pessoais")
@@ -32,21 +32,21 @@ public class DadosPessoaisSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
-        cartOrder.setDeliveryMode(CONVENTIONAL);
+        cart.setDeliveryMode(CONVENTIONAL);
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
-        cartOrder.setDeliveryMode(EXPRESS);
+        cart.setDeliveryMode(EXPRESS);
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.getDeliveryMode(), cartOrder.isDeviceCart());
+        dadosPessoaisPage.validarTiposEntregaEChip(true, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @E("o usuário desmarcar a opção [Usar o mesmo endereço de entrega]")
@@ -67,13 +67,13 @@ public class DadosPessoaisSteps {
 
     @E("o usuário seleciona o tipo de sim [Esim]")
     public void selecionaEsim() {
-        cartOrder.setEsimChip();
-        dadosPessoaisPage.selecionarEsim(cartOrder.getDeliveryMode());
+        cart.setEsimChip();
+        dadosPessoaisPage.selecionarEsim(cart.getDeliveryMode());
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.getDeliveryMode(), cartOrder.isDeviceCart());
+        dadosPessoaisPage.validarTiposEntregaEChip(false, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

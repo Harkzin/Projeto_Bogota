@@ -10,12 +10,12 @@ import web.models.CartOrder;
 public class ParabensSteps {
 
     private final ParabensPage parabensPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public ParabensSteps(ParabensPage parabensPage, CartOrder cartOrder) {
+    public ParabensSteps(ParabensPage parabensPage, CartOrder cart) {
         this.parabensPage = parabensPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Então("é direcionado para a tela de Parabéns")

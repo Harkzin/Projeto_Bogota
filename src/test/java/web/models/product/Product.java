@@ -1,42 +1,35 @@
-package web.models;
+package web.models.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("UnusedDeclaration")
-public final class Product {
+public abstract class Product {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("classifications")
-    private List<Classification> classifications;
-
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @JsonProperty("claroPaymentModePrices")
-    private List<ClaroPaymentModePrice> claroPaymentModePrices;
-
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @JsonProperty("loyaltyClaroPrices")
-    private List<LoyaltyClaroPrice> loyaltyClaroPrices;
-
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @JsonProperty("variantMatrix")
-    private List<VariantMatrix> variantMatrix;
+    protected List<Classification> classifications;
 
     @JsonProperty("price")
-    private Price price;
+    protected Price price;
 
-    @JsonProperty("stock")
-    private Stock stock;
+    @JsonProperty("description")
+    protected String description;
 
-    private String description;
-    private String summary;
-    private String code;
-    private String name;
-    private String url;
+    @JsonProperty("summary")
+    protected String summary;
 
-    private Classification.Feature getPlanAttributes(String code) {
+    @JsonProperty("code")
+    protected String code;
+
+    @JsonProperty("name")
+    protected String name;
+
+    @JsonProperty("url")
+    protected String url;
+
+    /*private Classification.Feature getPlanAttributes(String code) {
         return classifications.stream()
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
                 .findFirst().orElseThrow()
@@ -52,17 +45,17 @@ public final class Product {
                 .features.stream()
                 .filter(feature -> feature.code.contains(code))
                 .findFirst().orElseThrow();
-    }
+    }*/
 
-    private List<String> getMediaFeatureValues(String code) {
+    /*private List<String> getMediaFeatureValues(String code) {
         return getPlanAttributes(code)
                 .featureValues
                 .stream()
                 .map(featureValue -> featureValue.value.replace("/thumbs/", "")) //Sanity
                 .collect(Collectors.toList());
-    }
+    }*/
 
-    private boolean hasAttribute(String classification, String code) {
+    protected boolean hasAttribute(String classification, String code) {
         return classifications.stream()
                 .filter(c -> c.code.contains(classification))
                 .findFirst().orElseThrow()
@@ -94,7 +87,7 @@ public final class Product {
         return price.value;
     }
 
-    public String getFormattedPlanPrice(boolean isDebit, boolean hasLoyalty) {
+    /*public String getFormattedPlanPrice(boolean isDebit, boolean hasLoyalty) {
         String paymentMode = isDebit ? "debitcard" : "ticket";
 
         if (hasLoyalty) {
@@ -106,21 +99,21 @@ public final class Product {
                     .findFirst().orElseThrow()
                     .formattedValue.substring(3);
         }
-    }
+    }*/
 
-    public double getPlanPrice(boolean isDebit, boolean isPrintedInvoice) {
+    /*public double getPlanPrice(boolean isDebit, boolean isPrintedInvoice) {
         String paymentMode = isDebit && !isPrintedInvoice ? "debitcard" : "ticket";
 
         return loyaltyClaroPrices.stream().filter(price -> price.promotionSource.equals(paymentMode))
                 .findFirst().orElseThrow()
                 .value;
-    }
+    }*/
 
-    public String getFormattedBaseDevicePrice() {
+    /*public String getFormattedBaseDevicePrice() {
         return "R$ " + String.format(Locale.GERMAN, "%,.2f", (price.value - 10D)); //API retorna o valor com 10 reais a mais. Motivo desconhecido
-    }
+    }*/
 
-    public boolean hasPlanApps() {
+    /*public boolean hasPlanApps() {
         return hasAttribute("serviceplanclassification", "planapps");
     }
 
@@ -170,9 +163,9 @@ public final class Product {
                 .stream()
                 .map(featureValue -> featureValue.value)
                 .collect(Collectors.toList());
-    }
+    }*/
 
-    public boolean hasManufacturer() {
+    /*public boolean hasManufacturer() {
         return hasAttribute("mobilephoneclassification", ".fabricante");
     }
 
@@ -210,45 +203,45 @@ public final class Product {
                 .forEach(feature -> features.add(Arrays.asList(feature.name, feature.featureUnit == null ? feature.featureValues.get(0).value : feature.featureValues.get(0).value + feature.featureUnit.unitType)));
 
         return features;
-    }
+    }*/
 
     public static class Classification {
 
         private Classification() {}
 
         @JsonProperty("code")
-        private String code;
+        String code;
 
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         @JsonProperty("features")
-        private List<Feature> features;
+        List<Feature> features;
 
         @JsonProperty("name")
-        private String name;
+        String name;
 
         public static class Feature {
 
             private Feature() {}
 
             @JsonProperty("code")
-            private String code;
+            String code;
 
             @JsonProperty("featureUnit")
-            private FeatureUnit featureUnit;
+            FeatureUnit featureUnit;
 
             @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
             @JsonProperty("featureValues")
-            private List<FeatureValue> featureValues;
+            List<FeatureValue> featureValues;
 
             @JsonProperty("name")
-            private String name;
+            String name;
 
             public static class FeatureUnit {
 
                 private FeatureUnit() {}
 
                 @JsonProperty("unitType")
-                private String unitType;
+                String unitType;
             }
 
             public static class FeatureValue {
@@ -256,37 +249,9 @@ public final class Product {
                 private FeatureValue() {}
 
                 @JsonProperty("value")
-                private String value;
+                String value;
             }
         }
-    }
-
-    public static class ClaroPaymentModePrice {
-
-        private ClaroPaymentModePrice() {}
-
-        @JsonProperty("formattedValue")
-        private String formattedValue;
-
-        @JsonProperty("promotionSource")
-        private String promotionSource;
-
-        @JsonProperty("value")
-        private double value;
-    }
-
-    public static class LoyaltyClaroPrice {
-
-        private LoyaltyClaroPrice() {}
-
-        @JsonProperty("formattedValue")
-        private String formattedValue;
-
-        @JsonProperty("promotionSource")
-        private String promotionSource;
-
-        @JsonProperty("value")
-        private double value;
     }
 
     public static class Price {
@@ -294,44 +259,9 @@ public final class Product {
         private Price() {}
 
         @JsonProperty("formattedValue")
-        private String formattedValue;
+        String formattedValue;
 
         @JsonProperty("value")
-        private double value;
-    }
-
-    public static class Stock {
-
-        private Stock() {}
-
-        @JsonProperty("stockLevelStatus")
-        private String stockLevelStatus;
-    }
-
-    public static class VariantMatrix {
-
-        private VariantMatrix() {}
-
-        @JsonProperty("variantOption")
-        private VariantOption variantOption;
-
-        @JsonProperty("variantValueCategory")
-        private VariantValueCategory variantValueCategory;
-
-        public static class VariantOption {
-
-            private VariantOption() {}
-
-            @JsonProperty("code")
-            String code;
-        }
-
-        public static class VariantValueCategory {
-
-            private VariantValueCategory() {}
-
-            @JsonProperty("name")
-            String name;
-        }
+        double value;
     }
 }

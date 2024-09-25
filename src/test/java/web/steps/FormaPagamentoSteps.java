@@ -10,12 +10,12 @@ import web.models.CartOrder;
 
 public class FormaPagamentoSteps {
 
-    private final CartOrder cartOrder;
     private final FormaPagamentoPage formaPagamentoPage;
+    private final CartOrder cart;
 
     @Autowired
-    FormaPagamentoSteps(FormaPagamentoPage formaPagamentoPage, CartOrder cartOrder) {
-        this.cartOrder = cartOrder;
+    FormaPagamentoSteps(FormaPagamentoPage formaPagamentoPage, CartOrder cart) {
+        this.cart = cart;
         this.formaPagamentoPage = formaPagamentoPage;
     }
 
@@ -31,13 +31,13 @@ public class FormaPagamentoSteps {
     public void aplicarCupom(String cupom) {
         formaPagamentoPage.preencherCupom(cupom);
         formaPagamentoPage.clicarAplicarCupom();
-        cartOrder.addVoucherForDevice(cupom);
+        cart.addVoucherForDevice(cupom);
     }
 
     @Entao("o Aparelho receberá o desconto do cupom")
     public void validarDescontoCupom() {
-        formaPagamentoPage.validarAplicarCupom(cartOrder.getAppliedCoupon());
-        comumPage.validarResumoCompraAparelho(cartOrder, cartOrder.isEsim());
+        formaPagamentoPage.validarAplicarCupom(cart.getAppliedCoupon());
+        comumPage.validarResumoCompraAparelho(cart, cart.isEsim());
     }
 
     @Quando("o usuário clicar no botão [Adicionar cartão de crédito]")

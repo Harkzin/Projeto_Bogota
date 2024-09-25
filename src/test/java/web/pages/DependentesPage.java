@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 import java.util.Map;
@@ -15,12 +14,10 @@ import java.util.Map;
 public class DependentesPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public DependentesPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public DependentesPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     private WebElement abaPortabilidade;

@@ -10,7 +10,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.DeviceProduct;
+import web.models.product.PlanProduct;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
@@ -47,7 +48,7 @@ public class PdpAparelhosPage {
 
     private boolean prePaidPlanSelected;
 
-    private void validarInfosPlano(Product plan) {
+    private void validarInfosPlano(PlanProduct plan) {
         boolean hasName = !(plan.getName() == null);
 
         //Nome card
@@ -138,7 +139,7 @@ public class PdpAparelhosPage {
         }
     }
 
-    public void validarPdpAparelho(Product device) {
+    public void validarPdpAparelho(DeviceProduct device) {
         driverWeb.waitPageLoad(device.getCode(), 10);
         driverWeb.actionPause(1000);
 

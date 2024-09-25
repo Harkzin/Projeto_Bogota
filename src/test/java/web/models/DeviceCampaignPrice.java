@@ -1,4 +1,4 @@
-package web.support.api.models;
+package web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DeviceCampaignPriceResponse {
+public final class DeviceCampaignPrice {
 
     @JsonProperty("campaignPrice")
     public CampaignPrice campaignPrice;

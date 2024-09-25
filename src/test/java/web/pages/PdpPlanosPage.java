@@ -6,8 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
-import web.models.Product;
+import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -22,12 +21,10 @@ import static web.pages.ComumPage.*;
 public class PdpPlanosPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public PdpPlanosPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public PdpPlanosPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     private WebElement debitPayment;
@@ -36,7 +33,7 @@ public class PdpPlanosPage {
     private WebElement noLoyalty;
     private WebElement planCharacteristics;
 
-    public void validarPdpPlanos(Product plan) {
+    public void validarPdpPlanos(PlanProduct plan) {
         driverWeb.waitPageLoad(plan.getUrl(), 10);
 
         debitPayment = driverWeb.findElement("rdn-debitcard", "id");
@@ -156,7 +153,7 @@ public class PdpPlanosPage {
         Assert.assertFalse(loyalty.isSelected());
     }
 
-    public void validarValorPlano(Product plan, boolean isDebit, boolean hasLoyalty) {
+    public void validarValorPlano(PlanProduct plan, boolean isDebit, boolean hasLoyalty) {
         //Valores do Front
         WebElement debitLoyalty = driverWeb.findElement("price-debit-loyalty", "id");
         WebElement ticketLoyalty = driverWeb.findElement("price-ticket-loyalty", "id");
@@ -243,7 +240,7 @@ public class PdpPlanosPage {
         }
     }
 
-    public void validarAppsIlimitadosPdp(Product plan, boolean exibe) {
+    public void validarAppsIlimitadosPdp(PlanProduct plan, boolean exibe) {
         if (plan.hasPlanApps()) {
             WebElement planAppsParent = planCharacteristics
                     .findElement(By.xpath("div[contains(concat(' ',normalize-space(@class),' '), ' apps-ilimitados ')]"));

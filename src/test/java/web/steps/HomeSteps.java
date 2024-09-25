@@ -11,12 +11,12 @@ import web.models.CartOrder;
 public class HomeSteps {
 
     private final HomePage homePage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public HomeSteps(HomePage homePage, CartOrder cartOrder) {
+    public HomeSteps(HomePage homePage, CartOrder cart) {
         this.homePage = homePage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Dado("que o usuário acesse a Loja Online")
@@ -26,16 +26,16 @@ public class HomeSteps {
 
     @Quando("selecionar o plano de id {string} do carrossel da Home")
     public void selecionarPlano(String id) {
-        cartOrder.setPlan(id);
-        homePage.validarCardPlano(cartOrder.getPlan(), true);
+        cart.setPlan(id);
+        homePage.validarCardPlano(cart.getPlan(), true);
         homePage.selecionarPlano(id);
     }
 
     @Quando("selecionar o plano Controle de id {string} na Home")
     public void selecionarPlanoControle(String id) {
-        cartOrder.isDebitPaymentFlow = false;
-        cartOrder.setPlan(id);
-        homePage.validarCardPlano(cartOrder.getPlan(), false);
+        cart.isDebitPaymentFlow = false;
+        cart.setPlan(id);
+        homePage.validarCardPlano(cart.getPlan(), false);
         homePage.selecionarPlanoControle(id);
     }
 
@@ -66,8 +66,8 @@ public class HomeSteps {
 
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
-        cartOrder.setPlan(id);
-        homePage.validarCardPlano(cartOrder.getPlan(), true);
+        cart.setPlan(id);
+        homePage.validarCardPlano(cart.getPlan(), true);
         homePage.acessarPdpPlano(id);
     }
 
