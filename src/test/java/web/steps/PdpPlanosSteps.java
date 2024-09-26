@@ -35,31 +35,9 @@ public class PdpPlanosSteps {
         pdpPlanosPage.selecionarBoleto();
     }
 
-    @E("selecionar Fidelidade de 12 meses")
-    public void selecionarFidelidade() {
-        cartOrder.hasLoyalty = true;
-        pdpPlanosPage.selecionarFidelidade();
-    }
-
-    @Quando("o usuário selecionar Sem fidelidade")
-    public void selecionarSemFidelidade() {
-        cartOrder.hasLoyalty = false;
-        pdpPlanosPage.selecionarSemFidelidade();
-    }
-
     @Então("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow, cartOrder.hasLoyalty);
-    }
-
-    @Então("os aplicativos ilimitados são removidos da composição do plano")
-    public void ocultaAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitados(false);
-    }
-
-    @E("os aplicativos ilimitados são reexibidos na composição do plano")
-    public void exibeAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitados(true);
+        pdpPlanosPage.validarValorPlano(cartOrder.isDebitPaymentFlow);
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] da PDP")
