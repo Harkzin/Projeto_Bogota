@@ -12,7 +12,7 @@ Funcionalidade: Aparelhos - Gross
     Entao é direcionado para a PDP do Aparelho selecionado
     E seleciona a opção [Quero uma linha nova da Claro]
     E seleciona a plataforma [Claro Pós]
-    E seleciona o plano "17268"
+    E seleciona o plano "17522"
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho

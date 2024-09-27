@@ -6,24 +6,66 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class DeviceCampaignPrice {
+public final class DevicePriceInfo {
 
     @JsonProperty("campaignPrice")
-    public CampaignPrice campaignPrice;
+    private CampaignPrice campaignPrice;
 
     @JsonProperty("campaignPriceWithoutSIM")
-    public CampaignPriceWithoutSIM campaignPriceWithoutSIM;
+    private CampaignPriceWithoutSIM campaignPriceWithoutSIM;
 
     @JsonProperty("installment")
-    public Installment installment;
+    private Installment installment;
 
     @JsonProperty("potentialPromotions")
-    public List<PotentialPromotion> potentialPromotions = new ArrayList<>();
+    private final List<PotentialPromotion> potentialPromotions = new ArrayList<>();
 
     @JsonProperty("price")
-    public Price price;
+    private Price price;
+
+    public double getCampaignPrice(boolean withoutSIM) {
+        if (withoutSIM) {
+            return campaignPriceWithoutSIM.value;
+        } else {
+            return campaignPrice.value;
+        }
+    }
+
+    public String getFormattedCampaignPrice(boolean withoutSIM) {
+        if (withoutSIM) {
+            return campaignPriceWithoutSIM.formattedValue;
+        } else {
+            return campaignPrice.formattedValue;
+        }
+    }
+
+    public int getInstallmentQuantity() {
+        if (installment != null) {
+            return installment.quantity;
+        } else {
+            return 0;
+        }
+    }
+
+    public double getInstallmentPrice() {
+        return installment.price.value;
+    }
+
+    public String getFormattedInstallmentPrice() {
+        return  installment.price.formattedValue;
+    }
+
+    public double getPrice() {
+        return price.value;
+    }
+
+    public String getFormattedPrice() {
+        return price.formattedValue;
+    }
 
     public static class CampaignPrice {
+
+        private CampaignPrice() {}
 
         @JsonProperty("formattedValue")
         public String formattedValue;
@@ -34,6 +76,8 @@ public final class DeviceCampaignPrice {
 
     public static class CampaignPriceWithoutSIM {
 
+        private CampaignPriceWithoutSIM() {}
+
         @JsonProperty("formattedValue")
         public String formattedValue;
 
@@ -43,6 +87,8 @@ public final class DeviceCampaignPrice {
 
     public static class Installment {
 
+        private Installment() {}
+
         @JsonProperty("price")
         public Price price;
 
@@ -51,6 +97,8 @@ public final class DeviceCampaignPrice {
     }
 
     public static class PotentialPromotion {
+
+        private PotentialPromotion() {}
 
         @JsonProperty("code")
         public String code;
@@ -84,12 +132,16 @@ public final class DeviceCampaignPrice {
 
         public static class LoyaltyMessage {
 
+            private LoyaltyMessage() {}
+
             @JsonProperty("entry")
             public List<Map<String, String>> entry = new ArrayList<>();
         }
     }
 
     public static class Price {
+
+        private Price() {}
 
         @JsonProperty("formattedValue")
         public String formattedValue;

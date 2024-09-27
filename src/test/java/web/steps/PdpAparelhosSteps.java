@@ -22,12 +22,12 @@ public class PdpAparelhosSteps  {
 
     @Entao("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
-        pdpAparelhosPage.validarPdpAparelho(cart.getDevice());
+        pdpAparelhosPage.validarPdpAparelho(cart.getDevice(), cart.getPlan());
     }
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")
     public void selecionoACordoAparelho(String id) {
-        cart.setDevice(id, cart.getEntryTotalPrice(cart.getDevice()));
+        cart.setDevice(id);
         pdpAparelhosPage.selecionarCorAparelho(id);
     }
 
@@ -84,7 +84,7 @@ public class PdpAparelhosSteps  {
     @E("seleciona o plano {string}")
     public void selecionarPlano(String plan) {
         cart.setPlan(plan);
-        pdpAparelhosPage.selecionarPlano(plan);
+        pdpAparelhosPage.selecionarPlano(cart.getPlan());
     }
 
     @Quando("o usuário clicar no botão [Comprar] da PDP do Aparelho")

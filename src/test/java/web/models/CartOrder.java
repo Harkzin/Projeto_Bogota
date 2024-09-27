@@ -23,7 +23,7 @@ public class CartOrder {
         delivery = new Delivery();
     }
 
-    private boolean eSim;
+    private boolean eSIM;
     private boolean thab;
 
     private String planId;
@@ -102,22 +102,22 @@ public class CartOrder {
         }
     }
 
-    public void setDevice(String deviceId, double price) { //TODO Remover price quando a API estiver pronta ECCMAUT-806
+    public void setDevice(String deviceId) {
         if (!(this.deviceId == null)) {
             removeProduct(this.deviceId);
         }
-
         this.deviceId = deviceId;
 
         DeviceProduct device = createProduct(deviceId, DeviceProduct.class);
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(device, 1, price, price)); //TODO Deve pegar o preço da API ECCMAUT-806
+        device.setDevicePriceInfo("APV", focusPlan, "1100");
+        double initialPrice = device.getCampaignPrice(device.isEsimOnly());
+        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(device, 1, initialPrice, initialPrice));
     }
 
     public void setPlan(String planId) {
         if (!(this.planId == null)) {
             removeProduct(this.planId);
         }
-
         this.planId = planId;
 
         PlanProduct plan = createProduct(planId, PlanProduct.class);
@@ -164,11 +164,11 @@ public class CartOrder {
     }
 
     public void setEsimChip() {
-        eSim = true;
+        eSIM = true;
     }
 
     public boolean isEsim() {
-        return eSim;
+        return eSIM;
     }
 
     public void setThab() {

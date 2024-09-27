@@ -2,15 +2,16 @@ package web.pages;
 
 
 import io.cucumber.spring.ScenarioScope;
-import org.junit.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.product.Product;
+import web.models.product.DeviceProduct;
 import web.support.utils.DriverWeb;
 
 import java.util.Locale;
 
+import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
 
 @Component
@@ -28,16 +29,31 @@ public class PlpAparelhosPage {
         driverWeb.waitPageLoad("/celulares", 10);
     }
 
-    public void validarCardAparelho(Product device) {
+    public void validarCardAparelho(DeviceProduct device, String focusPlanName) {
         //Valida nome
-        if (!device.getName().isEmpty()) {
-            validateElementText(device.getName(), driverWeb.findElement("//*[@id='btn-eu-quero-" + device.getCode() + "']/../..//h2", "xpath"));
-        }
+        assertNotNull(device.getName());
+        validateElementText(device.getName(), driverWeb.findElement(String.format("//*[@id='btn-eu-quero-%s']/../..//h2", device.getCode()), "xpath"));
+
+        //Valida "no plano" (focusPlan)
+        WebElement focusPlan = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../div/span", device.getCode()));
+        assertTrue("Nome do focusPlan diferente do configurado", focusPlan.getText().contains(focusPlanName));
+        assertTrue("Nome do focusPlan não vísivel no card", focusPlan.isDisplayed());
 
         //Valida preço base "De"
-        WebElement fullPrice = driverWeb.findElement("//*[@id='btn-eu-quero-" + device.getCode() + "']/..//dt[contains(@class, 'mdn-Price-prefix')]", "xpath");
-        Assert.assertTrue("Valor sem desconto (De) igual ao configurado", fullPrice.getText().contains(String.format(Locale.GERMAN, "%,d", ((int) device.getPrice()) - 10)));
-        Assert.assertTrue("Valor sem desconto (De) é exibido", fullPrice.isDisplayed());
+        String fullPriceFormatted = String.format(Locale.GERMAN, "R$ %,d", (int) device.getPrice());
+        WebElement fullPrice = driverWeb.findElement(String.format("//*[@id='btn-eu-quero-%s']/..//dt[contains(@class, 'mdn-Price-prefix')]", device.getCode()), "xpath");
+        assertTrue("Valor sem desconto (De) diferente do configurado", StringUtils.normalizeSpace(fullPrice.getText()).contains(fullPriceFormatted));
+        assertTrue("Valor sem desconto (De) não exibido no card", fullPrice.isDisplayed());
+
+        //Valida preço "por apenas"
+        WebElement campaignPrice = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../div[2]/dl/dd", device.getCode()));
+        //TODO bug API ECCMAUT-806 validateElementText(device.getFormattedCampaignPrice(false), campaignPrice);
+
+        //Valida parcelamento
+        WebElement installments = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../div[2]/dl/dt[2]", device.getCode()));
+        String installmentsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
+        //TODO bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmentsStr));
+        assertTrue("Parcelamento não exibido no card", installments.isDisplayed());
     }
 
     public void clicaBotaoEuQuero(String id) {

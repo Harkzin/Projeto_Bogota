@@ -22,27 +22,25 @@ import static web.support.utils.Constants.DEPENDENT_PRICE;
 public class ComumPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
 
     @Autowired
-    public ComumPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public ComumPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
     }
 
     private void validateElementText(String ref, String xpath) {
-        Assert.assertEquals("Texto do elemento igual ao esperado", ref, StringUtils.normalizeSpace(driverWeb.findByXpath(xpath).getText()));
-        Assert.assertTrue("Elemento exibido", driverWeb.findByXpath(xpath).isDisplayed());
+        Assert.assertEquals("Texto do elemento diferente do esperado", ref, StringUtils.normalizeSpace(driverWeb.findByXpath(xpath).getText()));
+        Assert.assertTrue("Elemento não exibido", driverWeb.findByXpath(xpath).isDisplayed());
     }
 
     public static void validateElementText(String ref, WebElement element) {
-        Assert.assertEquals("Texto do elemento igual ao esperado", ref, StringUtils.normalizeSpace(element.getText()));
-        Assert.assertTrue("Elemento exibido", element.isDisplayed());
+        Assert.assertEquals("Texto do elemento diferente do esperado", StringUtils.normalizeSpace(ref), StringUtils.normalizeSpace(element.getText()));
+        Assert.assertTrue("Elemento não exibido", element.isDisplayed());
     }
 
     public static void validateElementActiveVisible(WebElement element) {
-        Assert.assertTrue("Elemento ativo", element.isEnabled());
-        Assert.assertTrue("Elemento exibido", element.isDisplayed());
+        Assert.assertTrue("Elemento desabilitado", element.isEnabled());
+        Assert.assertTrue("Elemento não exibido", element.isDisplayed());
     }
 
     //Valida os ícones dos Apps e Países da composição do Plano
