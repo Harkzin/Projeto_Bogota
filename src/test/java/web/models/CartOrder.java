@@ -125,31 +125,15 @@ public class CartOrder {
         //TODO Atualizar plan.getPlanPrice() para pegar o preço da API (preço da promo, ECCMAUT-888)
     }
 
-    private PositionsAndPrices.Entry getEntry(Product product) {
-        return positionsAndPrices.entries.stream()
-                .filter(e -> e.product == product)
-                .findFirst().orElseThrow();
-    }
-
     public PositionsAndPrices.Entry getEntry(String id) {
-        return getEntry(getProduct(id));
-    }
-
-    public double getEntryBasePrice(Product product) {
-        return getEntry(product).basePrice;
-    }
-
-    public double getEntryTotalPrice(Product product) {
-        return getEntry(product).totalPrice;
-    }
-
-    public double getEntryDiscount(Product product) {
-        return getEntry(product).discountValues.get(0);
+        return positionsAndPrices.entries.stream()
+                .filter(e -> e.product.getCode().equals(id))
+                .findFirst().orElseThrow();
     }
 
     public void addVoucherForDevice(String voucher) {
         double amount = 100D; //TODO Mock para CUPOM100. Valor deve vir da API ECCMAUT-888
-        PositionsAndPrices.Entry deviceEntry = getEntry(getDevice());
+        PositionsAndPrices.Entry deviceEntry = getEntry(deviceId);
         deviceEntry.discountValues.add(amount);
         deviceEntry.totalPrice -= amount;
 
@@ -216,7 +200,7 @@ public class CartOrder {
             Product dependente = createProduct("dependente", Product.class);
             positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), dependente.getPrice()));
         } else { //Atualiza a quantidade e preço na entry caso já tenha dependentes adicionados
-            PositionsAndPrices.Entry depEntry = getEntry(getProduct("dependente"));
+            PositionsAndPrices.Entry depEntry = getEntry("dependente");
             depEntry.quantity++;
             depEntry.totalPrice += depEntry.basePrice;
         }
@@ -435,16 +419,16 @@ public class CartOrder {
 
         public static class Entry {
 
-            public Product product;
-            public int quantity;
-            public double basePrice;
-            public double totalPrice;
-            public List<Double> discountValues = new ArrayList<>();
+            private Product product;
+            private int quantity;
+            private double basePrice;
+            private double totalPrice;
+            private final List<Double> discountValues = new ArrayList<>();
 
-            public int entryNumber;
+            private int entryNumber;
 
-            public PaymentMode paymentMode;
-            public String status;
+            private PaymentMode paymentMode;
+            private String status;
 
             private Entry() {}
 

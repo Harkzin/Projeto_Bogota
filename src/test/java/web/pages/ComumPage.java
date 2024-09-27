@@ -193,7 +193,7 @@ public class ComumPage {
 
         Function<Double, String> formatPrice = price -> "R$ " + String.format(Locale.GERMAN, "%,.2f", price);
 
-        double basePrice = cart.getEntryBasePrice(cart.getDevice());
+        double basePrice = cart.getEntry(cart.getDevice().getCode()).getBasePrice();
 
         //Subtotal
         double subTotal = eSimFlow ? basePrice : basePrice + 10D;
@@ -204,11 +204,11 @@ public class ComumPage {
 
         //Desconto Cupom
         if (cart.getAppliedCoupon() != null) {
-            validateElementText("Desconto Cupom -" + formatPrice.apply(cart.getEntryDiscount(cart.getDevice())), deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[2]");
+            validateElementText("Desconto Cupom -" + formatPrice.apply(cart.getEntry(cart.getDevice().getCode()).getDiscount()), deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[2]");
         }
 
         //Valor Total a Pagar
-        double totalPrice = cart.getEntryTotalPrice(cart.getDevice());
+        double totalPrice = cart.getEntry(cart.getDevice().getCode()).getTotalPrice();
         String totalPricea = eSimFlow ? formatPrice.apply(totalPrice) : formatPrice.apply(totalPrice + 10D);
         validateElementText(totalPricea, deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
 
