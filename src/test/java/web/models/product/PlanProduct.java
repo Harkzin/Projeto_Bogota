@@ -7,15 +7,13 @@ import java.util.stream.Collectors;
 
 public final class PlanProduct extends Product {
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("claroPaymentModePrices")
     private List<ClaroPaymentModePrice> claroPaymentModePrices;
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("loyaltyClaroPrices")
     private List<LoyaltyClaroPrice> loyaltyClaroPrices;
 
-    private Classification.Feature getPlanAttributes(String code) {
+    private Classification.Feature getAttributes(String code) {
         return classifications.stream()
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
                 .findFirst().orElseThrow()
@@ -25,14 +23,14 @@ public final class PlanProduct extends Product {
     }
 
     private List<String> getMediaFeatureValues(String code) {
-        return getPlanAttributes(code)
+        return getAttributes(code)
                 .featureValues
                 .stream()
                 .map(featureValue -> featureValue.value.replace("/thumbs/", "")) //Sanity
                 .collect(Collectors.toList());
     }
 
-    public String getFormattedPlanPrice(boolean isDebit, boolean hasLoyalty) {
+    public String getFormattedPrice(boolean isDebit, boolean hasLoyalty) {
         String paymentMode = isDebit ? "debitcard" : "ticket";
 
         if (hasLoyalty) {
@@ -46,7 +44,7 @@ public final class PlanProduct extends Product {
         }
     }
 
-    public double getPlanPrice(boolean isDebit, boolean isPrintedInvoice) {
+    public double getPrice(boolean isDebit, boolean isPrintedInvoice) {
         String paymentMode = isDebit && !isPrintedInvoice ? "debitcard" : "ticket";
 
         return loyaltyClaroPrices.stream().filter(price -> price.promotionSource.equals(paymentMode))
@@ -59,7 +57,7 @@ public final class PlanProduct extends Product {
     }
 
     public String getPlanAppsTitle() {
-        return getPlanAttributes("planapps").name;
+        return getAttributes("planapps").name;
     }
 
     public List<String> getPlanApps() {
@@ -75,7 +73,7 @@ public final class PlanProduct extends Product {
     }
 
     public String getExtraPlayTitle() {
-        return getPlanAttributes("clarotitleextraplay").featureValues.get(0).value;
+        return getAttributes("clarotitleextraplay").featureValues.get(0).value;
     }
 
     public List<String> getExtraPlayApps() {
@@ -87,7 +85,7 @@ public final class PlanProduct extends Product {
     }
 
     public String getClaroServicesTitle() {
-        return getPlanAttributes("claroservicespdp").name;
+        return getAttributes("claroservicespdp").name;
     }
 
     public List<String> getClaroServices() {
@@ -99,14 +97,14 @@ public final class PlanProduct extends Product {
     }
 
     public List<String> getPlanPortability() {
-        return getPlanAttributes("planportability")
+        return getAttributes("planportability")
                 .featureValues
                 .stream()
                 .map(featureValue -> featureValue.value)
                 .collect(Collectors.toList());
     }
 
-    public static class ClaroPaymentModePrice {
+    public static final class ClaroPaymentModePrice {
 
         private ClaroPaymentModePrice() {}
 
@@ -120,7 +118,7 @@ public final class PlanProduct extends Product {
         double value;
     }
 
-    public static class LoyaltyClaroPrice {
+    public static final class LoyaltyClaroPrice {
 
         private LoyaltyClaroPrice() {}
 

@@ -21,6 +21,7 @@ public class HomeSteps {
 
     @Dado("que o usuário acesse a Loja Online")
     public void AcessarLojaOnline() {
+        cart.setDDD(11); //Default SP 11 para geolocation bloqueada.
         homePage.acessarLojaHome();
     }
 

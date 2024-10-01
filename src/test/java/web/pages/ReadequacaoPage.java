@@ -39,7 +39,7 @@ public class ReadequacaoPage  {
 
         //Valida preço
         WebElement price = driverWeb.findElement("//*[@id='controle-antecipado']//p[contains(@class, 'valor')]", "xpath");
-        validateElementText(plan.getFormattedPlanPrice(false, true), price);
+        validateElementText(plan.getFormattedPrice(false, true), price);
 
         //Valida apps ilimitados
         if (plan.hasPlanApps()) {

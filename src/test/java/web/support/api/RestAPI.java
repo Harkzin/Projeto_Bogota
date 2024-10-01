@@ -2,6 +2,7 @@ package web.support.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Jsoup;
@@ -23,8 +24,12 @@ public final class RestAPI {
     private RestAPI() {}
 
     public static final HttpClient clientHttp = HttpClient.newHttpClient();
+
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
-    public static final ObjectMapper objMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    public static final ObjectMapper objMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
 
     public static String getCpf() {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()

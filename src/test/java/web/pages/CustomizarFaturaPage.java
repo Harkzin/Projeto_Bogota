@@ -229,7 +229,7 @@ public class CustomizarFaturaPage {
         Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
 
-        driverWeb.actionPause(2000);
+        driverWeb.actionPause(3000);
         validarCamposDebito();
     }
 
@@ -238,13 +238,13 @@ public class CustomizarFaturaPage {
         Assert.assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
 
-        driverWeb.actionPause(2000);
+        driverWeb.actionPause(3000);
     }
 
     public void selecionarTipoFatura(Constants.InvoiceType invoiceType, boolean isDebitPaymentFlow) {
         switch (invoiceType) {
             case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
-            case EMAIL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
+            case DIGITAL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
             case PRINTED -> driverWeb.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
         driverWeb.actionPause(3000);

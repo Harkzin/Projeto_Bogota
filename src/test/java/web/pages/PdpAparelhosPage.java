@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.Constants.ProcessType;
@@ -46,7 +47,9 @@ public class PdpAparelhosPage {
 
     private boolean prePaidPlanSelected;
 
-    private void validarInfosPlano(PlanProduct plan) {
+    private void validarInfosPlano(CartOrder.PositionsAndPrices.Entry planEntry) {
+        PlanProduct plan = (PlanProduct) planEntry.getProduct();
+
         //Nome
         assertNotNull("Nome do Plano não configurado", plan.getName());
         WebElement nameCard = driverWeb.waitElementPresence(String.format("//*[@id='%s']/div/div/h3", plan.getCode()), 5);
@@ -60,8 +63,9 @@ public class PdpAparelhosPage {
         }
 
         //Preço
+        String formattedEntryTotalPrice = "R$ " + formatPrice(planEntry.getTotalPrice());
         WebElement priceCard = driverWeb.findByXpath(String.format("//*[@id='%s']/div/dl/dd", plan.getCode()));
-        validateElementText("R$ " + plan.getFormattedPlanPrice(true, true) + " / mês", priceCard);
+        validateElementText(formattedEntryTotalPrice + " / mês", priceCard);
 
         //Mais detalhes
         if (!prePaidPlanSelected) {
@@ -123,14 +127,33 @@ public class PdpAparelhosPage {
             assertFalse(paymentMode.isDisplayed());
         } else {
             //[Valor do plano]
-            validateElementText("R$ " + plan.getFormattedPlanPrice(true, true), price);
+            validateElementText(formattedEntryTotalPrice, price);
 
             //[Modalidade de Pagamento]
             validateElementText("Boleto + fatura digital", paymentMode);
         }
     }
 
-    public void validarPdpAparelho(DeviceProduct device, PlanProduct plan) {
+    private void validarPrecoCampanhaAparelho(DeviceProduct device) {
+        //Preço base "De"
+        if (!prePaidPlanSelected) {
+            WebElement fullPrice = driverWeb.findById("value-total-aparelho-pdp");
+            driverWeb.waitElementVisible(fullPrice, 10);
+            validateElementText(device.getFormattedPrice(), fullPrice);
+        }
+
+        //Preço de campanha "por apenas"
+        WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
+        //TODO Bug API ECCMAUT-806 validateElementText(device.getFormattedCampaignPrice(device.isEsimOnly()), campaignPrice);
+
+        //Parcelamento
+        WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
+        String installmetsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
+        //TODO Bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmetsStr));
+        assertTrue("Parcelamento não exibido", installments.isDisplayed());
+    }
+
+    public void validarPdpAparelho(DeviceProduct device, CartOrder.PositionsAndPrices.Entry planEntry) {
         driverWeb.waitPageLoad(device.getCode(), 10);
         driverWeb.actionPause(3000);
 
@@ -160,24 +183,8 @@ public class PdpAparelhosPage {
 
         if (device.inStock()) {
             //Plano
-            validarInfosPlano(plan);
-
-            //Preço base "De"
-            if (!prePaidPlanSelected) {
-                WebElement fullPrice = driverWeb.findById("value-total-aparelho-pdp");
-                driverWeb.waitElementVisible(fullPrice, 10);
-                validateElementText(device.getFormattedPrice(), fullPrice);
-            }
-
-            //Preço de campanha "por apenas"
-            WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
-            //TODO Bug API ECCMAUT-806 validateElementText(device.getFormattedCampaignPrice(device.isEsimOnly()), campaignPrice);
-
-            //Parcelamento
-            WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
-            String installmetsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
-            //TODO Bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmetsStr));
-            assertTrue("Parcelamento não exibido", installments.isDisplayed());
+            validarInfosPlano(planEntry);
+            validarPrecoCampanhaAparelho(device);
         }
 
         //Infos Técnicas
@@ -222,9 +229,16 @@ public class PdpAparelhosPage {
         platform.selectByValue(category);
     }
 
-    public void selecionarPlano(PlanProduct plan) {
-        driverWeb.javaScriptClick("btn-selecionar-plano-" + plan.getCode(), "id");
-        validarInfosPlano(plan);
+    public void selecionarPlano(CartOrder.PositionsAndPrices.Entry planEntry, DeviceProduct device) {
+        driverWeb.javaScriptClick("btn-selecionar-plano-" + planEntry.getProduct().getCode(), "id");
+        validarInfosPlano(planEntry);
+        validarPrecoCampanhaAparelho(device);
+    }
+
+    public void selecionarSIM(boolean isEsim, DeviceProduct device) {
+        driverWeb.javaScriptClick(isEsim ? "rdn-chip-type-ESIM" : "rdn-chip-type-SIM", "id" );
+        driverWeb.actionPause(500);
+        validarPrecoCampanhaAparelho(device);
     }
 
     public void clicarComprar(String deviceId) {

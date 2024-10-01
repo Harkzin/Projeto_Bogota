@@ -8,6 +8,7 @@ import web.pages.PdpAparelhosPage;
 import web.models.CartOrder;
 
 import static web.support.utils.Constants.ProcessType.*;
+import static web.support.utils.Constants.focusPlan;
 
 public class PdpAparelhosSteps  {
 
@@ -22,12 +23,12 @@ public class PdpAparelhosSteps  {
 
     @Entao("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
-        pdpAparelhosPage.validarPdpAparelho(cart.getDevice(), cart.getPlan());
+        pdpAparelhosPage.validarPdpAparelho(cart.getDevice(), cart.getEntry(focusPlan));
     }
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")
     public void selecionoACordoAparelho(String id) {
-        cart.setDevice(id);
+        cart.setDeviceWithFocusPlan(id);
         pdpAparelhosPage.selecionarCorAparelho(id);
     }
 
@@ -39,29 +40,34 @@ public class PdpAparelhosSteps  {
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Troca de Plano + Aparelho")
     public void selecionarFluxoBaseTroca() {
         cart.setProcessType(EXCHANGE);
+        cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
         pdpAparelhosPage.selecionarFluxo(EXCHANGE);
     }
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
     public void selecionarFluxoBaseMigra() {
         cart.setProcessType(MIGRATE);
+        cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
         pdpAparelhosPage.selecionarFluxo(MIGRATE);
     }
 
-    @E("seleciona a opção [Manter meu número Claro], para o fluxo de Manter o Plano + Aparelho")
+    @E("seleciona a opção [Manter meu número Claro], para o fluxo de Manter o Plano com fidelidade + Aparelho")
     public void selecionarFluxoBaseManter() {
         cart.setProcessType(APARELHO_TROCA_APARELHO);
+        cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
         pdpAparelhosPage.selecionarFluxo(APARELHO_TROCA_APARELHO);
     }
 
     @E("seleciona a opção [Trazer meu número para Claro]")
     public void selecionarFluxoPortabilidade() {
         cart.setProcessType(PORTABILITY);
+        cart.getEntry(cart.getDevice().getCode()).setBpo("APV");
         pdpAparelhosPage.selecionarFluxo(PORTABILITY);
     }
 
     @E("seleciona a opção [Quero uma linha nova da Claro]")
     public void selecionarFluxoAquisicao() {
+        cart.getEntry(cart.getDevice().getCode()).setBpo("APV");
         cart.setProcessType(ACQUISITION);
         pdpAparelhosPage.selecionarFluxo(ACQUISITION);
     }
@@ -83,12 +89,24 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona o plano {string}")
     public void selecionarPlano(String plan) {
-        cart.setPlan(plan);
-        pdpAparelhosPage.selecionarPlano(cart.getPlan());
+        cart.updatePlanForDevice(plan);
+        pdpAparelhosPage.selecionarPlano(cart.getEntry(plan), cart.getDevice());
+    }
+
+    @E("seleciona o chip [Comum]")
+    public void selecionarChipComum() {
+        cart.setEsimChip(false);
+        pdpAparelhosPage.selecionarSIM(false, cart.getDevice());
+    }
+
+    @E("seleciona o chip [eSIM]")
+    public void selecionarEsim() {
+        cart.setEsimChip(true);
+        pdpAparelhosPage.selecionarSIM(true, cart.getDevice());
     }
 
     @Quando("o usuário clicar no botão [Comprar] da PDP do Aparelho")
-    public void clicarComprar(){
+    public void clicarComprar() {
         pdpAparelhosPage.clicarComprar(cart.getDevice().getCode());
     }
 }

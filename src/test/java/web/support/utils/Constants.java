@@ -8,7 +8,7 @@ public final class Constants {
 
     public static final String ambiente = System.getProperty("env", "s6").toLowerCase();
     public static final String urlAmbiente = String.format("https://accstorefront.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com", ambiente);
-    public static final String focusPlan = System.getProperty("focusPlan", "17528");
+    public static final String focusPlan = System.getProperty("focusPlan", "17528"); //Plano foco configurado via property no ambiente.
 
     public enum ProcessType {
         ACQUISITION,
@@ -44,8 +44,8 @@ public final class Constants {
 
     public enum InvoiceType {
         WHATSAPP,
-        EMAIL,
-        PRINTED
+        DIGITAL, //E-mail
+        PRINTED //Correios
     }
 
     public enum PaymentMode {

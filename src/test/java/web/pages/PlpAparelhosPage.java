@@ -32,7 +32,9 @@ public class PlpAparelhosPage {
     public void validarCardAparelho(DeviceProduct device, String focusPlanName) {
         //Valida nome
         assertNotNull(device.getName());
-        validateElementText(device.getName(), driverWeb.findElement(String.format("//*[@id='btn-eu-quero-%s']/../..//h2", device.getCode()), "xpath"));
+        WebElement name = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../..//h2", device.getCode()));
+        driverWeb.javaScriptScrollTo(name);
+        validateElementText(device.getName(), name);
 
         //Valida "no plano" (focusPlan)
         WebElement focusPlan = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../div/span", device.getCode()));
@@ -41,7 +43,7 @@ public class PlpAparelhosPage {
 
         //Valida preço base "De"
         String fullPriceFormatted = String.format(Locale.GERMAN, "R$ %,d", (int) device.getPrice());
-        WebElement fullPrice = driverWeb.findElement(String.format("//*[@id='btn-eu-quero-%s']/..//dt[contains(@class, 'mdn-Price-prefix')]", device.getCode()), "xpath");
+        WebElement fullPrice = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/..//dt[contains(@class, 'mdn-Price-prefix')]", device.getCode()));
         assertTrue("Valor sem desconto (De) diferente do configurado", StringUtils.normalizeSpace(fullPrice.getText()).contains(fullPriceFormatted));
         assertTrue("Valor sem desconto (De) não exibido no card", fullPrice.isDisplayed());
 

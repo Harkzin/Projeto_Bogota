@@ -62,12 +62,14 @@ public class CustomizarFaturaSteps {
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
         cart.isDebitPaymentFlow = true;
+        cart.updatePlanEntryPaymentMode(DEBITCARD);
         customizarFaturaPage.selecionarDebito();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
         cart.isDebitPaymentFlow = false;
+        cart.updatePlanEntryPaymentMode(TICKET);
         customizarFaturaPage.selecionarBoleto();
     }
 
@@ -84,8 +86,8 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
-        cart.setSelectedInvoiceType(EMAIL);
-        customizarFaturaPage.selecionarTipoFatura(EMAIL, cart.isDebitPaymentFlow);
+        cart.setSelectedInvoiceType(DIGITAL);
+        customizarFaturaPage.selecionarTipoFatura(DIGITAL, cart.isDebitPaymentFlow);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")

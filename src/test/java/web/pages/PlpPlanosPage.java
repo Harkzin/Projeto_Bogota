@@ -38,7 +38,7 @@ public class PlpPlanosPage {
         //Valida preço
         WebElement price = cardParent
                 .findElement(By.xpath("div[@data-price-for]//p[contains(@class, 'p-valor')]"));
-        Assert.assertEquals(plan.getFormattedPlanPrice(isDebitPaymentFlow, true), price.getText().trim());
+        Assert.assertEquals(plan.getFormattedPrice(isDebitPaymentFlow, true), price.getText().trim());
         Assert.assertTrue(price.isDisplayed());
 
         //Valida apps ilimitados

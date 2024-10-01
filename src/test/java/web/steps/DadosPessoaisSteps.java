@@ -67,7 +67,7 @@ public class DadosPessoaisSteps {
 
     @E("o usuário seleciona o tipo de sim [Esim]")
     public void selecionaEsim() {
-        cart.setEsimChip();
+        cart.setEsimChip(true);
         dadosPessoaisPage.selecionarEsim(cart.getDeliveryMode());
     }
 

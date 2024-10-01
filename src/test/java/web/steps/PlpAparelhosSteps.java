@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PlpAparelhosPage;
 import web.models.CartOrder;
 
-import static web.support.utils.Constants.focusPlan;
-
 public class PlpAparelhosSteps {
 
     private final PlpAparelhosPage plpAparelhosPage;
@@ -26,8 +24,8 @@ public class PlpAparelhosSteps {
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
     public void clicarEuQuero(String id) {
-        cart.setDevice(id);
-        cart.setPlan(focusPlan); //Plano foco configurado via property no ambiente.
+        cart.isDebitPaymentFlow = false;
+        cart.setDeviceWithFocusPlan(id);
         plpAparelhosPage.validarCardAparelho(cart.getDevice(), cart.getPlan().getName());
         plpAparelhosPage.clicaBotaoEuQuero(id);
     }

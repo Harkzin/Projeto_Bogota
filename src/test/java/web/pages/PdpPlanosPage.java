@@ -166,10 +166,10 @@ public class PdpPlanosPage {
         WebElement ticketNotLoyaltyNav = driverWeb.findElement("price-ticket-not-loyalty-nav", "id");
 
         //Valores de referência API
-        String debitLoyaltyPrice = plan.getFormattedPlanPrice(true, true);
-        String ticketLoyaltyPrice = plan.getFormattedPlanPrice(false, true);
-        String debitNotLoyaltyPrice = plan.getFormattedPlanPrice(true, false);
-        String ticketNotLoyaltyPrice = plan.getFormattedPlanPrice(false, false);
+        String debitLoyaltyPrice = plan.getFormattedPrice(true, true);
+        String ticketLoyaltyPrice = plan.getFormattedPrice(false, true);
+        String debitNotLoyaltyPrice = plan.getFormattedPrice(true, false);
+        String ticketNotLoyaltyPrice = plan.getFormattedPrice(false, false);
 
         //Recebe o WebElement e retorna o preço em String
         Function<WebElement, String> getPrice = element -> element

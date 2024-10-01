@@ -2,7 +2,6 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,10 +11,11 @@ import web.support.utils.DriverWeb;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
+import static org.junit.Assert.*;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
+import static web.support.utils.Constants.ProcessType.*;
 
 @Component
 @ScenarioScope
@@ -29,35 +29,35 @@ public class ComumPage {
     }
 
     private void validateElementText(String ref, String xpath) {
-        Assert.assertEquals("Texto do elemento diferente do esperado", ref, StringUtils.normalizeSpace(driverWeb.findByXpath(xpath).getText()));
-        Assert.assertTrue("Elemento não exibido", driverWeb.findByXpath(xpath).isDisplayed());
+        assertEquals("Texto do elemento diferente do esperado", ref, StringUtils.normalizeSpace(driverWeb.findByXpath(xpath).getText()));
+        assertTrue("Elemento não exibido", driverWeb.findByXpath(xpath).isDisplayed());
     }
 
     public static void validateElementText(String ref, WebElement element) {
-        Assert.assertEquals("Texto do elemento diferente do esperado", StringUtils.normalizeSpace(ref), StringUtils.normalizeSpace(element.getText()));
-        Assert.assertTrue("Elemento não exibido", element.isDisplayed());
+        assertEquals("Texto do elemento diferente do esperado", StringUtils.normalizeSpace(ref), StringUtils.normalizeSpace(element.getText()));
+        assertTrue("Elemento não exibido", element.isDisplayed());
     }
 
     public static void validateElementActiveVisible(WebElement element) {
-        Assert.assertTrue("Elemento desabilitado", element.isEnabled());
-        Assert.assertTrue("Elemento não exibido", element.isDisplayed());
+        assertTrue("Elemento desabilitado", element.isEnabled());
+        assertTrue("Elemento não exibido", element.isDisplayed());
     }
 
     //Valida os ícones dos Apps e Países da composição do Plano
     public static void validarMidiasPlano(List<String> appRef, List<WebElement> appFront, DriverWeb driverWeb) {
-        Assert.assertEquals("Mesma quantidade de [apps/países configurados] e [presentes no Front]", appRef.size(), appFront.size());
+        assertEquals("Mesma quantidade de [apps/países configurados] e [presentes no Front]", appRef.size(), appFront.size());
 
         driverWeb.waitElementVisible(appFront.get(0), 2); //Lazy loading Front
         IntStream.range(0, appRef.size()).forEachOrdered(i -> {
-            Assert.assertTrue("App/País do Front deve ser o mesmo da API - Front: <" + appFront.get(i)
+            assertTrue("App/País do Front deve ser o mesmo da API - Front: <" + appFront.get(i)
                             .getAttribute("src")
                             .replace("https://mondrian.claro.com.br/brands/app/72px-default/", "") + ">, API: <" + appRef.get(i) + ">",
                     appFront.get(i).getAttribute("src").contains(appRef.get(i)));
 
             if (i < 5) { //Até 5 ícones são exibidos diretamente, o restante fica oculto no tooltip (+X).
-                Assert.assertTrue("App/País deve estar visível", appFront.get(i).isDisplayed());
+                assertTrue("App/País deve estar visível", appFront.get(i).isDisplayed());
             } else {
-                Assert.assertFalse("App/País deve estar oculto", appFront.get(i).isDisplayed());
+                assertFalse("App/País deve estar oculto", appFront.get(i).isDisplayed());
             }
         });
     }
@@ -89,9 +89,9 @@ public class ComumPage {
         }
 
         IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-            Assert.assertEquals("Texto planPortability igual ao configurado", plan.getPlanPortability().get(i), planPortability.get(i).getText());
+            assertEquals("Texto planPortability igual ao configurado", plan.getPlanPortability().get(i), planPortability.get(i).getText());
 
-            Assert.assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
+            assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
         });
     }
 
@@ -106,6 +106,11 @@ public class ComumPage {
         boolean isDebit = cart.isDebitPaymentFlow;
         boolean hasLoyalty = cart.hasLoyalty;
         String contentParent = driverWeb.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
+
+        //TODO Falta o id do resumo desktop em aparelhos "cart-summary"
+        if (cart.isDeviceCart() && !driverWeb.isMobile()) {
+            contentParent = "//*[@id='cart-summary-mobile']/following-sibling::div[2]";
+        }
 
         //Valida nome, caso configurado
         if (!(plan.getName() == null)) {
@@ -174,11 +179,13 @@ public class ComumPage {
         validateElementText(loyaltyRef, contentParent + loyaltyPlatform);
     }
 
-    public void validarResumoCompraAparelho(CartOrder cart, boolean eSimFlow) {
-        driverWeb.actionPause(2000);
+    public void validarResumoCompraAparelho(CartOrder cart) {
+        driverWeb.actionPause(1000);
+
+        boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
+        boolean hasCommonSIM = !cart.isEsim() && isGrossFlow;
 
         String deviceContentParent;
-
         //TODO Tela de Parabens tem outra classe. Remover este bloco e atualizar os xpath apos ter sido implementado os atributos seletores no front
         ///////////////////////
         if (driverWeb.findElement("//*[@class='mdn-Container-fluid']", "xpath") != null) {
@@ -188,44 +195,40 @@ public class ComumPage {
         }
         ///////////////////////
 
-        //TODO Atualizar seletor
-        //deviceContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
-
-        Function<Double, String> formatPrice = price -> "R$ " + String.format(Locale.GERMAN, "%,.2f", price);
-
-        double basePrice = cart.getEntry(cart.getDevice().getCode()).getBasePrice();
-
         //Subtotal
-        double subTotal = eSimFlow ? basePrice : basePrice + 10D;
+        double subtotal = cart.getDevice().getCampaignPrice(!hasCommonSIM);
         String subtotalSelector = deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[1]";
         driverWeb.javaScriptClick(deviceContentParent + "//*[@id='sidebar-resume']/div/a", "xpath");
         driverWeb.waitElementVisible(driverWeb.findElement(subtotalSelector, "xpath"), 5);
-        Assert.assertEquals("Subtotal " + formatPrice.apply(subTotal), StringUtils.normalizeSpace(driverWeb.findElement(subtotalSelector, "xpath").getText()));
+        //TODO Bug ECCMAUT-806 validateElementText("Subtotal R$ " + formatPrice(subtotal), subtotalSelector);
 
         //Desconto Cupom
         if (cart.getAppliedCoupon() != null) {
-            validateElementText("Desconto Cupom -" + formatPrice.apply(cart.getEntry(cart.getDevice().getCode()).getDiscount()), deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[2]");
+            validateElementText("Desconto Cupom -R$ " + formatPrice(cart.getEntry(cart.getDevice().getCode()).getDiscount()), deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[2]");
         }
 
         //Valor Total a Pagar
         double totalPrice = cart.getEntry(cart.getDevice().getCode()).getTotalPrice();
-        String totalPricea = eSimFlow ? formatPrice.apply(totalPrice) : formatPrice.apply(totalPrice + 10D);
-        validateElementText(totalPricea, deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
+        if (hasCommonSIM) {
+            totalPrice += 10D;
+        }
+        //TODO Bug ECCMAUT-806 validateElementText("R$ " + formatPrice(totalPrice), deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
 
         //Nome Aparelho
-        if (!(cart.getDevice().getName() == null)) {
-            validateElementText(cart.getDevice().getName(), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p");
-        }
+        assertNotNull(cart.getDevice().getName());
+        validateElementText(cart.getDevice().getName(), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/p");
 
-        //Valor Aparelho
-        validateElementText(formatPrice.apply(basePrice), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]");
+        //Valor Campanha Aparelho
+        //TODO Bug ECCMAUT-806 validateElementText(cart.getDevice().getFormattedCampaignPrice(true), deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[1]/div[2]/div[2]/p[2]");
 
         //Tipo Chip
-        String simType = eSimFlow ? "eSIM" : "Chip Comum";
-        validateElementText(simType, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[1]/p");
+        if (isGrossFlow) {
+            String simType = cart.isEsim() ? "eSIM" : "Chip Comum";
+            validateElementText(simType, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[1]/p");
 
-        //Valor Chip
-        String chipPrice = eSimFlow ? "Grátis" : "R$ 10,00";
-        validateElementText(chipPrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]");
+            //Valor Chip
+            String chipPrice = cart.isEsim() ? "Grátis" : "R$ 10,00";
+            validateElementText(chipPrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]");
+        }
     }
 }

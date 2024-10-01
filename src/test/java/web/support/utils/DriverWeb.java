@@ -165,6 +165,7 @@ public class DriverWeb {
 
     public void javaScriptScrollTo(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
+        actionPause(200);
     }
 
     public void waitElementClickable(WebElement element, int timeoutSeconds) {

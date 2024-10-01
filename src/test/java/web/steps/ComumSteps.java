@@ -42,7 +42,7 @@ public class ComumSteps {
 
     @Mas("não deve haver alterações no valor e nem nas informações do Aparelho")
     public void validarResumoCompraAparelho() {
-        comumPage.validarResumoCompraAparelho(cart, cart.isEsim());
+        comumPage.validarResumoCompraAparelho(cart);
     }
 
     @E("o plano do carrinho será atualizado para o Plano Combo correspondente")

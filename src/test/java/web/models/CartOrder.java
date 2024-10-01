@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.models.product.Product;
-import web.support.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,8 @@ import static web.support.utils.Constants.*;
 import static web.support.api.RestAPI.getProductDetails;
 import static web.support.api.RestAPI.objMapper;
 import static web.support.utils.Constants.InvoiceType.*;
+import static web.support.utils.Constants.PaymentMode.*;
+import static web.support.utils.Constants.ProcessType.*;
 
 public class CartOrder {
 
@@ -70,7 +71,7 @@ public class CartOrder {
     private String portabilityClaroTicket;
     private String rentabilizationCoupon;
 
-    private Constants.InvoiceType selectedInvoiceType;
+    private InvoiceType selectedInvoiceType;
 
     private Product getProduct(String id) {
         return positionsAndPrices.entries.stream()
@@ -102,16 +103,24 @@ public class CartOrder {
         }
     }
 
-    public void setDevice(String deviceId) {
+    public void setDeviceWithFocusPlan(String deviceId) {
         if (!(this.deviceId == null)) {
             removeProduct(this.deviceId);
         }
         this.deviceId = deviceId;
 
+        essential.processType = ACQUISITION; //Default atual PLP/PDP
+        String defaultCampaign = "APV"; //Default atual PLP/PDP
+
         DeviceProduct device = createProduct(deviceId, DeviceProduct.class);
-        device.setDevicePriceInfo("APV", focusPlan, "1100");
-        double initialPrice = device.getCampaignPrice(device.isEsimOnly());
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(device, 1, initialPrice, initialPrice));
+        device.setDevicePriceInfo(defaultCampaign, focusPlan, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+        double basePrice = device.getCampaignPrice(true);
+
+        PositionsAndPrices.Entry deviceEntry = new PositionsAndPrices.Entry(device, 1, basePrice, 0D);
+        deviceEntry.bpo = defaultCampaign;
+        positionsAndPrices.entries.add(deviceEntry);
+
+        setPlan(focusPlan);
     }
 
     public void setPlan(String planId) {
@@ -121,8 +130,26 @@ public class CartOrder {
         this.planId = planId;
 
         PlanProduct plan = createProduct(planId, PlanProduct.class);
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), plan.getPlanPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED)));
-        //TODO Atualizar plan.getPlanPrice() para pegar o preço da API (preço da promo, ECCMAUT-888)
+
+        double promoDiscount;
+        if (isDeviceCart()) {
+            promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
+        } else {
+            promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
+            //TODO Atualizar para pegar o preço da API (preço da promo, ECCMAUT-888)
+        }
+
+        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), promoDiscount));
+    }
+
+    public void updatePlanForDevice(String planId) {
+        getDevice().setDevicePriceInfo(getEntry(deviceId).bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+
+        double deviceCampaignPrice = getDevice().getCampaignPrice(true);
+        getEntry(deviceId).basePrice = deviceCampaignPrice;
+        getEntry(deviceId).totalPrice = deviceCampaignPrice;
+
+        setPlan(planId);
     }
 
     public PositionsAndPrices.Entry getEntry(String id) {
@@ -133,10 +160,7 @@ public class CartOrder {
 
     public void addVoucherForDevice(String voucher) {
         double amount = 100D; //TODO Mock para CUPOM100. Valor deve vir da API ECCMAUT-888
-        PositionsAndPrices.Entry deviceEntry = getEntry(deviceId);
-        deviceEntry.discountValues.add(amount);
-        deviceEntry.totalPrice -= amount;
-
+        getEntry(deviceId).setDiscount(amount);
         appliedCouponCodes.add(voucher);
     }
 
@@ -147,8 +171,8 @@ public class CartOrder {
         return null;
     }
 
-    public void setEsimChip() {
-        eSIM = true;
+    public void setEsimChip(boolean isEsim) {
+        eSIM = isEsim;
     }
 
     public boolean isEsim() {
@@ -177,6 +201,10 @@ public class CartOrder {
 
     public void setProcessType(ProcessType processType) {
         essential.processType = processType;
+
+        if (isDeviceCart()) {
+            updatePlanForDevice(focusPlan);
+        }
     }
 
     public ProcessType getProcessType() {
@@ -198,7 +226,7 @@ public class CartOrder {
     private void addDependent(String id, String msisdn, ProcessType processType) {
         if (hasDependent() == 0) { //Cria entry caso seja o primeiro dependente
             Product dependente = createProduct("dependente", Product.class);
-            positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), dependente.getPrice()));
+            positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), 0D));
         } else { //Atualiza a quantidade e preço na entry caso já tenha dependentes adicionados
             PositionsAndPrices.Entry depEntry = getEntry("dependente");
             depEntry.quantity++;
@@ -213,21 +241,32 @@ public class CartOrder {
     }
 
     public void addNewLineDependent(String id) {
-        addDependent(id, null, ProcessType.ACQUISITION);
+        addDependent(id, null, ACQUISITION);
     }
 
     public void addPortabilityDependent(String id, String msisdn) {
-        addDependent(id, msisdn, ProcessType.PORTABILITY);
+        addDependent(id, msisdn, PORTABILITY);
     }
 
-    public void setSelectedInvoiceType(Constants.InvoiceType invoiceType) {
+    public void setSelectedInvoiceType(InvoiceType invoiceType) {
         selectedInvoiceType = invoiceType;
 
-        getEntry(planId).totalPrice = getPlan().getPlanPrice(isDebitPaymentFlow, invoiceType == PRINTED);
+        getEntry(planId).totalPrice = getPlan().getPrice(isDebitPaymentFlow, invoiceType == PRINTED);
+        //TODO Pegar valor da API ECCMAUT-888
     }
 
-    public Constants.InvoiceType getSelectedInvoiceType() {
+    public InvoiceType getSelectedInvoiceType() {
         return selectedInvoiceType;
+    }
+
+    public void updatePlanEntryPaymentMode(PaymentMode paymentMode) {
+        getEntry(planId).paymentMode = paymentMode;
+        getEntry(planId).totalPrice = getPlan().getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED);
+        //TODO Pegar valor da API ECCMAUT-888
+    }
+
+    public void setDDD(int ddd) {
+        claroDdd = ddd;
     }
 
     public static class ClaroChip {
@@ -428,15 +467,18 @@ public class CartOrder {
             private int entryNumber;
 
             private PaymentMode paymentMode;
+            private String bpo;
             private String status;
 
             private Entry() {}
 
-            private Entry(Product product, int quantity, double basePrice, double totalPrice) {
+            private Entry(Product product, int quantity, double basePrice, double discount) {
                 this.product = product;
                 this.quantity = quantity;
                 this.basePrice = basePrice;
-                this.totalPrice = totalPrice;
+
+                discountValues.add(discount);
+                totalPrice = basePrice - discount;
             }
 
             public double getBasePrice() {
@@ -449,6 +491,19 @@ public class CartOrder {
 
             public double getDiscount() {
                 return discountValues.get(0);
+            }
+
+            public Product getProduct() {
+                return product;
+            }
+
+            private void setDiscount(double discount) {
+                totalPrice -= discount;
+                discountValues.set(0, discount);
+            }
+
+            public void setBpo(String bpo) {
+                this.bpo = bpo;
             }
         }
     }

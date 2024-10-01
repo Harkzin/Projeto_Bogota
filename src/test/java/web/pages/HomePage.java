@@ -48,7 +48,7 @@ public class HomePage {
         //Valida preço
         WebElement price = cardParent
                 .findElement(By.xpath("div[@data-price-for]/div/div[@class='preco-home bestPrice']/div/p[2]"));
-        Assert.assertEquals(plan.getFormattedPlanPrice(isDebit, true), price.getText().trim());
+        Assert.assertEquals(plan.getFormattedPrice(isDebit, true), price.getText().trim());
         Assert.assertTrue(price.isDisplayed());
 
         //Valida apps ilimitados

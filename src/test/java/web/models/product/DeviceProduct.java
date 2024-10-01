@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import static web.support.api.RestAPI.*;
+import static web.support.utils.Constants.*;
 
 public final class DeviceProduct extends Product {
 
@@ -119,8 +120,13 @@ public final class DeviceProduct extends Product {
         return !getDeviceAttribute("features").featureValues.get(0).value.toLowerCase().contains("nanosim");
     }
 
-    public List<DevicePriceInfo.PotentialPromotion> getPotentialPromotions() {
-        return devicePriceInfo.potentialPromotions;
+    public double getPlanPromoDiscount(ProcessType processType, PaymentMode paymentMode, InvoiceType invoiceType, boolean hasLoyalty, int ddd) {
+        return devicePriceInfo.potentialPromotions.stream()
+                .filter(p -> p.processTypeList.contains(processType) && p.paymentMethod == paymentMode)
+                .filter(p -> paymentMode == PaymentMode.TICKET || !p.invoiceList.contains(invoiceType))
+                .filter(p -> p.loyalty == hasLoyalty && p.dddList.contains(ddd))
+                .findFirst().orElseThrow()
+                .discountValue;
     }
 
     public static final class Stock {
@@ -222,25 +228,25 @@ public final class DeviceProduct extends Product {
             public List<Integer> dddList = new ArrayList<>();
 
             @JsonProperty("discountValue")
-            public int discountValue;
+            public double discountValue;
 
             @JsonProperty("fixedDiscount")
             public boolean fixedDiscount;
 
             @JsonProperty("invoiceList")
-            public List<String> invoiceList = new ArrayList<>();
+            public List<InvoiceType> invoiceList = new ArrayList<>();
 
             @JsonProperty("loyaltyMessage")
             public PotentialPromotion.LoyaltyMessage loyaltyMessage;
 
             @JsonProperty("paymentMethod")
-            public String paymentMethod;
+            public PaymentMode paymentMethod;
 
             @JsonProperty("priority")
             public int priority;
 
             @JsonProperty("processTypeList")
-            public List<String> processTypeList = new ArrayList<>();
+            public List<ProcessType> processTypeList = new ArrayList<>();
 
             public static final class LoyaltyMessage {
 
