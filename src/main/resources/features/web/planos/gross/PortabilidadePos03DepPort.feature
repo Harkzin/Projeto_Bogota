@@ -1,17 +1,17 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-972 - Aquisicao Pos - 03 Dependente
+Funcionalidade: ECCMAUT-972 - Portabilidade Pos - 03 Dependente
 
   @Portabilidade
   @Pos
   @PortabilidadePos03DepPort
-  Cenario: Aquisicao Pos - 03 Dependente
+  Cenario: Portabilidade Pos - 03 Dependente
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17524" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona a opção [Aquisição]
+    E seleciona a opção [Portabilidade]
     E preenche os campos: [Celular de contato] "11910211965", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
