@@ -30,8 +30,8 @@ public class PdpPlanosPage {
     private WebElement debitPayment;
     private WebElement ticketPayment;
     private WebElement loyalty;
-    private WebElement noLoyalty;
     private WebElement planCharacteristics;
+    private WebElement planNameNav;
 
     public void validarPdpPlanos() {
         driverQA.waitPageLoad(cartOrder.getPlan().getUrl(), 10);
@@ -39,13 +39,13 @@ public class PdpPlanosPage {
         debitPayment = driverQA.findElement("rdn-debitcard", "id");
         ticketPayment = driverQA.findElement("rdn-ticket", "id");
         loyalty = driverQA.findElement("rdn-loyalty-true", "id");
-        noLoyalty = driverQA.findElement("rdn-loyalty-false", "id");
         planCharacteristics = driverQA.findElement("plan-characteristics", "id");
+        planNameNav = driverQA.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
 
         //Valida opções default
         validarDebito();
         validarFidelidade();
-        validarValorPlano(true, true);
+        validarValorPlano(true);
 
         //Valida resumo, caso configurado
         if (!cartOrder.getPlan().getSummary().isEmpty()) {
@@ -67,24 +67,21 @@ public class PdpPlanosPage {
 
             String descriptionText = descriptionElements
                     .stream()
-                    .map(webElement -> webElement.getAttribute("outerHTML"))
+                    .map(webElement -> webElement.getAttribute("outerHTML") + "\n")
                     .collect(Collectors.joining());
 
             Assert.assertTrue(descriptionText.contains(cartOrder.getPlan().getDescription()));
         }
 
         //Valida nome do Plano, caso configurado
-        if (!cartOrder.getPlan().getName().isEmpty()) {
-            //Nome principal
-            WebElement planName = driverQA.findElement("//*[@id='plan-name']/span", "xpath");
-            ComumPage.validateElementText(cartOrder.getPlan().getName(), planName);
+        //Nome principal
+        WebElement planName = driverQA.findElement("//*[@id='plan-name']/span", "xpath");
+        ComumPage.validateElementText(cartOrder.getPlan().getName(), planName);
 
-            //Nome nav (barra horizontal superior)
-            showNav();
-            WebElement planNameNav = driverQA.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
-            Assert.assertEquals(cartOrder.getPlan().getName(), planNameNav.getText());
-            Assert.assertTrue(planNameNav.isDisplayed());
-        }
+        //Nome nav (barra horizontal superior)
+        showNav();
+        Assert.assertEquals(cartOrder.getPlan().getName(), planNameNav.getText());
+        Assert.assertTrue(planNameNav.isDisplayed());
 
         validarAppsIlimitados(true);
 
@@ -119,6 +116,7 @@ public class PdpPlanosPage {
     private void showNav() {
         //Scroll forçado para exibir o nav (barra suspensa superior). Só aparece ao descer na página.
         driverQA.javaScriptScrollTo(driverQA.findElement("footer-claro", "id"));
+        driverQA.waitElementToBeClickable(planNameNav, 5);
     }
 
     private void validarDebito() {
@@ -128,7 +126,6 @@ public class PdpPlanosPage {
 
     private void validarFidelidade() {
         Assert.assertTrue(loyalty.isSelected());
-        Assert.assertFalse(noLoyalty.isSelected());
     }
 
     public void selecionarDebito() {
@@ -142,34 +139,17 @@ public class PdpPlanosPage {
         Assert.assertFalse(debitPayment.isSelected());
     }
 
-    public void selecionarFidelidade() {
-        driverQA.javaScriptClick(loyalty);
-        validarFidelidade();
-    }
-
-    public void selecionarSemFidelidade() {
-        driverQA.javaScriptClick(noLoyalty);
-        Assert.assertTrue(noLoyalty.isSelected());
-        Assert.assertFalse(loyalty.isSelected());
-    }
-
-    public void validarValorPlano(boolean isDebit, boolean hasLoyalty) {
+    public void validarValorPlano(boolean isDebit) {
         //Valores do Front
         WebElement debitLoyalty = driverQA.findElement("price-debit-loyalty", "id");
         WebElement ticketLoyalty = driverQA.findElement("price-ticket-loyalty", "id");
-        WebElement debitNotLoyalty = driverQA.findElement("price-debit-not-loyalty", "id");
-        WebElement ticketNotLoyalty = driverQA.findElement("price-ticket-not-loyalty", "id");
 
         WebElement debitLoyaltyNav = driverQA.findElement("price-debit-loyalty-nav", "id");
         WebElement ticketLoyaltyNav = driverQA.findElement("price-ticket-loyalty-nav", "id");
-        WebElement debitNotLoyaltyNav = driverQA.findElement("price-debit-not-loyalty-nav", "id");
-        WebElement ticketNotLoyaltyNav = driverQA.findElement("price-ticket-not-loyalty-nav", "id");
 
         //Valores de referência API
         String debitLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(true, true);
         String ticketLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(false, true);
-        String debitNotLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(true, false);
-        String ticketNotLoyaltyPrice = cartOrder.getPlan().getFormattedPlanPrice(false, false);
 
         //Recebe o WebElement e retorna o preço em String
         Function<WebElement, String> getPrice = element -> element
@@ -178,65 +158,29 @@ public class PdpPlanosPage {
                 .trim();
 
         if (isDebit) {
-            if (hasLoyalty) {
-                Consumer<WebElement> validateDebitLoyalty = webElement -> {
-                    Assert.assertEquals(debitLoyaltyPrice, getPrice.apply(webElement));
+            Consumer<WebElement> validateDebitLoyalty = webElement -> {
+                Assert.assertEquals(debitLoyaltyPrice, getPrice.apply(webElement));
 
-                    //Exibe apenas um dos preços
-                    Assert.assertTrue(webElement.isDisplayed());
-                    Assert.assertFalse(ticketLoyalty.isDisplayed());
-                    Assert.assertFalse(debitNotLoyalty.isDisplayed());
-                    Assert.assertFalse(ticketNotLoyalty.isDisplayed());
-                };
+                //Exibe apenas um dos preços
+                Assert.assertTrue(webElement.isDisplayed());
+                Assert.assertFalse(ticketLoyalty.isDisplayed());
+            };
 
-                validateDebitLoyalty.accept(debitLoyalty);
-                showNav();
-                validateDebitLoyalty.accept(debitLoyaltyNav);
-            } else {
-                Consumer<WebElement> validateDebitNotLoyalty = webElement -> {
-                    Assert.assertEquals(debitNotLoyaltyPrice, getPrice.apply(webElement));
-
-                    //Exibe apenas um dos preços
-                    Assert.assertFalse(debitLoyalty.isDisplayed());
-                    Assert.assertFalse(ticketLoyalty.isDisplayed());
-                    Assert.assertTrue(webElement.isDisplayed());
-                    Assert.assertFalse(ticketNotLoyalty.isDisplayed());
-                };
-
-                validateDebitNotLoyalty.accept(debitNotLoyalty);
-                showNav();
-                validateDebitNotLoyalty.accept(debitNotLoyaltyNav);
-            }
+            validateDebitLoyalty.accept(debitLoyalty);
+            showNav();
+            validateDebitLoyalty.accept(debitLoyaltyNav);
         } else {
-            if (hasLoyalty) {
-                Consumer<WebElement> validateTicketLoyalty = webElement -> {
-                    Assert.assertEquals(ticketLoyaltyPrice, getPrice.apply(webElement));
+            Consumer<WebElement> validateTicketLoyalty = webElement -> {
+                Assert.assertEquals(ticketLoyaltyPrice, getPrice.apply(webElement));
 
-                    //Exibe apenas um dos preços
-                    Assert.assertFalse(debitLoyalty.isDisplayed());
-                    Assert.assertTrue(webElement.isDisplayed());
-                    Assert.assertFalse(debitNotLoyalty.isDisplayed());
-                    Assert.assertFalse(ticketNotLoyalty.isDisplayed());
-                };
+                //Exibe apenas um dos preços
+                Assert.assertFalse(debitLoyalty.isDisplayed());
+                Assert.assertTrue(webElement.isDisplayed());
+            };
 
-                validateTicketLoyalty.accept(ticketLoyalty);
-                showNav();
-                validateTicketLoyalty.accept(ticketLoyaltyNav);
-            } else {
-                Consumer<WebElement> validateTicketNotLoyalty = webElement -> {
-                    Assert.assertEquals(ticketNotLoyaltyPrice, getPrice.apply(webElement));
-
-                    //Exibe apenas um dos preços
-                    Assert.assertFalse(debitLoyalty.isDisplayed());
-                    Assert.assertFalse(ticketLoyalty.isDisplayed());
-                    Assert.assertFalse(debitNotLoyalty.isDisplayed());
-                    Assert.assertTrue(webElement.isDisplayed());
-                };
-
-                validateTicketNotLoyalty.accept(ticketNotLoyalty);
-                showNav();
-                validateTicketNotLoyalty.accept(ticketNotLoyaltyNav);
-            }
+            validateTicketLoyalty.accept(ticketLoyalty);
+            showNav();
+            validateTicketLoyalty.accept(ticketLoyaltyNav);
         }
     }
 
