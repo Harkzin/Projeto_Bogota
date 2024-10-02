@@ -30,7 +30,7 @@
         <dependency>
             <groupId>net.masterthought</groupId>
             <artifactId>cucumber-reporting</artifactId>
-            <version>5.8.0</version>
+            <version>5.8.1</version>
         </dependency>
 
         <dependency>
@@ -67,13 +67,13 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.21.0</version>
+            <version>4.22.0</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.8.0</version>
+            <version>5.9.1</version>
         </dependency>
 
         <dependency>
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>com.browserstack</groupId>
             <artifactId>browserstack-java-sdk</artifactId>
-            <version>LATEST</version>
+            <version>1.23.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -170,6 +170,7 @@
             </plugin>
         </plugins>
     </build>
+
     <profiles>
         <profile>
             <id>browserstack-profile</id>

@@ -3,22 +3,23 @@ package web.steps;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PlpPlanosPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 public class PlpPlanosSteps {
 
     private final PlpPlanosPage plpPlanosPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public PlpPlanosSteps(PlpPlanosPage plpPlanosPage, CartOrder cartOrder) {
+    public PlpPlanosSteps(PlpPlanosPage plpPlanosPage, CartOrder cart) {
         this.plpPlanosPage = plpPlanosPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Quando("selecionar o plano de id: {string}")
     public void selecionarPlano(String id) {
-        cartOrder.setPlan(id);
+        cart.setPlan(id);
+        plpPlanosPage.validarCardPlano(cart.getPlan(), cart.isDebitPaymentFlow);
         plpPlanosPage.selecionarPlano(id);
     }
 }

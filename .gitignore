@@ -1,7 +1,3 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
-
 # BrowserStack Files
 browserstack.err
 performance-report.csv
@@ -15,5 +11,3 @@ performance-report.csv
 /out
 /target
 /logs
-browserstack.err
-performance-report.csv

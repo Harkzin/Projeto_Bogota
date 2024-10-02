@@ -1,5 +1,6 @@
 package web.support.utils;
 
+import io.cucumber.spring.ScenarioScope;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.*;
@@ -10,6 +11,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.stereotype.Component;
 import web.support.utils.Constants.Email;
 
 import java.net.MalformedURLException;
@@ -21,11 +23,14 @@ import static java.time.Duration.ofSeconds;
 import static org.openqa.selenium.Platform.IOS;
 import static web.support.api.RestAPI.getEmailMessage;
 
-public class DriverQA {
+@Component
+@ScenarioScope
+public class DriverWeb {
 
     private WebDriver driver;
+    private boolean mobilePlatform;
 
-    public void setupDriver() {
+    public DriverWeb() {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
             String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");
@@ -44,6 +49,7 @@ public class DriverQA {
             chromeOptions.addArguments("--disable-notifications");
             chromeOptions.addArguments("--disable-dev-shm-usage");
             chromeOptions.addArguments("--deny-permission-prompts");
+
             if (browserstack.equals("true")) {
                 try {
                     driver = new RemoteWebDriver(new URL("https://hub.browserstack.com/wd/hub"), chromeOptions);
@@ -55,15 +61,17 @@ public class DriverQA {
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (!getPlatformName().toString().matches("ANDROID|IOS")) {
+
+            if (!getPlatformName().name().matches("ANDROID|IOS")) {
                 if (maximized.equals("true")) { //Local
                     driver.manage().window().maximize();
                 } else { //Jenkins
                     driver.manage().window().setSize(new Dimension(1920, 1080));
                     driver.manage().window().setPosition(new Point(0, 0));
                 }
+            } else {
+                mobilePlatform = true;
             }
-
         }
     }
 
@@ -71,72 +79,44 @@ public class DriverQA {
         WebElement element;
 
         try {
-            switch (selectorType) {
-                case "id":
-                    element = driver.findElement(By.id(selectorValue));
-                    break;
-                case "linkt":
-                    element = driver.findElement(By.linkText(selectorValue));
-                    break;
-                case "partialLink":
-                    element = driver.findElement(By.partialLinkText(selectorValue));
-                    break;
-                case "name":
-                    element = driver.findElement(By.name(selectorValue));
-                    break;
-                case "tag":
-                    element = driver.findElement(By.tagName(selectorValue));
-                    break;
-                case "xpath":
-                    element = driver.findElement(By.xpath(selectorValue));
-                    break;
-                case "class":
-                    element = driver.findElement(By.className(selectorValue));
-                    break;
-                case "css":
-                    element = driver.findElement(By.cssSelector(selectorValue));
-                    break;
-                default:
-                    throw new InvalidArgumentException("Invalid selector type: " + selectorType);
-            }
+            element = switch (selectorType) {
+                case "id" -> driver.findElement(By.id(selectorValue));
+                case "link" -> driver.findElement(By.linkText(selectorValue));
+                case "partialLink" -> driver.findElement(By.partialLinkText(selectorValue));
+                case "name" -> driver.findElement(By.name(selectorValue));
+                case "tag" -> driver.findElement(By.tagName(selectorValue));
+                case "xpath" -> driver.findElement(By.xpath(selectorValue));
+                case "class" -> driver.findElement(By.className(selectorValue));
+                case "css" -> driver.findElement(By.cssSelector(selectorValue));
+                default -> throw new InvalidArgumentException("Invalid selector type: " + selectorType);
+            };
             return element;
         } catch (Exception e) {
             return null;
         }
     }
 
-    public List<WebElement> findElements(String selectorValue, String selectorType) {
-        List<WebElement> elements;
+    public WebElement findById(String id) {
+        return findElement(id, "id");
+    }
 
-        switch (selectorType) {
-            case "id":
-                elements = driver.findElements(By.id(selectorValue));
-                break;
-            case "link":
-                elements = driver.findElements(By.linkText(selectorValue));
-                break;
-            case "partialLink":
-                elements = driver.findElements(By.partialLinkText(selectorValue));
-                break;
-            case "name":
-                elements = driver.findElements(By.name(selectorValue));
-                break;
-            case "tag":
-                elements = driver.findElements(By.tagName(selectorValue));
-                break;
-            case "xpath":
-                elements = driver.findElements(By.xpath(selectorValue));
-                break;
-            case "class":
-                elements = driver.findElements(By.className(selectorValue));
-                break;
-            case "css":
-                elements = driver.findElements(By.cssSelector(selectorValue));
-                break;
-            default:
-                throw new InvalidArgumentException("Invalid selector type: " + selectorType);
-        }
-        return elements;
+    public WebElement findByXpath(String xpath) {
+        return findElement(xpath, "xpath");
+    }
+
+    public List<WebElement> findElements(String selectorValue, String selectorType) {
+
+        return switch (selectorType) {
+            case "id" -> driver.findElements(By.id(selectorValue));
+            case "link" -> driver.findElements(By.linkText(selectorValue));
+            case "partialLink" -> driver.findElements(By.partialLinkText(selectorValue));
+            case "name" -> driver.findElements(By.name(selectorValue));
+            case "tag" -> driver.findElements(By.tagName(selectorValue));
+            case "xpath" -> driver.findElements(By.xpath(selectorValue));
+            case "class" -> driver.findElements(By.className(selectorValue));
+            case "css" -> driver.findElements(By.cssSelector(selectorValue));
+            default -> throw new InvalidArgumentException("Invalid selector type: " + selectorType);
+        };
     }
 
     public void sendKeys(WebElement element, String text) {
@@ -147,7 +127,6 @@ public class DriverQA {
             Actions action = new Actions(driver);
             action.pause(Duration.ofMillis(500)).click(element);
             text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
-
         }
     }
 
@@ -165,7 +144,6 @@ public class DriverQA {
         }
     }
 
-
     public void actionPause(int miliseconds) {
         Actions action = new Actions(driver);
         action.pause(Duration.ofMillis(miliseconds)).perform();
@@ -177,6 +155,10 @@ public class DriverQA {
 
     public Platform getPlatformName() {
         return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
+    }
+
+    public boolean isMobile() {
+        return mobilePlatform;
     }
 
     public Document getEmail(String emailAddress, Email emailSubject) {
@@ -198,34 +180,36 @@ public class DriverQA {
 
     public void javaScriptScrollTo(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'})", element);
+        actionPause(200);
     }
 
-    public void waitElementToBeClickable(WebElement element, int timeoutSeconds) {
+    public void waitElementClickable(WebElement element, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    public void waitElementVisibility(WebElement element, int timeoutSeconds) {
+    public void waitElementVisible(WebElement element, int timeoutSeconds) {
         javaScriptScrollTo(element);
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitElementInvisibility(WebElement element, int timeoutSeconds) {
+    public void waitElementInvisible(WebElement element, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
-    public void waitElementPresence(String xpath, int timeoutSeconds) {
+    public WebElement waitElementPresence(String xpath, int timeoutSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeoutSeconds));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+
+        return driver.findElement(By.xpath(xpath));
     }
 
-    public void waitAttributeContainsText(WebElement element, String attribute, String value, long time) {
+    public void waitAttributeContainsText(WebElement element, String attribute, String value, int time) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(time));
         wait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
-
 
     public void waitPageLoad(String urlFraction, Integer timeout) {
         WebDriverWait wait = new WebDriverWait(driver, ofSeconds(timeout));

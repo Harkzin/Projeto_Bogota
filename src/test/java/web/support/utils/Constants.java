@@ -7,7 +7,8 @@ public final class Constants {
     private Constants() {}
 
     public static final String ambiente = System.getProperty("env", "s6").toLowerCase();
-    public static final String urlAmbiente = "https://accstorefront.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com";
+    public static final String urlAmbiente = String.format("https://accstorefront.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com", ambiente);
+    public static final String focusPlan = System.getProperty("focusPlan", "17528"); //Plano foco configurado via property no ambiente.
 
     public enum ProcessType {
         ACQUISITION,
@@ -43,14 +44,16 @@ public final class Constants {
 
     public enum InvoiceType {
         WHATSAPP,
-        EMAIL,
-        PRINTED
+        DIGITAL, //E-mail
+        PRINTED //Correios
     }
 
-    public enum PlanPaymentMode {
-        DEBIT,
+    public enum PaymentMode {
+        DEBITCARD,
         TICKET,
-        CREDIT_CARD
+        PIX,
+        VOUCHER,
+        CLAROCLUBE
     }
 
     public static final Map<String, String> planSingleToCombo = Map.of(
@@ -62,4 +65,6 @@ public final class Constants {
             "17522", "17538",
             "17524", "17540"
     );
+
+    public static final double DEPENDENT_PRICE = 50D;
 }

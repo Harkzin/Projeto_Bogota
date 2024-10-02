@@ -6,35 +6,37 @@ import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.HomePage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 public class HomeSteps {
 
     private final HomePage homePage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public HomeSteps(HomePage homePage, CartOrder cartOrder) {
+    public HomeSteps(HomePage homePage, CartOrder cart) {
         this.homePage = homePage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Dado("que o usuário acesse a Loja Online")
     public void AcessarLojaOnline() {
+        cart.setDDD(11); //Default SP 11 para geolocation bloqueada.
         homePage.acessarLojaHome();
     }
 
     @Quando("selecionar o plano de id {string} do carrossel da Home")
     public void selecionarPlano(String id) {
-        cartOrder.setPlan(id);
+        cart.setPlan(id);
+        homePage.validarCardPlano(cart.getPlan(), true);
         homePage.selecionarPlano(id);
     }
 
     @Quando("selecionar o plano Controle de id {string} na Home")
     public void selecionarPlanoControle(String id) {
-        cartOrder.isDebitPaymentFlow = false;
-
-        cartOrder.setPlan(id);
+        cart.isDebitPaymentFlow = false;
+        cart.setPlan(id);
+        homePage.validarCardPlano(cart.getPlan(), false);
         homePage.selecionarPlanoControle(id);
     }
 
@@ -55,7 +57,7 @@ public class HomeSteps {
 
     @Quando("o usuário clicar na opção [Celulares] do header")
     public void acessarPlpCelulares() {
-        homePage.acessarMenuCelulares();
+        homePage.acessarPlpAparelhos();
     }
 
     @Quando("o usuário clicar na opção [Acessórios] do header")
@@ -65,7 +67,8 @@ public class HomeSteps {
 
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
-        cartOrder.setPlan(id);
+        cart.setPlan(id);
+        homePage.validarCardPlano(cart.getPlan(), true);
         homePage.acessarPdpPlano(id);
     }
 

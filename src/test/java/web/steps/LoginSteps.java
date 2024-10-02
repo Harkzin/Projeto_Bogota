@@ -6,17 +6,17 @@ import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.LoginPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 public class LoginSteps {
 
     private final LoginPage loginPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public LoginSteps(LoginPage loginPage, CartOrder cartOrder) {
+    public LoginSteps(LoginPage loginPage, CartOrder cart) {
         this.loginPage = loginPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Entao("é direcionado para a tela de opções da área logada")
@@ -66,8 +66,8 @@ public class LoginSteps {
 
     @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
-        cartOrder.essential.user.email = email;
-        loginPage.selecionaReceberCodigoEmail();
+        cart.setUserEmail(email);
+        loginPage.selecionarCodigoEmail(email);
     }
 
     @E("é direcionado para a tela de token por email")
@@ -77,7 +77,7 @@ public class LoginSteps {
 
     @E("preenche o campo [Digite o código recebido] com o token")
     public void preencherToken() {
-        loginPage.inserirTokenEmail();
+        loginPage.inserirTokenEmail(cart.getUserEmail());
     }
 
     @Quando("o usuário clicar no botão [Confirmar]")

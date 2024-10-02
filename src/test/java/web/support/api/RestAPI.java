@@ -2,6 +2,7 @@ package web.support.api;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.Jsoup;
@@ -23,8 +24,12 @@ public final class RestAPI {
     private RestAPI() {}
 
     public static final HttpClient clientHttp = HttpClient.newHttpClient();
+
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
-    public static final ObjectMapper objMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    public static final ObjectMapper objMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
 
     public static String getCpf() {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
@@ -89,8 +94,7 @@ public final class RestAPI {
         List<JsonNode> messageList;
 
         try {
-            messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {
-            });
+            messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {});
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -162,12 +166,41 @@ public final class RestAPI {
     public static String getProductDetails(String product) {
         final HttpRequest productDetails = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.cokecxf-commercec1-" + ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/products/" + product + "?fields=FULL"))
-                .timeout(ofSeconds(15))
+                .timeout(ofSeconds(10))
                 .GET()
                 .build();
 
         try {
             return clientHttp.send(productDetails, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String getEcommToken() {
+        final HttpRequest ecommTokenRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.cokecxf-commercec1-s6-public.model-t.cc.commerce.ondemand.com/authorizationserver/oauth/token?client_id=claro_client&client_secret=cl4r0&grant_type=client_credentials"))
+                .timeout(ofSeconds(10))
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+
+        try {
+            return objMapper.readTree(clientHttp.send(ecommTokenRequest, HttpResponse.BodyHandlers.ofString()).body()).get("access_token").asText();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getDevicePriceInfo(String campaign, String planCode, String deviceCode, String salesOrg) {
+        final HttpRequest devicePriceInfoRequest = HttpRequest.newBuilder()
+                .uri(URI.create(String.format("https://api.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/products/campaign/automation?campaign=%s&planCode=%s&deviceCode=%s&salesOrg=%s", ambiente, campaign, planCode, deviceCode, salesOrg)))
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getEcommToken())
+                .GET()
+                .build();
+
+        try {
+            return clientHttp.send(devicePriceInfoRequest, HttpResponse.BodyHandlers.ofString()).body();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

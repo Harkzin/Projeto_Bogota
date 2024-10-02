@@ -3,19 +3,19 @@ package web.steps;
 import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.DadosPessoaisPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 import static web.support.utils.Constants.DeliveryMode.*;
 
 public class DadosPessoaisSteps {
 
     private final DadosPessoaisPage dadosPessoaisPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cartOrder) {
+    public DadosPessoaisSteps(DadosPessoaisPage dadosPessoaisPage, CartOrder cart) {
         this.dadosPessoaisPage = dadosPessoaisPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Então("é direcionado para a tela de Dados Pessoais")
@@ -32,21 +32,21 @@ public class DadosPessoaisSteps {
 
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
-        cartOrder.delivery.deliveryMode = CONVENTIONAL;
+        cart.setDeliveryMode(CONVENTIONAL);
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
-        cartOrder.delivery.deliveryMode = EXPRESS;
+        cart.setDeliveryMode(EXPRESS);
         dadosPessoaisPage.inserirCep(cep);
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(true, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
+        dadosPessoaisPage.validarTiposEntregaEChip(true, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @E("o usuário desmarcar a opção [Usar o mesmo endereço de entrega]")
@@ -67,12 +67,13 @@ public class DadosPessoaisSteps {
 
     @E("o usuário seleciona o tipo de sim [Esim]")
     public void selecionaEsim() {
-        dadosPessoaisPage.selecionarEsim();
+        cart.setEsimChip(true);
+        dadosPessoaisPage.selecionarEsim(cart.getDeliveryMode());
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(false, cartOrder.delivery.deliveryMode, cartOrder.hasDevice);
+        dadosPessoaisPage.validarTiposEntregaEChip(false, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")

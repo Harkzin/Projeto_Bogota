@@ -5,37 +5,37 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.support.utils.DriverQA;
+import web.support.utils.DriverWeb;
 
 @Component
 @ScenarioScope
 public class ClaroClubePage {
 
-    private final DriverQA driverQA;
+    private final DriverWeb driverWeb;
 
     @Autowired
-    public ClaroClubePage(DriverQA driverQA) {
-        this.driverQA = driverQA;
+    public ClaroClubePage(DriverWeb driverWeb) {
+        this.driverWeb = driverWeb;
     }
 
     private WebElement continuar;
     private WebElement phone;
 
     public void validarPaginaClaroClube() {
-        driverQA.waitPageLoad("/login/claro-clube", 10);
+        driverWeb.waitPageLoad("/login/claro-clube", 10);
 
-        phone = driverQA.findElement("phone", "id");
-        continuar = driverQA.findElement("//*[@id='claro-clube-form']/button", "xpath");
+        phone = driverWeb.findElement("phone", "id");
+        continuar = driverWeb.findElement("//*[@id='claro-clube-form']/button", "xpath");
 
         Assert.assertTrue(phone.isDisplayed());
         Assert.assertFalse(continuar.isEnabled());
     }
 
     public void preencheTelefone(String phone) {
-        driverQA.sendKeysLogin(this.phone, phone);
+        driverWeb.sendKeysLogin(this.phone, phone);
     }
 
     public void clicarBotaoContinuarClaroClube() {
-        driverQA.javaScriptClick(continuar);
+        driverWeb.javaScriptClick(continuar);
     }
 }

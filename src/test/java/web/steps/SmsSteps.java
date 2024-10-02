@@ -5,16 +5,16 @@ import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.SmsPage;
-import web.support.CartOrder;
+import web.models.CartOrder;
 
 public class SmsSteps {
     private final SmsPage smsPage;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public SmsSteps(SmsPage smsPage, CartOrder cartOrder) {
+    public SmsSteps(SmsPage smsPage, CartOrder cart) {
         this.smsPage = smsPage;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
     @Entao("é direcionado para a tela de SMS")
