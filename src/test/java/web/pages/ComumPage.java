@@ -109,12 +109,14 @@ public class ComumPage {
         //Valida título extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayTitle()) {
             WebElement claroTitleExtraPlay = driverQA.findElement(planContentParent + "//div[contains(@class, 'product-card-content')]/p", "xpath");
+
             validateElementText(cartOrder.getPlan().getExtraPlayTitle(), claroTitleExtraPlay);
         }
 
         //Valida apps extraPlay, caso configurado
         if (cartOrder.getPlan().hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = driverQA.findElements(planContentParent + "//div[contains(@class, 'extra-play')]//img", "xpath");
+
             validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
         }
 
