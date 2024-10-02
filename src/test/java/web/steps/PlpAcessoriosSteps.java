@@ -23,7 +23,7 @@ public class PlpAcessoriosSteps {
         plpAcessoriosPage.validarTodasOfertas();
     }
 
-    @Quando("o usuário clicar no botão [Comprar] no produto [Repetidor Mesh Deco]")
+    @Quando("o usuário clicar no botão [Comprar] no produto [CARREGADOR DE PAREDE CONCEPT]")
     public void clicarComprar(){
         plpAcessoriosPage.clilcarBotaoComprar();
     }

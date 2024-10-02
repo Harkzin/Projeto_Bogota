@@ -57,6 +57,10 @@ public class FormaPagamentoPage {
         Assert.assertFalse(finalizarPix.isDisplayed());
     }
 
+    public void validarPaginaFormaPagamentoAcessorios() {
+        driverWeb.waitPageLoad("/payment-device-method", 10);
+    }
+
     public void preencherCupom(String voucher) {
         driverWeb.sendKeys(cupom, voucher);
     }
