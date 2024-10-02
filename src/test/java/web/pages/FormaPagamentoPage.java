@@ -58,7 +58,7 @@ public class FormaPagamentoPage {
     }
 
     public void preencherCupom(String voucher) {
-        driverWeb.actionSendKeys(cupom, voucher);
+        driverWeb.sendKeys(cupom, voucher);
     }
 
     public void clicarAplicarCupom() {
@@ -102,10 +102,10 @@ public class FormaPagamentoPage {
     }
 
     public void preencherDadosCartao(String name, String number, String date, String cvv, String installments) {
-        driverWeb.actionSendKeys(cardName, name);
-        driverWeb.actionSendKeys(cardNumber, number);
-        driverWeb.actionSendKeys(cardExpireDate, date);
-        driverWeb.actionSendKeys(cardCVV, cvv);
+        driverWeb.sendKeys(cardName, name);
+        driverWeb.sendKeys(cardNumber, number);
+        driverWeb.sendKeys(cardExpireDate, date);
+        driverWeb.sendKeys(cardCVV, cvv);
 
         //Select só aparece após preencher os dados anteriores
         Select cardInstallments = new Select(driverWeb.waitElementPresence("//*[@id='root']//select[contains(@name, 'comboParcelas')]", 10));

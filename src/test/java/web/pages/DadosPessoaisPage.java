@@ -34,6 +34,8 @@ public class DadosPessoaisPage {
     private WebElement chipEsimExpress;
     private WebElement cepCobranca;
 
+    private boolean bloqueioCepDiferente;
+
     private void validarCampoCep() {
         cep = driverWeb.findElement("txt-cep-endereco-entrega", "id");
         Assert.assertTrue(cep.isDisplayed());
@@ -47,8 +49,8 @@ public class DadosPessoaisPage {
         Assert.assertTrue(numeroElement.getAttribute("value").isEmpty());
         Assert.assertTrue(complementoElement.getAttribute("value").isEmpty());
 
-        driverWeb.actionSendKeys(numeroElement, numero);
-        driverWeb.actionSendKeys(complementoElement, complemento);
+        driverWeb.sendKeys(numeroElement, numero);
+        driverWeb.sendKeys(complementoElement, complemento);
     }
 
     public void validarPaginaDadosPessoais() {
@@ -69,22 +71,23 @@ public class DadosPessoaisPage {
         Assert.assertNull(driverWeb.findElement("txt-nome-completo", "id"));
         Assert.assertNull(driverWeb.findElement("txt-nascimento", "id"));
         Assert.assertNull(driverWeb.findElement("txt-nome-mae", "id"));
+        bloqueioCepDiferente = true;
     }
 
     public void inserirNome(String nomeCompleto) {
-        driverWeb.actionSendKeys("txt-nome-completo", "id", nomeCompleto);
+        driverWeb.sendKeys("txt-nome-completo", "id", nomeCompleto);
     }
 
     public void inserirDataNascimento(String dataNasc) {
-        driverWeb.actionSendKeys("txt-nascimento", "id", dataNasc);
+        driverWeb.sendKeys("txt-nascimento", "id", dataNasc);
     }
 
     public void inserirNomeMae(String nomeMae) {
-        driverWeb.actionSendKeys("txt-nome-mae", "id", nomeMae);
+        driverWeb.sendKeys("txt-nome-mae", "id", nomeMae);
     }
 
     public void inserirCep(String cepNumber) {
-        driverWeb.actionSendKeys(cep, cepNumber);
+        driverWeb.sendKeys(cep, cepNumber);
 
         WebElement endereco = driverWeb.findElement("txt-endereco-endereco-entrega", "id");
         driverWeb.waitElementVisible(endereco, 12);
@@ -118,7 +121,6 @@ public class DadosPessoaisPage {
             //Elementos pai dos inputs para validar a exibição
             WebElement entregaConvencionalParent = driverWeb.findElement(conventionalParent, "xpath");
             WebElement entregaExpressaParent = driverWeb.findElement(expressParent, "xpath");
-            WebElement enderecoCobrancaParent = usarMesmoEnderecoCobranca.findElement(By.xpath("../../.."));  //div pai do pai do pai do checkbox
 
             BiConsumer<WebElement, WebElement> validateChipTypes = (common, eSim) -> {
                 if (!isDeviceCart) {
@@ -140,8 +142,13 @@ public class DadosPessoaisPage {
                 //Exibe apenas o bloco de entrega convencional. Ambos existem no html (convencional e expressa) mas só um é exibido
                 Assert.assertFalse(entregaExpressaParent.isDisplayed());
 
-                //Endereço de cobrança apenas em entrega expressa
-                Assert.assertFalse(enderecoCobrancaParent.isDisplayed());
+                if (bloqueioCepDiferente) {
+                    Assert.assertNull(usarMesmoEnderecoCobranca);
+                } else {
+                    //Endereço de cobrança apenas em entrega expressa
+                    Assert.assertFalse(usarMesmoEnderecoCobranca.findElement(By.xpath("../../..")).isDisplayed());
+                }
+
             } else {
                 validateChipTypes.accept(chipComumExpressa, chipEsimExpress);
 
@@ -150,7 +157,7 @@ public class DadosPessoaisPage {
                 Assert.assertTrue(entregaExpressaParent.isDisplayed());
 
                 //Exibe a seção para endereço de cobrança com o checkbox marcado
-                Assert.assertTrue(enderecoCobrancaParent.isDisplayed());
+                Assert.assertTrue(usarMesmoEnderecoCobranca.findElement(By.xpath("../../..")).isDisplayed());
                 Assert.assertTrue(usarMesmoEnderecoCobranca.isSelected());
 
                 //Exibe apenas o bloco de entrega expressa. Ambos existem no html (convencional e expressa) mas só um é exibido
@@ -183,7 +190,6 @@ public class DadosPessoaisPage {
             driverWeb.javaScriptClick(chipEsimConvencional);
             driverWeb.waitElementInvisible(entregaConvencional, 1);
         }
-        //TODO ECCMAUT-940
     }
 
     public void clicarUsarMesmoEnderecoEntrega() {
@@ -197,7 +203,7 @@ public class DadosPessoaisPage {
     }
 
     public void inserirCepCobranca(String cep) {
-        driverWeb.actionSendKeys("txt-cep-endereco-cobranca","id",cep);
+        driverWeb.sendKeys("txt-cep-endereco-cobranca","id",cep);
 
         WebElement endereco = driverWeb.findElement("txt-endereco-endereco-cobranca", "id");
         driverWeb.waitElementVisible(endereco, 12);

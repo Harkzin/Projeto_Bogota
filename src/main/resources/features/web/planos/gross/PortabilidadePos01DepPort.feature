@@ -1,12 +1,12 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-970 - Aquisicao Pos - 01 Dependente
+Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
 
   @Aquisicao
   @Pos
   @PortabilidadePos01DepPort
-  Cenario: Aquisicao Pos - 01 Dependente
+  Cenario: Portabilidade Pos - 01 Dependente
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17515" do carrossel da Home
     Então é direcionado para a tela de Carrinho

@@ -1,7 +1,6 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,9 @@ import web.support.utils.DriverWeb;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
+import static web.support.utils.Constants.*;
 
 @Component
 @ScenarioScope
@@ -27,29 +28,46 @@ public class HomePage {
     }
 
     public void acessarLojaHome() {
-        driverWeb.getDriver().get(Constants.urlAmbiente);
-        driverWeb.waitPageLoad(Constants.urlAmbiente, 20);
+        driverWeb.getDriver().get(urlAmbiente);
+        driverWeb.waitPageLoad(urlAmbiente, 20);
+
+        if (driverWeb.isMobile()) {
+            WebElement btnFecharModal = driverWeb.findElement("//*[@id='modal-onleave'][1]/div/a","xpath");
+            driverWeb.waitElementVisible(btnFecharModal, 10);
+            driverWeb.javaScriptClick(btnFecharModal);
+        }
     }
 
     public void validarHomePage() {
-        driverWeb.waitPageLoad(Constants.urlAmbiente, 20);
+        driverWeb.waitPageLoad(urlAmbiente, 20);
     }
 
     public void validarCardPlano(PlanProduct plan, boolean isDebit) {
+        //TODO refactor
+        //Puxa carrossel, caso seja mobile
+        if (driverWeb.isMobile()) {
+            WebElement nextCarrossel = driverWeb.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
+            if (plan.getCode().equals("17536")) {
+                driverWeb.javaScriptClick(nextCarrossel);
+            } else if (plan.getCode().equals("17558")) {
+                driverWeb.javaScriptClick(nextCarrossel);
+                driverWeb.javaScriptClick(nextCarrossel);
+            }
+        }
+
         //TODO Atualizar seletores quando forem criados
-        WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
+        WebElement cardParent = driverWeb.findByXpath(String.format("//*[@id='addToCartForm%s']/../preceding-sibling::div[contains(@class, 'top-card')]/div", plan.getCode()));
 
         //Valida nome
-        if (!(plan.getName() == null)) {
-            WebElement planName = cardParent.findElement(By.xpath("h3"));
-            validateElementText(plan.getName(), planName);
-        }
+        assertNotNull(plan.getName());
+        WebElement planName = cardParent.findElement(By.xpath("h3"));
+        validateElementText(plan.getName(), planName);
 
         //Valida preço
         WebElement price = cardParent
                 .findElement(By.xpath("div[@data-price-for]/div/div[@class='preco-home bestPrice']/div/p[2]"));
-        Assert.assertEquals(plan.getFormattedPrice(isDebit, true), price.getText().trim());
-        Assert.assertTrue(price.isDisplayed());
+        assertEquals(plan.getFormattedPrice(isDebit, true), price.getText().trim());
+        assertTrue(price.isDisplayed());
 
         //Valida apps ilimitados
         if (plan.hasPlanApps()) {
@@ -69,6 +87,7 @@ public class HomePage {
         if (plan.hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
+
             validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
@@ -85,7 +104,7 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-        driverWeb.actionSendKeys("txt-telefone", "id", msisdn);
+        driverWeb.sendKeys("txt-telefone", "id", msisdn);
     }
 
     public void acessarPdpPlano(String id) {
@@ -105,6 +124,13 @@ public class HomePage {
     }
 
     public void acessarPlpAparelhos() {
+        abrirMenuMobile();
         driverWeb.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
+    }
+
+    private void abrirMenuMobile() {
+        if (driverWeb.isMobile()) {
+            driverWeb.javaScriptClick("//*[@id='navigation-menu']/preceding-sibling::button", "xpath");
+        }
     }
 }

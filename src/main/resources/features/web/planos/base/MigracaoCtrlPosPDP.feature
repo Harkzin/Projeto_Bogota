@@ -10,19 +10,14 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
   @MigracaoCtrlPosPDP
   Cenario: Migracao de Plano Controle - PDP - Cliente Boleto para Debito
     Dado que o usuário acesse a Loja Online
-    Quando o usuário clicar no botão [Mais detalhes] do plano "17522"
+    Quando o usuário clicar no botão [Mais detalhes] do plano "17528"
     Então é direcionado para a PDP do plano
 
     Quando o usuário selecionar a forma de pagamento [Boleto] na PDP
     Então o valor do plano é atualizado
 
-    Quando o usuário selecionar Sem fidelidade
-    Então os aplicativos ilimitados são removidos da composição do plano
-
     Quando o usuário selecionar a forma de pagamento [Débito] na PDP
-    E selecionar Fidelidade de 12 meses
     Então o valor do plano é atualizado
-    E os aplicativos ilimitados são reexibidos na composição do plano
 
     Quando o usuário selecionar a forma de pagamento [Boleto] na PDP
     Então o valor do plano é atualizado
@@ -41,7 +36,7 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
       E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar a forma de pagamento [Débito]
-    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
       E não deve ser exibido os meios de recebimento da fatura
       E deve ser exibido as datas de vencimento
     E preenche os dados bancários

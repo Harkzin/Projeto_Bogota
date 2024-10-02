@@ -72,7 +72,7 @@ public class LoginPage {
 
 
     public void preencheCPF(String cpf) {
-        driverWeb.actionSendKeys(this.cpf, cpf);
+        driverWeb.sendKeysLogin(this.cpf, cpf);
     }
 
     public void clicarBotaoContinuar() {
@@ -101,7 +101,7 @@ public class LoginPage {
 
     public void inserirTokenEmail(String email) {
         clearInbox(email);
-        driverWeb.actionSendKeys(token, driverWeb.getEmail(email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        driverWeb.sendKeys(token, driverWeb.getEmail(email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {

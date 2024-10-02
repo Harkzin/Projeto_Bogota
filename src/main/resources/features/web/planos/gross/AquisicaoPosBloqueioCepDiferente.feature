@@ -1,7 +1,7 @@
 #language: pt
 
-@Desativado
-  #Cenário desabilitade da regressão por bug despriorizado em Prod (Front, Dados pessoais)
+@Regressivo
+@Web
 Funcionalidade: ECCMAUT-303 - Cenario de erro - Aquisicao Pos - Bloqueio para CEP diferente da regionalizacao
 
   @Aquisicao
@@ -20,14 +20,13 @@ Funcionalidade: ECCMAUT-303 - Cenario de erro - Aquisicao Pos - Bloqueio para CE
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSBLOQUEIOCEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "Marta Silva"
     E preenche os campos de endereço: [CEP] convencional "20010010", [Número] "65" e [Complemento] "AP202"
-      E deve ser exibido os tipos de entrega
+    E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então será recarregada a página e exibida a mensagem de erro: "O CEP deve ser do mesmo estado (UF) do DDD escolhido"
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "70" e [Complemento] ""
-      E deve ser exibido os tipos de entrega
+    E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
-    Então é direcionado para a tela de Customizar Fatura
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+    Então é direcionado para a tela de Dependentes

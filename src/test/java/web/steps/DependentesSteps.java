@@ -32,7 +32,7 @@ public class DependentesSteps {
     @E("adiciona o primeiro dependente, com numero {string}")
     public void adicionarPrimeiroDependentePort(String numero) {
         dependentesPage.clicarAdicionarDependente(1);
-        dependentesPage.inserirNumeroDependentes( numero);
+        dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();
     }
 

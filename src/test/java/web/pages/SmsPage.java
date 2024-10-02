@@ -32,7 +32,7 @@ public class SmsPage {
         String htmlComment = ((JavascriptExecutor) driverWeb.getDriver()).executeScript("return document.documentElement.lastChild").toString();
         int tokenStartIndex = htmlComment.indexOf("TOKEN_SEND_TO_CLIENT") + 25;
 
-        driverWeb.actionSendKeys(token, htmlComment.substring(tokenStartIndex, tokenStartIndex + 4));
+        driverWeb.sendKeys(token, htmlComment.substring(tokenStartIndex, tokenStartIndex + 4));
     }
 
     public void clicarFinalizar() {

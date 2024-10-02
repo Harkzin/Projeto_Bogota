@@ -1,7 +1,6 @@
 package web.steps;
 
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PdpPlanosPage;
@@ -18,7 +17,7 @@ public class PdpPlanosSteps {
         this.cart = cart;
     }
 
-    @Então("é direcionado para a PDP do plano")
+    @Entao("é direcionado para a PDP do plano")
     public void validarPDP() {
         pdpPlanosPage.validarPdpPlanos(cart.getPlan());
     }
@@ -35,31 +34,9 @@ public class PdpPlanosSteps {
         pdpPlanosPage.selecionarBoleto();
     }
 
-    @E("selecionar Fidelidade de 12 meses")
-    public void selecionarFidelidade() {
-        cart.hasLoyalty = true;
-        pdpPlanosPage.selecionarFidelidade();
-    }
-
-    @Quando("o usuário selecionar Sem fidelidade")
-    public void selecionarSemFidelidade() {
-        cart.hasLoyalty = false;
-        pdpPlanosPage.selecionarSemFidelidade();
-    }
-
-    @Então("o valor do plano é atualizado")
+    @Entao("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(cart.getPlan(), cart.isDebitPaymentFlow, cart.hasLoyalty);
-    }
-
-    @Então("os aplicativos ilimitados são removidos da composição do plano")
-    public void ocultaAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitadosPdp(cart.getPlan(), false);
-    }
-
-    @E("os aplicativos ilimitados são reexibidos na composição do plano")
-    public void exibeAppsIlimitados() {
-        pdpPlanosPage.validarAppsIlimitadosPdp(cart.getPlan(), true);
+        pdpPlanosPage.validarValorPlano(cart.getPlan(), cart.isDebitPaymentFlow);
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] da PDP")

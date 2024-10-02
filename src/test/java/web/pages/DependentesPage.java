@@ -51,9 +51,9 @@ public class DependentesPage {
     );
 
     private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
-            1, "phone_0",
-            2, "phone_2",
-            3, "phone_3"
+            1, "txt-telefone-dep0",
+            2, "txt-telefone-dep2",
+            3, "txt-telefone-dep3"
     );
 
     public void validarPaginaDependentes() {
@@ -61,6 +61,7 @@ public class DependentesPage {
         btnAdicionarDependente = driverWeb.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
         btnSeguirSemDependente = driverWeb.findElement("//button[contains(text(),'Seguir sem dependentes')]","xpath");
 
+        Assert.assertTrue(driverWeb.findElement("//span[@class='mdn-Icon-comunidade mdn-Icon--md steps-icon']","xpath").isDisplayed());
         Assert.assertTrue(btnAdicionarDependente.isDisplayed());
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
@@ -82,7 +83,6 @@ public class DependentesPage {
         txtTelefonePortabilidade = driverWeb.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
 
         driverWeb.waitElementVisible(abaPortabilidade,10);
-
         Assert.assertTrue(abaNumeroNovo.isDisplayed());
         Assert.assertTrue(abaPortabilidade.isDisplayed());
         Assert.assertTrue(abaPortabilidade.getAttribute("class").contains("active"));
@@ -91,7 +91,7 @@ public class DependentesPage {
     }
 
     public void inserirNumeroDependentes(String numero) {
-        driverWeb.actionSendKeys(txtTelefonePortabilidade,numero);
+        driverWeb.sendKeys(txtTelefonePortabilidade,numero);
     }
 
     public void clicarConfirmarDependente() {

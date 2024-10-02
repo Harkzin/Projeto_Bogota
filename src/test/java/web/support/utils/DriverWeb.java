@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
+import static org.openqa.selenium.Platform.IOS;
 import static web.support.api.RestAPI.getEmailMessage;
 
 @Component
@@ -118,15 +119,29 @@ public class DriverWeb {
         };
     }
 
-    public void actionSendKeys(WebElement element, String text) {
-        javaScriptScrollTo(element);
-        Actions action = new Actions(driver);
-        action.pause(Duration.ofMillis(500)).click(element);
-        text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+    public void sendKeys(WebElement element, String text) {
+        if (getPlatformName() == (IOS)) {
+            element.sendKeys(text);
+        } else {
+            javaScriptScrollTo(element);
+            Actions action = new Actions(driver);
+            action.pause(Duration.ofMillis(500)).click(element);
+            text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
+        }
     }
 
-    public void actionSendKeys(String selectorValue, String selectorType, String text) {
-        actionSendKeys(findElement(selectorValue, selectorType), text);
+    public void sendKeys(String selectorValue, String selectorType, String text) {
+        sendKeys(findElement(selectorValue, selectorType), text);
+    }
+
+    public void sendKeysLogin(WebElement element, String text) {
+        if (getPlatformName() == (IOS)) {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].value=arguments[1];", element, text);
+            element.sendKeys(text);
+        } else {
+            sendKeys(element, text);
+        }
     }
 
     public void actionPause(int miliseconds) {

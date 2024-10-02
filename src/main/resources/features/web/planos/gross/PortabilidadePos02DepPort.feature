@@ -1,17 +1,17 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-971 - Aquisicao Pos - 02 Dependentes
+Funcionalidade: ECCMAUT-971 - Portabilidade Pos - 02 Dependentes
 
   @Portabilidade
   @Pos
   @PortabilidadePos02DepPort
-  Cenario: Aquisicao Pos - 02 Dependentes
+  Cenario: Portabilidade Pos - 02 Dependentes
     Dado que o usuário acesse a Loja Online
     Quando selecionar o plano de id "17522" do carrossel da Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona a opção [Aquisição]
+    E seleciona a opção [Portabilidade]
     E preenche os campos: [Celular de contato] "11910211968", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
@@ -26,7 +26,6 @@ Funcionalidade: ECCMAUT-971 - Aquisicao Pos - 02 Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E adiciona o primeiro dependente, com numero "910211967"
     E adiciona o segundo dependente, com numero "910211966"
-
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura

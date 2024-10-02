@@ -39,9 +39,7 @@ public class CarrinhoPage {
     private WebElement telefoneContatoAquisicao;
     private WebElement cpfAquisicao;
     private WebElement email;
-
     private WebElement confirma;
-
     private WebElement cancelar;
 
     private String getCpfForPlanFlow(boolean isApproved, boolean isDiretrix) {
@@ -177,24 +175,24 @@ public class CarrinhoPage {
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
-        driverWeb.actionSendKeys(telefoneMigracao, telefone);
-        driverWeb.actionSendKeys(cpfMigracao, cpf);
+        driverWeb.sendKeys(telefoneMigracao, telefone);
+        driverWeb.sendKeys(cpfMigracao, cpf);
     }
 
     public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
-        driverWeb.actionSendKeys(telefonePortabilidade, telefone);
-        driverWeb.actionSendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
     public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
-        driverWeb.actionSendKeys(telefoneContatoAquisicao, telefoneContato);
-        driverWeb.actionSendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
+        driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
     public void inserirEmail() {
         String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
         cartOrder.setUserEmail(userEmail);
-        driverWeb.actionSendKeys(email, userEmail);
+        driverWeb.sendKeys(email, userEmail);
     }
 
     public void clicarEuQuero() {
@@ -209,7 +207,7 @@ public class CarrinhoPage {
         driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
         WebElement contentMessageError =  driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
-        driverWeb.waitElementVisible(contentMessageError,10);
+        driverWeb.waitElementVisible(contentMessageError, 10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 
