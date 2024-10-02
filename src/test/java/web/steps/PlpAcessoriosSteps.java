@@ -18,12 +18,12 @@ public class PlpAcessoriosSteps {
         plpAcessoriosPage.validarPlpAcessorios();
     }
 
-    @E("validar que [Todas as Ofertas] está selecionado")
+    @E("deve ser exibido [Todas as Ofertas]")
     public void validarTodasOfertas(){
         plpAcessoriosPage.validarTodasOfertas();
     }
 
-    @Quando("o usuário clicar no botão [Comprar!] no produto [Repetidor Mesh Deco]")
+    @Quando("o usuário clicar no botão [Comprar] no produto [Repetidor Mesh Deco]")
     public void clicarComprar(){
         plpAcessoriosPage.clilcarBotaoComprar();
     }

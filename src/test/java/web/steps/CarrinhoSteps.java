@@ -34,6 +34,16 @@ public class CarrinhoSteps {
         carrinhoPage.validarPaginaCarrinhoAcessorios();
     }
 
+    @Quando("o usuário preencher os campos de acessorios: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string}")
+    public void preencherCamposCarrinhoAcessorios(String celularAcessorios, String cpfAcessorios, String emailAcessorios) {
+        carrinhoPage.inserirDadosCarrinhoAcessorios(celularAcessorios, cpfAcessorios, emailAcessorios);
+    }
+
+    @E("clicar no botão [Continuar]")
+    public void clicarContinuarAcessorios() {
+        carrinhoPage.clicaBotaoContinuarAcessorios();
+    }
+
     @E("seleciona a opção [Migração], para o fluxo de troca de Plano")
     public void selecionaTrocaPlano() {
         cart.setProcessType(EXCHANGE);

@@ -27,6 +27,7 @@ public class PlpAcessoriosPage {
     }
 
     public void clilcarBotaoComprar(){
-        driverQA.javaScriptClick("//div[@class=\"mdn-CardProduct-content\"]/button[1]", "xpath");
+//        driverQA.javaScriptClick("//div[@class=\"mdn-CardProduct-content\"]/button[1]", "xpath");
+        driverQA.javaScriptClick("/html/body/div/div/div[2]/div[4]/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/button", "xpath");
     }
 }

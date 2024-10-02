@@ -20,7 +20,7 @@ public class PdpAcessoriosSteps {
         pdpAcessoriosPage.validarPaginaPdpAcessorios();
     }
 
-    @Quando("o usuário clicar no botão [Comprar!] na PDP de Acessórios")
+    @Quando("o usuário clicar no botão [Comprar] na PDP de Acessórios")
     public void clicarBotaoComprar(){
         pdpAcessoriosPage.clicarBotaoComprar();
     }

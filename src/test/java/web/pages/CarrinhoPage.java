@@ -39,6 +39,9 @@ public class CarrinhoPage {
     private WebElement telefoneContatoAquisicao;
     private WebElement cpfAquisicao;
     private WebElement email;
+    private WebElement celularAcessorios;
+    private WebElement cpfAcessorios;
+    private WebElement emailAcessorios;
     private WebElement confirma;
     private WebElement cancelar;
 
@@ -154,6 +157,20 @@ public class CarrinhoPage {
 
     public void validarPaginaCarrinhoAcessorios() {
         driverWeb.waitPageLoad("/cart", 10);
+
+        celularAcessorios = driverWeb.findElement("txt-celular", "id");
+        cpfAcessorios = driverWeb.findElement("txt-cpf", "id");
+        emailAcessorios = driverWeb.findElement("txt-email", "id");
+    }
+
+    public void inserirDadosCarrinhoAcessorios(String celular, String cpf, String email) {
+        driverWeb.sendKeys(celularAcessorios, celular);
+        driverWeb.sendKeys(cpfAcessorios, cpf);
+        driverWeb.sendKeys(emailAcessorios, email);
+    }
+
+    public void clicaBotaoContinuarAcessorios() {
+        driverWeb.javaScriptClick("btn-continuar", "id");
     }
 
     public void selecionarFluxo(ProcessType processType) {

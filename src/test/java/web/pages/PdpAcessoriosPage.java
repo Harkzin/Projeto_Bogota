@@ -19,11 +19,11 @@ public class PdpAcessoriosPage {
     }
 
     public void validarPaginaPdpAcessorios(){
-        driverQA.waitPageLoad("/000000000000062124?category=accessories", 10);
+        driverQA.waitPageLoad("accessories", 10);
     }
 
     public void clicarBotaoComprar(){
-        driverQA.javaScriptClick("btn-eu-quero-000000000000062124", "id");
+        driverQA.javaScriptClick("btn-eu-quero-000000000000062125", "id");
     }
 
 }
