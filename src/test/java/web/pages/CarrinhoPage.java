@@ -1,7 +1,6 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -180,23 +179,23 @@ public class CarrinhoPage {
     }
 
     public void inserirDadosBase(String telefone, String cpf) {
-        driverQA.actionSendKeys(telefoneMigracao, telefone);
-        driverQA.actionSendKeys(cpfMigracao, cpf);
+        driverQA.sendKeys(telefoneMigracao, telefone);
+        driverQA.sendKeys(cpfMigracao, cpf);
     }
 
     public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
-        driverQA.actionSendKeys(telefonePortabilidade, telefone);
-        driverQA.actionSendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverQA.sendKeys(telefonePortabilidade, telefone);
+        driverQA.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
     public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
-        driverQA.actionSendKeys(telefoneContatoAquisicao, telefoneContato);
-        driverQA.actionSendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverQA.sendKeys(telefoneContatoAquisicao, telefoneContato);
+        driverQA.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
     public void inserirEmail() {
         cartOrder.essential.user.email = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-        driverQA.actionSendKeys(email, cartOrder.essential.user.email);
+        driverQA.sendKeys(email, cartOrder.essential.user.email);
     }
 
     public void clicarEuQuero() {

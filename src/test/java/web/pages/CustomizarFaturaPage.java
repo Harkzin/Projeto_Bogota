@@ -302,10 +302,10 @@ public class CustomizarFaturaPage {
         }
 
         driverQA.waitElementToBeClickable(agencia, 1);
-        driverQA.actionSendKeys(agencia, bankAccount.get(0)); //.findElement(By.xpath("following-sibling::label"))
+        driverQA.sendKeys(agencia, bankAccount.get(0)); //.findElement(By.xpath("following-sibling::label"))
         Assert.assertEquals("Campo agência preenchido", bankAccount.get(0), agencia.getAttribute("value"));
 
-        driverQA.actionSendKeys(conta, bankAccount.get(1));
+        driverQA.sendKeys(conta, bankAccount.get(1));
         Assert.assertEquals("Campo conta preenchido", bankAccount.get(1), conta.getAttribute("value"));
     }
 

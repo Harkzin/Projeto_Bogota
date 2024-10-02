@@ -94,7 +94,7 @@ public class DependentesPage {
     }
 
     public void inserirNumeroDependentes(String numero) {
-        driverQA.actionSendKeys(txtTelefonePortabilidade,numero);
+        driverQA.sendKeys(txtTelefonePortabilidade,numero);
     }
 
     public void clicarConfirmarDependente() {

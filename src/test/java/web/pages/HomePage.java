@@ -3,7 +3,6 @@ package web.pages;
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class HomePage {
 
         //TODO refactor
         //Puxa carrossel, caso seja mobile
-        if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+        if (driverQA.getPlatformName().toString().matches("ANDROID|IOS")) {
             WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
             if (code.equals("17536")) {
                 driverQA.javaScriptClick(nextCarrossel);
@@ -96,7 +95,7 @@ public class HomePage {
         driverQA.getDriver().get(Constants.urlAmbiente);
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
 
-        if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+        if (driverQA.getPlatformName().toString().matches("ANDROID|IOS")) {
             WebElement btnFecharModal = driverQA.findElement("//*[@id='modal-onleave'][1]/div/a","xpath");
             driverQA.waitElementVisibility(btnFecharModal, 10);
             driverQA.javaScriptClick(btnFecharModal);
@@ -108,7 +107,7 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-        driverQA.actionSendKeys("txt-telefone", "id", msisdn);
+        driverQA.sendKeys("txt-telefone", "id", msisdn);
     }
 
     public void acessarPdpPlano(String id) {
@@ -131,7 +130,7 @@ public class HomePage {
     }
 
     private void abrirMenuMobile(){
-        if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+        if (driverQA.getPlatformName().toString().matches("ANDROID|IOS")) {
             driverQA.javaScriptClick("//*[@id='navigation-menu']/preceding-sibling::button", "xpath");
         }
     }

@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.util.List;
 
 import static java.time.Duration.ofSeconds;
+import static org.openqa.selenium.Platform.IOS;
 import static web.support.api.RestAPI.getEmailMessage;
 
 public class DriverQA {
@@ -54,7 +55,7 @@ public class DriverQA {
             } else {
                 driver = new ChromeDriver(chromeOptions);
             }
-            if (!getPlataformName().toString().matches("ANDROID|IOS")) {
+            if (!getPlatformName().toString().matches("ANDROID|IOS")) {
                 if (maximized.equals("true")) { //Local
                     driver.manage().window().maximize();
                 } else { //Jenkins
@@ -138,8 +139,8 @@ public class DriverQA {
         return elements;
     }
 
-    public void actionSendKeys(WebElement element, String text) {
-        if (getPlataformName().equals(Platform.IOS)) {
+    public void sendKeys(WebElement element, String text) {
+        if (getPlatformName() == (IOS)) {
             element.sendKeys(text);
         } else {
             javaScriptScrollTo(element);
@@ -150,20 +151,17 @@ public class DriverQA {
         }
     }
 
-    public void actionSendKeys(String selectorValue, String selectorType, String text) {
-        actionSendKeys(findElement(selectorValue, selectorType), text);
+    public void sendKeys(String selectorValue, String selectorType, String text) {
+        sendKeys(findElement(selectorValue, selectorType), text);
     }
 
     public void sendKeysLogin(WebElement element, String text) {
-        if (getPlataformName().equals(Platform.ANDROID)) {
-            javaScriptScrollTo(element);
-            Actions action = new Actions(driver);
-            action.pause(Duration.ofMillis(500)).click(element);
-            text.chars().forEach(c -> action.pause(Duration.ofMillis(50)).sendKeys(String.valueOf((char) c)).perform());
-        } else {
+        if (getPlatformName() == (IOS)) {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].value=arguments[1];", element, text);
             element.sendKeys(text);
+        } else {
+            sendKeys(element, text);
         }
     }
 
@@ -177,7 +175,7 @@ public class DriverQA {
         return driver;
     }
 
-    public Platform getPlataformName() {
+    public Platform getPlatformName() {
         return ((RemoteWebDriver) driver).getCapabilities().getPlatformName();
     }
 
