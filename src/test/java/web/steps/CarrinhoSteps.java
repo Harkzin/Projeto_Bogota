@@ -102,12 +102,12 @@ public class CarrinhoSteps {
         carrinhoPage.validarPaginaCarrinhoAcessorios();
     }
 
-    @Quando("o usuário preencher os campos de acessorios: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string}")
+    @E("preenche os campos: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string} para acessórios")
     public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email){
         carrinhoPage.inserirDadosCarrinhoAcessorios(telefone, cpf, email);
     }
 
-    @E("clicar no botão [Continuar]")
+    @Quando("o usuário clicar no botão [Continuar] da tela de Carrinho de Acessórios")
     public void clicarContinuarAcessorios(){
         carrinhoPage.clicaBotaoContinuarAcessorios();
     }

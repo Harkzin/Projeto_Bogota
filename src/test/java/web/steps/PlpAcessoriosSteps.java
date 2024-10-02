@@ -1,9 +1,9 @@
-package steps;
+package web.steps;
 
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Quando;
-import pages.PlpAcessoriosPage;
+import web.pages.PlpAcessoriosPage;
 
 public class PlpAcessoriosSteps {
 

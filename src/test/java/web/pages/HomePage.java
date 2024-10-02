@@ -135,6 +135,6 @@ public class HomePage {
     }
 
     public void acessarMenuAcessorios(){
-        driverQA.javaScriptClick("//*[@id='tab-acessorios']/a","xpath");
+        driverWeb.javaScriptClick("//*[@id='tab-acessorios']/a","xpath");
     }
 }

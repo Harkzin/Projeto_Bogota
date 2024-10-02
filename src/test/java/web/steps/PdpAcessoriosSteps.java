@@ -1,9 +1,9 @@
-package steps;
+package web.steps;
 
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
-import pages.PdpAcessoriosPage;
+import web.pages.PdpAcessoriosPage;
 
 
 public class PdpAcessoriosSteps {
