@@ -29,6 +29,11 @@ public class CarrinhoSteps {
         carrinhoPage.validarPaginaCarrinho();
     }
 
+    @Entao("é direcionado para a tela de Carrinho de Acessórios")
+    public void validarCarrinhoAcessorios() {
+        carrinhoPage.validarPaginaCarrinhoAcessorios();
+    }
+
     @E("seleciona a opção [Migração], para o fluxo de troca de Plano")
     public void selecionaTrocaPlano() {
         cart.setProcessType(EXCHANGE);

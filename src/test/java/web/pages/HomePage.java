@@ -133,4 +133,8 @@ public class HomePage {
             driverWeb.javaScriptClick("//*[@id='navigation-menu']/preceding-sibling::button", "xpath");
         }
     }
+
+    public void acessarMenuAcessorios(){
+        driverQA.javaScriptClick("//*[@id='tab-acessorios']/a","xpath");
+    }
 }

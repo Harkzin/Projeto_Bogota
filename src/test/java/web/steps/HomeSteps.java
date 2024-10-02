@@ -63,6 +63,7 @@ public class HomeSteps {
     @Quando("o usuário clicar na opção [Acessórios] do header")
     public void acessarPlpAcessorios() {
         //TODO
+        homePage.acessarMenuAcessorios();
     }
 
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")

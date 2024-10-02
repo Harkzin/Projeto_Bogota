@@ -152,6 +152,10 @@ public class CarrinhoPage {
         }
     }
 
+    public void validarPaginaCarrinhoAcessorios() {
+        driverWeb.waitPageLoad("/cart", 10);
+    }
+
     public void selecionarFluxo(ProcessType processType) {
         switch (processType) {
             case EXCHANGE, EXCHANGE_PROMO, MIGRATE -> {
