@@ -29,21 +29,6 @@ public class CarrinhoSteps {
         carrinhoPage.validarPaginaCarrinho();
     }
 
-    @Entao("é direcionado para a tela de Carrinho de Acessórios")
-    public void validarCarrinhoAcessorios() {
-        carrinhoPage.validarPaginaCarrinhoAcessorios();
-    }
-
-    @Quando("o usuário preencher os campos de acessorios: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string}")
-    public void preencherCamposCarrinhoAcessorios(String celularAcessorios, String cpfAcessorios, String emailAcessorios) {
-        carrinhoPage.inserirDadosCarrinhoAcessorios(celularAcessorios, cpfAcessorios, emailAcessorios);
-    }
-
-    @E("clicar no botão [Continuar]")
-    public void clicarContinuarAcessorios() {
-        carrinhoPage.clicaBotaoContinuarAcessorios();
-    }
-
     @E("seleciona a opção [Migração], para o fluxo de troca de Plano")
     public void selecionaTrocaPlano() {
         cart.setProcessType(EXCHANGE);
@@ -112,8 +97,18 @@ public class CarrinhoSteps {
         carrinhoPage.validarModalAvisoTrocaPlano();
     }
 
-    @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
-    public void clicarEmAvisoTrocaPlano() {
-        carrinhoPage.clicarAvisoTrocaPlano();
+    @Entao("é direcionado para a tela de Carrinho de Acessórios")
+    public void validarCarrinhoAcessorios(){
+        carrinhoPage.validarPaginaCarrinhoAcessorios();
+    }
+
+    @Quando("o usuário preencher os campos de acessorios: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string}")
+    public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email){
+        carrinhoPage.inserirDadosCarrinhoAcessorios(telefone, cpf, email);
+    }
+
+    @E("clicar no botão [Continuar]")
+    public void clicarContinuarAcessorios(){
+        carrinhoPage.clicaBotaoContinuarAcessorios();
     }
 }

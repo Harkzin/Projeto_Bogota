@@ -26,6 +26,3 @@ Funcionalidade: ECCMAUT-1092 - Aquisicao de acessorio com 1 produto - Parcelamen
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
-
-
-
