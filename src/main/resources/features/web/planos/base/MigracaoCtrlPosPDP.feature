@@ -56,4 +56,3 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
     Entao é direcionado para a tela de Parabéns
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
-

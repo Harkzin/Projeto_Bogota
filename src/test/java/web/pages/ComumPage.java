@@ -2,7 +2,6 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.junit.Assert;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

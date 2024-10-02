@@ -30,12 +30,11 @@ public class HomePage {
     private boolean isDebit = true;
 
     private void validarCardPlano(String code) {
-        //TODO atualizar find para id quando for criado
-        WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
-        WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
+        //TODO refactor
         //Puxa carrossel, caso seja mobile
         if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+            WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
             if (code.equals("17536")) {
                 driverQA.javaScriptClick(nextCarrossel);
             } else if (code.equals("17558")) {
@@ -43,6 +42,9 @@ public class HomePage {
                 driverQA.javaScriptClick(nextCarrossel);
             }
         }
+
+        //TODO atualizar find para id quando for criado
+        WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
         if (!cartOrder.getPlan().getName().isEmpty()) {
@@ -94,9 +96,8 @@ public class HomePage {
         driverQA.getDriver().get(Constants.urlAmbiente);
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
 
-        WebElement btnFecharModal = driverQA.findElement("//a[@class='closeModal gtm-link-event']", "xpath");
-
         if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
+            WebElement btnFecharModal = driverQA.findElement("//*[@id='modal-onleave'][1]/div/a","xpath");
             driverQA.waitElementVisibility(btnFecharModal, 10);
             driverQA.javaScriptClick(btnFecharModal);
         }
@@ -129,10 +130,14 @@ public class HomePage {
         driverQA.javaScriptClick("btn-entrar", "id");
     }
 
-    public void acessarMenuCelulares() {
+    private void abrirMenuMobile(){
         if (driverQA.getPlataformName().equals(Platform.ANDROID) || driverQA.getPlataformName().equals(Platform.IOS)) {
-            driverQA.javaScriptClick("//button[@class='mdn-Menu-main-event mdn-Menu-mobile-action']", "xpath");
+            driverQA.javaScriptClick("//*[@id='navigation-menu']/preceding-sibling::button", "xpath");
         }
+    }
+
+    public void acessarMenuCelulares() {
+        abrirMenuMobile();
         driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }
