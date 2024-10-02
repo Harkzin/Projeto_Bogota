@@ -75,7 +75,7 @@ public class LoginPage {
 
 
     public void preencheCPF(String cpf) {
-        driverQA.actionSendKeys(this.cpf, cpf);
+        driverQA.sendKeysLogin(this.cpf, cpf);
     }
 
     public void clicarBotaoContinuar() {
@@ -104,7 +104,7 @@ public class LoginPage {
 
     public void inserirTokenEmail() {
         clearInbox(cartOrder.essential.user.email);
-        driverQA.actionSendKeys(token, driverQA.getEmail(cartOrder.essential.user.email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
+        driverQA.sendKeys(token, driverQA.getEmail(cartOrder.essential.user.email, CONFIRMA_TOKEN).selectXpath("/html/body/table/tbody/tr/td/table/tbody/tr/td/table[2]/tbody/tr/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/table/tbody/tr/td[2]/table/tbody/tr[1]/td").first().text());
     }
 
     public void validarPaginaMeusPedidos() {

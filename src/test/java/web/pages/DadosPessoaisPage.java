@@ -52,8 +52,8 @@ public class DadosPessoaisPage {
         Assert.assertTrue(numeroElement.getAttribute("value").isEmpty());
         Assert.assertTrue(complementoElement.getAttribute("value").isEmpty());
 
-        driverQA.actionSendKeys(numeroElement, numero);
-        driverQA.actionSendKeys(complementoElement, complemento);
+        driverQA.sendKeys(numeroElement, numero);
+        driverQA.sendKeys(complementoElement, complemento);
     }
 
     public void validarPaginaDadosPessoais() {
@@ -78,19 +78,19 @@ public class DadosPessoaisPage {
     }
 
     public void inserirNome(String nomeCompleto) {
-        driverQA.actionSendKeys("txt-nome-completo", "id", nomeCompleto);
+        driverQA.sendKeys("txt-nome-completo", "id", nomeCompleto);
     }
 
     public void inserirDataNascimento(String dataNasc) {
-        driverQA.actionSendKeys("txt-nascimento", "id", dataNasc);
+        driverQA.sendKeys("txt-nascimento", "id", dataNasc);
     }
 
     public void inserirNomeMae(String nomeMae) {
-        driverQA.actionSendKeys("txt-nome-mae", "id", nomeMae);
+        driverQA.sendKeys("txt-nome-mae", "id", nomeMae);
     }
 
     public void inserirCep(String cepNumber) {
-        driverQA.actionSendKeys(cep, cepNumber);
+        driverQA.sendKeys(cep, cepNumber);
 
         WebElement endereco = driverQA.findElement("txt-endereco-endereco-entrega", "id");
         driverQA.waitElementVisibility(endereco, 12);
@@ -200,7 +200,7 @@ public class DadosPessoaisPage {
     }
 
     public void inserirCepCobranca(String cep) {
-        driverQA.actionSendKeys("txt-cep-endereco-cobranca", "id", cep);
+        driverQA.sendKeys("txt-cep-endereco-cobranca", "id", cep);
 
         WebElement endereco = driverQA.findElement("txt-endereco-endereco-cobranca", "id");
         driverQA.waitElementVisibility(endereco, 12);

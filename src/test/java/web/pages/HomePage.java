@@ -29,6 +29,19 @@ public class HomePage {
     private boolean isDebit = true;
 
     private void validarCardPlano(String code) {
+
+        //TODO refactor
+        //Puxa carrossel, caso seja mobile
+        if (driverQA.getPlatformName().toString().matches("ANDROID|IOS")) {
+            WebElement nextCarrossel = driverQA.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
+            if (code.equals("17536")) {
+                driverQA.javaScriptClick(nextCarrossel);
+            } else if (code.equals("17558")) {
+                driverQA.javaScriptClick(nextCarrossel);
+                driverQA.javaScriptClick(nextCarrossel);
+            }
+        }
+
         //TODO atualizar find para id quando for criado
         WebElement cardParent = driverQA.findElement("//*[@id='addToCartForm" + code + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
@@ -62,8 +75,9 @@ public class HomePage {
         if (cartOrder.getPlan().hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
+
             ComumPage.validarMidiasPlano(cartOrder.getPlan().getExtraPlayApps(), extraPlayApps, driverQA);
-        }
+    }
 
         //Valida planPortability (GB e bônus - antigo)
         if (cartOrder.getPlan().hasPlanPortability()) {
@@ -80,6 +94,12 @@ public class HomePage {
     public void acessarLojaHome() {
         driverQA.getDriver().get(Constants.urlAmbiente);
         driverQA.waitPageLoad(Constants.urlAmbiente, 20);
+
+        if (driverQA.getPlatformName().toString().matches("ANDROID|IOS")) {
+            WebElement btnFecharModal = driverQA.findElement("//*[@id='modal-onleave'][1]/div/a","xpath");
+            driverQA.waitElementVisibility(btnFecharModal, 10);
+            driverQA.javaScriptClick(btnFecharModal);
+        }
     }
 
     public void validarHomePage() {
@@ -87,7 +107,7 @@ public class HomePage {
     }
 
     public void preencherCampoSeuTelefoneHeader(String msisdn) {
-        driverQA.actionSendKeys("txt-telefone", "id", msisdn);
+        driverQA.sendKeys("txt-telefone", "id", msisdn);
     }
 
     public void acessarPdpPlano(String id) {
@@ -109,7 +129,14 @@ public class HomePage {
         driverQA.javaScriptClick("btn-entrar", "id");
     }
 
+    private void abrirMenuMobile(){
+        if (driverQA.getPlatformName().toString().matches("ANDROID|IOS")) {
+            driverQA.javaScriptClick("//*[@id='navigation-menu']/preceding-sibling::button", "xpath");
+        }
+    }
+
     public void acessarMenuCelulares() {
+        abrirMenuMobile();
         driverQA.javaScriptClick("//*[@id='tab-aparelhos']/a", "xpath");
     }
 }

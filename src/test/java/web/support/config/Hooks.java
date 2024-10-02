@@ -7,6 +7,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.support.utils.DriverQA;
 
+import static org.openqa.selenium.Platform.ANDROID;
+import static org.openqa.selenium.Platform.IOS;
+
 public class Hooks {
 
     @Autowired
@@ -20,9 +23,9 @@ public class Hooks {
     @After(order = 3)
     public void printPlataform(Scenario scenario) {
         if (System.getProperty("api", "false").equals("false")) {
-            if (driverQA.getPlataformName().toString().equals("ANDROID")) {
+            if (driverQA.getPlatformName() == (ANDROID)) {
                 scenario.attach("", "text/plain", "ANDROID");
-            } else if (driverQA.getPlataformName().toString().equals("IOS")) {
+            } else if (driverQA.getPlatformName() == (IOS)) {
                 scenario.attach("", "text/plain", "IOS");
             } else {
                 scenario.attach("", "text/plain", "WINDOWS DESKTOP");

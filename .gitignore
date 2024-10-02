@@ -2,6 +2,10 @@
 ### Example user template template
 ### Example user template
 
+# BrowserStack Files
+browserstack.err
+performance-report.csv
+
 # IntelliJ project files
 /.idea
 .idea
