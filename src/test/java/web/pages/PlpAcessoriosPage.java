@@ -20,12 +20,11 @@ public class PlpAcessoriosPage {
         driverWeb.waitPageLoad("/accessories", 5);
     }
 
-    public void validarTodasOfertas(){
+    public void validarTodasOfertas() {
         driverWeb.javaScriptClick("//*[@class='styles_item__8HZ_B styles_selected__M9eZM']", "xpath");
     }
 
-    public void clilcarBotaoComprar(){
-//        driverQA.javaScriptClick("//div[@class=\"mdn-CardProduct-content\"]/button[1]", "xpath");
+    public void clicarBotaoComprar() {
         driverWeb.javaScriptClick("/html/body/div/div/div[2]/div[4]/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/button", "xpath");
     }
 }

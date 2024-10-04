@@ -97,18 +97,23 @@ public class CarrinhoSteps {
         carrinhoPage.validarModalAvisoTrocaPlano();
     }
 
+    @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
+    public void clicarEmAvisoTrocaPlano() {
+        carrinhoPage.clicarAvisoTrocaPlano();
+    }
+
     @Entao("é direcionado para a tela de Carrinho de Acessórios")
-    public void validarCarrinhoAcessorios(){
+    public void validarCarrinhoAcessorios() {
         carrinhoPage.validarPaginaCarrinhoAcessorios();
     }
 
     @E("preenche os campos: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string} para acessórios")
-    public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email){
+    public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email) {
         carrinhoPage.inserirDadosCarrinhoAcessorios(telefone, cpf, email);
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Carrinho de Acessórios")
-    public void clicarContinuarAcessorios(){
+    public void clicarContinuarAcessorios() {
         carrinhoPage.clicaBotaoContinuarAcessorios();
     }
 }
