@@ -27,6 +27,11 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.validarPaginaFormaPagamento();
     }
 
+    @Entao("será direcionado para a tela [Forma de Pagamento] de acessórios")
+    public void validarPaginaFormaPagamentoAcessorios() {
+        formaPagamentoPage.validarPaginaFormaPagamentoAcessorios();
+    }
+
     @Quando("o usuário adicionar o cupom {string} e clicar no botão [Aplicar]")
     public void aplicarCupom(String cupom) {
         formaPagamentoPage.preencherCupom(cupom);
