@@ -24,4 +24,10 @@ public class PdpAcessoriosSteps {
     public void clicarBotaoComprar(){
         pdpAcessoriosPage.clicarBotaoComprar();
     }
+
+
+    @Quando("o usuário clicar no botão [Comprar] na PDP de Acessório para 2 acessorio")
+    public void clicarBotaoComprar2Acessorio(){
+        pdpAcessoriosPage.clicarBotaoComprar2Acessorio();
+    }
 }

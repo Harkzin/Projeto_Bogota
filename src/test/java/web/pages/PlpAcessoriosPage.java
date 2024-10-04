@@ -28,4 +28,8 @@ public class PlpAcessoriosPage {
 //        driverQA.javaScriptClick("//div[@class=\"mdn-CardProduct-content\"]/button[1]", "xpath");
         driverWeb.javaScriptClick("/html/body/div/div/div[2]/div[4]/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/button", "xpath");
     }
+
+    public void clilcarBotaoComprar2Acessorio(){
+        driverWeb.javaScriptClick("//*[@id=\"cardContainerAcessories\"]/div[1]/div/div[2]/button", "xpath");
+    }
 }

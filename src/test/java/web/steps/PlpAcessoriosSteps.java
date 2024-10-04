@@ -27,4 +27,9 @@ public class PlpAcessoriosSteps {
     public void clicarComprar(){
         plpAcessoriosPage.clilcarBotaoComprar();
     }
+
+    @Quando("o usuário clicar no botão [Comprar] no produto [REPETIDOR MESH DECO M5 A C1300]")
+    public void clicarComprar2Acessorio(){
+        plpAcessoriosPage.clilcarBotaoComprar2Acessorio();
+    }
 }

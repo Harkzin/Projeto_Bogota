@@ -28,10 +28,10 @@ public class Hooks {
         }
     }
 
-    @After(order = 1)
-    public void closeBrowser() {
-        if (System.getProperty("api", "false").equals("false")) {
-            driverWeb.getDriver().quit();
-        }
-    }
+//    @After(order = 1)
+//    public void closeBrowser() {
+//        if (System.getProperty("api", "false").equals("false")) {
+//            driverWeb.getDriver().quit();
+//        }
+//    }
 }

@@ -24,4 +24,8 @@ public class PdpAcessoriosPage {
         driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
     }
 
+    public void clicarBotaoComprar2Acessorio(){
+        driverWeb.javaScriptClick("btn-eu-quero-000000000000062124", "id");
+    }
+
 }
