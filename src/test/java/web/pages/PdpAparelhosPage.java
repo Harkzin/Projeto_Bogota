@@ -45,6 +45,12 @@ public class PdpAparelhosPage {
     @FindBy(id = "slc-plataforma-plano")
     private WebElement plataforma;
 
+    @FindBy(id = "txt-telefone-login")
+    private WebElement campoTelefoneLogin;
+
+    @FindBy(xpath = "//*[@id=\"rdn-mudar-plano\"]/..")
+    private WebElement mudarMeuPlano;
+
     private boolean prePaidPlanSelected;
 
     private void validarInfosPlano(CartOrder.PositionsAndPrices.Entry planEntry) {
@@ -220,11 +226,29 @@ public class PdpAparelhosPage {
         }
     }
 
+    public void validarPopoverLogin() {
+        driverWeb.waitElementPresence("//div[@class='popover fade bottom in' and @role='tooltip']", 10);
+        driverWeb.waitElementVisible(campoTelefoneLogin,20);
+    }
+
+    public void preencheCampoSeuNumero(String msisdn) {
+        driverWeb.sendKeys(campoTelefoneLogin, msisdn);
+    }
+
+    public void clicaAcessarLogin() {
+        driverWeb.javaScriptClick("btn-acessar", "id");
+    }
+
+    public void validarInformacoesExibidasAposLogin(){
+        driverWeb.waitElementVisible(mudarMeuPlano, 20);
+    }
+
     public void selecionarPlataforma(String category) {
         if (category.equals("prepago")) {
             prePaidPlanSelected = true;
         }
 
+        driverWeb.waitElementPresence("//*[@id=\"slc-plataforma-plano\"]/..", 10);
         Select platform = new Select(plataforma);
         platform.selectByValue(category);
     }
