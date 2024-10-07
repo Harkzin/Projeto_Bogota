@@ -30,7 +30,7 @@ public class CartOrder {
     private String planId;
     private String deviceId;
 
-    public boolean isDebitPaymentFlow = true;
+    public boolean isDebitPaymentFlow;
     public boolean hasLoyalty = true;
 
     private final Essential essential;
@@ -225,7 +225,7 @@ public class CartOrder {
 
     private void addDependent(String id, String msisdn, ProcessType processType) {
         if (hasDependent() == 0) { //Cria entry caso seja o primeiro dependente
-            Product dependente = createProduct("dependente", Product.class);
+            Product dependente = createProduct("dependente", PlanProduct.class);
             positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), 0D));
         } else { //Atualiza a quantidade e preço na entry caso já tenha dependentes adicionados
             PositionsAndPrices.Entry depEntry = getEntry("dependente");

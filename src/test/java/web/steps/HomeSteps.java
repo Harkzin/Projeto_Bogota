@@ -25,19 +25,11 @@ public class HomeSteps {
         homePage.acessarLojaHome();
     }
 
-    @Quando("selecionar o plano de id {string} do carrossel da Home")
-    public void selecionarPlano(String id) {
-        cart.setPlan(id);
-        homePage.validarCardPlano(cart.getPlan(), true);
-        homePage.selecionarPlano(id);
-    }
-
-    @Quando("selecionar o plano Controle de id {string} na Home")
-    public void selecionarPlanoControle(String id) {
-        cart.isDebitPaymentFlow = false;
+    @Quando("selecionar o Plano Controle/Pós de id {string} na Home")
+    public void selecionarPlanoPos(String id) {
         cart.setPlan(id);
         homePage.validarCardPlano(cart.getPlan(), false);
-        homePage.selecionarPlanoControle(id);
+        homePage.selecionarPlano(id);
     }
 
     @E("preencher o campo Seu telefone Claro com o msidn {string}")

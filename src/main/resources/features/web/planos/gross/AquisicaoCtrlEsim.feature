@@ -7,9 +7,9 @@ Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
   @Controle
   @AquisicaoCtrlEsim
   Cenario: Aquisicao Controle com e-Sim
-    Dado que o usuário acesse a Loja Online
 
-    Quando selecionar o plano Controle de id "17536" na Home
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o Plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
@@ -54,5 +54,5 @@ Funcionalidade: ECCMAUT-872 - Aquisicao Controle com e-Sim
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
