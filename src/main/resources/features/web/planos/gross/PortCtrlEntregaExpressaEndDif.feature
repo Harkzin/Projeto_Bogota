@@ -7,9 +7,9 @@ Funcionalidade: ECCMAUT-155 - Portabilidade Controle - Entrega Expressa - Endere
   @Controle
   @PortabilidadeCtrlExpressaEndDif
   Cenario: Portabilidade Controle - Entrega Expressa - Endereco Diferente
-    Dado que o usuário acesse a Loja Online
 
-    Quando selecionar o plano Controle de id "17536" na Home
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o Plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
@@ -57,6 +57,6 @@ Funcionalidade: ECCMAUT-155 - Portabilidade Controle - Entrega Expressa - Endere
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Então é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E o usuário clicar em [Ok, Entendi] no modal de token
     E os dados do pedido estão corretos
