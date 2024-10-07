@@ -8,8 +8,9 @@ Funcionalidade: ECCMAUT-510 - Portabilidade Pos com numero Base
   @Pos
   @PortPosComNumeroBase
   Cenario: Portabilidade - Numero Base
+
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano de id "17522" do carrossel da Home
+    Quando selecionar o Plano Pós de id "17522" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
