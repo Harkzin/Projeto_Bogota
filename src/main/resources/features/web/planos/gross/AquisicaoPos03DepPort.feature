@@ -1,14 +1,15 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 03 Dependente Portabilidade
+Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 03 Dependentes Portabilidade
 
   @Aquisicao
   @Pos
   @AquisicaoPos03DepPort
-  Cenario: Aquisicao Pos - 01 Dependente
+  Cenario: Aquisicao Pos - 03 Dependentes
+
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano Controle de id "17524" na Home
+    Quando selecionar o Plano Pós de id "17524" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
@@ -17,16 +18,16 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 03 Dependente Portabilidade
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSC UMDEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSC TRESDEPPORT", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E adiciona o primeiro dependente, com numero "910400067"
-    E adiciona o segundo dependente, com numero "910400068"
-    E adiciona o terceiro dependente, com numero "910400069"
+    E adiciona o primeiro dependente, com numero "910400082"
+    E adiciona o segundo dependente, com numero "910400081"
+    E adiciona o terceiro dependente, com numero "910400080"
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
