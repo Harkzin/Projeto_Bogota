@@ -115,10 +115,6 @@ public class HomePage {
         driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
     }
 
-    public void selecionarPlanoControle(String id) {
-        selecionarPlano(id);
-    }
-
     public void clicaBotaoEntrar() {
         driverWeb.javaScriptClick("btn-entrar", "id");
     }
