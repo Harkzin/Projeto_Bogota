@@ -17,7 +17,7 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
 
     Quando o usuário selecionar a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho
     Então é exibido o popover para login
-    E preenche o campo [Seu numero Claro] com "11945580454"
+    E preenche o campo [Seu numero Claro] com "11945583804"
 
     Quando clicar no botão [Acessar] do popover
     Entao é exibido as opções e informações para cliente claro
@@ -28,7 +28,7 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
     Entao é direcionado para a tela de Carrinho
       #Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone com DDD] "11945580454", [E-mail] e [CPF] "57632126813"
+    E preenche os campos: [Telefone com DDD] "11945583804", [E-mail] e [CPF] "49014340800"
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
