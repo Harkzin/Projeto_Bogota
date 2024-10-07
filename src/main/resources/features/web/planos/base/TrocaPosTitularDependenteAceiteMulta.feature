@@ -5,11 +5,11 @@ Funcionalidade: ECCMAUT-150  -  Troca Pos com Aceite de Multa
 
   @Troca
   @Pos
-  @TrocaPosCtrlAceiteMulta
+  @TrocaPosAceiteMulta
   Cenario: Troca Pos com Aceite de Multa
-    Dado que o usuário acesse a Loja Online
 
-    Quando selecionar o plano Controle de id "17515" na Home
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o Plano Pós de id "17515" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de troca de Plano
