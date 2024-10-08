@@ -9,6 +9,7 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
   @Pos
   @MigracaoCtrlPosPDP
   Cenario: Migracao de Plano Controle - PDP - Cliente Boleto para Debito
+
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar no botão [Mais detalhes] do plano "17528"
     Então é direcionado para a PDP do plano
@@ -49,5 +50,5 @@ Funcionalidade: ECCMAUT-258 - Migracao de Plano Controle - PDP - Cliente Boleto 
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

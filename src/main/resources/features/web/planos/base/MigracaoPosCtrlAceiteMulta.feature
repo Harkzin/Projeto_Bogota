@@ -9,9 +9,9 @@ Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de 
   @Controle
   @MigracaoPosCtrlAceiteMulta
   Cenario: Migracao - Downgrade Pos - Controle com Aceite de Multa
-    Dado que o usuário acesse a Loja Online
 
-    Quando selecionar o plano Controle de id "17536" na Home
+    Dado que o usuário acesse a Loja Online
+    Quando selecionar o Plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de troca de Plano
@@ -58,5 +58,5 @@ Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de 
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Então é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

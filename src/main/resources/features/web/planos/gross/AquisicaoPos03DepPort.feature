@@ -1,32 +1,35 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo endereco
+Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 03 Dependentes Portabilidade
 
-  @Portabilidade
+  @Aquisicao
   @Pos
-  @PortPosExpressaMesmoEnd
-  Cenario: Portabilidade Pos - Entrega Expressa - Mesmo endereco
+  @AquisicaoPos03DepPort
+  Cenario: Aquisicao Pos - 03 Dependentes
 
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o Plano Pós de id "17522" na Home
+    Quando selecionar o Plano Pós de id "17524" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona a opção [Portabilidade]
-    E preenche os campos: [Telefone a ser portado com DDD] "11999932233", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E seleciona a opção [Aquisição]
+    E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORTPOS MESMOEND", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
-    E preenche os campos de endereço: [CEP] expressa "01001900", [Número] "65" e [Complemento] "AP202"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSC TRESDEPPORT", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
+    E adiciona o primeiro dependente, com numero "910400082"
+    E adiciona o segundo dependente, com numero "910400081"
+    E adiciona o terceiro dependente, com numero "910400080"
 
-    Quando o usuário clicar no botão [Seguir sem dependentes]
+    Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
@@ -51,12 +54,11 @@ Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo ender
     Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
 
     Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
-    Então o valor do Plano será atualizado no Resumo da compra para fatura digital
+    E deve ser exibido as datas de vencimento
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-    Entao é direcionado para a tela de Parabéns
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
-    E o usuário clicar em [Ok, Entendi] no modal de token
+    Então é direcionado para a tela de Parabéns
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
