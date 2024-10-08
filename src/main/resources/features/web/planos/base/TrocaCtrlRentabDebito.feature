@@ -23,7 +23,7 @@ Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Então é direcionado para a tela de SMS
       #Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche o campo [Código enviado Por SMS] com o token recebido
+    E preenche o campo [Código de verificação] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Então é direcionado para a tela de Parabéns
