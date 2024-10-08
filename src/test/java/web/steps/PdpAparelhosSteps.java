@@ -44,7 +44,7 @@ public class PdpAparelhosSteps  {
         pdpAparelhosPage.selecionarFluxo(EXCHANGE);
     }
 
-    @E("seleciona a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
+    @Quando("o usuário selecionar a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
     public void selecionarFluxoBaseMigra() {
         cart.setProcessType(MIGRATE);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
@@ -56,6 +56,26 @@ public class PdpAparelhosSteps  {
         cart.setProcessType(APARELHO_TROCA_APARELHO);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
         pdpAparelhosPage.selecionarFluxo(APARELHO_TROCA_APARELHO);
+    }
+
+    @Entao("é exibido o popover para login")
+    public void validaQueEExibidoOPopoverParaClientesClaro() {
+        pdpAparelhosPage.validarPopoverLogin();
+    }
+
+    @E("preenche o campo [Seu numero Claro] com {string}")
+    public void preencheOCampoSeuNumeroClaroCom(String msisdn) {
+        pdpAparelhosPage.preencheCampoSeuNumero(msisdn);
+    }
+
+    @Quando("clicar no botão [Acessar] do popover")
+    public void clicaEmAcessar() {
+        pdpAparelhosPage.clicaAcessarLogin();
+    }
+
+    @Entao("é exibido as opções e informações para cliente claro")
+    public void deveExibirInformacoesClienteClaro() {
+        pdpAparelhosPage.validarInformacoesExibidasAposLogin();
     }
 
     @E("seleciona a opção [Trazer meu número para Claro]")
