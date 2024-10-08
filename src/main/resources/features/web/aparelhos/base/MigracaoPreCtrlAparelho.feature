@@ -28,7 +28,7 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
     Entao é direcionado para a tela de Carrinho
       #Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone com DDD] "11945583804", [E-mail] e [CPF] "49014340800"
+    E preenche os campos: [E-mail] e [CPF] "49014340800"
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
