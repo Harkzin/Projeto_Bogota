@@ -1,9 +1,10 @@
 #language: pt
 
-Funcionalidade: Aparelhos - Gross
+Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
 
-  @AquisicaoCtrlAparelho
-  Cenario: Aquisicao Controle com Aparelho
+  @PortPosAparVoucher
+  Cenario: Portabilidade Pos com Aparelho - Cartao + Voucher
+
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
     Entao é direcionado para a tela PLP de Aparelho
@@ -17,21 +18,21 @@ Funcionalidade: Aparelhos - Gross
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "false", CPF na diretrix? "false"]
+    E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSCTRL EXPRESBOL", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORTPOS APARVOUCHER", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001000", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Entao é direcionado para a tela de Customizar Fatura
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
@@ -39,23 +40,29 @@ Funcionalidade: Aparelhos - Gross
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
+    Então não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar a forma de pagamento [Débito]
     #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #MOM-2021 Então não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    Então não deve haver alterações no valor e nem nas informações do Plano
+    Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
     #MOM-2021 Então o valor do Plano será atualizado no Resumo da compra para fatura digital
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
@@ -64,9 +71,9 @@ Funcionalidade: Aparelhos - Gross
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
 
-    #Quando o usuário adicionar o cupom "CUPOM100" e clicar no botão [Aplicar]
-    #Então o Aparelho receberá o desconto do cupom
-    #  Mas não deve haver alterações no valor e nem nas informações do Plano
+    Quando o usuário adicionar o cupom "CUPOM100" e clicar no botão [Aplicar]
+    Então o Aparelho receberá o desconto do cupom
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário clicar no botão [Adicionar cartão de crédito]
     Então será exibido o iframe de pagamento do cartão
