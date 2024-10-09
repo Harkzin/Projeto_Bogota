@@ -22,7 +22,7 @@ public class SmsSteps {
         smsPage.validarPaginaSms();
     }
 
-    @E("preenche o campo [Código enviado Por SMS] com o token recebido")
+    @E("preenche o campo [Código de verificação] com o token recebido")
     public void preencherToken() {
         smsPage.inserirToken();
     }

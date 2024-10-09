@@ -27,7 +27,7 @@ Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de SMS
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche o campo [Código enviado Por SMS] com o token recebido
+    E preenche o campo [Código de verificação] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao é direcionado para a tela de Parabéns
