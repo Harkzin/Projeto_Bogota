@@ -8,7 +8,7 @@ Funcionalidade: ECCMAUT-1174 - Portabilidade Pos - 03 Dependente Aquisição
   @PortabilidadePos03DepAquis
   Cenario: Portabilidade Pos - 03 Dependente Aquisição
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano Controle de id "17524" na Home
+    Quando selecionar o Plano Pós de id "17524" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
