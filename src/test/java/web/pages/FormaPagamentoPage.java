@@ -76,17 +76,17 @@ public class FormaPagamentoPage {
     }
 
     public void validarAplicarCupom(String voucher) {
-        //Botão Remover é injetado no html
+        //Botão [Remover] é injetado no html
         validateElementActiveVisible(driverWeb.waitElementPresence("//button[@data-analytics-custom-title='aplicar_cupom']", 10));
 
-        //Botão some do html após aplicar o cupom
+        //Botão [Aplicar] some do html após adicionar o cupom
         assertNull(driverWeb.findById("btn-aplicar-cupom"));
 
-        //Campo de texto
+        //Campo de texto do cupom é desativado
         assertFalse(cupom.isEnabled());
         assertEquals(voucher, cupom.getAttribute("value"));
 
-        //Mensagem de sucesso
+        //Mensagem de sucesso é exibida
         validateElementText("Código do cupom aplicado com sucesso!", driverWeb.findByXpath("//*[contains(@class, 'js-voucher-msg')]"));
     }
 

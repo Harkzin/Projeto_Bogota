@@ -24,7 +24,6 @@ public class PlpAparelhosSteps {
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
     public void clicarEuQuero(String id) {
-        cart.isDebitPaymentFlow = false;
         cart.setDeviceWithFocusPlan(id);
         plpAparelhosPage.validarCardAparelho(cart.getDevice(), cart.getPlan().getName());
         plpAparelhosPage.clicaBotaoEuQuero(id);
