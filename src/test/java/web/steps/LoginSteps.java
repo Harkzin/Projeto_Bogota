@@ -110,6 +110,16 @@ public class LoginSteps {
         loginPage.validarPaginaMinhaContaESim();
     }
 
+    @Quando("o usuário clicar no botão [Ativar eSIM]")
+    public void clicarGerenciarESim() {
+        loginPage.clicarBotaoAtivarESim();
+    }
+
+    @Entao("é direcionado para a tela de Ativar eSIM")
+    public void eDirecionadoParaATelaAtivarESim() {
+        loginPage.validarPaginaAtivarESim();
+    }
+
     @E("selecionar a opção [Gerenciar eSIM]")
     public void selecionarOpcaoGerenciarESim() {
         loginPage.clicarGerenciarESim();

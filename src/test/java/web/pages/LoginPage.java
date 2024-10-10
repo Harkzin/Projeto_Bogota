@@ -51,6 +51,18 @@ public class LoginPage {
         Assert.assertTrue(driverWeb.findElement("//*[@class=\"mdn-Accordion-toggle  mdn-Text--body \"]", "xpath").isDisplayed());
     }
 
+    public void clicarBotaoAtivarESim() {
+        driverWeb.javaScriptClick("/html/body/main/div[4]/div/div/div[2]/div/div/a", "xpath");
+    }
+
+    public void validarPaginaAtivarESim() {
+        driverWeb.waitPageLoad("my-account/esim/activation?code=000003558584", 10);
+
+        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[3]/img", "xpath").isDisplayed());
+        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[4]", "xpath").isDisplayed());
+        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[6]", "xpath").isDisplayed());
+    }
+
     public void validarMensagemSaldoClaroClube(String mensagemClube) {
         WebElement msgClaroClube = driverWeb.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
 
