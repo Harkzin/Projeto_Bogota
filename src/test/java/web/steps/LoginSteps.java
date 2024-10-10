@@ -39,6 +39,11 @@ public class LoginSteps {
         loginPage.clicarAcompanharPedidos();
     }
 
+    @Quando("o usuário clicar na opção [Acompanhar pedidos eSIM]")
+    public void oUsuarioClicarNaOpcaoAcompanharPedidosEsim(){
+        loginPage.clicarAcompanharPedidosEsim();
+    }
+
     @Quando("o usuário clicar na opção [Claro clube]")
     public void oUsuarioClicarNaOpcaoClaroClube() {
         loginPage.clicarClaroClube();
@@ -47,8 +52,13 @@ public class LoginSteps {
     @Entao("é direcionado para a tela de login com CPF")
     public void eDirecionadoParaATelaDeAcompanhamentoDoUsuario() {
         loginPage.validarPaginaLoginCpf();
-
     }
+
+    @Entao("é direcionado para a tela de login eSIM com CPF")
+    public void eDirecionadoParaATelaDeAcompanharPedido(){
+        loginPage.validarPaginaLoginEsimCPF();
+    }
+
     @E("preenche o campo [CPF] {string}")
     public void preencheOCampoCPFComOCPF(String cpf) {
         loginPage.preencheCPF(cpf);
@@ -89,6 +99,22 @@ public class LoginSteps {
     public void eDirecionadoParaATelaMeusPedidos() {
         loginPage.validarPaginaMeusPedidos();
     }
+
+    @Entao("é direcionado para a tela Minha Conta")
+    public void eDirecionadoParaATelaMinhaConta() {
+        loginPage.validarPaginaMinhaConta();
+    }
+
+    @Entao("é direcionado para a tela Minha Conta eSIM")
+    public void eDirecionadoParaATelaMinhaContaESim() {
+        loginPage.validarPaginaMinhaContaESim();
+    }
+
+    @E("selecionar a opção [Gerenciar eSIM]")
+    public void selecionarOpcaoGerenciarESim() {
+        loginPage.clicarGerenciarESim();
+    }
+
     @E("acessar o pedido mais recente, clicando no Número do pedido dele")
     public void acessarOPedidoMaisRecenteClicandoNoNumeroDoPedidoDele() {
         loginPage.acessarPedidoRecente();

@@ -39,9 +39,16 @@ public class LoginPage {
 
     public void validarPaginaMinhaConta() {
         driverWeb.waitPageLoad("/my-account", 10);
-
+        
         Assert.assertTrue(driverWeb.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
         Assert.assertTrue(driverWeb.findElement("lnk-claro-clube", "id").isDisplayed());
+        Assert.assertTrue(driverWeb.findElement("//*[@href=\"/my-account/esim\"]", "xpath").isDisplayed());
+    }
+
+    public void validarPaginaMinhaContaESim() {
+        driverWeb.waitPageLoad("/my-account/esim", 10);
+
+        Assert.assertTrue(driverWeb.findElement("//*[@class=\"mdn-Accordion-toggle  mdn-Text--body \"]", "xpath").isDisplayed());
     }
 
     public void validarMensagemSaldoClaroClube(String mensagemClube) {
@@ -53,6 +60,14 @@ public class LoginPage {
 
     public void clicarAcompanharPedidos() {
         driverWeb.javaScriptClick("lnk-acompanhar-pedidos", "id");
+    }
+
+    public void clicarAcompanharPedidosEsim(){
+        driverWeb.javaScriptClick("//*[@href=\"/login/esim\"]", "xpath");
+    }
+
+    public void clicarGerenciarESim() {
+        driverWeb.javaScriptClick("//*[@href=\"/my-account/esim\"]", "xpath");
     }
 
     public void clicarClaroClube() {
@@ -70,6 +85,16 @@ public class LoginPage {
         Assert.assertFalse(continuar.isEnabled());
     }
 
+    public void validarPaginaLoginEsimCPF(){
+        driverWeb.waitPageLoad("login/esim", 10);
+
+        cpf = driverWeb.findElement("txt-cpf", "id");
+        continuar = driverWeb.findElement("btn-continuar", "id");
+
+        Assert.assertTrue(driverWeb.findElement("track-order-form", "id").isDisplayed());
+        Assert.assertTrue(cpf.isDisplayed());
+        Assert.assertFalse(continuar.isEnabled());
+    }
 
     public void preencheCPF(String cpf) {
         driverWeb.sendKeysLogin(this.cpf, cpf);
