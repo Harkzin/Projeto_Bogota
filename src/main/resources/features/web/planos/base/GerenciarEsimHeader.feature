@@ -11,7 +11,7 @@ Funcionalidade: ECCMAUT-1172 - Gerenciar eSIM - Header - Area Logada
 
     Quando o usuário clicar na opção [Acompanhar pedidos eSIM]
     Entao é direcionado para a tela de login eSIM com CPF
-    E preenche o campo [CPF] "75620122883"
+    E preenche o campo [CPF] "27910253834"
 
     Quando o usuário clicar no botão [Continuar]
     Então é direcionado para a tela de opções de token
@@ -26,3 +26,5 @@ Funcionalidade: ECCMAUT-1172 - Gerenciar eSIM - Header - Area Logada
     Quando selecionar a opção [Gerenciar eSIM]
     Entao é direcionado para a tela Minha Conta eSIM
 
+    Quando o usuário clicar no botão [Ativar eSIM]
+    Entao é direcionado para a tela de Ativar eSIM
