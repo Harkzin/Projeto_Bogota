@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.support.utils.DriverWeb;
-
 import static web.support.utils.Constants.Email.CONFIRMA_TOKEN;
 import static web.support.api.RestAPI.clearInbox;
 
@@ -43,6 +42,10 @@ public class LoginPage {
         Assert.assertTrue(driverWeb.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
         Assert.assertTrue(driverWeb.findElement("lnk-claro-clube", "id").isDisplayed());
         Assert.assertTrue(driverWeb.findElement("//*[@href=\"/my-account/esim\"]", "xpath").isDisplayed());
+    }
+
+    public void validarMsgDeAvisoESim() {
+        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[1]/div", "xpath").isDisplayed());
     }
 
     public void validarPaginaMinhaContaESim() {

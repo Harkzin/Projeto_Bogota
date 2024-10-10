@@ -105,6 +105,11 @@ public class LoginSteps {
         loginPage.validarPaginaMinhaConta();
     }
 
+    @E("deve exibir a mensagem de aviso da ativação do eSIM")
+    public void deveExibirMsgDeAvisoAtivacaoESim() {
+        loginPage.validarMsgDeAvisoESim();
+    }
+
     @Entao("é direcionado para a tela Minha Conta eSIM")
     public void eDirecionadoParaATelaMinhaContaESim() {
         loginPage.validarPaginaMinhaContaESim();
