@@ -22,6 +22,7 @@ Funcionalidade: ECCMAUT-1172 - Gerenciar eSIM - Header - Area Logada
 
     Quando o usuário clicar no botão [Confirmar]
     Então é direcionado para a tela Minha Conta
+      E deve exibir a mensagem de aviso da ativação do eSIM
 
     Quando selecionar a opção [Gerenciar eSIM]
     Entao é direcionado para a tela Minha Conta eSIM
