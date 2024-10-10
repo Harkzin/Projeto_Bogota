@@ -1,6 +1,7 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.validateElementActiveVisible;
@@ -119,6 +121,21 @@ public class FormaPagamentoPage {
 
         //Select só aparece após preencher os dados anteriores
         Select cardInstallments = new Select(driverWeb.waitElementPresence("//*[@id='root']//select[contains(@name, 'comboParcelas')]", 10));
+
+        //Valida parcelas >= 10 reais
+        List<WebElement> installmentList = cardInstallments.getOptions();
+        installmentList.remove(0); //Remove primeira opção "Selecionar parcelas"
+
+        installmentList.forEach(i -> {
+            String installmentPriceText = StringUtils.normalizeSpace(i.getText())
+                    .split(" ")[1]
+                    .replace(".", "")
+                    .replace(",", ".");
+            double installmentPrice = Double.parseDouble(installmentPriceText);
+
+            assertTrue(installmentPrice >= 10D);
+        });
+
         cardInstallments.selectByValue(installments);
     }
 
