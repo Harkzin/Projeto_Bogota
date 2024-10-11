@@ -18,7 +18,6 @@ Funcionalidade: ECCMAUT-197 - Aquisicao de acessorio com mais de 1 unidade
     Quando o usuário clicar no botão [Comprar] no produto [CARREGADOR DE PAREDE CONCEPT]
     Então é direcionado para a PDP do Acessório selecionado
     E o usuário selecionar [Quantidade] "2"
-    E o usuário clicar no botão [Comprar] na PDP de Acessórios
 
     Quando o usuário clicar no botão [Comprar] na PDP de Acessórios
     Entao é direcionado para a tela de Carrinho de Acessórios
