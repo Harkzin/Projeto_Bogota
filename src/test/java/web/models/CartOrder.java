@@ -159,7 +159,7 @@ public class CartOrder {
     }
 
     public void addVoucherForDevice(String voucher) {
-        double amount = 100D; //TODO Mock para CUPOM100. Valor deve vir da API ECCMAUT-888
+        double amount = 100D; //TODO Mock para CUPOM100. Valor deve vir da API ECCMAUT-806
         getEntry(deviceId).setDiscount(amount);
         appliedCouponCodes.add(voucher);
     }

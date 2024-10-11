@@ -23,7 +23,7 @@ public class ParabensSteps {
         parabensPage.validarPaginaParabens();
     }
 
-    @E("o usuário clicar em [Ok, Entendi] no modal de token")
+    @E("clica no botão [Ok, Entendi] do modal de alerta de token")
     public void ClicarOkEntendi() {
         parabensPage.clicarOkEntendi();
     }

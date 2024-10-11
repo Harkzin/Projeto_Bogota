@@ -54,6 +54,6 @@ Funcionalidade: ECCMAUT-942 - Portabilidade Controle com e-Sim
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de Parabéns
-    E o usuário clicar em [Ok, Entendi] no modal de token
+    E clica no botão [Ok, Entendi] do modal de alerta de token
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

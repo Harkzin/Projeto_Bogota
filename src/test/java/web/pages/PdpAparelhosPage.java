@@ -2,6 +2,7 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -45,10 +46,16 @@ public class PdpAparelhosPage {
     @FindBy(id = "slc-plataforma-plano")
     private WebElement plataforma;
 
+    @FindBy(id = "rdn-chip-type-SIM")
+    private WebElement chipComum;
+
+    @FindBy(id = "rdn-chip-type-ESIM")
+    private WebElement chipEsim;
+
     @FindBy(id = "txt-telefone-login")
     private WebElement campoTelefoneLogin;
 
-    @FindBy(xpath = "//*[@id=\"rdn-mudar-plano\"]/..")
+    @FindBy(id = "rdn-mudar-plano")
     private WebElement mudarMeuPlano;
 
     private boolean prePaidPlanSelected;
@@ -193,6 +200,29 @@ public class PdpAparelhosPage {
             validarPrecoCampanhaAparelho(device);
         }
 
+        //Tipos Chip
+        TriConsumer<WebElement, String, Boolean> validateSimType = (simType, text, isSelected) -> {
+            driverWeb.javaScriptScrollTo(simType);
+            assertSame(isSelected, simType.isSelected());
+
+            validateElementText(text, chipComum.findElement(By.xpath("..")));
+        };
+
+        switch (device.getSimType()) {
+            case "NSC" -> { //NSC = NanoSim apenas
+                validateSimType.accept(chipComum, "Chip Comum", true);
+                assertNull(chipEsim);
+            }
+            case "NSE" -> { //NSE = NanoSim + Esim
+                validateSimType.accept(chipComum, "Chip Comum", true);
+                validateSimType.accept(chipEsim, "eSIM", false);
+            }
+            case "???" -> { //??? = Esim apenas //TODO sem código definido ainda
+                validateSimType.accept(chipEsim, "eSIM", true);
+                assertNull(chipComum);
+            }
+        }
+
         //Infos Técnicas
         if (device.hasDeviceFeatures()) {
             driverWeb.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
@@ -224,6 +254,8 @@ public class PdpAparelhosPage {
             case PORTABILITY -> driverWeb.javaScriptClick(fluxoPortabilidade);
             case ACQUISITION -> driverWeb.javaScriptClick(fluxoAquisicao);
         }
+
+        driverWeb.actionPause(3000);
     }
 
     public void validarPopoverLogin() {
@@ -240,7 +272,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano, 20);
+        driverWeb.waitElementVisible(mudarMeuPlano.findElement(By.xpath("..")), 20);
     }
 
     public void selecionarPlataforma(String category) {
@@ -248,7 +280,7 @@ public class PdpAparelhosPage {
             prePaidPlanSelected = true;
         }
 
-        driverWeb.waitElementPresence("//*[@id=\"slc-plataforma-plano\"]/..", 10);
+        driverWeb.waitElementPresence("//*[@id='slc-plataforma-plano']/..", 10);
         Select platform = new Select(plataforma);
         platform.selectByValue(category);
     }
