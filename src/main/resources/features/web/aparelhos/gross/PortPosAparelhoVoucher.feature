@@ -13,7 +13,7 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
     Entao é direcionado para a PDP do Aparelho selecionado
     E seleciona a opção [Trazer meu número para Claro]
     E seleciona a plataforma [Claro Pós]
-    E seleciona o plano "17524"
+    E seleciona o plano "17515"
     E seleciona o chip [Comum]
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
