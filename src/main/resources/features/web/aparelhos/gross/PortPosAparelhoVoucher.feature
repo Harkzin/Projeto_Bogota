@@ -20,7 +20,7 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone a ser portado com DDD] "11913970896", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] "11913970895", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
