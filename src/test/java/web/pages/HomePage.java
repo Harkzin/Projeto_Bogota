@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.product.PlanProduct;
-import web.support.utils.Constants;
 import web.support.utils.DriverWeb;
 
 import java.util.List;

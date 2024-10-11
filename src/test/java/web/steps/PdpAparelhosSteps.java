@@ -39,22 +39,22 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Troca de Plano + Aparelho")
     public void selecionarFluxoBaseTroca() {
-        cart.setProcessType(EXCHANGE);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        cart.setProcessType(EXCHANGE);
         pdpAparelhosPage.selecionarFluxo(EXCHANGE);
     }
 
     @Quando("o usuário selecionar a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
     public void selecionarFluxoBaseMigra() {
-        cart.setProcessType(MIGRATE);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        cart.setProcessType(MIGRATE);
         pdpAparelhosPage.selecionarFluxo(MIGRATE);
     }
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Manter o Plano com fidelidade + Aparelho")
     public void selecionarFluxoBaseManter() {
-        cart.setProcessType(APARELHO_TROCA_APARELHO);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        cart.setProcessType(APARELHO_TROCA_APARELHO);
         pdpAparelhosPage.selecionarFluxo(APARELHO_TROCA_APARELHO);
     }
 
@@ -80,8 +80,8 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona a opção [Trazer meu número para Claro]")
     public void selecionarFluxoPortabilidade() {
-        cart.setProcessType(PORTABILITY);
         cart.getEntry(cart.getDevice().getCode()).setBpo("APV");
+        cart.setProcessType(PORTABILITY);
         pdpAparelhosPage.selecionarFluxo(PORTABILITY);
     }
 

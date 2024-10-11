@@ -11,7 +11,7 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
 
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "000000000000018006"
     Entao é direcionado para a PDP do Aparelho selecionado
-    E seleciona a opção [Quero uma linha nova da Claro]
+    E seleciona a opção [Trazer meu número para Claro]
     E seleciona a plataforma [Claro Pós]
     E seleciona o plano "17524"
     E seleciona o chip [Comum]
@@ -20,14 +20,14 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] "11913970896", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORTPOS APARVOUCHER", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
-    E preenche os campos de endereço: [CEP] convencional "01001000", [Número] "65" e [Complemento] "AP202"
+    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
@@ -83,4 +83,5 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
     Então é direcionado para a tela de Parabéns
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+    E clica no botão [Ok, Entendi] do modal de alerta de token
     E os dados do pedido estão corretos

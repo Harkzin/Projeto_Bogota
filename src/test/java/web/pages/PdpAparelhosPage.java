@@ -17,8 +17,6 @@ import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -256,6 +254,8 @@ public class PdpAparelhosPage {
             case PORTABILITY -> driverWeb.javaScriptClick(fluxoPortabilidade);
             case ACQUISITION -> driverWeb.javaScriptClick(fluxoAquisicao);
         }
+
+        driverWeb.actionPause(3000);
     }
 
     public void validarPopoverLogin() {

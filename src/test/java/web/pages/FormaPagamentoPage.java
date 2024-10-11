@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.validateElementActiveVisible;
