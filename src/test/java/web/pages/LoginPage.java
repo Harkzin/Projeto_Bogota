@@ -69,10 +69,26 @@ public class LoginPage {
         //Valida QRCode
         assertTrue(driverWeb.findByXpath("/html/body/main/div[4]/div/div/div[3]/img").isDisplayed());
 
-        //TODO
-        driverWeb.javaScriptClick("", "id");
-        assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[4]", "xpath").isDisplayed());
-        assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[6]", "xpath").isDisplayed());
+        String[] validacaoMarcasCelulares = {"apple", "motorola", "samsung"};
+
+        for (String marca : validacaoMarcasCelulares) {
+
+            //Valida ativação eSIM por QRCode
+            driverWeb.javaScriptClick("//*[@data-analytics-event-label='faq:ativar-qrcode:" + marca + "']/a", "xpath");
+            assertTrue(driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-qrcode:" + marca + "']/div").isDisplayed());
+
+            driverWeb.actionPause(2000);
+        }
+
+        for (String marca : validacaoMarcasCelulares) {
+
+            //Valida ativação eSIM por código copia e cola
+            driverWeb.javaScriptClick("//*[@data-analytics-event-label='faq:ativar-manual:" + marca + "']/a", "xpath");
+            assertTrue(driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-manual:" + marca + "']/div").isDisplayed());
+
+            driverWeb.actionPause(2000);
+        }
+
     }
 
     public void validarMensagemSaldoClaroClube(String mensagemClube) {
