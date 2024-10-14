@@ -70,6 +70,7 @@ public class CarrinhoPage {
             Assert.assertEquals(cpfMigracao.getAttribute("value"), "");
         } else {
             //TODO - Nos fluxos de Base com Aparelho, os campos são preenchidos com os dados do cliente
+            Assert.assertFalse(telefoneMigracao.isEnabled());
         }
     }
 
@@ -197,6 +198,10 @@ public class CarrinhoPage {
 
     public void inserirDadosBase(String telefone, String cpf) {
         driverWeb.sendKeys(telefoneMigracao, telefone);
+        driverWeb.sendKeys(cpfMigracao, cpf);
+    }
+
+    public void inserirDadosBase(String cpf) {
         driverWeb.sendKeys(cpfMigracao, cpf);
     }
 

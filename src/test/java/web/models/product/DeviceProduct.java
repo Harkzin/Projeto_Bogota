@@ -116,8 +116,8 @@ public final class DeviceProduct extends Product {
         return devicePriceInfo.price.formattedValue;
     }
 
-    public boolean isEsimOnly() {
-        return !getDeviceAttribute("features").featureValues.get(0).value.toLowerCase().contains("nanosim");
+    public String getSimType() {
+        return getDeviceAttribute("features").featureValues.get(0).value;
     }
 
     public double getPlanPromoDiscount(ProcessType processType, PaymentMode paymentMode, InvoiceType invoiceType, boolean hasLoyalty, int ddd) {

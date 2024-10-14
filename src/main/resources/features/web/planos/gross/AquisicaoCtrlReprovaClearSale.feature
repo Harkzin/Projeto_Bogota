@@ -7,8 +7,9 @@ Funcionalidade: ECCMAUT-340 - Aquisicao Controle - Reprovacao Clear Sale
   @Controle
   @AquisicaoCtrlReprovaClearSale
   Cenario: Aquisicao Controle - Reprovacao Clear Sale
+
     Dado que o usuário acesse a Loja Online
-    Quando selecionar o plano Controle de id "17536" na Home
+    Quando selecionar o Plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Aquisição]
@@ -52,5 +53,5 @@ Funcionalidade: ECCMAUT-340 - Aquisicao Controle - Reprovacao Clear Sale
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Então é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

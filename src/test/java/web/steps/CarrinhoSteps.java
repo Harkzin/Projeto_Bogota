@@ -65,6 +65,12 @@ public class CarrinhoSteps {
         carrinhoPage.inserirDadosBase(telefone, cpf);
     }
 
+    @E("preenche os campos: [E-mail] e [CPF] {string}")
+    public void preencherCamposCarrinhoBaseAparelho(String cpf) {
+        carrinhoPage.inserirEmail();
+        carrinhoPage.inserirDadosBase(cpf);
+    }
+
     @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoPortabilidade(String telefone, String cpfAprovado, String cpfDiretrix) {
         carrinhoPage.inserirEmail();
@@ -97,18 +103,23 @@ public class CarrinhoSteps {
         carrinhoPage.validarModalAvisoTrocaPlano();
     }
 
+    @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
+    public void clicarEmAvisoTrocaPlano() {
+        carrinhoPage.clicarAvisoTrocaPlano();
+    }
+
     @Entao("é direcionado para a tela de Carrinho de Acessórios")
-    public void validarCarrinhoAcessorios(){
+    public void validarCarrinhoAcessorios() {
         carrinhoPage.validarPaginaCarrinhoAcessorios();
     }
 
     @E("preenche os campos: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string} para acessórios")
-    public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email){
+    public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email) {
         carrinhoPage.inserirDadosCarrinhoAcessorios(telefone, cpf, email);
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Carrinho de Acessórios")
-    public void clicarContinuarAcessorios(){
+    public void clicarContinuarAcessorios() {
         carrinhoPage.clicaBotaoContinuarAcessorios();
     }
 

@@ -7,9 +7,9 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
   @Controle
   @MigracaoPreCtrlTHAB
   Cenario: Migracao Pre - Readequacao THAB
+
     Dado que o usuário acesse a Loja Online
-    
-    Quando selecionar o plano Controle de id "17536" na Home
+    Quando selecionar o Plano Controle de id "17536" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
@@ -67,7 +67,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Então é direcionado para a tela de SMS
-    E preenche o campo [Código enviado Por SMS] com o token recebido
+    E preenche o campo [Código de verificação] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Então é direcionado para a tela de Parabéns

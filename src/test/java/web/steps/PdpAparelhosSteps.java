@@ -39,29 +39,49 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Troca de Plano + Aparelho")
     public void selecionarFluxoBaseTroca() {
-        cart.setProcessType(EXCHANGE);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        cart.setProcessType(EXCHANGE);
         pdpAparelhosPage.selecionarFluxo(EXCHANGE);
     }
 
-    @E("seleciona a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
+    @Quando("o usuário selecionar a opção [Manter meu número Claro], para o fluxo de Migração de Plano + Aparelho")
     public void selecionarFluxoBaseMigra() {
-        cart.setProcessType(MIGRATE);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        cart.setProcessType(MIGRATE);
         pdpAparelhosPage.selecionarFluxo(MIGRATE);
     }
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Manter o Plano com fidelidade + Aparelho")
     public void selecionarFluxoBaseManter() {
-        cart.setProcessType(APARELHO_TROCA_APARELHO);
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        cart.setProcessType(APARELHO_TROCA_APARELHO);
         pdpAparelhosPage.selecionarFluxo(APARELHO_TROCA_APARELHO);
+    }
+
+    @Entao("é exibido o popover para login")
+    public void validaQueEExibidoOPopoverParaClientesClaro() {
+        pdpAparelhosPage.validarPopoverLogin();
+    }
+
+    @E("preenche o campo [Seu numero Claro] com {string}")
+    public void preencheOCampoSeuNumeroClaroCom(String msisdn) {
+        pdpAparelhosPage.preencheCampoSeuNumero(msisdn);
+    }
+
+    @Quando("clicar no botão [Acessar] do popover")
+    public void clicaEmAcessar() {
+        pdpAparelhosPage.clicaAcessarLogin();
+    }
+
+    @Entao("é exibido as opções e informações para cliente claro")
+    public void deveExibirInformacoesClienteClaro() {
+        pdpAparelhosPage.validarInformacoesExibidasAposLogin();
     }
 
     @E("seleciona a opção [Trazer meu número para Claro]")
     public void selecionarFluxoPortabilidade() {
-        cart.setProcessType(PORTABILITY);
         cart.getEntry(cart.getDevice().getCode()).setBpo("APV");
+        cart.setProcessType(PORTABILITY);
         pdpAparelhosPage.selecionarFluxo(PORTABILITY);
     }
 

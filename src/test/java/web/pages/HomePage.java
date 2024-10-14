@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.product.PlanProduct;
-import web.support.utils.Constants;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -113,10 +112,6 @@ public class HomePage {
 
     public void selecionarPlano(String id) {
         driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
-    }
-
-    public void selecionarPlanoControle(String id) {
-        selecionarPlano(id);
     }
 
     public void clicaBotaoEntrar() {

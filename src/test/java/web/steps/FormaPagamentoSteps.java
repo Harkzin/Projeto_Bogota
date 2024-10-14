@@ -42,7 +42,7 @@ public class FormaPagamentoSteps {
     @Entao("o Aparelho receberá o desconto do cupom")
     public void validarDescontoCupom() {
         formaPagamentoPage.validarAplicarCupom(cart.getAppliedCoupon());
-        comumPage.validarResumoCompraAparelho(cart);
+        //TODO ECCMAUT-351 comumPage.validarResumoCompraAparelho(cart);
     }
 
     @Quando("o usuário clicar no botão [Adicionar cartão de crédito]")

@@ -1,6 +1,6 @@
 #language: pt
 
-@Regressivo
+@Web
 Funcionalidade: ECCMAUT-1092 - Aquisicao de acessorio com 1 produto - Parcelamento
 
   @Acessorio
