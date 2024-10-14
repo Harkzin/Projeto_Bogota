@@ -205,4 +205,19 @@ public final class RestAPI {
             throw new RuntimeException(e);
         }
     }
+
+    public static String getPlanCartPromotion(String guid) {
+        final HttpRequest planCartPromotionRequest = HttpRequest.newBuilder()
+                .uri(URI.create(String.format("https://api.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/cart/promotions/automation/%s", ambiente, guid)))
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getEcommToken())
+                .GET()
+                .build();
+
+        try {
+            return clientHttp.send(planCartPromotionRequest, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

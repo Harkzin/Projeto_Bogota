@@ -1,5 +1,6 @@
 package web.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
@@ -8,9 +9,8 @@ import web.models.product.Product;
 import java.util.ArrayList;
 import java.util.List;
 
+import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
-import static web.support.api.RestAPI.getProductDetails;
-import static web.support.api.RestAPI.objMapper;
 import static web.support.utils.Constants.InvoiceType.*;
 import static web.support.utils.Constants.PaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
@@ -31,7 +31,6 @@ public class CartOrder {
     private String deviceId;
 
     public boolean isDebitPaymentFlow;
-    public boolean hasLoyalty = true;
 
     private final Essential essential;
     private final PositionsAndPrices positionsAndPrices;
@@ -53,7 +52,7 @@ public class CartOrder {
 
     private int claroDdd;
 
-    private String allPromotionResults;
+    private Promotion allPromotionResults;
     private final List<String> appliedCouponCodes = new ArrayList<>();
     private String children;
     private String chosenPlan;
@@ -136,7 +135,6 @@ public class CartOrder {
             promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
         } else {
             promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
-            //TODO Atualizar para pegar o preço da API (preço da promo, ECCMAUT-888)
         }
 
         positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), promoDiscount));
@@ -251,8 +249,7 @@ public class CartOrder {
     public void setSelectedInvoiceType(InvoiceType invoiceType) {
         selectedInvoiceType = invoiceType;
 
-        getEntry(planId).totalPrice = getPlan().getPrice(isDebitPaymentFlow, invoiceType == PRINTED);
-        //TODO Pegar valor da API ECCMAUT-888
+        updatePlanCartPromotion();
     }
 
     public InvoiceType getSelectedInvoiceType() {
@@ -261,12 +258,29 @@ public class CartOrder {
 
     public void updatePlanEntryPaymentMode(PaymentMode paymentMode) {
         getEntry(planId).paymentMode = paymentMode;
-        getEntry(planId).totalPrice = getPlan().getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED);
-        //TODO Pegar valor da API ECCMAUT-888
+        updatePlanCartPromotion();
     }
 
     public void setDDD(int ddd) {
         claroDdd = ddd;
+    }
+
+    public void updatePlanCartPromotion() {
+        try {
+            allPromotionResults = objMapper.readValue(getPlanCartPromotion(guid), Promotion.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        getEntry(planId).totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public boolean hasLoyalty() {
+        return allPromotionResults.loyalty;
     }
 
     public static class ClaroChip {
@@ -542,5 +556,40 @@ public class CartOrder {
         public String type;
 
         private SubOrder() {}
+    }
+
+    public static final class Promotion {
+
+        private Promotion() {}
+
+        @JsonProperty("code")
+        public String code;
+
+        @JsonProperty("dddList")
+        public List<Integer> dddList;
+
+        @JsonProperty("discountValue")
+        public int discountValue;
+
+        @JsonProperty("fixedDiscount")
+        public boolean fixedDiscount;
+
+        @JsonProperty("loyalty")
+        public boolean loyalty;
+
+        @JsonProperty("name")
+        public String name;
+
+        @JsonProperty("paymentMethod")
+        public String paymentMethod;
+
+        @JsonProperty("priority")
+        public int priority;
+
+        @JsonProperty("processTypeList")
+        public List<String> processTypeList;
+
+        @JsonProperty("rentabilizationCampaign")
+        public boolean rentabilizationCampaign;
     }
 }

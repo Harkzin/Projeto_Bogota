@@ -222,7 +222,7 @@ public class ComumPage {
 
         PlanProduct plan = cart.getPlan();
         boolean isDebit = cart.isDebitPaymentFlow;
-        boolean hasLoyalty = cart.hasLoyalty;
+        boolean hasLoyalty = cart.hasLoyalty();
 
         //Valida nome
         validateElementText(plan.getName(), planName);
