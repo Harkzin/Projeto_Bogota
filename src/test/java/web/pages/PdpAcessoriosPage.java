@@ -16,16 +16,15 @@ public class PdpAcessoriosPage {
         this.driverWeb = driverWeb;
     }
 
-    public void validarPaginaPdpAcessorios(){
+    public void validarPaginaPdpAcessorios() {
         driverWeb.waitPageLoad("accessories", 10);
     }
 
-    public void clicarBotaoComprar(){
-        driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
+    public void clicarBotaoComprar(String acessorio) {
+        if (acessorio.equals("CARREGADOR DE PAREDE CONCEPT")) {
+            driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
+        } else {
+            driverWeb.javaScriptClick("btn-eu-quero-000000000000062124", "id");
+        }
     }
-
-    public void clicarBotaoComprar2Acessorio(){
-        driverWeb.javaScriptClick("btn-eu-quero-000000000000062124", "id");
-    }
-
 }

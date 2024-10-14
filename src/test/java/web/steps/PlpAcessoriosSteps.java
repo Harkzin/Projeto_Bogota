@@ -25,13 +25,8 @@ public class PlpAcessoriosSteps {
         plpAcessoriosPage.validarTodasOfertas();
     }
 
-    @Quando("o usuário clicar no botão [Comprar] no produto [CARREGADOR DE PAREDE CONCEPT]")
-    public void clicarComprar() {
-        plpAcessoriosPage.clicarBotaoComprar();
-    }
-
-    @Quando("o usuário clicar no botão [Comprar] no produto [REPETIDOR MESH DECO M5 A C1300]")
-    public void clicarComprar2Acessorio(){
-        plpAcessoriosPage.clilcarBotaoComprar2Acessorio();
+    @Quando("o usuário clicar no botão [Comprar] no produto [ACESSÓRIO] {string}")
+    public void clicarComprar(String acessorio) {
+        plpAcessoriosPage.clicarBotaoComprar(acessorio);
     }
 }

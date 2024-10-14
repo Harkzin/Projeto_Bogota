@@ -24,11 +24,11 @@ public class PlpAcessoriosPage {
         driverWeb.javaScriptClick("//*[@class='styles_item__8HZ_B styles_selected__M9eZM']", "xpath");
     }
 
-    public void clicarBotaoComprar() {
-        driverWeb.javaScriptClick("/html/body/div/div/div[2]/div[4]/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/button", "xpath");
-    }
-
-    public void clilcarBotaoComprar2Acessorio(){
-        driverWeb.javaScriptClick("//*[@id=\"cardContainerAcessories\"]/div[1]/div/div[2]/button", "xpath");
+    public void clicarBotaoComprar(String acessorio) {
+        if (acessorio.equals("CARREGADOR DE PAREDE CONCEPT")) {
+            driverWeb.javaScriptClick("/html/body/div/div/div[2]/div[4]/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/button", "xpath");
+        } else {
+            driverWeb.javaScriptClick("//*[@id=\"cardContainerAcessories\"]/div[1]/div/div[2]/button", "xpath");
+        }
     }
 }
