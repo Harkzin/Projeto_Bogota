@@ -13,6 +13,15 @@ public final class PlanProduct extends Product {
     @JsonProperty("loyaltyClaroPrices")
     private List<LoyaltyClaroPrice> loyaltyClaroPrices;
 
+    @JsonProperty("dataBonusForPlan")
+    private DataBonusForPlan dataBonusForPlan;
+
+    @JsonProperty("dependentQuantity")
+    private int dependentQuantity;
+
+    @JsonProperty("passports")
+    private List<Passport> passports;
+
     private Classification.Feature getAttributes(String code) {
         return classifications.stream()
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
@@ -130,5 +139,72 @@ public final class PlanProduct extends Product {
 
         @JsonProperty("value")
         double value;
+    }
+
+    public static final class DataBonusForPlan {
+
+        private DataBonusForPlan() {}
+
+        @JsonProperty("total")
+        public int total;
+
+        @JsonProperty("values")
+        public List<Value> values;
+
+        public static final class Value {
+
+            @JsonProperty("key")
+            public String key;
+
+            @JsonProperty("value")
+            public int value;
+        }
+    }
+
+    public static final class Passport {
+
+        private Passport() {}
+
+        @JsonProperty("description")
+        public String description;
+
+        @JsonProperty("id")
+        public String id;
+
+        @JsonProperty("name")
+        public String name;
+
+        @JsonProperty("passportTraffics")
+        public List<PassportTraffic> passportTraffics;
+
+        public static final class PassportTraffic {
+
+            private PassportTraffic() {}
+
+            @JsonProperty("country")
+            public Country country;
+
+            @JsonProperty("traffic")
+            public int traffic;
+
+            public static final class Country {
+
+                private Country() {}
+
+                @JsonProperty("altText")
+                public String altText;
+
+                @JsonProperty("code")
+                public String code;
+
+                @JsonProperty("realFileName")
+                public String realFileName;
+
+                @JsonProperty("url")
+                public String url;
+            }
+
+        }
+
     }
 }

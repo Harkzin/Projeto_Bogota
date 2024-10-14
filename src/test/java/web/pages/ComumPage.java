@@ -112,11 +112,9 @@ public class ComumPage {
             contentParent = "//*[@id='cart-summary-mobile']/following-sibling::div[2]";
         }
 
-        //Valida nome, caso configurado
-        if (!(plan.getName() == null)) {
-            driverWeb.waitElementPresence(contentParent + "//*[@data-plan-content='name']", 10);
-            validateElementText(plan.getName(), contentParent + "//*[@data-plan-content='name']");
-        }
+        //Valida nome
+        driverWeb.waitElementPresence(contentParent + "//*[@data-plan-content='name']", 10);
+        validateElementText(plan.getName(), contentParent + "//*[@data-plan-content='name']");
 
         //Valida app ilimitados, caso configurado
         if (plan.hasPlanApps() && hasLoyalty) {
