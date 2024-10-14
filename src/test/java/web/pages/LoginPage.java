@@ -1,11 +1,12 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.support.utils.DriverWeb;
+
+import static org.junit.Assert.*;
 import static web.support.utils.Constants.Email.CONFIRMA_TOKEN;
 import static web.support.api.RestAPI.clearInbox;
 
@@ -23,35 +24,39 @@ public class LoginPage {
     private WebElement continuar;
     private WebElement cpf;
     private WebElement token;
+    private boolean esim;
 
     public void validarPaginaLogin() {
         driverWeb.waitPageLoad("/login", 10);
 
         continuar = driverWeb.findElement("btn-continuar", "id");
 
-        Assert.assertTrue(driverWeb.findElement("txt-telefone", "id").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("lnk-claro-clube", "id").isDisplayed());
-        Assert.assertTrue(continuar.isDisplayed());
-        Assert.assertFalse(continuar.isEnabled());
+        assertTrue(driverWeb.findElement("txt-telefone", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("lnk-claro-clube", "id").isDisplayed());
+        assertTrue(continuar.isDisplayed());
+        assertFalse(continuar.isEnabled());
     }
 
     public void validarPaginaMinhaConta() {
         driverWeb.waitPageLoad("/my-account", 10);
-        
-        Assert.assertTrue(driverWeb.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("lnk-claro-clube", "id").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("//*[@href=\"/my-account/esim\"]", "xpath").isDisplayed());
+
+        assertTrue(driverWeb.findElement("lnk-acompanhar-pedidos", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("lnk-claro-clube", "id").isDisplayed());
+
+        if (esim) {
+            //Valida mensagem de aviso
+            assertTrue(driverWeb.findByXpath("/html/body/main/div[4]/div/div/div[1]/div").isDisplayed());
+
+            //Valida card Gerenciar eSIM
+            assertTrue(driverWeb.findByXpath("//*[@href='/my-account/esim']").isDisplayed());
+        }
     }
 
-    public void validarMsgDeAvisoESim() {
-        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[1]/div", "xpath").isDisplayed());
-    }
-
-    public void validarPaginaMinhaContaESim() {
+    public void validarPaginaGrenciarESim() {
         driverWeb.waitPageLoad("/my-account/esim", 10);
 
-        Assert.assertTrue(driverWeb.findElement("//*[@class=\"mdn-Accordion-toggle  mdn-Text--body \"]", "xpath").isDisplayed());
+        assertTrue(driverWeb.findByXpath("//*[@class='mdn-Accordion-toggle  mdn-Text--body ']").isDisplayed());
     }
 
     public void clicarBotaoAtivarESim() {
@@ -59,18 +64,22 @@ public class LoginPage {
     }
 
     public void validarPaginaAtivarESim() {
-        driverWeb.waitPageLoad("my-account/esim/activation?code=000003558584", 10);
+        driverWeb.waitPageLoad("my-account/esim/activation", 10);
 
-        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[3]/img", "xpath").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[4]", "xpath").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[6]", "xpath").isDisplayed());
+        //Valida QRCode
+        assertTrue(driverWeb.findByXpath("/html/body/main/div[4]/div/div/div[3]/img").isDisplayed());
+
+        //TODO
+        driverWeb.javaScriptClick("", "id");
+        assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[4]", "xpath").isDisplayed());
+        assertTrue(driverWeb.findElement("/html/body/main/div[4]/div/div/div[6]", "xpath").isDisplayed());
     }
 
     public void validarMensagemSaldoClaroClube(String mensagemClube) {
         WebElement msgClaroClube = driverWeb.findElement("//*[@id='lnk-claro-clube']/p[2]", "xpath");
 
-        Assert.assertEquals(msgClaroClube.getText(), mensagemClube);
-        Assert.assertTrue(msgClaroClube.isDisplayed());
+        assertEquals(msgClaroClube.getText(), mensagemClube);
+        assertTrue(msgClaroClube.isDisplayed());
     }
 
     public void clicarAcompanharPedidos() {
@@ -78,11 +87,11 @@ public class LoginPage {
     }
 
     public void clicarAcompanharPedidosEsim(){
-        driverWeb.javaScriptClick("//*[@href=\"/login/esim\"]", "xpath");
+        driverWeb.javaScriptClick("//*[@href='/login/esim']", "xpath");
     }
 
     public void clicarGerenciarESim() {
-        driverWeb.javaScriptClick("//*[@href=\"/my-account/esim\"]", "xpath");
+        driverWeb.javaScriptClick("//*[@href='/my-account/esim']", "xpath");
     }
 
     public void clicarClaroClube() {
@@ -95,9 +104,9 @@ public class LoginPage {
         cpf = driverWeb.findElement("txt-cpf", "id");
         continuar = driverWeb.findElement("btn-continuar", "id");
 
-        Assert.assertTrue(driverWeb.findElement("track-order-form", "id").isDisplayed());
-        Assert.assertTrue(cpf.isDisplayed());
-        Assert.assertFalse(continuar.isEnabled());
+        assertTrue(driverWeb.findElement("track-order-form", "id").isDisplayed());
+        assertTrue(cpf.isDisplayed());
+        assertFalse(continuar.isEnabled());
     }
 
     public void validarPaginaLoginEsimCPF(){
@@ -106,9 +115,11 @@ public class LoginPage {
         cpf = driverWeb.findElement("txt-cpf", "id");
         continuar = driverWeb.findElement("btn-continuar", "id");
 
-        Assert.assertTrue(driverWeb.findElement("track-order-form", "id").isDisplayed());
-        Assert.assertTrue(cpf.isDisplayed());
-        Assert.assertFalse(continuar.isEnabled());
+        assertTrue(driverWeb.findElement("track-order-form", "id").isDisplayed());
+        assertTrue(cpf.isDisplayed());
+        assertFalse(continuar.isEnabled());
+
+        esim = true;
     }
 
     public void preencheCPF(String cpf) {
@@ -122,9 +133,9 @@ public class LoginPage {
     public void validarPaginaLoginToken() {
         driverWeb.waitPageLoad("/login/token", 15);
 
-        Assert.assertTrue(driverWeb.findElement("token-verification-method", "id").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("lnk-receber-codigo-email", "id").isDisplayed());
-        Assert.assertTrue(driverWeb.findElement("lnk-receber-codigo-sms", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("token-verification-method", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("lnk-receber-codigo-email", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("lnk-receber-codigo-sms", "id").isDisplayed());
     }
 
     public void selecionarCodigoEmail(String email) {
@@ -136,7 +147,7 @@ public class LoginPage {
         driverWeb.waitPageLoad("/login/token/email", 10);
         token = driverWeb.findElement("txt-token", "id");
 
-        Assert.assertTrue(token.isDisplayed());
+        assertTrue(token.isDisplayed());
     }
 
     public void inserirTokenEmail(String email) {
@@ -146,7 +157,7 @@ public class LoginPage {
 
     public void validarPaginaMeusPedidos() {
         driverWeb.waitPageLoad("/my-account/orders", 10);
-        Assert.assertTrue(driverWeb.findElement("txt-lista-pedidos", "id").isDisplayed());
+        assertTrue(driverWeb.findElement("txt-lista-pedidos", "id").isDisplayed());
     }
 
     public void acessarPedidoRecente() {

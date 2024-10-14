@@ -2,7 +2,6 @@ package web.steps;
 
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.LoginPage;
@@ -24,12 +23,12 @@ public class LoginSteps {
         loginPage.validarPaginaLogin();
     }
 
-    @Entao("é direcionado para a tela de opções minha conta")
-    public void eDirecionadoParaATelaDeMinhaConta() {
+    @Entao("é direcionado para a tela Minha Conta")
+    public void validarPaginaMinhaConta() {
         loginPage.validarPaginaMinhaConta();
     }
 
-    @Então("será exibida a mensagem {string}")
+    @Entao("será exibida a mensagem {string}")
     public void seraExibidaAMensagem(String mensagemClube) {
         loginPage.validarMensagemSaldoClaroClube(mensagemClube);
     }
@@ -74,7 +73,7 @@ public class LoginSteps {
         loginPage.validarPaginaLoginToken();
     }
 
-    @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
+    @Quando("o usuário selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
         cart.setUserEmail(email);
         loginPage.selecionarCodigoEmail(email);
@@ -95,24 +94,14 @@ public class LoginSteps {
         loginPage.clicarBotaoConfirmar();
     }
 
-    @Então("é direcionado para a tela Meus Pedidos")
+    @Entao("é direcionado para a tela Meus Pedidos")
     public void eDirecionadoParaATelaMeusPedidos() {
         loginPage.validarPaginaMeusPedidos();
     }
 
-    @Entao("é direcionado para a tela Minha Conta")
-    public void eDirecionadoParaATelaMinhaConta() {
-        loginPage.validarPaginaMinhaConta();
-    }
-
-    @E("deve exibir a mensagem de aviso da ativação do eSIM")
-    public void deveExibirMsgDeAvisoAtivacaoESim() {
-        loginPage.validarMsgDeAvisoESim();
-    }
-
-    @Entao("é direcionado para a tela Minha Conta eSIM")
+    @Entao("é direcionado para a tela Gerenciar eSIM")
     public void eDirecionadoParaATelaMinhaContaESim() {
-        loginPage.validarPaginaMinhaContaESim();
+        loginPage.validarPaginaGrenciarESim();
     }
 
     @Quando("o usuário clicar no botão [Ativar eSIM]")
@@ -125,7 +114,7 @@ public class LoginSteps {
         loginPage.validarPaginaAtivarESim();
     }
 
-    @E("selecionar a opção [Gerenciar eSIM]")
+    @E("o usuário selecionar a opção [Gerenciar eSIM]")
     public void selecionarOpcaoGerenciarESim() {
         loginPage.clicarGerenciarESim();
     }
