@@ -73,22 +73,31 @@ public class LoginPage {
 
         for (String marca : validacaoMarcasCelulares) {
 
-            //Valida ativação eSIM por QRCode
-            driverWeb.javaScriptClick("//*[@data-analytics-event-label='faq:ativar-qrcode:" + marca + "']/a", "xpath");
-            assertTrue(driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-qrcode:" + marca + "']/div").isDisplayed());
+            WebElement text = driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-qrcode:" + marca + "']/a");
+            WebElement content = driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-qrcode:" + marca + "']/div");
 
-            driverWeb.actionPause(2000);
+            //Valida ativação eSIM por QRCode
+            assertTrue(text.isDisplayed());
+            driverWeb.javaScriptClick(text);
+            driverWeb.waitElementVisible(content, 2);
+            assertTrue(content.isDisplayed());
+
+            driverWeb.actionPause(1000);
         }
 
         for (String marca : validacaoMarcasCelulares) {
 
+            WebElement text = driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-manual:" + marca + "']/a");
+            WebElement content = driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-manual:" + marca + "']/div");
+
             //Valida ativação eSIM por código copia e cola
-            driverWeb.javaScriptClick("//*[@data-analytics-event-label='faq:ativar-manual:" + marca + "']/a", "xpath");
-            assertTrue(driverWeb.findByXpath("//*[@data-analytics-event-label='faq:ativar-manual:" + marca + "']/div").isDisplayed());
+            assertTrue(text.isDisplayed());
+            driverWeb.javaScriptClick(text);
+            driverWeb.waitElementVisible(content, 2);
+            assertTrue(content.isDisplayed());
 
-            driverWeb.actionPause(2000);
+            driverWeb.actionPause(1000);
         }
-
     }
 
     public void validarMensagemSaldoClaroClube(String mensagemClube) {
