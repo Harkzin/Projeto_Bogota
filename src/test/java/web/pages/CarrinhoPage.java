@@ -252,6 +252,6 @@ public class CarrinhoPage {
     }
 
     public String getCartGuid() {
-        return driverWeb.findById("cart-dynatrace-guid").getText();
+        return driverWeb.waitElementPresence("//*[@id='cart-dynatrace-guid']", 50).getText();
     }
 }

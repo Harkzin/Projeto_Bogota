@@ -2,12 +2,15 @@ package web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.models.product.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
@@ -281,6 +284,27 @@ public class CartOrder {
 
     public boolean hasLoyalty() {
         return allPromotionResults.loyalty;
+    }
+
+    public void setRentabilizationCart(String url) {
+        URIBuilder urlRentab = new URIBuilder(urlAmbiente + url);
+        List<NameValuePair> params = urlRentab.getQueryParams();
+
+        Function<String, String> getValue = param ->
+            params.stream()
+                    .filter(p -> p.getName().equals(param))
+                    .findFirst().orElseThrow().getValue();
+
+        rentabilizationCoupon = getValue.apply("coupon");
+        setPlan(getValue.apply("offerPlanId"));
+        essential.processType = ProcessType.valueOf(getValue.apply("processType").toUpperCase());
+        getEntry(planId).paymentMode = PaymentMode.valueOf(getValue.apply("paymentMethod").toUpperCase());
+
+        if (params.stream().anyMatch(p -> p.getName().equals("invoiceType"))) {
+            selectedInvoiceType = InvoiceType.valueOf(getValue.apply("invoiceType").toUpperCase());
+        }
+
+        updatePlanCartPromotion();
     }
 
     public static class ClaroChip {
