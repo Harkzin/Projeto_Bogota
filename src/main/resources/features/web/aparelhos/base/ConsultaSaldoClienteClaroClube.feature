@@ -22,5 +22,5 @@ Funcionalidade: ECCMAUT-193 - Consulta de saldo Claro Clube - Cliente  Claro Clu
     E preenche o campo [Digite o código recebido] com o token
 
     Quando o usuário clicar no botão [Confirmar]
-    Então é direcionado para a tela de opções minha conta
+    Então é direcionado para a tela Minha Conta
     E será exibida a mensagem "O seu saldo Claro clube é de R$ 36"
