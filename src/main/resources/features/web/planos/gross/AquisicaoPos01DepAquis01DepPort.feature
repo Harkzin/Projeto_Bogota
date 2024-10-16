@@ -1,23 +1,24 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-1174 - Portabilidade Pos - 03 Dependente Aquisição
+Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 Portabilidade
 
-  @Portabilidade
+  @Aquisicao
   @Pos
-  @PortabilidadePos03DepAquis
-  Cenario: Portabilidade Pos - 03 Dependente Aquisição
+  @AquisicaoPos01DepAquis01DepPort
+  Cenario: Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 Portabilidade
+
     Dado que o usuário acesse a Loja Online
     Quando selecionar o Plano Pós de id "17524" na Home
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E seleciona a opção [Portabilidade]
-    E preenche os campos: [Telefone a ser portado com DDD] "11910400083", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E seleciona a opção [Aquisição]
+    E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSC TRESDEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQSC DOISDEP", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
@@ -25,18 +26,17 @@ Funcionalidade: ECCMAUT-1174 - Portabilidade Pos - 03 Dependente Aquisição
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E adiciona o primeiro dependente, com número novo
-    E adiciona o segundo dependente, com número novo
-    E adiciona o terceiro dependente, com número novo
+    E adiciona o segundo dependente, com numero "910400073"
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
-    Então não deve haver alterações no valor e nem nas informações do Plano
+    #Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
     Então não deve haver alterações no valor e nem nas informações do Plano
