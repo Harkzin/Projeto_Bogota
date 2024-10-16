@@ -55,7 +55,7 @@ public class PdpAparelhosPage {
     @FindBy(id = "txt-telefone-login")
     private WebElement campoTelefoneLogin;
 
-    @FindBy(id = "rdn-mudar-plano")
+    @FindBy(xpath = "//*[contains(text(), 'Mudar meu plano')]")
     private WebElement mudarMeuPlano;
 
     private boolean prePaidPlanSelected;
@@ -272,7 +272,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano.findElement(By.xpath("..")), 20);
+        driverWeb.waitElementVisible(mudarMeuPlano, 20);
     }
 
     public void selecionarPlataforma(String category) {
