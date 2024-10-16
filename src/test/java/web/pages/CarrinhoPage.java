@@ -250,4 +250,8 @@ public class CarrinhoPage {
     public void clicarAvisoTrocaPlano() {
         driverWeb.javaScriptClick(confirma);
     }
+
+    public void clicaBotaoContinuarComprando() {
+        driverWeb.javaScriptClick("btn-continuar-comprando", "id");
+    }
 }

@@ -26,8 +26,12 @@ public class PdpAcessoriosPage {
         quantidadeAcessorios.selectByValue(quantidade);
     }
 
-    public void clicarBotaoComprar() {
-        driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
+    public void clicarBotaoComprar(String acessorio) {
+        if (acessorio.equals("CARREGADOR DE PAREDE CONCEPT")) {
+            driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
+        } else {
+            driverWeb.javaScriptClick("btn-eu-quero-000000000000062124", "id");
+        }
     }
 
 }

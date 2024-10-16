@@ -15,11 +15,10 @@ Funcionalidade: ECCMAUT-1092 - Aquisicao de acessorio com 1 produto - Parcelamen
     E deve ser exibido [Todas as Ofertas]
       #Será aberta uma task pro dev pra colocar ID nos acessórios, pois nenhum deles tem ID.
 
-    Quando o usuário clicar no botão [Comprar] no produto [CARREGADOR DE PAREDE CONCEPT]
+    Quando o usuário clicar no botão [Comprar] no produto [ACESSÓRIO] "CARREGADOR DE PAREDE CONCEPT"
     Então é direcionado para a PDP do Acessório selecionado
-    E o usuário clicar no botão [Comprar] na PDP de Acessórios
 
-    Quando o usuário clicar no botão [Comprar] na PDP de Acessórios
+    Quando o usuário clicar no botão [Comprar] na PDP de Acessórios [ACESSÓRIO] "CARREGADOR DE PAREDE CONCEPT"
     Entao é direcionado para a tela de Carrinho de Acessórios
     E preenche os campos: [Telefone com DDD] "11940662696", [CPF] "57037062898" e [E-mail] "teste@teste.com" para acessórios
 
