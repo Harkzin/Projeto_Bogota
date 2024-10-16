@@ -18,7 +18,7 @@ public class CarrinhoSteps {
         this.cart = cart;
     }
 
-    @Dado("que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização {string}")
+    @Dado("que o usuário acesse a URL parametrizada para a oferta de rentabilização {string}")
     public void acessarUrlCarrinho(String url) {
         carrinhoPage.acessarUrlRentabCarrinho(url);
         cart.setGuid(carrinhoPage.getCartGuid());

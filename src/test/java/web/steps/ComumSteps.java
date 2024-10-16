@@ -51,4 +51,9 @@ public class ComumSteps {
         cart.isDebitPaymentFlow = false; //TODO Valor deve ser de acordo com o tipo de pagamento da linha combo
         comumPage.validarResumoCompraPlano(cart);
     }
+
+    @Entao("é direcionado para a tela de Carrinho com a oferta")
+    public void validarResumoRentab() {
+        comumPage.validarResumoCompraPlano(cart);
+    }
 }

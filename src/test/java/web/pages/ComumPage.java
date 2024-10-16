@@ -2,6 +2,7 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -87,11 +88,20 @@ public class ComumPage {
     @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='dependentprice']")
     private WebElement dependentPriceMob;
 
+    @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='fullprice']")
+    private WebElement planFullPriceDesk;
+
+    @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='fullprice']")
+    private WebElement planFullPriceMob;
+
     @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='price']")
     private WebElement planPriceDesk;
 
     @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='price']")
     private WebElement planPriceMob;
+
+    @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='price-mobile']")
+    private WebElement planPriceMobHeader;
 
     @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='paymentmode']")
     private WebElement paymentModeDesk;
@@ -188,6 +198,7 @@ public class ComumPage {
         List<WebElement> claroServicesApps;
         WebElement dependentQuantity;
         WebElement dependentPrice;
+        WebElement planFullPrice;
         WebElement planPrice;
         WebElement planPaymentMode;
         WebElement planLoyalty;
@@ -202,6 +213,7 @@ public class ComumPage {
             claroServicesApps = claroServicesAppsMob;
             dependentQuantity = dependentQuantityMob;
             dependentPrice = dependentPriceMob;
+            planFullPrice = planFullPriceMob;
             planPrice = planPriceMob;
             planPaymentMode = paymentModeMob;
             planLoyalty = loyaltyMob;
@@ -215,6 +227,7 @@ public class ComumPage {
             claroServicesApps = claroServicesAppsDesk;
             dependentQuantity = dependentQuantityDesk;
             dependentPrice = dependentPriceDesk;
+            planFullPrice = planFullPriceDesk;
             planPrice = planPriceDesk;
             planPaymentMode = paymentModeDesk;
             planLoyalty = loyaltyDesk;
@@ -225,7 +238,8 @@ public class ComumPage {
         boolean hasLoyalty = cart.hasLoyalty();
 
         //Valida nome
-        validateElementText(plan.getName(), planName);
+        String name = cart.getPromotion().isRentabilization() ? cart.getPromotion().getName() : plan.getName();
+        validateElementText(name, planName);
 
         //Valida app ilimitados, caso configurado
         if (plan.hasPlanApps() && hasLoyalty) {
@@ -262,7 +276,32 @@ public class ComumPage {
         if (depQtt > 0) { //Com dep
             priceRef += cart.getEntry("dependente").getTotalPrice();
         }
-        validateElementText(formatPrice(priceRef), planPrice);
+        String basePriceFormatted = cart.getPlan().getFormattedPrice();
+        String totalPriceFormatted = formatPrice(priceRef);
+
+        if (cart.getPromotion().isRentabilization()) {
+            //Preço "De"
+            String fullPrice = String.format("De %s", basePriceFormatted);
+            validateElementText(fullPrice, planFullPrice.findElement(By.xpath("..")));
+
+            //Preço "por"
+            String rentabilizationPrice = String.format("por R$ %s /mês", totalPriceFormatted);
+            validateElementText(rentabilizationPrice, planPrice.findElement(By.xpath("..")));
+
+            //Preço mobile header do Resumo
+            if (driverWeb.isMobile()) {
+                String mobilePriceSummaryHeader = String.format("De %s | %s", basePriceFormatted, totalPriceFormatted);
+                validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
+            }
+        } else {
+            validateElementText(totalPriceFormatted, planPrice);
+
+            //Preço mobile header do Resumo
+            if (driverWeb.isMobile()) {
+                String mobilePriceSummaryHeader = String.format(" | %s", totalPriceFormatted);
+                validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
+            }
+        }
 
         //Valida método de pagamento
         String paymentModeRef = isDebit ? "Débito automático" : "Boleto";

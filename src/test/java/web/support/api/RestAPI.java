@@ -215,7 +215,8 @@ public final class RestAPI {
                 .build();
 
         try {
-            return clientHttp.send(planCartPromotionRequest, HttpResponse.BodyHandlers.ofString()).body();
+            String response = clientHttp.send(planCartPromotionRequest, HttpResponse.BodyHandlers.ofString()).body();
+            return objMapper.readTree(response).get("promotion").get(0).toString();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

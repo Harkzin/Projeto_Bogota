@@ -307,6 +307,10 @@ public class CartOrder {
         updatePlanCartPromotion();
     }
 
+    public Promotion getPromotion() {
+        return allPromotionResults;
+    }
+
     public static class ClaroChip {
 
         public String activationCode;
@@ -587,33 +591,41 @@ public class CartOrder {
         private Promotion() {}
 
         @JsonProperty("code")
-        public String code;
+        private String code;
 
         @JsonProperty("dddList")
-        public List<Integer> dddList;
+        private List<Integer> dddList;
 
         @JsonProperty("discountValue")
-        public int discountValue;
+        private int discountValue;
 
         @JsonProperty("fixedDiscount")
-        public boolean fixedDiscount;
+        private boolean fixedDiscount;
 
         @JsonProperty("loyalty")
-        public boolean loyalty;
+        private boolean loyalty;
 
         @JsonProperty("name")
-        public String name;
+        private String name;
 
         @JsonProperty("paymentMethod")
-        public String paymentMethod;
+        private String paymentMethod;
 
         @JsonProperty("priority")
-        public int priority;
+        private int priority;
 
         @JsonProperty("processTypeList")
-        public List<String> processTypeList;
+        private List<String> processTypeList;
 
         @JsonProperty("rentabilizationCampaign")
-        public boolean rentabilizationCampaign;
+        private boolean rentabilizationCampaign;
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isRentabilization() {
+            return rentabilizationCampaign;
+        }
     }
 }

@@ -8,7 +8,8 @@ Funcionalidade: ECCMAUT-1069 - Aquisicao Pos Pago - Rentabilizacao
   @AquisicaoPosPagoRentab
   Cenario: Aquisicao Pos Pago - Rentabilizacao
 
-    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=ae3a66fc60cf93d5c6bd9cb212a8b67d&msisdn=msisdn&targetCampaign=gross&paymentMethod=ticket&loyalty=true&processType=ACQUISITION"
+    Dado que o usuário acesse a URL parametrizada para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=ae3a66fc60cf93d5c6bd9cb212a8b67d&msisdn=msisdn&targetCampaign=gross&paymentMethod=ticket&loyalty=true&processType=ACQUISITION"
+    Então é direcionado para a tela de Carrinho com a oferta
     E preenche os campos: [Celular de contato] "11999999988", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
@@ -53,5 +54,5 @@ Funcionalidade: ECCMAUT-1069 - Aquisicao Pos Pago - Rentabilizacao
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Então é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
