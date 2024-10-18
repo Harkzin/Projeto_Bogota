@@ -62,14 +62,14 @@ public class CustomizarFaturaSteps {
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
         cart.isDebitPaymentFlow = true;
-        cart.updatePlanEntryPaymentMode(DEBITCARD);
+        cart.updatePlanCartPromotion();
         customizarFaturaPage.selecionarDebito();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
         cart.isDebitPaymentFlow = false;
-        cart.updatePlanEntryPaymentMode(TICKET);
+        cart.updatePlanCartPromotion();
         customizarFaturaPage.selecionarBoleto();
     }
 

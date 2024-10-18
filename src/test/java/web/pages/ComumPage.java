@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.PlanProduct;
+import web.support.utils.Constants;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
+import static web.support.utils.Constants.PaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
 
 @Component
@@ -306,7 +308,12 @@ public class ComumPage {
         }
 
         //Valida método de pagamento
-        String paymentModeRef = isDebit ? "Débito automático" : "Boleto";
+        String paymentModeRef = "";
+        switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
+            case TICKET -> paymentModeRef = "Boleto";
+            case DEBITCARD -> paymentModeRef = "Débito automático";
+            //TODO cartão de crédito
+        }
         validateElementText(paymentModeRef, planPaymentMode);
 
         //Valida fidelização

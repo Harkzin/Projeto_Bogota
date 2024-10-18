@@ -101,7 +101,7 @@ public class CartOrder {
         try {
             return objMapper.readValue(getProductDetails(id), cls);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando\n" + e);
+            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando (acessar Swagger).\n" + e);
         }
     }
 
@@ -141,6 +141,7 @@ public class CartOrder {
         }
 
         positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), promoDiscount));
+        getEntry(planId).paymentMode = TICKET; //Pagamento default atual
     }
 
     public void updatePlanForDevice(String planId) {
@@ -259,11 +260,6 @@ public class CartOrder {
         return selectedInvoiceType;
     }
 
-    public void updatePlanEntryPaymentMode(PaymentMode paymentMode) {
-        getEntry(planId).paymentMode = paymentMode;
-        updatePlanCartPromotion();
-    }
-
     public void setDDD(int ddd) {
         claroDdd = ddd;
     }
@@ -276,6 +272,7 @@ public class CartOrder {
         }
 
         getEntry(planId).totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+        getEntry(planId).paymentMode = allPromotionResults.paymentMethod;
     }
 
     public void setGuid(String guid) {
@@ -547,6 +544,10 @@ public class CartOrder {
             public void setBpo(String bpo) {
                 this.bpo = bpo;
             }
+
+            public PaymentMode getPaymentMode() {
+                return paymentMode;
+            }
         }
     }
 
@@ -609,7 +610,7 @@ public class CartOrder {
         private String name;
 
         @JsonProperty("paymentMethod")
-        private String paymentMethod;
+        private PaymentMode paymentMethod;
 
         @JsonProperty("priority")
         private int priority;
