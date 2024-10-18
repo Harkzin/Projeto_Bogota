@@ -113,6 +113,18 @@ public final class PlanProduct extends Product {
                 .collect(Collectors.toList());
     }
 
+    public int getDependentQuantity() {
+        return dependentQuantity;
+    }
+
+    public boolean hasBonus() {
+        return dataBonusForPlan != null;
+    }
+
+    public List<String> getDataBonus() {
+        return dataBonusForPlan.values.stream().map(v -> String.format("%sGB %s", v.value, v.key)).collect(Collectors.toList());
+    }
+
     public static final class ClaroPaymentModePrice {
 
         private ClaroPaymentModePrice() {}

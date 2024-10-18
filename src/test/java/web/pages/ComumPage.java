@@ -42,6 +42,12 @@ public class ComumPage {
     @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='name']")
     private WebElement planNameMob;
 
+    @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='bonus']")
+    private List<WebElement> dataBonusDesk;
+
+    @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='bonus']")
+    private List<WebElement> dataBonusMob;
+
     @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='planappstitle']")
     private WebElement planAppsTitleDesk;
 
@@ -192,6 +198,7 @@ public class ComumPage {
         driverWeb.actionPause(2000);
 
         WebElement planName;
+        List<WebElement> dataBonus;
         WebElement planAppsTitle;
         List<WebElement> planApps;
         WebElement extraPlayTitle;
@@ -207,6 +214,7 @@ public class ComumPage {
 
         if (driverWeb.isMobile()) {
             planName = planNameMob;
+            dataBonus = dataBonusMob;
             planAppsTitle = planAppsTitleMob;
             planApps = planAppsMob;
             extraPlayTitle = extraPlayTitleMob;
@@ -221,6 +229,7 @@ public class ComumPage {
             planLoyalty = loyaltyMob;
         } else {
             planName = planNameDesk;
+            dataBonus = dataBonusDesk;
             planAppsTitle = planAppsTitleDesk;
             planApps = planAppsDesk;
             extraPlayTitle = extraPlayTitleDesk;
@@ -247,6 +256,14 @@ public class ComumPage {
         if (driverWeb.isMobile()) {
             driverWeb.javaScriptClick(driverWeb.findById("cart-info-toggle"));
             driverWeb.waitElementVisible(planPrice, 2); //Usa o preço como referencia para aguardar o Resumo mobile abrir
+        }
+
+        //Valida bônus, caso configurado
+        if (plan.hasBonus()) {
+            IntStream.range(0, plan.getDataBonus().size())
+                    .forEachOrdered(i ->
+                            validateElementText(plan.getDataBonus().get(i), dataBonus.get(i))
+                    );
         }
 
         //Valida app ilimitados, caso configurado
