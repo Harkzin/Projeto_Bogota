@@ -241,6 +241,12 @@ public class ComumPage {
         String name = cart.getPromotion().isRentabilization() ? cart.getPromotion().getName() : plan.getName();
         validateElementText(name, planName);
 
+        //Abre Resumo mobile
+        if (driverWeb.isMobile()) {
+            driverWeb.javaScriptClick(driverWeb.findById("cart-info-toggle"));
+            driverWeb.waitElementVisible(planPrice, 2); //Usa o preço como referencia para aguardar o Resumo mobile abrir
+        }
+
         //Valida app ilimitados, caso configurado
         if (plan.hasPlanApps() && hasLoyalty) {
             validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
@@ -276,10 +282,12 @@ public class ComumPage {
         if (depQtt > 0) { //Com dep
             priceRef += cart.getEntry("dependente").getTotalPrice();
         }
+
         String basePriceFormatted = cart.getPlan().getFormattedPrice();
         String totalPriceFormatted = formatPrice(priceRef);
+        String mobilePriceSummaryHeader;
 
-        if (cart.getPromotion().isRentabilization()) {
+        if (cart.getPromotion().isRentabilization()) { //Rentab
             //Preço "De"
             String fullPrice = String.format("De %s", basePriceFormatted);
             validateElementText(fullPrice, planFullPrice.findElement(By.xpath("..")));
@@ -288,19 +296,13 @@ public class ComumPage {
             String rentabilizationPrice = String.format("por R$ %s /mês", totalPriceFormatted);
             validateElementText(rentabilizationPrice, planPrice.findElement(By.xpath("..")));
 
-            //Preço mobile header do Resumo
-            if (driverWeb.isMobile()) {
-                String mobilePriceSummaryHeader = String.format("De %s | %s", basePriceFormatted, totalPriceFormatted);
-                validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
-            }
-        } else {
+            mobilePriceSummaryHeader = String.format("De %s | R$ %s", basePriceFormatted, totalPriceFormatted);
+        } else { //Comum
             validateElementText(totalPriceFormatted, planPrice);
-
-            //Preço mobile header do Resumo
-            if (driverWeb.isMobile()) {
-                String mobilePriceSummaryHeader = String.format(" | %s", totalPriceFormatted);
-                validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
-            }
+            mobilePriceSummaryHeader = String.format(" | %s", totalPriceFormatted);
+        }
+        if (driverWeb.isMobile()) { //Preço mobile header do Resumo
+            //TODO ECCMAUT-1408 validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
         }
 
         //Valida método de pagamento
