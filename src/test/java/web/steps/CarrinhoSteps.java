@@ -77,6 +77,12 @@ public class CarrinhoSteps {
         carrinhoPage.inserirDadosPortabilidade(telefone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
     }
 
+    @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] para Pix")
+    public void preencherCamposCarrinhoPortabilidadePix(String telefone) {
+        carrinhoPage.inserirEmail();
+        carrinhoPage.inserirDadosPortabilidadePix(telefone);
+    }
+
     @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoAquisicao(String telefoneContato, String cpfAprovado, String cpfDiretrix) {
         carrinhoPage.inserirEmail();

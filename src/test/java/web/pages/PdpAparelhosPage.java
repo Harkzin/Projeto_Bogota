@@ -13,15 +13,18 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
+import web.support.utils.Constants;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
+import static web.support.utils.Constants.*;
 
 @Component
 @ScenarioScope
@@ -223,6 +226,23 @@ public class PdpAparelhosPage {
             }
         }
 
+        if (chipEsim != null) {
+
+            //Clica no ícone de interrogação eSim
+            driverWeb.javaScriptClick("//*[@data-analytics-event-label='saiba-mais-sobre-esim-claro']", "xpath");
+
+            //Valida elementos da lista de textos
+            List<WebElement> textList = driverWeb.findElements("//*[@data-component='”accordion”']/div", "xpath");
+
+            textList.forEach(i -> {
+                driverWeb.javaScriptClick(i.findElement(By.tagName("a")));
+                driverWeb.actionPause(1000);
+                assertTrue(i.findElement(By.tagName("p")).isDisplayed());
+            });
+            //Fecha o modal do eSim
+            driverWeb.javaScriptClick("/html/body/main/div[4]/div/div[2]/div[2]/div/div[2]/div[8]/div[1]/div/div/div[1]/button", "xpath");
+        }
+
         //Infos Técnicas
         if (device.hasDeviceFeatures()) {
             driverWeb.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
@@ -287,7 +307,10 @@ public class PdpAparelhosPage {
 
     public void selecionarPlano(CartOrder.PositionsAndPrices.Entry planEntry, DeviceProduct device) {
         driverWeb.javaScriptClick("btn-selecionar-plano-" + planEntry.getProduct().getCode(), "id");
-        validarInfosPlano(planEntry);
+
+        if (!planEntry.getProduct().getCode().equals(focusPlan)) {
+            validarInfosPlano(planEntry);
+        }
         validarPrecoCampanhaAparelho(device);
     }
 

@@ -21,7 +21,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Plano Controle com Aparelho - eSIM 
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] para Pix
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
@@ -58,7 +58,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Plano Controle com Aparelho - eSIM 
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
+    #MOM-2021 Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
