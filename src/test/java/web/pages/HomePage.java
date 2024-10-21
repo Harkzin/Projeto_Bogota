@@ -72,7 +72,7 @@ public class HomePage {
         if (plan.hasPlanApps()) {
             List<WebElement> planApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
-            validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
+            validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
         }
 
         //Valida título extraPlay
@@ -87,7 +87,7 @@ public class HomePage {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
 
-            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida planPortability (GB e bônus - antigo)
@@ -98,7 +98,7 @@ public class HomePage {
                     .map(webElement -> webElement.findElement(By.tagName("p")))
                     .collect(Collectors.toList());
 
-            validarPlanPortability(planPortability, plan);
+            validatePlanPortability(planPortability, plan);
         }
     }
 

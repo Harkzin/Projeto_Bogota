@@ -94,7 +94,7 @@ public class PdpAparelhosPage {
             //Valida apps ilimitados
             if (plan.hasPlanApps()) {
                 List<WebElement> planApps = moreDetails.findElements(By.xpath(".//div[contains(@class, ' apps-ilimitados')]//img"));
-                validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
+                validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
             }
 
             //Valida título extraPlay
@@ -106,7 +106,7 @@ public class PdpAparelhosPage {
             //Valida apps extraPlay
             if (plan.hasExtraPlayApps()) {
                 List<WebElement> extraPlayApps = moreDetails.findElements(By.xpath(".//div[contains(@data-plan-content, 'extraplayapps')]//img"));
-                validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+                validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
             }
 
             //Valida planPortability (GB e bônus - antigo)
@@ -117,7 +117,7 @@ public class PdpAparelhosPage {
                         .map(webElement -> webElement.findElement(By.tagName("p")))
                         .collect(Collectors.toList());
 
-                validarPlanPortability(planPortability, plan);
+                validatePlanPortability(planPortability, plan);
             }
 
             driverWeb.javaScriptClick(moreDetails.findElement(By.xpath(".//button")));

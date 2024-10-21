@@ -98,7 +98,7 @@ public class PdpPlanosPage {
             List<WebElement> extraPlayApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' extra-play ')]//img"));
 
-            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida serviços Claro, caso configurado
@@ -109,7 +109,7 @@ public class PdpPlanosPage {
             List<WebElement> claroServicesApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' claro-services')]//img"));
 
-            validarServicosClaro(driverWeb, plan, claroServicesTitle, claroServicesApps);
+            validateClaroServices(driverWeb, plan, claroServicesTitle, claroServicesApps);
         }
     }
 
@@ -196,7 +196,7 @@ public class PdpPlanosPage {
                 WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
                 //Apps
                 List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
-                validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
+                validatePlanApps(driverWeb, plan, planAppsTitle, planApps);
             } else {
                 driverWeb.waitElementInvisible(planAppsParent, 2);
             }

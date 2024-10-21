@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.PlanProduct;
-import web.support.utils.Constants;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
-import static web.support.utils.Constants.PaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
 
 @Component
@@ -125,55 +123,55 @@ public class ComumPage {
 
     private void validateElementText(String ref, String xpath) {
         assertEquals("Texto do elemento diferente do esperado", ref, StringUtils.normalizeSpace(driverWeb.findByXpath(xpath).getText()));
-        assertTrue("Elemento não exibido", driverWeb.findByXpath(xpath).isDisplayed());
+        assertTrue("Elemento nao exibido", driverWeb.findByXpath(xpath).isDisplayed());
     }
 
     public static void validateElementText(String ref, WebElement element) {
         assertEquals("Texto do elemento diferente do esperado", StringUtils.normalizeSpace(ref), StringUtils.normalizeSpace(element.getText()));
-        assertTrue("Elemento não exibido", element.isDisplayed());
+        assertTrue("Elemento nao exibido", element.isDisplayed());
     }
 
     public static void validateElementActiveVisible(WebElement element) {
         assertTrue("Elemento desabilitado", element.isEnabled());
-        assertTrue("Elemento não exibido", element.isDisplayed());
+        assertTrue("Elemento nao exibido", element.isDisplayed());
     }
 
     //Valida os ícones dos Apps e Países da composição do Plano
-    public static void validarMidiasPlano(List<String> appRef, List<WebElement> appFront, DriverWeb driverWeb) {
-        assertEquals("Mesma quantidade de [apps/países configurados] e [presentes no Front]", appRef.size(), appFront.size());
+    public static void validatePlanMedias(List<String> mediaRef, List<WebElement> mediaFront, DriverWeb driverWeb) {
+        assertEquals("Quantidade de apps/paises [configurados] diferente dos [exibidos] no Front", mediaRef.size(), mediaFront.size());
 
-        driverWeb.waitElementVisible(appFront.get(0), 2); //Lazy loading Front
-        IntStream.range(0, appRef.size()).forEachOrdered(i -> {
-            assertTrue("App/País do Front deve ser o mesmo da API - Front: <" + appFront.get(i)
-                            .getAttribute("src")
-                            .replace("https://mondrian.claro.com.br/brands/app/72px-default/", "") + ">, API: <" + appRef.get(i) + ">",
-                    appFront.get(i).getAttribute("src").contains(appRef.get(i)));
+        driverWeb.waitElementVisible(mediaFront.get(0), 2); //Lazy loading Front
+        IntStream.range(0, mediaRef.size()).forEachOrdered(i -> {
+            String mediaFrontSrc = mediaFront.get(i).getAttribute("src");
+            String mediaFrontName = mediaFrontSrc.replace("https://mondrian.claro.com.br/brands/app/72px-default/", "");
+
+            assertTrue(String.format("Imagem do Front deve ser a mesma da API - Front: <%s>, API: <%s>", mediaFrontName, mediaRef.get(i)), mediaFrontSrc.contains(mediaRef.get(i)));
 
             if (i < 5) { //Até 5 ícones são exibidos diretamente, o restante fica oculto no tooltip (+X).
-                assertTrue("App/País deve estar visível", appFront.get(i).isDisplayed());
+                assertTrue("Imagem deve estar visivel", mediaFront.get(i).isDisplayed());
             } else {
-                assertFalse("App/País deve estar oculto", appFront.get(i).isDisplayed());
+                assertFalse("Imagem deve estar oculta", mediaFront.get(i).isDisplayed());
             }
         });
     }
 
-    public static void validarAppsIlimitados(DriverWeb driverWeb, PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps) {
+    public static void validatePlanApps(DriverWeb driverWeb, PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps) {
         //Valida título
         validateElementText(plan.getPlanAppsTitle(), planAppsTitle);
 
         //Valida Apps
-        validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
+        validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
     }
 
-    public static void validarServicosClaro(DriverWeb driverWeb, PlanProduct plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
+    public static void validateClaroServices(DriverWeb driverWeb, PlanProduct plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
         //Valida título
         validateElementText(plan.getClaroServicesTitle(), claroServicesTitle);
 
         //Valida Apps
-        validarMidiasPlano(plan.getClaroServices(), claroServicesApps, driverWeb);
+        validatePlanMedias(plan.getClaroServices(), claroServicesApps, driverWeb);
     }
 
-    public static void validarPlanPortability(List<WebElement> planPortability, PlanProduct plan) {
+    public static void validatePlanPortability(List<WebElement> planPortability, PlanProduct plan) {
         //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
         //A posição entre eles pode mudar, não servindo como referência.
         if (plan.hasExtraPlayTitle()) {
@@ -184,10 +182,12 @@ public class ComumPage {
         }
 
         IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-            assertEquals("Texto planPortability igual ao configurado", plan.getPlanPortability().get(i), planPortability.get(i).getText());
+            assertEquals("Texto planPortability diferente do configurado", plan.getPlanPortability().get(i), planPortability.get(i).getText());
 
-            assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
+            assertTrue("Texto planPortability nao visivel", planPortability.get(i).isDisplayed());
         });
+
+        //TODO Refactor quando houver seletor no card da Home
     }
 
     public static String formatPrice(double price) {
@@ -268,7 +268,7 @@ public class ComumPage {
 
         //Valida app ilimitados, caso configurado
         if (plan.hasPlanApps() && hasLoyalty) {
-            validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
+            validatePlanApps(driverWeb, plan, planAppsTitle, planApps);
         }
 
         //Valida título extraPlay, caso configurado
@@ -278,12 +278,12 @@ public class ComumPage {
 
         //Valida apps extraPlay, caso configurado
         if (plan.hasExtraPlayApps()) {
-            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida serviços Claro, caso configurado
         if (plan.hasClaroServices()) {
-            validarServicosClaro(driverWeb, plan, claroServicesTitle, claroServicesApps);
+            validateClaroServices(driverWeb, plan, claroServicesTitle, claroServicesApps);
         }
 
         //Valida dependentes adicionados

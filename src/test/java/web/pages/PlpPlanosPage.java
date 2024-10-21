@@ -45,7 +45,7 @@ public class PlpPlanosPage {
         if (plan.hasPlanApps()) {
             List<WebElement> planApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
-            ComumPage.validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
+            ComumPage.validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
         }
 
         //Valida título extraPlay
@@ -59,7 +59,7 @@ public class PlpPlanosPage {
         if (plan.hasExtraPlayApps()) {
             List<WebElement> extraPlayApps = cardParent
                     .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            ComumPage.validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            ComumPage.validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida planPortability (GB e bônus - antigo)

@@ -44,7 +44,7 @@ public class ReadequacaoPage  {
         //Valida apps ilimitados
         if (plan.hasPlanApps()) {
             List<WebElement> planApps = driverWeb.findElements("//*[@id='controle-antecipado']//div[contains(@class, ' apps-ilimitados')]//img", "xpath");
-            validarMidiasPlano(plan.getPlanApps(), planApps, driverWeb);
+            validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
         }
 
         //Valida planPortability (GB e bônus - antigo)
@@ -55,7 +55,7 @@ public class ReadequacaoPage  {
                     .map(webElement -> webElement.findElement(By.tagName("p")))
                     .collect(Collectors.toList());
 
-            validarPlanPortability(planPortability, plan);
+            validatePlanPortability(planPortability, plan);
         }
     }
 
