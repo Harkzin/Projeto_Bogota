@@ -17,6 +17,7 @@ import java.util.Locale;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
+import static web.models.product.PlanProduct.*;
 import static web.models.product.PlanProduct.Passport.*;
 import static web.models.product.PlanProduct.Passport.PassportTraffic.*;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
@@ -171,6 +172,29 @@ public class ComumPage {
         validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
     }
 
+    public static void validatePlanPassport(List<Passport> passportRef, List<WebElement> passportFront, DriverWeb driverWeb) {
+        IntStream.range(0, passportRef.size()).forEachOrdered(i -> {
+            //Titulo passaporte
+            validateElementText(passportRef.get(i).getDescription(), passportFront.get(i).findElement(By.tagName("p")));
+
+            //Paises
+            List<WebElement> countriesFront = passportFront.get(i).findElements(By.tagName("img"));
+            List<Country> countriesRef = passportRef.get(i)
+                    .getPassportTraffics().stream()
+                    .map(PassportTraffic::getCountry)
+                    .toList();
+
+            List<String> countriesRefUrl = countriesRef.stream().map(Country::getUrl).toList();
+            validatePlanMedias(countriesRefUrl, countriesFront, driverWeb);
+
+            //AltText
+            IntStream.range(0, countriesRef.size())
+                    .forEachOrdered(c ->
+                            assertEquals("AltText nome pais", countriesRef.get(c).getAltText(), countriesFront.get(c).getAttribute("alt"))
+                    );
+        });
+    }
+
     public static void validateClaroServices(DriverWeb driverWeb, PlanProduct plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
         //Valida título
         validateElementText(plan.getClaroServicesTitle(), claroServicesTitle);
@@ -294,27 +318,7 @@ public class ComumPage {
 
         //Valida passaporte(s), caso configurado
         if (plan.hasPassport()) {
-            IntStream.range(0, plan.getPassports().size()).forEachOrdered(i -> {
-                //Titulo passaporte
-                validateElementText(plan.getPassports().get(i).getDescription(), passport.get(i).findElement(By.tagName("p")));
-
-                //Paises
-                List<WebElement> countriesFront = passport.get(i).findElements(By.tagName("img"));
-                List<Country> countriesRef = plan.getPassports()
-                        .get(i)
-                        .getPassportTraffics().stream()
-                        .map(PassportTraffic::getCountry)
-                        .toList();
-
-                List<String> countriesRefUrl = countriesRef.stream().map(Country::getUrl).toList();
-                validatePlanMedias(countriesRefUrl, countriesFront, driverWeb);
-
-                //AltText
-                IntStream.range(0, countriesRef.size())
-                        .forEachOrdered(c ->
-                                assertEquals("AltText nome pais", countriesRef.get(c).getAltText(), countriesFront.get(c).getAttribute("alt"))
-                        );
-            });
+            validatePlanPassport(plan.getPassports(), passport, driverWeb);
         }
 
         //Valida serviços Claro, caso configurado
