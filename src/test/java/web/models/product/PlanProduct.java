@@ -125,6 +125,14 @@ public final class PlanProduct extends Product {
         return dataBonusForPlan.values.stream().map(v -> String.format("%sGB %s", v.value, v.key)).collect(Collectors.toList());
     }
 
+    public boolean hasPassport() {
+        return passports != null;
+    }
+
+    public List<Passport> getPassports() {
+        return passports;
+    }
+
     public static final class ClaroPaymentModePrice {
 
         private ClaroPaymentModePrice() {}
@@ -178,42 +186,48 @@ public final class PlanProduct extends Product {
         private Passport() {}
 
         @JsonProperty("description")
-        public String description;
-
-        @JsonProperty("id")
-        public String id;
-
-        @JsonProperty("name")
-        public String name;
+        private String description;
 
         @JsonProperty("passportTraffics")
-        public List<PassportTraffic> passportTraffics;
+        private List<PassportTraffic> passportTraffics;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public List<PassportTraffic> getPassportTraffics() {
+            return passportTraffics;
+        }
 
         public static final class PassportTraffic {
 
             private PassportTraffic() {}
 
             @JsonProperty("country")
-            public Country country;
+            private Country country;
 
-            @JsonProperty("traffic")
-            public int traffic;
+            public Country getCountry() {
+                return country;
+            }
 
             public static final class Country {
 
                 private Country() {}
 
                 @JsonProperty("altText")
-                public String altText;
-
-                @JsonProperty("code")
-                public String code;
-
-                @JsonProperty("realFileName")
-                public String realFileName;
+                private String altText;
 
                 @JsonProperty("url")
-                public String url;
+                private String url;
+
+                public String getAltText() {
+                    return altText;
+                }
+
+                public String getUrl() {
+                    return url;
+                }
+
             }
 
         }

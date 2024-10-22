@@ -17,6 +17,8 @@ import java.util.Locale;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
+import static web.models.product.PlanProduct.Passport.*;
+import static web.models.product.PlanProduct.Passport.PassportTraffic.*;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
 import static web.support.utils.Constants.ProcessType.*;
 
@@ -69,6 +71,12 @@ public class ComumPage {
 
     @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='extraplayapps']//img")
     private List<WebElement> extraPlayAppsMob;
+
+    @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='passport']")
+    private List<WebElement> passportDesk;
+
+    @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='passport']")
+    private List<WebElement> passportMob;
 
     @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='services']/p")
     private WebElement claroServicesTitleDesk;
@@ -203,6 +211,7 @@ public class ComumPage {
         List<WebElement> planApps;
         WebElement extraPlayTitle;
         List<WebElement> extraPlayApps;
+        List<WebElement> passport;
         WebElement claroServicesTitle;
         List<WebElement> claroServicesApps;
         WebElement dependentQuantity;
@@ -219,6 +228,7 @@ public class ComumPage {
             planApps = planAppsMob;
             extraPlayTitle = extraPlayTitleMob;
             extraPlayApps = extraPlayAppsMob;
+            passport = passportMob;
             claroServicesTitle = claroServicesTitleMob;
             claroServicesApps = claroServicesAppsMob;
             dependentQuantity = dependentQuantityMob;
@@ -234,6 +244,7 @@ public class ComumPage {
             planApps = planAppsDesk;
             extraPlayTitle = extraPlayTitleDesk;
             extraPlayApps = extraPlayAppsDesk;
+            passport = passportDesk;
             claroServicesTitle = claroServicesTitleDesk;
             claroServicesApps = claroServicesAppsDesk;
             dependentQuantity = dependentQuantityDesk;
@@ -279,6 +290,31 @@ public class ComumPage {
         //Valida apps extraPlay, caso configurado
         if (plan.hasExtraPlayApps()) {
             validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+        }
+
+        //Valida passaporte(s), caso configurado
+        if (plan.hasPassport()) {
+            IntStream.range(0, plan.getPassports().size()).forEachOrdered(i -> {
+                //Titulo passaporte
+                validateElementText(plan.getPassports().get(i).getDescription(), passport.get(i).findElement(By.tagName("p")));
+
+                //Paises
+                List<WebElement> countriesFront = passport.get(i).findElements(By.tagName("img"));
+                List<Country> countriesRef = plan.getPassports()
+                        .get(i)
+                        .getPassportTraffics().stream()
+                        .map(PassportTraffic::getCountry)
+                        .toList();
+
+                List<String> countriesRefUrl = countriesRef.stream().map(Country::getUrl).toList();
+                validatePlanMedias(countriesRefUrl, countriesFront, driverWeb);
+
+                //AltText
+                IntStream.range(0, countriesRef.size())
+                        .forEachOrdered(c ->
+                                assertEquals("AltText nome pais", countriesRef.get(c).getAltText(), countriesFront.get(c).getAttribute("alt"))
+                        );
+            });
         }
 
         //Valida serviços Claro, caso configurado
