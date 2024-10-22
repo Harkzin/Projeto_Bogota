@@ -145,23 +145,25 @@ public class ComumPage {
         assertTrue("Elemento nao exibido", element.isDisplayed());
     }
 
-    //Valida os ícones dos Apps e Países da composição do Plano
     public static void validatePlanMedias(List<String> mediaRef, List<WebElement> mediaFront, DriverWeb driverWeb) {
+        //Valida os ícones dos Apps e Países da composição do Plano
+
         assertEquals("Quantidade de apps/paises [configurados] diferente dos [exibidos] no Front", mediaRef.size(), mediaFront.size());
 
         driverWeb.waitElementVisible(mediaFront.get(0), 2); //Lazy loading Front
-        IntStream.range(0, mediaRef.size()).forEachOrdered(i -> {
-            String mediaFrontSrc = mediaFront.get(i).getAttribute("src");
-            String mediaFrontName = mediaFrontSrc.replace("https://mondrian.claro.com.br/brands/app/72px-default/", "");
+        IntStream.range(0, mediaRef.size())
+                .forEachOrdered(i -> {
+                    String mediaFrontSrc = mediaFront.get(i).getAttribute("src");
+                    String mediaFrontName = mediaFrontSrc.replace("https://mondrian.claro.com.br/brands/app/72px-default/", "");
 
-            assertTrue(String.format("Imagem do Front deve ser a mesma da API - Front: <%s>, API: <%s>", mediaFrontName, mediaRef.get(i)), mediaFrontSrc.contains(mediaRef.get(i)));
+                    assertTrue(String.format("Imagem do Front deve ser a mesma da API - Front: <%s>, API: <%s>", mediaFrontName, mediaRef.get(i)), mediaFrontSrc.contains(mediaRef.get(i)));
 
-            if (i < 5) { //Até 5 ícones são exibidos diretamente, o restante fica oculto no tooltip (+X).
-                assertTrue("Imagem deve estar visivel", mediaFront.get(i).isDisplayed());
-            } else {
-                assertFalse("Imagem deve estar oculta", mediaFront.get(i).isDisplayed());
-            }
-        });
+                    if (i < 5) { //Até 5 ícones são exibidos, o restante fica oculto no tooltip (+N).
+                        assertTrue("Imagem deve estar visivel", mediaFront.get(i).isDisplayed());
+                    } else {
+                        assertFalse("Imagem deve estar oculta", mediaFront.get(i).isDisplayed());
+                    }
+                });
     }
 
     public static void validatePlanApps(DriverWeb driverWeb, PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps) {
@@ -175,7 +177,9 @@ public class ComumPage {
     public static void validatePlanPassport(List<Passport> passportRef, List<WebElement> passportFront, DriverWeb driverWeb) {
         IntStream.range(0, passportRef.size()).forEachOrdered(i -> {
             //Titulo passaporte
-            validateElementText(passportRef.get(i).getDescription(), passportFront.get(i).findElement(By.tagName("p")));
+            WebElement passportName = passportFront.get(i).findElement(By.tagName("p"));
+            assertTrue("Nome do passaporte nao exibido", passportName.isDisplayed());
+            assertTrue("Nome do passaporte diferente", passportRef.get(i).getDescription().contains(passportName.getText()));
 
             //Paises
             List<WebElement> countriesFront = passportFront.get(i).findElements(By.tagName("img"));

@@ -90,6 +90,12 @@ public class HomePage {
             validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
+        //Valida passaporte(s)
+        if (plan.hasPassport()) {
+            List<WebElement> passports = cardParent.findElements(By.xpath(".//*[@data-plan-content='passport']"));
+            validatePlanPassport(plan.getPassports(), passports, driverWeb);
+        }
+
         //Valida planPortability (GB e bônus - antigo)
         if (plan.hasPlanPortability()) {
             List<WebElement> planPortability = cardParent
