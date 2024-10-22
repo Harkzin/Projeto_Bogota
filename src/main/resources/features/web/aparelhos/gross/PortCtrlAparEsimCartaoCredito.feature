@@ -14,7 +14,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Plano Controle com Aparelho - eSIM 
     Entao é direcionado para a PDP do Aparelho selecionado
     E seleciona a opção [Trazer meu número para Claro]
     E seleciona a plataforma [Claro Controle]
-    E seleciona o plano "17528"
+    E seleciona o plano "17536"
     E seleciona o chip [eSIM]
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
