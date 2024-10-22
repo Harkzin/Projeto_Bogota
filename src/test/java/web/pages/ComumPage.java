@@ -208,22 +208,18 @@ public class ComumPage {
     }
 
     public static void validatePlanPortability(List<WebElement> planPortability, PlanProduct plan) {
-        //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
-        //A posição entre eles pode mudar, não servindo como referência.
         if (plan.hasExtraPlayTitle()) {
+            //TODO Refactor quando houver seletor
+            //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
+            //A posição entre eles pode mudar, não servindo como referência.
             planPortability.remove(planPortability
                     .stream()
                     .filter(webElement -> webElement.getText().equals(plan.getExtraPlayTitle()))
                     .findFirst().orElseThrow());
         }
 
-        IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-            assertEquals("Texto planPortability diferente do configurado", plan.getPlanPortability().get(i), planPortability.get(i).getText());
-
-            assertTrue("Texto planPortability nao visivel", planPortability.get(i).isDisplayed());
-        });
-
-        //TODO Refactor quando houver seletor no card da Home
+        IntStream.range(0, planPortability.size())
+                .forEachOrdered(i -> validateElementText(plan.getPlanPortability().get(i), planPortability.get(i)));
     }
 
     public static String formatPrice(double price) {

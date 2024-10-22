@@ -79,7 +79,6 @@ public class PdpPlanosPage {
 
         //Nome nav (barra horizontal superior)
         showNav();
-        //WebElement planNameNav = driverWeb.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
         Assert.assertEquals(plan.getName(), planNameNav.getText());
         Assert.assertTrue(planNameNav.isDisplayed());
 
