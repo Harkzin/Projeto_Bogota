@@ -307,10 +307,7 @@ public class PdpAparelhosPage {
 
     public void selecionarPlano(CartOrder.PositionsAndPrices.Entry planEntry, DeviceProduct device) {
         driverWeb.javaScriptClick("btn-selecionar-plano-" + planEntry.getProduct().getCode(), "id");
-
-        if (!planEntry.getProduct().getCode().equals(focusPlan)) {
-            validarInfosPlano(planEntry);
-        }
+        validarInfosPlano(planEntry);
         validarPrecoCampanhaAparelho(device);
     }
 
