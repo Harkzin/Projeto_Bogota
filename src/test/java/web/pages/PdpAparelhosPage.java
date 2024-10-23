@@ -217,7 +217,7 @@ public class PdpAparelhosPage {
                 validateSimType.accept(chipComum, "Chip Comum", true);
                 validateSimType.accept(chipEsim, "eSIM", false);
             }
-            case "???" -> { //??? = Esim apenas //TODO sem código definido ainda
+            case "ESC" -> { //ESC = Esim apenas
                 validateSimType.accept(chipEsim, "eSIM", true);
                 assertNull(chipComum);
             }
