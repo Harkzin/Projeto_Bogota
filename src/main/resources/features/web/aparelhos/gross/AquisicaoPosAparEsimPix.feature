@@ -14,7 +14,7 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
     Entao é direcionado para a PDP do Aparelho selecionado
     E seleciona a opção [Aquisição]
     E seleciona a plataforma [Claro Pós]
-    E seleciona o plano "17522"
+    E seleciona o plano "17524"
     E seleciona o chip [eSIM]
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
