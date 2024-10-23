@@ -92,7 +92,7 @@ public class HomePage {
         //Valida planPortability (GB e bônus - antigo)
         if (plan.hasPlanPortability()) {
             List<WebElement> planPortability = driverWeb.findElements(cardParent + "/div[@class='characteristics']/div[contains(@class, 'title-extra-play')]", "xpath");
-            validatePlanPortability(planPortability, plan);
+            validatePlanPortability(plan, planPortability);
         }
     }
 

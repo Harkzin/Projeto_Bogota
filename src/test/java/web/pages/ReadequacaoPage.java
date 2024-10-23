@@ -55,7 +55,7 @@ public class ReadequacaoPage  {
                     .map(webElement -> webElement.findElement(By.tagName("p")))
                     .collect(Collectors.toList());
 
-            validatePlanPortability(planPortability, plan);
+            validatePlanPortability(plan, planPortability);
         }
     }
 

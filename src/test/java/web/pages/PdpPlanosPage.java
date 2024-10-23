@@ -108,7 +108,7 @@ public class PdpPlanosPage {
             List<WebElement> claroServicesApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' claro-services')]//img"));
 
-            validateClaroServices(driverWeb, plan, claroServicesTitle, claroServicesApps);
+            validateClaroServices(plan, claroServicesTitle, claroServicesApps, driverWeb);
         }
     }
 
@@ -195,7 +195,7 @@ public class PdpPlanosPage {
                 WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
                 //Apps
                 List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
-                validatePlanApps(driverWeb, plan, planAppsTitle, planApps);
+                validatePlanApps(plan, planAppsTitle, planApps, driverWeb);
             } else {
                 driverWeb.waitElementInvisible(planAppsParent, 2);
             }

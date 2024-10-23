@@ -166,7 +166,7 @@ public class ComumPage {
                 });
     }
 
-    public static void validatePlanApps(DriverWeb driverWeb, PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps) {
+    public static void validatePlanApps(PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps, DriverWeb driverWeb) {
         //Valida título
         validateElementText(plan.getPlanAppsTitle(), planAppsTitle);
 
@@ -199,7 +199,7 @@ public class ComumPage {
         });
     }
 
-    public static void validateClaroServices(DriverWeb driverWeb, PlanProduct plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps) {
+    public static void validateClaroServices(PlanProduct plan, WebElement claroServicesTitle, List<WebElement> claroServicesApps, DriverWeb driverWeb) {
         //Valida título
         validateElementText(plan.getClaroServicesTitle(), claroServicesTitle);
 
@@ -207,7 +207,7 @@ public class ComumPage {
         validatePlanMedias(plan.getClaroServices(), claroServicesApps, driverWeb);
     }
 
-    public static void validatePlanPortability(List<WebElement> planPortability, PlanProduct plan) {
+    public static void validatePlanPortability(PlanProduct plan, List<WebElement> planPortability) {
         if (plan.hasExtraPlayTitle()) {
             //TODO Refactor quando houver seletor
             //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
@@ -280,7 +280,6 @@ public class ComumPage {
         }
 
         PlanProduct plan = cart.getPlan();
-        boolean isDebit = cart.isDebitPaymentFlow;
         boolean hasLoyalty = cart.hasLoyalty();
 
         //Valida nome
@@ -294,16 +293,16 @@ public class ComumPage {
         }
 
         //Valida bônus, caso configurado
-        if (plan.hasBonus()) {
+        if (plan.hasBonus() && !cart.getPromotion().isRentabilization()) {
+            assertEquals("Quantidade de items configurados vs exibidos no Front diferente", plan.getDataBonus().size(), dataBonus.size());
+
             IntStream.range(0, plan.getDataBonus().size())
-                    .forEachOrdered(i ->
-                            validateElementText(plan.getDataBonus().get(i), dataBonus.get(i))
-                    );
+                    .forEachOrdered(i -> validateElementText(plan.getDataBonus().get(i), dataBonus.get(i)));
         }
 
         //Valida app ilimitados, caso configurado
         if (plan.hasPlanApps() && hasLoyalty) {
-            validatePlanApps(driverWeb, plan, planAppsTitle, planApps);
+            validatePlanApps(plan, planAppsTitle, planApps, driverWeb);
         }
 
         //Valida título extraPlay, caso configurado
@@ -323,7 +322,7 @@ public class ComumPage {
 
         //Valida serviços Claro, caso configurado
         if (plan.hasClaroServices()) {
-            validateClaroServices(driverWeb, plan, claroServicesTitle, claroServicesApps);
+            validateClaroServices(plan, claroServicesTitle, claroServicesApps, driverWeb);
         }
 
         //Valida dependentes adicionados
