@@ -8,6 +8,7 @@ import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
@@ -40,16 +41,21 @@ public class HomePage {
     }
 
     public void validarCardPlano(PlanProduct plan, boolean isDebit) {
-        //TODO refactor
-        //Puxa carrossel, caso seja mobile
-        if (driverWeb.isMobile()) {
-            WebElement nextCarrossel = driverWeb.findElement("(//i[@class='mdn-Icon-direita mdn-Icon--lg'])[1]", "xpath");
-            if (plan.getCode().equals("17536")) {
-                driverWeb.javaScriptClick(nextCarrossel);
-            } else if (plan.getCode().equals("17558")) {
-                driverWeb.javaScriptClick(nextCarrossel);
-                driverWeb.javaScriptClick(nextCarrossel);
-            }
+        //Valida que o plano selecionado está na Home
+        String availableCarouselPlans = driverWeb.findElements("//*[@data-products]", "xpath")
+                .stream()
+                .map(c -> c.getAttribute("data-products"))
+                .collect(Collectors.joining());
+        assertTrue("Plano nao disponivel na Home", availableCarouselPlans.contains(plan.getCode()));
+
+        //Scroll para o carrossel do plano selecionado
+        driverWeb.javaScriptScrollTo(driverWeb.findByXpath(String.format("//*[contains(@data-products, '%s')]/..", plan.getCode())));
+
+        //Movimenta o carrossel caso o card não esteja visível
+        while (!driverWeb.findById("btn-eu-quero-" + plan.getCode()).isDisplayed()) {
+            String next = String.format("//*[contains(@data-products, '%s')]/..//button[@aria-label='Next slide']", plan.getCode());
+            driverWeb.javaScriptClick(driverWeb.findByXpath(next));
+            driverWeb.actionPause(1000);
         }
 
         //TODO Atualizar seletores quando forem criados
