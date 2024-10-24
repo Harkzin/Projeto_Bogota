@@ -283,8 +283,19 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarPlano(Entry planEntry, DeviceProduct device) {
-        WebElement selectPlan = driverWeb.findById("btn-selecionar-plano-" + planEntry.getProduct().getCode());
+        String planCode = planEntry.getProduct().getCode();
+        WebElement selectPlan = driverWeb.findById("btn-selecionar-plano-" + planCode);
         assertNotNull(String.format("Plano [%s] nao disponivel na PDP do Aparelho selecionado", planEntry.getProduct().getCode()), selectPlan);
+
+        //Scroll para o carrossel do plano selecionado
+        driverWeb.javaScriptScrollTo(driverWeb.findByXpath(String.format("//*[@data-product-code='%s']/..", planCode)));
+
+        //Movimenta o carrossel caso o card não esteja visível
+        while (!selectPlan.isDisplayed()) {
+            String next = String.format("//*[@data-product-code='%s']/../..//em[@id='icon-dir']", planCode);
+            driverWeb.javaScriptClick(driverWeb.findByXpath(next));
+            driverWeb.actionPause(1000);
+        }
 
         driverWeb.javaScriptClick(selectPlan);
         validarInfosPlano(planEntry);
