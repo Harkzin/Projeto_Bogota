@@ -151,19 +151,18 @@ public class ComumPage {
         assertEquals("Quantidade de apps/paises [configurados] diferente dos [exibidos] no Front", mediaRef.size(), mediaFront.size());
 
         driverWeb.waitElementVisible(mediaFront.get(0), 2); //Lazy loading Front
-        IntStream.range(0, mediaRef.size())
-                .forEachOrdered(i -> {
-                    String mediaFrontSrc = mediaFront.get(i).getAttribute("src");
-                    String mediaFrontName = mediaFrontSrc.replace("https://mondrian.claro.com.br/brands/app/72px-default/", "");
+        IntStream.range(0, mediaRef.size()).forEachOrdered(i -> {
+            String mediaFrontSrc = mediaFront.get(i).getAttribute("src");
+            String mediaFrontName = mediaFrontSrc.replace("https://mondrian.claro.com.br/brands/app/72px-default/", "");
 
-                    assertTrue(String.format("Imagem do Front deve ser a mesma da API - Front: <%s>, API: <%s>", mediaFrontName, mediaRef.get(i)), mediaFrontSrc.contains(mediaRef.get(i)));
+            assertTrue(String.format("Imagem do Front deve ser a mesma da API - Front: <%s>, API: <%s>", mediaFrontName, mediaRef.get(i)), mediaFrontSrc.contains(mediaRef.get(i)));
 
-                    if (i < 5) { //Até 5 ícones são exibidos, o restante fica oculto no tooltip (+N).
-                        assertTrue("Imagem deve estar visivel", mediaFront.get(i).isDisplayed());
-                    } else {
-                        assertFalse("Imagem deve estar oculta", mediaFront.get(i).isDisplayed());
-                    }
-                });
+            if (i < 5) { //Até 5 ícones são exibidos, o restante fica oculto no tooltip (+N).
+                assertTrue("Imagem deve estar visivel", mediaFront.get(i).isDisplayed());
+            } else {
+                assertFalse("Imagem deve estar oculta", mediaFront.get(i).isDisplayed());
+            }
+        });
     }
 
     public static void validatePlanApps(PlanProduct plan, WebElement planAppsTitle, List<WebElement> planApps, DriverWeb driverWeb) {
@@ -192,10 +191,9 @@ public class ComumPage {
             validatePlanMedias(countriesRefUrl, countriesFront, driverWeb);
 
             //AltText
-            IntStream.range(0, countriesRef.size())
-                    .forEachOrdered(c ->
-                            assertEquals("AltText nome pais", countriesRef.get(c).getAltText(), countriesFront.get(c).getAttribute("alt"))
-                    );
+            IntStream.range(0, countriesRef.size()).forEachOrdered(c ->
+                    assertEquals("AltText nome pais", countriesRef.get(c).getAltText(), countriesFront.get(c).getAttribute("alt"))
+            );
         });
     }
 
@@ -218,8 +216,9 @@ public class ComumPage {
                     .findFirst().orElseThrow());
         }
 
-        IntStream.range(0, planPortability.size())
-                .forEachOrdered(i -> validateElementText(plan.getPlanPortability().get(i), planPortability.get(i)));
+        IntStream.range(0, planPortability.size()).forEachOrdered(i ->
+                validateElementText(plan.getPlanPortability().get(i), planPortability.get(i))
+        );
     }
 
     public static String formatPrice(double price) {
@@ -296,8 +295,9 @@ public class ComumPage {
         if (plan.hasBonus() && !cart.getPromotion().isRentabilization()) {
             assertEquals("Quantidade de items configurados vs exibidos no Front diferente", plan.getDataBonus().size(), dataBonus.size());
 
-            IntStream.range(0, plan.getDataBonus().size())
-                    .forEachOrdered(i -> validateElementText(plan.getDataBonus().get(i), dataBonus.get(i)));
+            IntStream.range(0, plan.getDataBonus().size()).forEachOrdered(i ->
+                    validateElementText(plan.getDataBonus().get(i), dataBonus.get(i))
+            );
         }
 
         //Valida app ilimitados, caso configurado

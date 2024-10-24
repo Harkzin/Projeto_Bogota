@@ -10,17 +10,16 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
+import static web.models.CartOrder.PositionsAndPrices.*;
 import static web.pages.ComumPage.*;
 
 @Component
@@ -60,66 +59,64 @@ public class PdpAparelhosPage {
 
     private boolean prePaidPlanSelected;
 
-    private void validarInfosPlano(CartOrder.PositionsAndPrices.Entry planEntry) {
+    private void validarInfosPlano(Entry planEntry) {
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
 
-        //Nome
-        assertNotNull("Nome do Plano não configurado", plan.getName());
+        //Nome - Card
+        assertNotNull("Nome do Plano nao configurado", plan.getName());
         WebElement nameCard = driverWeb.waitElementPresence(String.format("//*[@id='%s']/div/div/h3", plan.getCode()), 5);
         validateElementText(plan.getName(), nameCard);
 
-        //PlanPortability
+        //PlanPortability - Card
         if (plan.hasPlanPortability()) {
             WebElement planPortability = driverWeb.findByXpath(String.format("//*[@id='%s']/div/div/p", plan.getCode()));
-            assertEquals(String.join(" + ", plan.getPlanPortability()), planPortability.getText().trim());
-            assertTrue("PlanPortability não exibido no card", planPortability.isDisplayed());
+            validateElementText(String.join(" + ", plan.getPlanPortability()), planPortability);
         }
 
-        //Preço
+        //Preço - Card
         String formattedEntryTotalPrice = "R$ " + formatPrice(planEntry.getTotalPrice());
         WebElement priceCard = driverWeb.findByXpath(String.format("//*[@id='%s']/div/dl/dd", plan.getCode()));
         validateElementText(formattedEntryTotalPrice + " / mês", priceCard);
 
-        //Mais detalhes
+        //Modal <Mais detalhes> do plano
         if (!prePaidPlanSelected) {
+            //Abre modal
             WebElement moreDetailsLink = driverWeb.findByXpath(String.format("//*[@id='lnk-mais-detalhes-%s']/a", plan.getCode()));
             driverWeb.javaScriptClick(moreDetailsLink);
 
+            //Aguarda exibição do modal
             WebElement moreDetails = driverWeb.waitElementPresence(String.format("//*[@id='modal-more-details-%s']", plan.getCode()), 2);
             driverWeb.waitElementVisible(moreDetails, 2);
 
+            //Valida nome - Modal
             WebElement name = moreDetails.findElement(By.xpath(".//h2"));
             validateElementText(plan.getName(), name);
 
-            //Valida apps ilimitados
+            //Valida apps ilimitados - Modal
             if (plan.hasPlanApps()) {
                 List<WebElement> planApps = moreDetails.findElements(By.xpath(".//div[contains(@class, ' apps-ilimitados')]//img"));
                 validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
             }
 
-            //Valida título extraPlay
+            //Valida título extraPlay - Modal
             if (plan.hasExtraPlayTitle()) {
                 WebElement extraPlayTitle = moreDetails.findElement(By.xpath(".//div[contains(@class, 'title-extra-play')][1]/p"));
                 validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
             }
 
-            //Valida apps extraPlay
+            //Valida apps extraPlay - Modal
             if (plan.hasExtraPlayApps()) {
                 List<WebElement> extraPlayApps = moreDetails.findElements(By.xpath(".//div[contains(@data-plan-content, 'extraplayapps')]//img"));
                 validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
             }
 
-            //Valida planPortability (GB e bônus - antigo)
+            //Valida planPortability (GB e bônus - antigo)  - Modal
             if (plan.hasPlanPortability()) {
-                List<WebElement> planPortability = moreDetails
-                        .findElements(By.xpath(".//div[contains(@class, 'title-extra-play')]"))
-                        .stream()
-                        .map(webElement -> webElement.findElement(By.tagName("p")))
-                        .collect(Collectors.toList());
-
+                List<WebElement> planPortability = moreDetails.findElements(By.xpath(".//div[contains(@class, 'title-extra-play')]"));
                 validatePlanPortability(plan, planPortability);
             }
 
+            //Fecha modal
             driverWeb.javaScriptClick(moreDetails.findElement(By.xpath(".//button")));
             driverWeb.waitElementInvisible(moreDetails, 2);
         }
@@ -166,18 +163,18 @@ public class PdpAparelhosPage {
         assertTrue("Parcelamento não exibido", installments.isDisplayed());
     }
 
-    public void validarPdpAparelho(DeviceProduct device, CartOrder.PositionsAndPrices.Entry planEntry) {
+    public void validarPdpAparelho(DeviceProduct device, Entry planEntry) {
         driverWeb.waitPageLoad(device.getCode(), 10);
         driverWeb.actionPause(3000);
 
         PageFactory.initElements(driverWeb.getDriver(), this);
 
         //Fabricante
-        assertNotNull("Texto Fabricante não configurado", device.getBrand());
+        assertNotNull("Texto Fabricante nao configurado", device.getBrand());
         validateElementText(device.getBrand(), driverWeb.findById("subtitle-marca-pdp"));
 
         //Nome Aparelho
-        assertNotNull("Texto Nome do produto não configurado", device.getName());
+        assertNotNull("Texto Nome do produto nao configurado", device.getName());
         validateElementText(device.getName(), driverWeb.findById("head-nome-aparelho-pdp"));
 
         //Cores
@@ -190,8 +187,8 @@ public class PdpAparelhosPage {
             assertTrue("Cor variante com url do modelo incorreto", variantUrl.getAttribute("href").contains(device.getVariants().get(i).get(0)));
             assertEquals("Nome da cor variante diferente do configurado", device.getVariants().get(i).get(1).toLowerCase(), variantName.getText().toLowerCase());
 
-            assertTrue("Imagem com url da cor variante não exibida", variantUrl.isDisplayed());
-            assertTrue("Nome da cor variante não exibido", variantName.isDisplayed());
+            assertTrue("Imagem com url da cor variante nao exibida", variantUrl.isDisplayed());
+            assertTrue("Nome da cor variante nao exibido", variantName.isDisplayed());
         });
 
         if (device.inStock()) {
@@ -285,8 +282,11 @@ public class PdpAparelhosPage {
         platform.selectByValue(category);
     }
 
-    public void selecionarPlano(CartOrder.PositionsAndPrices.Entry planEntry, DeviceProduct device) {
-        driverWeb.javaScriptClick("btn-selecionar-plano-" + planEntry.getProduct().getCode(), "id");
+    public void selecionarPlano(Entry planEntry, DeviceProduct device) {
+        WebElement selectPlan = driverWeb.findById("btn-selecionar-plano-" + planEntry.getProduct().getCode());
+        assertNotNull(String.format("Plano [%s] nao disponivel na PDP do Aparelho selecionado", planEntry.getProduct().getCode()), selectPlan);
+
+        driverWeb.javaScriptClick(selectPlan);
         validarInfosPlano(planEntry);
         validarPrecoCampanhaAparelho(device);
     }
