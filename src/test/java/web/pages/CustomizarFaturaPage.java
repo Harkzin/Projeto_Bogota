@@ -228,6 +228,7 @@ public class CustomizarFaturaPage {
         driverWeb.javaScriptClick(abaDebito.findElement(By.tagName("div")));
         Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
+
         driverWeb.actionPause(3000);
         validarCamposDebito();
     }

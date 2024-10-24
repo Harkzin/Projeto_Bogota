@@ -272,7 +272,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano, 40);
+        driverWeb.waitElementVisible(mudarMeuPlano, 20);
     }
 
     public void selecionarMudarMeuPlano(){
