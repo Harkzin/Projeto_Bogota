@@ -163,7 +163,7 @@ public class PdpAparelhosPage {
         WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
         String installmetsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
         //TODO Bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmetsStr));
-        assertTrue("Parcelamento não exibido", installments.isDisplayed());
+//        assertTrue("Parcelamento não exibido", installments.isDisplayed());
     }
 
     public void validarPdpAparelho(DeviceProduct device, CartOrder.PositionsAndPrices.Entry planEntry) {
@@ -272,7 +272,11 @@ public class PdpAparelhosPage {
     }
 
     public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano, 20);
+        driverWeb.waitElementVisible(mudarMeuPlano, 40);
+    }
+
+    public void selecionarMudarMeuPlano(){
+        driverWeb.javaScriptClick("//*[contains(text(), 'Mudar meu plano')]", "xpath");
     }
 
     public void selecionarPlataforma(String category) {

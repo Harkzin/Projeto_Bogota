@@ -36,6 +36,9 @@ public class FormaPagamentoPage {
     @FindBy(id = "btn-adicionar-cartao")
     private WebElement adicionarCartao;
 
+    @FindBy(id = "tab-pix")
+    private WebElement tabPix;
+
     @FindBy(id = "btn-finalizar-pix")
     private WebElement finalizarPix;
 
@@ -93,6 +96,10 @@ public class FormaPagamentoPage {
 
     public void clicarAdicionarCartao() {
         driverWeb.javaScriptClick(adicionarCartao);
+    }
+
+    public void clicarPix() {
+        driverWeb.javaScriptClick(tabPix);
     }
 
     public void validarIframe() {

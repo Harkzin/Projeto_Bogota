@@ -50,6 +50,11 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.clicarAdicionarCartao();
     }
 
+    @Quando("o usuário clicar no botão [Pix]")
+    public void clicarPix() {
+        formaPagamentoPage.clicarPix();
+    }
+
     @Entao("será exibido o iframe de pagamento do cartão")
     public void exibeIframe() {
         formaPagamentoPage.validarIframe();

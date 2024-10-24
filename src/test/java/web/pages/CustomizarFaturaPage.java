@@ -173,11 +173,11 @@ public class CustomizarFaturaPage {
             if (!isComboFlow && (cartOrder.getProcessType() == MIGRATE)) { //fluxo combo ou migração
                 assertDebit.accept(false); //opções para débito existem no html, ocultas no front
 
-                    if (isDebitClient) { //fluxo débito com cliente débito - existe no html apenas as opções para débito, ocultas no front
-                        assertTicketNull.run();
-                    } else { //fluxo débito com cliente boleto - também existe no html as opções para boleto, ocultas no front
-                        assertTicket.accept(false);
-                    }
+                if (isDebitClient) { //fluxo débito com cliente débito - existe no html apenas as opções para débito, ocultas no front
+                    assertTicketNull.run();
+                } else { //fluxo débito com cliente boleto - também existe no html as opções para boleto, ocultas no front
+                    assertTicket.accept(false);
+                }
             } else { //EXCHANGE e EXCHANGE_PROMO - fluxo de troca de plano, troca de promo ou combo (não existem no html)
                 assertDebitNull.run();
                 assertTicketNull.run();
@@ -225,11 +225,28 @@ public class CustomizarFaturaPage {
     }
 
     public void selecionarDebito() {
+//        System.out.println("aba debito: " + abaDebito);
+
+//        driverWeb.javaScriptClick(abaDebito.findElement(By.tagName("div")));
+//        driverWeb.javaScriptClick(abaDebito);
+//        driverWeb.findElement("tab-debito", "id").click();
+
         driverWeb.javaScriptClick(abaDebito.findElement(By.tagName("div")));
         Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
         Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
-
         driverWeb.actionPause(3000);
+//        driverWeb.javaScriptScrollTo(abaDebito.findElement(By.tagName("input")));
+//        abaDebito.findElement(By.tagName("input"));
+//        driverWeb.javaScriptScrollTo(abaDebito.findElement(By.tagName("input")));
+
+//        Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
+//        Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
+
+//        driverWeb.actionPause(3000);
+//        driverWeb.findElement("tab-debito", "id").click();
+//        driverWeb.actionPause(3000);
+//        Assert.assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
+//        Assert.assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
         validarCamposDebito();
     }
 

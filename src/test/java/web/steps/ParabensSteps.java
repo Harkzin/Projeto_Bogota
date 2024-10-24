@@ -32,4 +32,9 @@ public class ParabensSteps {
     public void validarDadosPedido() {
         parabensPage.validarCamposPedido();
     }
+
+    @Então("valida a tela de parabens pix")
+    public void validarDadosPedidoPix() {
+        parabensPage.validarCamposPedidoPix();
+    }
 }
