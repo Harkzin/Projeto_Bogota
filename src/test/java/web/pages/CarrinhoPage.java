@@ -225,6 +225,11 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPixFlow());
     }
 
+    public void inserirDadosAquisicaoPix(String telefone) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfAquisicao, getCpfForPixFlow());
+    }
+
     public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
         driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));

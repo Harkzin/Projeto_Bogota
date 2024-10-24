@@ -83,6 +83,12 @@ public class CarrinhoSteps {
         carrinhoPage.inserirDadosPortabilidadePix(telefone);
     }
 
+    @E("preenche os campos: [Celular] {string}, [E-mail] e [CPF] para Pix")
+    public void preencherCamposCarrinhoAquisicaoPix(String telefone) {
+        carrinhoPage.inserirEmail();
+        carrinhoPage.inserirDadosAquisicaoPix(telefone);
+    }
+
     @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoAquisicao(String telefoneContato, String cpfAprovado, String cpfDiretrix) {
         carrinhoPage.inserirEmail();
