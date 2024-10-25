@@ -169,16 +169,26 @@ public class PdpAparelhosPage {
 
         PageFactory.initElements(driverWeb.getDriver(), this);
 
+        WebElement deviceBrand;
+        WebElement deviceName;
+        if (driverWeb.isMobile()) {
+            deviceBrand = driverWeb.findByXpath("//*[@class='d-md-none d-lg-none ']/p");
+            deviceName = driverWeb.findByXpath("//*[@class='d-md-none d-lg-none ']/h2");
+        } else {
+            deviceBrand = driverWeb.findById("subtitle-marca-pdp");
+            deviceName = driverWeb.findById("head-nome-aparelho-pdp");
+        }
+
         //Fabricante
         assertNotNull("Texto Fabricante nao configurado", device.getBrand());
-        validateElementText(device.getBrand(), driverWeb.findById("subtitle-marca-pdp"));
+        validateElementText(device.getBrand(), deviceBrand);
 
         //Nome Aparelho
         assertNotNull("Texto Nome do produto nao configurado", device.getName());
-        validateElementText(device.getName(), driverWeb.findById("head-nome-aparelho-pdp"));
+        validateElementText(device.getName(), deviceName);
 
         //Cores
-        List<WebElement> variantColors = driverWeb.findElements("//*[@id='txt-cor-do-produto']/following-sibling::div/div/div", "xpath");
+        List<WebElement> variantColors = driverWeb.findElements("//*[contains(@id, 'img-cor-do-produto')]", "xpath");
 
         IntStream.range(0, variantColors.size()).forEachOrdered(i -> {
             WebElement variantUrl = variantColors.get(i).findElement(By.tagName("a"));
