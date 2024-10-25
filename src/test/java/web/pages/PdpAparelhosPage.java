@@ -13,15 +13,18 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
+import web.support.utils.Constants;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
+import static web.support.utils.Constants.*;
 
 @Component
 @ScenarioScope
@@ -221,6 +224,36 @@ public class PdpAparelhosPage {
                 validateSimType.accept(chipEsim, "eSIM", true);
                 assertNull(chipComum);
             }
+        }
+
+        //Valida modal eSim
+        if (chipEsim != null) {
+            //Abre modal
+            driverWeb.javaScriptClick("//*[@data-analytics-event-label='saiba-mais-sobre-esim-claro']", "xpath");
+
+            WebElement closeModal = driverWeb.findElement("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementVisible(closeModal, 2);
+
+            //Valida elementos da lista de textos
+            List<WebElement> textList = driverWeb.findElements("//*[@data-component='”accordion”']/div", "xpath");
+
+            textList.forEach(i -> {
+                WebElement title = i.findElement(By.tagName("a"));
+                WebElement content = i.findElement(By.tagName("p"));
+
+                assertTrue(title.isDisplayed());
+                assertFalse(title.getText().isEmpty());
+
+                driverWeb.javaScriptClick(title);
+                driverWeb.actionPause(1000);
+
+                assertTrue(content.isDisplayed());
+                assertFalse(content.getText().isEmpty());
+            });
+
+            //Fecha modal
+            driverWeb.javaScriptClick("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementInvisible(closeModal, 2);
         }
 
         //Infos Técnicas
