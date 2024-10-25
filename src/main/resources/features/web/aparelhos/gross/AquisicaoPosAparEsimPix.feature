@@ -27,7 +27,7 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
     Entao é direcionado para a tela de Dados Pessoais
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT PORTCTRL APARESIM CC", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
+    E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQS POSAPAR ESIM PIX", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
 
