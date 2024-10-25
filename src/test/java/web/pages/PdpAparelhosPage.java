@@ -13,18 +13,15 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
-import web.support.utils.Constants;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
-import static web.support.utils.Constants.*;
 
 @Component
 @ScenarioScope
@@ -58,8 +55,8 @@ public class PdpAparelhosPage {
     @FindBy(id = "txt-telefone-login")
     private WebElement campoTelefoneLogin;
 
-    @FindBy(id = "rdn-mudar-plano")
-    private WebElement mudarMeuPlano;
+    @FindBy(xpath = "//*[@id='rdn-mudar-plano']/..")
+    private WebElement paiMudarMeuPlano;
 
     private boolean prePaidPlanSelected;
 
@@ -226,21 +223,34 @@ public class PdpAparelhosPage {
             }
         }
 
+        //Valida modal eSim
         if (chipEsim != null) {
-
-            //Clica no ícone de interrogação eSim
+            //Abre modal
             driverWeb.javaScriptClick("//*[@data-analytics-event-label='saiba-mais-sobre-esim-claro']", "xpath");
+
+            WebElement closeModal = driverWeb.findElement("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementVisible(closeModal, 2);
 
             //Valida elementos da lista de textos
             List<WebElement> textList = driverWeb.findElements("//*[@data-component='”accordion”']/div", "xpath");
 
             textList.forEach(i -> {
-                driverWeb.javaScriptClick(i.findElement(By.tagName("a")));
+                WebElement title = i.findElement(By.tagName("a"));
+                WebElement content = i.findElement(By.tagName("p"));
+
+                assertTrue(title.isDisplayed());
+                assertFalse(title.getText().isEmpty());
+
+                driverWeb.javaScriptClick(title);
                 driverWeb.actionPause(1000);
-                assertTrue(i.findElement(By.tagName("p")).isDisplayed());
+
+                assertTrue(content.isDisplayed());
+                assertFalse(content.getText().isEmpty());
             });
-            //Fecha o modal do eSim
-            driverWeb.javaScriptClick("/html/body/main/div[4]/div/div[2]/div[2]/div/div[2]/div[8]/div[1]/div/div/div[1]/button", "xpath");
+
+            //Fecha modal
+            driverWeb.javaScriptClick("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementInvisible(closeModal, 2);
         }
 
         //Infos Técnicas
@@ -291,8 +301,12 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano.findElement(By.xpath("..")), 20);
+    public void validarInformacoesExibidasAposLogin() {
+        driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
+    }
+
+    public void selecionarMudarMeuPlano() {
+        driverWeb.javaScriptClick(driverWeb.findById("rdn-mudar-plano"));
     }
 
     public void selecionarPlataforma(String category) {

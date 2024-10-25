@@ -95,6 +95,10 @@ public class FormaPagamentoPage {
         driverWeb.javaScriptClick(adicionarCartao);
     }
 
+    public void clicarAbaPix() {
+        driverWeb.javaScriptClick(driverWeb.findById("tab-pix"));
+    }
+
     public void validarIframe() {
         driverWeb.getDriver().switchTo().frame(driverWeb.findById("credit-card-payment-iframe")); //Acessa o iframe
         cardName = driverWeb.waitElementPresence("//*[@id='root']//input[contains(@name, 'name')]", 30);

@@ -1,10 +1,12 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
+Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
 
-  @PortPosAparEsimPix
-  Cenario: Aquisicao Pos Aparelho - eSIM - Pix
+  @Controle
+  @Portabilidade
+  @PortCtrlAparEsim
+  Cenario: Portabilidade Controle com Aparelho - eSIM
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
@@ -12,16 +14,16 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
 
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "000000000000018006"
     Entao é direcionado para a PDP do Aparelho selecionado
-    E seleciona a opção [Quero uma linha nova da Claro]
-    E seleciona a plataforma [Claro Pós]
-    E seleciona o plano "17524"
+    E seleciona a opção [Trazer meu número para Claro]
+    E seleciona a plataforma [Claro Controle]
+    E seleciona o plano "17536"
     E seleciona o chip [eSIM]
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Celular] "11987655678", [E-mail] e [CPF] para Pix
+    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
@@ -72,9 +74,13 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
 
-    Quando o usuário clicar na aba [Pix]
-    E clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]
-    Então é direcionado para a tela de Parabéns Pix
+    Quando o usuário clicar no botão [Adicionar cartão de crédito]
+    Então será exibido o iframe de pagamento do cartão
+    E preenche os dados do cartão: [Nome] "ECCOM APROV", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
+
+    Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
+    Então é direcionado para a tela de Parabéns
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+    E clica no botão [Ok, Entendi] do modal de alerta de token
     E os dados do pedido estão corretos

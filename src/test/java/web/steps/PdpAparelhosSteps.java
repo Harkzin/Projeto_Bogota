@@ -107,6 +107,11 @@ public class PdpAparelhosSteps  {
         pdpAparelhosPage.selecionarPlataforma("pospago");
     }
 
+    @E("seleciona [Mudar meu plano]")
+    public void selecionaMudarMeuPlano() {
+        pdpAparelhosPage.selecionarMudarMeuPlano();
+    }
+
     @E("seleciona o plano {string}")
     public void selecionarPlano(String plan) {
         cart.updatePlanForDevice(plan);

@@ -66,9 +66,14 @@ public class CarrinhoSteps {
     }
 
     @E("preenche os campos: [E-mail] e [CPF] {string}")
-    public void preencherCamposCarrinhoBaseAparelho(String cpf) {
+    public void preencherCamposCarrinhoBasePreAparelho(String cpf) {
         carrinhoPage.inserirEmail();
         carrinhoPage.inserirDadosBase(cpf);
+    }
+
+    @E("preenche o campo [E-mail]")
+    public void preencherCamposCarrinhoBaseAparelho() {
+        carrinhoPage.inserirEmail();
     }
 
     @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
