@@ -21,7 +21,7 @@ Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho - Pix
 
     Quando clicar no botão [Acessar] do popover
     Entao é exibido as opções e informações para cliente claro
-    E seleciona mudar meu plano
+    E seleciona [Mudar meu plano]
     E seleciona a plataforma [Claro Pós]
     E seleciona o plano "17515"
 
@@ -58,6 +58,7 @@ Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho - Pix
     Entao será direcionado para a tela [Forma de Pagamento]
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário clicar na aba [Pix]
     E clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]
     Então é direcionado para a tela de Parabéns Pix

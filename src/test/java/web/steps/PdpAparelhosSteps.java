@@ -107,7 +107,7 @@ public class PdpAparelhosSteps  {
         pdpAparelhosPage.selecionarPlataforma("pospago");
     }
 
-    @E("seleciona mudar meu plano")
+    @E("seleciona [Mudar meu plano]")
     public void selecionaMudarMeuPlano() {
         pdpAparelhosPage.selecionarMudarMeuPlano();
     }

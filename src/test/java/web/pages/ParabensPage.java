@@ -19,10 +19,6 @@ public class ParabensPage {
         this.driverWeb = driverWeb;
     }
 
-    private WebElement temporizadorPix;
-    private WebElement qrCodePix;
-    private WebElement copiarCodigoPix;
-
     public void validarPaginaParabens() {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
     }
@@ -30,9 +26,9 @@ public class ParabensPage {
     public void validarPaginaParabensPix() {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
         //TODO Validar valor do pix é o mesmo valor do aparelho
-        qrCodePix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[2]/img");
-        temporizadorPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/div[3]/div[1]/p");
-        copiarCodigoPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/button");
+        WebElement qrCodePix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[2]/img");
+        WebElement temporizadorPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/div[3]/div[1]/p");
+        WebElement copiarCodigoPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/button");
 
         driverWeb.waitElementVisible(qrCodePix, 10);
         assertTrue(copiarCodigoPix.isDisplayed());

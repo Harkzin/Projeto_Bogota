@@ -70,7 +70,7 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.clicarConfirmarCartao();
     }
 
-    @Quando("clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]")
+    @E("clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]")
     public void clicarFinalizar() {
         formaPagamentoPage.clicarFinalizarPix();
     }
