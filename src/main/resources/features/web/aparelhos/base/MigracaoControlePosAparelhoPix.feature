@@ -1,12 +1,12 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho Pix
+Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho - Pix
 
-  @Migracao
   @Pos
+  @Migracao
   @MigracaoControlePosAparelhoPix
-  Cenario: Migracao Controle Pos com Aparelho Pix
+  Cenario: Migracao Controle Pos com Aparelho - Pix
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
@@ -21,29 +21,28 @@ Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho Pix
 
     Quando clicar no botão [Acessar] do popover
     Entao é exibido as opções e informações para cliente claro
-    E seleciono mudar meu plano
+    E seleciona mudar meu plano
     E seleciona a plataforma [Claro Pós]
     E seleciona o plano "17515"
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho
-      #Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos: [E-mail] e [CPF] "40316127531"
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
-    Mas não deve haver alterações no valor e nem nas informações do Plano
-#      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E não deve ser exibido os meios de recebimento da fatura
     E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar a forma de pagamento [Débito]
     #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
-      #Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E não deve ser exibido os meios de recebimento da fatura
     E deve ser exibido as datas de vencimento
     E preenche os dados bancários
@@ -51,18 +50,17 @@ Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho Pix
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
     Entao é direcionado para a tela de SMS
-      #Mas não deve haver alterações no valor e nem nas informações do Aparelho
-#    Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código de verificação] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao será direcionado para a tela [Forma de Pagamento]
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
-    Quando o usuário clicar no botão [Pix]
-    Quando o usuário clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]
-    Então é direcionado para a tela de Parabéns
-#      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
-#      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
-    E valida a tela de parabens pix
+    Quando o usuário clicar na aba [Pix]
+    E clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]
+    Então é direcionado para a tela de Parabéns Pix
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

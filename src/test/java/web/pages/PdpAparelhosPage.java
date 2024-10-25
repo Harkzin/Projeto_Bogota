@@ -55,8 +55,8 @@ public class PdpAparelhosPage {
     @FindBy(id = "txt-telefone-login")
     private WebElement campoTelefoneLogin;
 
-    @FindBy(xpath = "//*[contains(text(), 'Mudar meu plano')]")
-    private WebElement mudarMeuPlano;
+    @FindBy(xpath = "//*[@id='rdn-mudar-plano']/..")
+    private WebElement paiMudarMeuPlano;
 
     private boolean prePaidPlanSelected;
 
@@ -163,7 +163,7 @@ public class PdpAparelhosPage {
         WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
         String installmetsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
         //TODO Bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmetsStr));
-//        assertTrue("Parcelamento não exibido", installments.isDisplayed());
+        assertTrue("Parcelamento não exibido", installments.isDisplayed());
     }
 
     public void validarPdpAparelho(DeviceProduct device, CartOrder.PositionsAndPrices.Entry planEntry) {
@@ -271,12 +271,12 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano, 20);
+    public void validarInformacoesExibidasAposLogin() {
+        driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
     }
 
-    public void selecionarMudarMeuPlano(){
-        driverWeb.javaScriptClick("//*[contains(text(), 'Mudar meu plano')]", "xpath");
+    public void selecionarMudarMeuPlano() {
+        driverWeb.javaScriptClick(driverWeb.findById("rdn-mudar-plano"));
     }
 
     public void selecionarPlataforma(String category) {

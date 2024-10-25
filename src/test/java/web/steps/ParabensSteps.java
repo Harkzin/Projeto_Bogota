@@ -23,6 +23,11 @@ public class ParabensSteps {
         parabensPage.validarPaginaParabens();
     }
 
+    @Então("é direcionado para a tela de Parabéns Pix")
+    public void validarPaginaParabensPix() {
+        parabensPage.validarPaginaParabensPix();
+    }
+
     @E("clica no botão [Ok, Entendi] do modal de alerta de token")
     public void ClicarOkEntendi() {
         parabensPage.clicarOkEntendi();
@@ -31,10 +36,5 @@ public class ParabensSteps {
     @Então("os dados do pedido estão corretos")
     public void validarDadosPedido() {
         parabensPage.validarCamposPedido();
-    }
-
-    @Então("valida a tela de parabens pix")
-    public void validarDadosPedidoPix() {
-        parabensPage.validarCamposPedidoPix();
     }
 }

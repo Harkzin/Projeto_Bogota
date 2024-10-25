@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.support.utils.DriverWeb;
 
+import static org.junit.Assert.assertTrue;
+
 @Component
 @ScenarioScope
 public class ParabensPage {
@@ -25,22 +27,23 @@ public class ParabensPage {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
     }
 
+    public void validarPaginaParabensPix() {
+        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
+        //TODO Validar valor do pix é o mesmo valor do aparelho
+        qrCodePix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[2]/img");
+        temporizadorPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/div[3]/div[1]/p");
+        copiarCodigoPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/button");
+
+        driverWeb.waitElementVisible(qrCodePix, 10);
+        assertTrue(copiarCodigoPix.isDisplayed());
+        assertTrue(temporizadorPix.isDisplayed());
+    }
+
     public void clicarOkEntendi() {
         driverWeb.javaScriptClick("btn-entendi-modal-abr", "id");
     }
 
     public void validarCamposPedido() {
         //TODO ECCMAUT-351
-    }
-
-    public void validarCamposPedidoPix() {
-        //TODO Validar valor do pix é o mesmo valor do aparelho
-        qrCodePix = driverWeb.findElement("//*[@id=\"pix-payment-instructions\"]/div[2]/div[2]/img", "xpath");
-        temporizadorPix = driverWeb.findElement("//*[@id=\"pix-payment-instructions\"]/div[2]/div[1]/ul/li[1]/div[3]/div[1]/p", "xpath");
-        copiarCodigoPix = driverWeb.findElement("//*[@id=\"pix-payment-instructions\"]/div[2]/div[1]/ul/li[1]/button", "xpath");
-
-        driverWeb.waitElementVisible(qrCodePix, 10);
-        driverWeb.waitElementVisible(copiarCodigoPix, 10);
-        driverWeb.waitElementVisible(temporizadorPix, 10);
     }
 }
