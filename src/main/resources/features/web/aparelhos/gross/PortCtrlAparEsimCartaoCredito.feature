@@ -1,10 +1,12 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-1171 - Portabilidade Plano Controle com Aparelho - eSIM - Cartao de Credito
+Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
 
-  @PortCtrlAparEsimCC
-  Cenario: Portabilidade Plano Controle com Aparelho - eSIM - Cartao de Credito
+  @Controle
+  @Portabilidade
+  @PortCtrlAparEsim
+  Cenario: Portabilidade Controle com Aparelho - eSIM
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
@@ -21,7 +23,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Plano Controle com Aparelho - eSIM 
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] para Pix
+    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais

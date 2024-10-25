@@ -226,21 +226,34 @@ public class PdpAparelhosPage {
             }
         }
 
+        //Valida modal eSim
         if (chipEsim != null) {
-
-            //Clica no ícone de interrogação eSim
+            //Abre modal
             driverWeb.javaScriptClick("//*[@data-analytics-event-label='saiba-mais-sobre-esim-claro']", "xpath");
+
+            WebElement closeModal = driverWeb.findElement("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementVisible(closeModal, 2);
 
             //Valida elementos da lista de textos
             List<WebElement> textList = driverWeb.findElements("//*[@data-component='”accordion”']/div", "xpath");
 
             textList.forEach(i -> {
-                driverWeb.javaScriptClick(i.findElement(By.tagName("a")));
+                WebElement title = i.findElement(By.tagName("a"));
+                WebElement content = i.findElement(By.tagName("p"));
+
+                assertTrue(title.isDisplayed());
+                assertFalse(title.getText().isEmpty());
+
+                driverWeb.javaScriptClick(title);
                 driverWeb.actionPause(1000);
-                assertTrue(i.findElement(By.tagName("p")).isDisplayed());
+
+                assertTrue(content.isDisplayed());
+                assertFalse(content.getText().isEmpty());
             });
-            //Fecha o modal do eSim
-            driverWeb.javaScriptClick("/html/body/main/div[4]/div/div[2]/div[2]/div/div[2]/div[8]/div[1]/div/div/div[1]/button", "xpath");
+
+            //Fecha modal
+            driverWeb.javaScriptClick("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementInvisible(closeModal, 2);
         }
 
         //Infos Técnicas
