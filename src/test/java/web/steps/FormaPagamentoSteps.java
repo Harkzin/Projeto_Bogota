@@ -50,6 +50,11 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.clicarAdicionarCartao();
     }
 
+    @Quando("o usuário clicar na aba [Pix]")
+    public void clicarPix() {
+        formaPagamentoPage.clicarAbaPix();
+    }
+
     @Entao("será exibido o iframe de pagamento do cartão")
     public void exibeIframe() {
         formaPagamentoPage.validarIframe();
@@ -65,7 +70,7 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.clicarConfirmarCartao();
     }
 
-    @Quando("o usuário clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]")
+    @E("clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]")
     public void clicarFinalizar() {
         formaPagamentoPage.clicarFinalizarPix();
     }

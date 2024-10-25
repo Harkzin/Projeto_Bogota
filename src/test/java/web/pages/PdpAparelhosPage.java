@@ -58,8 +58,8 @@ public class PdpAparelhosPage {
     @FindBy(id = "txt-telefone-login")
     private WebElement campoTelefoneLogin;
 
-    @FindBy(id = "rdn-mudar-plano")
-    private WebElement mudarMeuPlano;
+    @FindBy(xpath = "//*[@id='rdn-mudar-plano']/..")
+    private WebElement paiMudarMeuPlano;
 
     private boolean prePaidPlanSelected;
 
@@ -304,8 +304,12 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano.findElement(By.xpath("..")), 20);
+    public void validarInformacoesExibidasAposLogin() {
+        driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
+    }
+
+    public void selecionarMudarMeuPlano() {
+        driverWeb.javaScriptClick(driverWeb.findById("rdn-mudar-plano"));
     }
 
     public void selecionarPlataforma(String category) {
