@@ -29,7 +29,7 @@ Funcionalidade: ECCMAUT-201 Migracao Controle Pos com Aparelho - Pix
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [E-mail] e [CPF] "40316127531"
+    E preenche o campo [E-mail]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
