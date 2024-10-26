@@ -30,9 +30,9 @@ public class ParabensPage {
         WebElement temporizadorPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/div[3]/div[1]/p");
         WebElement copiarCodigoPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/button");
 
-        driverWeb.waitElementVisible(qrCodePix, 10);
+        driverWeb.waitElementVisible(temporizadorPix, 10);
+        assertTrue(qrCodePix.isDisplayed());
         assertTrue(copiarCodigoPix.isDisplayed());
-        assertTrue(temporizadorPix.isDisplayed());
     }
 
     public void clicarOkEntendi() {
