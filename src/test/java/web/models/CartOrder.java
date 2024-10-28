@@ -25,9 +25,9 @@ public class CartOrder {
         positionsAndPrices = new PositionsAndPrices();
         payment = new Payment();
         delivery = new Delivery();
+        claroChip = new ClaroChip();
     }
 
-    private boolean eSIM;
     private boolean thab;
 
     private String planId;
@@ -173,14 +173,6 @@ public class CartOrder {
         return null;
     }
 
-    public void setEsimChip(boolean isEsim) {
-        eSIM = isEsim;
-    }
-
-    public boolean isEsim() {
-        return eSIM;
-    }
-
     public void setThab() {
         thab = true;
     }
@@ -308,15 +300,27 @@ public class CartOrder {
         return allPromotionResults;
     }
 
+    public ClaroChip getClaroChip() {
+        return claroChip;
+    }
+
     public static class ClaroChip {
 
-        public String activationCode;
-        public String claroChipType;
-        public String iccIdSim;
-        public String qrCdode;
-        public String techlonogy;
+        private String activationCode;
+        private ChipType claroChipType;
+        private String iccIdSim;
+        private String qrCdode;
+        private String techlonogy;
 
         private ClaroChip() {}
+
+        public ChipType getChipType() {
+            return claroChipType;
+        }
+
+        public void setChipType(ChipType chip) {
+            claroChipType = chip;
+        }
     }
 
     public static class ClaroClube {

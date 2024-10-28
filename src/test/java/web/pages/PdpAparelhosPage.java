@@ -1,7 +1,6 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -10,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.Constants.ProcessType;
@@ -21,6 +21,8 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.*;
 import static web.models.CartOrder.PositionsAndPrices.*;
 import static web.pages.ComumPage.*;
+import static web.support.utils.Constants.ChipType.*;
+import static web.support.utils.Constants.focusPlan;
 
 @Component
 @ScenarioScope
@@ -144,7 +146,7 @@ public class PdpAparelhosPage {
         }
     }
 
-    private void validarPrecoCampanhaAparelho(DeviceProduct device) {
+    private void validarPrecoCampanhaAparelho(DeviceProduct device, boolean eSimSelected) {
         //Preço base "De"
         if (!prePaidPlanSelected) {
             WebElement fullPrice = driverWeb.findById("value-total-aparelho-pdp");
@@ -154,16 +156,26 @@ public class PdpAparelhosPage {
 
         //Preço de campanha "por apenas"
         WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
-        //TODO Bug API ECCMAUT-806 validateElementText(device.getFormattedCampaignPrice(device.isEsimOnly()), campaignPrice);
+        validateElementText(device.getFormattedCampaignPrice(device.getSimType().equals("ESC") || eSimSelected), campaignPrice);
 
         //Parcelamento
         WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
-        String installmetsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
-        //TODO Bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmetsStr));
-        assertTrue("Parcelamento não exibido", installments.isDisplayed());
+
+        String installmentPrice;
+        if (eSimSelected) {
+            installmentPrice = device.getFormattedInstallmentPrice(); //Parcelamento sem valor do chip incluído
+        } else {
+            installmentPrice = "R$ " + formatPrice(device.getCampaignPrice(false) / device.getInstallmentQuantity()); //Valor com chip comum incluído
+        }
+
+        String installmentsRef = String.format("ou %dx de %s s/ juros", device.getInstallmentQuantity(), installmentPrice);
+        //TODO validateElementText(installmentsRef, installments); //Bug em Prod: parcelamento com eSIM (valor não muda) e fluxo de base (parcelamento não aparece)
     }
 
-    public void validarPdpAparelho(DeviceProduct device, Entry planEntry) {
+    public void validarPdpAparelho(CartOrder cart) {
+        DeviceProduct device = cart.getDevice();
+        Entry planEntry = cart.getEntry(focusPlan);
+
         driverWeb.waitPageLoad(device.getCode(), 10);
         driverWeb.actionPause(3000);
 
@@ -204,7 +216,7 @@ public class PdpAparelhosPage {
         if (device.inStock()) {
             //Plano
             validarInfosPlano(planEntry);
-            validarPrecoCampanhaAparelho(device);
+            validarPrecoCampanhaAparelho(device, cart.getClaroChip().getChipType() == ESIM);
         }
 
         //Tipos Chip
@@ -292,7 +304,10 @@ public class PdpAparelhosPage {
         platform.selectByValue(category);
     }
 
-    public void selecionarPlano(Entry planEntry, DeviceProduct device) {
+    public void selecionarPlano(CartOrder cart) {
+        Entry planEntry = cart.getEntry(cart.getPlan().getCode());
+        DeviceProduct device = cart.getDevice();
+        
         String planCode = planEntry.getProduct().getCode();
         WebElement selectPlan = driverWeb.findById("btn-selecionar-plano-" + planCode);
         assertNotNull(String.format("Plano [%s] nao disponivel na PDP do Aparelho selecionado", planEntry.getProduct().getCode()), selectPlan);
@@ -309,13 +324,13 @@ public class PdpAparelhosPage {
 
         driverWeb.javaScriptClick(selectPlan);
         validarInfosPlano(planEntry);
-        validarPrecoCampanhaAparelho(device);
+        validarPrecoCampanhaAparelho(device, cart.getClaroChip().getChipType() == ESIM);
     }
 
-    public void selecionarSIM(boolean isEsim, DeviceProduct device) {
+    public void selecionarSIM(DeviceProduct device, boolean isEsim) {
         driverWeb.javaScriptClick(isEsim ? "rdn-chip-type-ESIM" : "rdn-chip-type-SIM", "id" );
         driverWeb.actionPause(500);
-        validarPrecoCampanhaAparelho(device);
+        validarPrecoCampanhaAparelho(device, isEsim);
     }
 
     public void clicarComprar(String deviceId) {

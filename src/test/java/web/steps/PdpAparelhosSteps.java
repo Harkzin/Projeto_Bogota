@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PdpAparelhosPage;
 import web.models.CartOrder;
 
+import static web.support.utils.Constants.ChipType.ESIM;
+import static web.support.utils.Constants.ChipType.SIM;
 import static web.support.utils.Constants.ProcessType.*;
-import static web.support.utils.Constants.focusPlan;
 
 public class PdpAparelhosSteps  {
 
@@ -23,7 +24,7 @@ public class PdpAparelhosSteps  {
 
     @Entao("é direcionado para a PDP do Aparelho selecionado")
     public void validarTelaPDPAparelho() {
-        pdpAparelhosPage.validarPdpAparelho(cart.getDevice(), cart.getEntry(focusPlan));
+        pdpAparelhosPage.validarPdpAparelho(cart);
     }
 
     @Quando("o usuário selecionar a cor variante do modelo {string}")
@@ -110,19 +111,19 @@ public class PdpAparelhosSteps  {
     @E("seleciona o plano {string}")
     public void selecionarPlano(String plan) {
         cart.updatePlanForDevice(plan);
-        pdpAparelhosPage.selecionarPlano(cart.getEntry(plan), cart.getDevice());
+        pdpAparelhosPage.selecionarPlano(cart);
     }
 
     @E("seleciona o chip [Comum]")
     public void selecionarChipComum() {
-        cart.setEsimChip(false);
-        pdpAparelhosPage.selecionarSIM(false, cart.getDevice());
+        cart.getClaroChip().setChipType(SIM);
+        pdpAparelhosPage.selecionarSIM(cart.getDevice(), false);
     }
 
     @E("seleciona o chip [eSIM]")
     public void selecionarEsim() {
-        cart.setEsimChip(true);
-        pdpAparelhosPage.selecionarSIM(true, cart.getDevice());
+        cart.getClaroChip().setChipType(ESIM);
+        pdpAparelhosPage.selecionarSIM(cart.getDevice(), true);
     }
 
     @Quando("o usuário clicar no botão [Comprar] da PDP do Aparelho")

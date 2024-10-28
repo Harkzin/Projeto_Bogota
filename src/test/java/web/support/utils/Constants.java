@@ -67,4 +67,9 @@ public final class Constants {
     );
 
     public static final double DEPENDENT_PRICE = 50D;
+
+    public enum ChipType {
+        SIM,
+        ESIM
+    }
 }

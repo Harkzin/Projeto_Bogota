@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
 import static web.models.product.PlanProduct.*;
 import static web.models.product.PlanProduct.Passport.*;
 import static web.models.product.PlanProduct.Passport.PassportTraffic.*;
+import static web.support.utils.Constants.ChipType.ESIM;
+import static web.support.utils.Constants.ChipType.SIM;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
 import static web.support.utils.Constants.ProcessType.*;
 
@@ -381,7 +383,7 @@ public class ComumPage {
         driverWeb.actionPause(1000);
 
         boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
-        boolean hasCommonSIM = !cart.isEsim() && isGrossFlow;
+        boolean commonChipFlow = cart.getClaroChip().getChipType() == SIM && isGrossFlow;
 
         String deviceContentParent;
         //TODO Tela de Parabens tem outra classe. Remover este bloco e atualizar os xpath apos ter sido implementado os atributos seletores no front
@@ -394,7 +396,7 @@ public class ComumPage {
         ///////////////////////
 
         //Subtotal
-        double subtotal = cart.getDevice().getCampaignPrice(!hasCommonSIM);
+        double subtotal = cart.getDevice().getCampaignPrice(!commonChipFlow);
         String subtotalSelector = deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div[1]";
         driverWeb.javaScriptClick(deviceContentParent + "//*[@id='sidebar-resume']/div/a", "xpath");
         driverWeb.waitElementVisible(driverWeb.findElement(subtotalSelector, "xpath"), 5);
@@ -407,7 +409,7 @@ public class ComumPage {
 
         //Valor Total a Pagar
         double totalPrice = cart.getEntry(cart.getDevice().getCode()).getTotalPrice();
-        if (hasCommonSIM) {
+        if (commonChipFlow) {
             totalPrice += 10D;
         }
         //TODO Bug ECCMAUT-806 validateElementText("R$ " + formatPrice(totalPrice), deviceContentParent + "//*[@id='sidebar-resume']/div/div[2]/p[2]");
@@ -421,11 +423,13 @@ public class ComumPage {
 
         //Tipo Chip
         if (isGrossFlow) {
-            String simType = cart.isEsim() ? "eSIM" : "Chip Comum";
+            boolean eSimFlow = cart.getClaroChip().getChipType() == ESIM;
+
+            String simType = eSimFlow ? "eSIM" : "Chip Comum";
             validateElementText(simType, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[1]/p");
 
             //Valor Chip
-            String chipPrice = cart.isEsim() ? "Grátis" : "R$ 10,00";
+            String chipPrice = eSimFlow ? "Grátis" : "R$ 10,00";
             validateElementText(chipPrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]");
         }
     }
