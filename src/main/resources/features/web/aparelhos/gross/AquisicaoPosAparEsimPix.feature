@@ -22,13 +22,13 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos: [Celular] "11987655678", [E-mail] e [CPF] para Pix
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos de dados pessoais: [Nome Completo] "ECOMMAUT AQS POSAPAR ESIM PIX", [Data de Nascimento] "01011991" e [Nome da Mãe] "NOME MAE"
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
     E deve ser exibido os tipos de entrega
@@ -36,7 +36,7 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Entao é direcionado para a tela de Customizar Fatura
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
