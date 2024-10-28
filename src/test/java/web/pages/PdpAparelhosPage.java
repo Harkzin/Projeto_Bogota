@@ -13,18 +13,15 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
-import web.support.utils.Constants;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
-import static web.support.utils.Constants.*;
 
 @Component
 @ScenarioScope
