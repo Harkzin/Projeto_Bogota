@@ -22,6 +22,14 @@ public final class PlanProduct extends Product {
     @JsonProperty("passports")
     private List<Passport> passports;
 
+    private boolean hasAttribute(String code) {
+        return classifications.stream()
+                .filter(c -> c.code.contains("serviceplanclassification"))
+                .findFirst().orElseThrow()
+                .features.stream()
+                .anyMatch(feature -> feature.code.contains(code));
+    }
+
     private Classification.Feature getAttributes(String code) {
         return classifications.stream()
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
@@ -62,7 +70,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasPlanApps() {
-        return hasAttribute("serviceplanclassification", "planapps");
+        return hasAttribute("planapps");
     }
 
     public String getPlanAppsTitle() {
@@ -74,11 +82,11 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasExtraPlayApps() {
-        return hasAttribute("serviceplanclassification", "planextraplayapps");
+        return hasAttribute("planextraplayapps");
     }
 
     public boolean hasExtraPlayTitle() {
-        return hasAttribute("serviceplanclassification", "clarotitleextraplay");
+        return hasAttribute("clarotitleextraplay");
     }
 
     public String getExtraPlayTitle() {
@@ -90,7 +98,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasClaroServices() {
-        return hasAttribute("serviceplanclassification", "claroservicespdp");
+        return hasAttribute("claroservicespdp");
     }
 
     public String getClaroServicesTitle() {
@@ -102,7 +110,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasPlanPortability() {
-        return hasAttribute("serviceplanclassification", "planportability");
+        return hasAttribute("planportability");
     }
 
     public List<String> getPlanPortability() {
@@ -233,4 +241,6 @@ public final class PlanProduct extends Product {
         }
 
     }
+
+
 }

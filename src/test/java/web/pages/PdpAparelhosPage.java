@@ -60,6 +60,7 @@ public class PdpAparelhosPage {
     private WebElement mudarMeuPlano;
 
     private boolean prePaidPlanSelected;
+    private String deviceChipType;
 
     private void validarInfosPlano(Entry planEntry) {
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
@@ -69,19 +70,19 @@ public class PdpAparelhosPage {
         WebElement nameCard = driverWeb.waitElementPresence(String.format("//*[@id='%s']/div/div/h3", plan.getCode()), 5);
         validateElementText(plan.getName(), nameCard);
 
-        //PlanPortability - Card
-        if (plan.hasPlanPortability()) {
-            WebElement planPortability = driverWeb.findByXpath(String.format("//*[@id='%s']/div/div/p", plan.getCode()));
-            validateElementText(String.join(" + ", plan.getPlanPortability()), planPortability);
-        }
-
-        //Preço - Card
         String formattedEntryTotalPrice = "R$ " + formatPrice(planEntry.getTotalPrice());
-        WebElement priceCard = driverWeb.findByXpath(String.format("//*[@id='%s']/div/dl/dd", plan.getCode()));
-        validateElementText(formattedEntryTotalPrice + " / mês", priceCard);
-
-        //Modal <Mais detalhes> do plano
         if (!prePaidPlanSelected) {
+            //PlanPortability - Card
+            if (plan.hasPlanPortability()) {
+                WebElement planPortability = driverWeb.findByXpath(String.format("//*[@id='%s']/div/div/p", plan.getCode()));
+                validateElementText(String.join(" + ", plan.getPlanPortability()), planPortability);
+            }
+
+            //Preço - Card
+            WebElement priceCard = driverWeb.findByXpath(String.format("//*[@id='%s']/div/dl/dd", plan.getCode()));
+            validateElementText(formattedEntryTotalPrice + " / mês", priceCard);
+
+            //Modal <Mais detalhes> do plano
             //Abre modal
             WebElement moreDetailsLink = driverWeb.findByXpath(String.format("//*[@id='lnk-mais-detalhes-%s']/a", plan.getCode()));
             driverWeb.javaScriptClick(moreDetailsLink);
@@ -121,6 +122,9 @@ public class PdpAparelhosPage {
             //Fecha modal
             driverWeb.javaScriptClick(moreDetails.findElement(By.xpath(".//button")));
             driverWeb.waitElementInvisible(moreDetails, 2);
+        } else {
+            //Valida preço card Pré
+            validateElementText("Grátis", driverWeb.findByXpath(String.format("//*[@id='%s']/div/p", plan.getCode())));
         }
 
         //Seção [Plano Selecionado]
@@ -227,7 +231,8 @@ public class PdpAparelhosPage {
             validateElementText(text, chipComum.findElement(By.xpath("..")));
         };
 
-        switch (device.getSimType()) {
+        deviceChipType = device.getSimType();
+        switch (deviceChipType) {
             case "NSC" -> { //NSC = NanoSim apenas
                 validateSimType.accept(chipComum, "Chip Comum", true);
                 assertNull(chipEsim);
@@ -295,13 +300,18 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarPlataforma(String category) {
-        if (category.equals("prepago")) {
-            prePaidPlanSelected = true;
-        }
-
         driverWeb.waitElementPresence("//*[@id='slc-plataforma-plano']/..", 10);
         Select platform = new Select(plataforma);
         platform.selectByValue(category);
+        driverWeb.actionPause(500);
+
+        if (category.equals("prepago")) {
+            prePaidPlanSelected = true;
+
+            if (deviceChipType.equals("NSC")) { //Oculta opcao de eSIM caso o Aparelho seja Chip Comum + eSIM
+                assertFalse("Nao deve ser ebixido eSIM para Plano Pre (definicao de projeto)", chipEsim.findElement(By.xpath("..")).isDisplayed());
+            }
+        }
     }
 
     public void selecionarPlano(CartOrder cart) {

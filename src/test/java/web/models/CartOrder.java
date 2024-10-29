@@ -133,11 +133,13 @@ public class CartOrder {
 
         PlanProduct plan = createProduct(planId, PlanProduct.class);
 
-        double promoDiscount;
-        if (isDeviceCart()) {
-            promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
-        } else {
-            promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
+        double promoDiscount = 0D;
+        if (plan.getCategories().stream().noneMatch(c -> c.getCode().equals("prepago"))) {
+            if (isDeviceCart()) {
+                promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
+            } else {
+                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
+            }
         }
 
         positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), promoDiscount));
