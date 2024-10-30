@@ -129,6 +129,10 @@ public final class DeviceProduct extends Product {
                 .discountValue;
     }
 
+    public String getColor() {
+        return getDeviceAttribute(".cor").featureValues.get(0).value;
+    }
+
     public static final class Stock {
 
         private Stock() {}
