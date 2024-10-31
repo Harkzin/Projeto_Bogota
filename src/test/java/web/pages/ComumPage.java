@@ -278,59 +278,74 @@ public class ComumPage {
 
         PlanProduct plan = cart.getPlan();
         boolean hasLoyalty = cart.hasLoyalty();
+        int depQtt = cart.hasDependent();
 
         //Valida nome
         String name = cart.getPromotion().isRentabilization() ? cart.getPromotion().getName() : plan.getName();
         validateElementText(name, planName);
 
         //Abre Resumo mobile
-        if (driverWeb.isMobile()) {
+        if (driverWeb.isMobile() && !cart.isDeviceCart()) {
             driverWeb.javaScriptClick(driverWeb.findById("cart-info-toggle"));
             driverWeb.waitElementVisible(planPrice, 2); //Usa o preço como referencia para aguardar o Resumo mobile abrir
         }
 
-        //Valida bônus, caso configurado
-        if (plan.hasBonus() && !cart.getPromotion().isRentabilization()) {
-            assertEquals("Quantidade de items configurados vs exibidos no Front diferente", plan.getDataBonus().size(), dataBonus.size());
+        if (plan.getCategories().stream().noneMatch(c -> c.getCode().equals("prepago"))) { //Não valida caso seja carrinho com Plano Pré
+            //Valida bônus, caso configurado
+            if (plan.hasBonus() && !cart.getPromotion().isRentabilization()) {
+                assertEquals("Quantidade de items configurados vs exibidos no Front diferente", plan.getDataBonus().size(), dataBonus.size());
 
-            IntStream.range(0, plan.getDataBonus().size()).forEachOrdered(i ->
-                    validateElementText(plan.getDataBonus().get(i), dataBonus.get(i))
-            );
-        }
+                IntStream.range(0, plan.getDataBonus().size()).forEachOrdered(i ->
+                        validateElementText(plan.getDataBonus().get(i), dataBonus.get(i))
+                );
+            }
 
-        //Valida app ilimitados, caso configurado
-        if (plan.hasPlanApps() && hasLoyalty) {
-            validatePlanApps(plan, planAppsTitle, planApps, driverWeb);
-        }
+            //Valida app ilimitados, caso configurado
+            if (plan.hasPlanApps() && hasLoyalty) {
+                validatePlanApps(plan, planAppsTitle, planApps, driverWeb);
+            }
 
-        //Valida título extraPlay, caso configurado
-        if (plan.hasExtraPlayTitle()) {
-            validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
-        }
+            //Valida título extraPlay, caso configurado
+            if (plan.hasExtraPlayTitle()) {
+                validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
+            }
 
-        //Valida apps extraPlay, caso configurado
-        if (plan.hasExtraPlayApps()) {
-            validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
-        }
+            //Valida apps extraPlay, caso configurado
+            if (plan.hasExtraPlayApps()) {
+                validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            }
 
-        //Valida passaporte(s), caso configurado
-        if (plan.hasPassport()) {
-            validatePlanPassport(plan.getPassports(), passport, driverWeb);
-        }
+            //Valida passaporte(s), caso configurado
+            if (plan.hasPassport()) {
+                validatePlanPassport(plan.getPassports(), passport, driverWeb);
+            }
 
-        //Valida serviços Claro, caso configurado
-        if (plan.hasClaroServices()) {
-            validateClaroServices(plan, claroServicesTitle, claroServicesApps, driverWeb);
-        }
+            //Valida serviços Claro, caso configurado
+            if (plan.hasClaroServices()) {
+                validateClaroServices(plan, claroServicesTitle, claroServicesApps, driverWeb);
+            }
 
-        //Valida dependentes adicionados
-        int depQtt = cart.hasDependent();
-        if (depQtt > 0) {
-            String depQuantityRef = String.format("+ %d %s", depQtt, depQtt == 1 ? "dependente" : "dependentes");
-            validateElementText(depQuantityRef, dependentQuantity);
+            //Valida dependentes adicionados
+            if (depQtt > 0) {
+                String depQuantityRef = String.format("+ %d %s", depQtt, depQtt == 1 ? "dependente" : "dependentes");
+                validateElementText(depQuantityRef, dependentQuantity);
 
-            String depPriceAndChipRef = String.format("R$ %s ( + %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
-            validateElementText(depPriceAndChipRef, dependentPrice);
+                String depPriceAndChipRef = String.format("R$ %s ( + %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
+                validateElementText(depPriceAndChipRef, dependentPrice);
+            }
+
+            //Valida método de pagamento
+            String paymentModeRef = "";
+            switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
+                case TICKET -> paymentModeRef = "Boleto";
+                case DEBITCARD -> paymentModeRef = "Débito automático";
+                //TODO cartão de crédito
+            }
+            validateElementText(paymentModeRef, planPaymentMode);
+
+            //Valida fidelização
+            String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
+            validateElementText(loyaltyRef, planLoyalty);
         }
 
         //Valida preço
@@ -343,7 +358,7 @@ public class ComumPage {
         String totalPriceFormatted = formatPrice(priceRef);
         String mobilePriceSummaryHeader;
 
-        if (cart.getPromotion().isRentabilization()) { //Rentab
+        if (cart.getPromotion().isRentabilization()) { //Cart rentab
             //Preço "De"
             String fullPrice = String.format("De %s", basePriceFormatted);
             validateElementText(fullPrice, planFullPrice.findElement(By.xpath("..")));
@@ -353,30 +368,19 @@ public class ComumPage {
             validateElementText(rentabilizationPrice, planPrice.findElement(By.xpath("..")));
 
             mobilePriceSummaryHeader = String.format("De %s | R$ %s", basePriceFormatted, totalPriceFormatted);
-        } else { //Comum
+        } else { //Cart comum
             validateElementText(totalPriceFormatted, planPrice);
             mobilePriceSummaryHeader = String.format(" | %s", totalPriceFormatted);
         }
-        if (driverWeb.isMobile()) { //Preço mobile header do Resumo
+        if (driverWeb.isMobile() && !cart.isDeviceCart()) { //Preço mobile header do Resumo
             //TODO ECCMAUT-1408 validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
         }
 
-        //Valida método de pagamento
-        String paymentModeRef = "";
-        switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
-            case TICKET -> paymentModeRef = "Boleto";
-            case DEBITCARD -> paymentModeRef = "Débito automático";
-            //TODO cartão de crédito
-        }
-        validateElementText(paymentModeRef, planPaymentMode);
-
-        //Valida fidelização
-        String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
-        validateElementText(loyaltyRef, planLoyalty);
+        driverWeb.actionPause(500);
     }
 
     public void validarResumoCompraAparelho(CartOrder cart) {
-        driverWeb.actionPause(2500);
+        driverWeb.actionPause(2000);
 
         DeviceProduct device = cart.getDevice();
         boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
@@ -428,10 +432,10 @@ public class ComumPage {
 
             //Tipo
             String simType = eSimFlow ? "eSIM" : "Chip Comum";
-            validateElementText(simType, driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[2]/div/div/div[2]/div[1]/p"));
+            validateElementText(simType, driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']//div[not(contains(@class, 'modalEsim'))][2]/div/div/div[2]/div[1]/p"));
 
             //Valor
-            String chipPrice = eSimFlow ? "Grátis" : "Valor: R$ 10,00";
+            String chipPrice = "Valor: " + (eSimFlow ? "Grátis" : "R$ 10,00");
             validateElementText(chipPrice, driverWeb.findByXpath(String.format("(%s//*[@id='txt-valor'])[2]/..", deviceContentParent)));
         }
     }

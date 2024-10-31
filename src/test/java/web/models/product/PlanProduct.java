@@ -23,11 +23,15 @@ public final class PlanProduct extends Product {
     private List<Passport> passports;
 
     private boolean hasAttribute(String code) {
-        return classifications.stream()
-                .filter(c -> c.code.contains("serviceplanclassification"))
-                .findFirst().orElseThrow()
-                .features.stream()
-                .anyMatch(feature -> feature.code.contains(code));
+        if (classifications != null) {
+            return classifications.stream()
+                    .filter(c -> c.code.contains("serviceplanclassification"))
+                    .findFirst().orElseThrow()
+                    .features.stream()
+                    .anyMatch(feature -> feature.code.contains(code));
+        } else {
+            return false;
+        }
     }
 
     private Classification.Feature getAttributes(String code) {
@@ -126,7 +130,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasBonus() {
-        return dataBonusForPlan != null;
+        return dataBonusForPlan.values != null;
     }
 
     public List<String> getDataBonus() {
