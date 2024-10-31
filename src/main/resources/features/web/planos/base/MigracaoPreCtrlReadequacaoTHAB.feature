@@ -13,7 +13,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "11947726232", [E-mail] e [CPF] "96687136801"
+    E preenche os campos: [Telefone com DDD] "Pre" "null" "null" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" dependente "false" claroClube "false" crivo "Thab"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais

@@ -2,6 +2,7 @@ package web.support.config;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
+import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,14 @@ public class Hooks {
     @Autowired
     public Hooks(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
+    }
+
+    @After(order = 3)
+    public void atualizarStatusMassa(Scenario scenario) {
+        try {
+            ConsultaCPFMSISDN.restaurarStatusParaAtivo(scenario);
+        } catch (Exception ignored) {
+        }
     }
 
     @After(order = 2)
@@ -31,7 +40,7 @@ public class Hooks {
     @After(order = 1)
     public void closeBrowser() {
         if (System.getProperty("api", "false").equals("false")) {
-            driverWeb.getDriver().quit();
+//            driverWeb.getDriver().quit();
         }
     }
 }

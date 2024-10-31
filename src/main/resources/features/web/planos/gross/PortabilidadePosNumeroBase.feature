@@ -14,7 +14,7 @@ Funcionalidade: ECCMAUT-510 - Portabilidade Pos com numero Base
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
-    E preenche os campos: [Telefone a ser portado com DDD] "11913572571", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone com DDD] "Pos" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "true" multaAparelho "false" dependente "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então será exibida a mensagem de erro: "O número de telefone informado já consta em nossa base da Claro. Caso queira trocar seu plano, selecione"

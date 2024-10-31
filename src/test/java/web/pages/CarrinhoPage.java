@@ -1,6 +1,7 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
+import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -215,7 +216,12 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfMigracao, cpf);
     }
 
-    public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
+    public void inserirDadosPortabilidade(boolean cpfAprovado, boolean cpfDiretrix) {
+        String telefone = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+    }
+    public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
