@@ -123,6 +123,7 @@ public class CarrinhoSteps {
     @Entao("será exibida a mensagem de erro: {string}")
     public void eExibidaAMensagemDeErro(String msgExibida) {
         carrinhoPage.validaMsgErro(msgExibida);
+        carrinhoPage.restaurarStatusMassa();
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do Carrinho")

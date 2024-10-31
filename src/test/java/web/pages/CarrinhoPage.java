@@ -280,4 +280,7 @@ public class CarrinhoPage {
     public void clicaBotaoContinuarComprando() {
         driverWeb.javaScriptClick("btn-continuar-comprando", "id");
     }
+    public void restaurarStatusMassa() {
+        ConsultaCPFMSISDN.restaurarStatusParaAtivoCenariosBloqueio();
+    }
 }

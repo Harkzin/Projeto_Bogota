@@ -1,6 +1,7 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
+import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,5 +132,9 @@ public class HomePage {
 
     public void acessarMenuAcessorios(){
         driverWeb.javaScriptClick("//*[@id='tab-acessorios']/a","xpath");
+    }
+
+    public void restaurarStatusMassa() {
+        ConsultaCPFMSISDN.restaurarStatusParaAtivoCenariosBloqueio();
     }
 }

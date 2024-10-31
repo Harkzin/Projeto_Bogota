@@ -73,5 +73,6 @@ public class HomeSteps {
     @Entao("é direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
+        homePage.restaurarStatusMassa();
     }
 }
