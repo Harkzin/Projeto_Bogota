@@ -61,7 +61,7 @@ public class HomeSteps {
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
         cart.setPlan(id);
-        homePage.validarCardPlano(cart.getPlan(), true);
+        homePage.validarCardPlano(cart.getPlan(), false);
         homePage.acessarPdpPlano(id);
     }
 

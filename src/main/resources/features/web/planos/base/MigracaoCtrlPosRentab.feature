@@ -10,6 +10,7 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
   @MigracaoCtrlPosRentab
   Cenario: Migracao Controle Pos - Rentabilizacao
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=2f32ad67fb014807268c284b61facdfd&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
+#    E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" dependente "false" claroClube "false" crivo "na"
     E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" dependente "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
