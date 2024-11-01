@@ -33,26 +33,30 @@ public class DependentesSteps {
     @E("adiciona o primeiro dependente, com numero de portabilidade")
     public void adicionarPrimeiroDependentePort() {
         dependentesPage.clicarAdicionarDependente(1);
-        String numeroPortabilidade = ConsultaCPFMSISDN.consultarDadosPortabilidade();
-        dependentesPage.inserirNumeroDependentes(numeroPortabilidade);
+        String numeroPortabilidadeCompleto = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+        String numeroPortabilidadeSemDDD = numeroPortabilidadeCompleto.substring(2);
+        dependentesPage.inserirNumeroDependentes(numeroPortabilidadeSemDDD);
         dependentesPage.clicarConfirmarDependente();
     }
+
     //TODO verificar cart.addPortabilityDependent("DEP2",numero);
     @E("adiciona o segundo dependente, com numero de portabilidade")
     public void adicionarSegundoDependentePort(String numero) {
-        cart.addPortabilityDependent("DEP2",numero);
+        cart.addPortabilityDependent("DEP2", numero);
 
         dependentesPage.clicarAdicionarOutroDependente(2);
-        String numeroPortabilidade = ConsultaCPFMSISDN.consultarDadosPortabilidade();
-        dependentesPage.inserirNumeroDependentes(numeroPortabilidade);
+        String numeroPortabilidadeCompleto = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+        String numeroPortabilidadeSemDDD = numeroPortabilidadeCompleto.substring(2);
+        dependentesPage.inserirNumeroDependentes(numeroPortabilidadeSemDDD);
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o terceiro dependente, com numero de portabilidade")
     public void adicionarTerceiroDependentePort() {
         dependentesPage.clicarAdicionarOutroDependente(3);
-        String numeroPortabilidade = ConsultaCPFMSISDN.consultarDadosPortabilidade();
-        dependentesPage.inserirNumeroDependentes(numeroPortabilidade);
+        String numeroPortabilidadeCompleto = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+        String numeroPortabilidadeSemDDD = numeroPortabilidadeCompleto.substring(2);
+        dependentesPage.inserirNumeroDependentes(numeroPortabilidadeSemDDD);
         dependentesPage.clicarConfirmarDependente();
     }
 
