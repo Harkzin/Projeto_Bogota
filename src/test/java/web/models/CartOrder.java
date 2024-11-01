@@ -408,19 +408,147 @@ public class CartOrder {
 
         public static class User {
 
-            public String name;
-            public String displayName;
-            public String parentfullname;
-            public String claroTelephone;
-            public String telephone;
-            public String claroProvisionalTelephone;
-            public String birthdate;
-            public String cpf;
-            public String email;
-            public boolean optinWhatsapp;
-            public String type;
+            private User() {
+                claroSubscription = new ClaroSubscription();
+            }
 
-            private User() {}
+            private String name;
+            private String displayName;
+            private String parentfullname;
+            private String claroTelephone;
+            private String telephone;
+            private String claroProvisionalTelephone;
+            private String birthdate;
+            private String cpf;
+            private String email;
+            private boolean optinWhatsapp;
+            private String type;
+            private double claroClubBalance;
+            private final ClaroSubscription claroSubscription;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getDisplayName() {
+                return displayName;
+            }
+
+            public void setDisplayName(String displayName) {
+                this.displayName = displayName;
+            }
+
+            public String getParentfullname() {
+                return parentfullname;
+            }
+
+            public void setParentfullname(String parentfullname) {
+                this.parentfullname = parentfullname;
+            }
+
+            public String getClaroTelephone() {
+                return claroTelephone;
+            }
+
+            public void setClaroTelephone(String claroTelephone) {
+                this.claroTelephone = claroTelephone;
+            }
+
+            public String getTelephone() {
+                return telephone;
+            }
+
+            public void setTelephone(String telephone) {
+                this.telephone = telephone;
+            }
+
+            public String getClaroProvisionalTelephone() {
+                return claroProvisionalTelephone;
+            }
+
+            public void setClaroProvisionalTelephone(String claroProvisionalTelephone) {
+                this.claroProvisionalTelephone = claroProvisionalTelephone;
+            }
+
+            public String getBirthdate() {
+                return birthdate;
+            }
+
+            public void setBirthdate(String birthdate) {
+                this.birthdate = birthdate;
+            }
+
+            public String getCpf() {
+                return cpf;
+            }
+
+            public void setCpf(String cpf) {
+                this.cpf = cpf;
+            }
+
+            public String getEmail() {
+                return email;
+            }
+
+            public void setEmail(String email) {
+                this.email = email;
+            }
+
+            public boolean isOptinWhatsapp() {
+                return optinWhatsapp;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public double getClaroClubBalance() {
+                return claroClubBalance;
+            }
+
+            public ClaroSubscription getClaroSubscription() {
+                return claroSubscription;
+            }
+
+            public static final class ClaroSubscription {
+
+                private ClaroSubscription() {}
+
+                private String claroPlan;
+                private String claroPlanName;
+                private double claroPlanPrice;
+                private String customerMobileSubType;
+                private boolean loyalty;
+                private String planTypePrice;
+
+                public String getClaroPlan() {
+                    return claroPlan;
+                }
+
+                public String getClaroPlanName() {
+                    return claroPlanName;
+                }
+
+                public double getClaroPlanPrice() {
+                    return claroPlanPrice;
+                }
+
+                public String getCustomerMobileSubType() {
+                    return customerMobileSubType;
+                }
+
+                public boolean isLoyalty() {
+                    return loyalty;
+                }
+
+                public String getPlanTypePrice() {
+                    return planTypePrice;
+                }
+            }
         }
     }
 
