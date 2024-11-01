@@ -4,8 +4,6 @@ import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
@@ -36,10 +34,10 @@ public class ComumPage {
     public ComumPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
 
-        PageFactory.initElements(driverWeb.getDriver(), this);
+        //PageFactory.initElements(driverWeb.getDriver(), this);
     }
 
-    //Resumo Planos
+    /*//Resumo Planos
     @FindBy(xpath = "//*[@id='cart-summary']//*[@data-plan-content='name']")
     private WebElement planNameDesk;
 
@@ -131,7 +129,7 @@ public class ComumPage {
     private WebElement loyaltyDesk;
 
     @FindBy(xpath = "//*[@id='cart-summary-mobile']//*[@data-plan-content='loyalty-mobile']")
-    private WebElement loyaltyMob;
+    private WebElement loyaltyMob;*/
 
     public static void validateElementText(String ref, WebElement element) {
         assertEquals("Texto do elemento diferente do esperado", StringUtils.normalizeSpace(ref), StringUtils.normalizeSpace(element.getText()));
@@ -226,72 +224,33 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        WebElement planName;
-        List<WebElement> dataBonus;
-        WebElement planAppsTitle;
-        List<WebElement> planApps;
-        WebElement extraPlayTitle;
-        List<WebElement> extraPlayApps;
-        List<WebElement> passport;
-        WebElement claroServicesTitle;
-        List<WebElement> claroServicesApps;
-        WebElement dependentQuantity;
-        WebElement dependentPrice;
-        WebElement planFullPrice;
-        WebElement planPrice;
-        WebElement planPaymentMode;
-        WebElement planLoyalty;
-
-        if (driverWeb.isMobile()) {
-            planName = planNameMob;
-            dataBonus = dataBonusMob;
-            planAppsTitle = planAppsTitleMob;
-            planApps = planAppsMob;
-            extraPlayTitle = extraPlayTitleMob;
-            extraPlayApps = extraPlayAppsMob;
-            passport = passportMob;
-            claroServicesTitle = claroServicesTitleMob;
-            claroServicesApps = claroServicesAppsMob;
-            dependentQuantity = dependentQuantityMob;
-            dependentPrice = dependentPriceMob;
-            planFullPrice = planFullPriceMob;
-            planPrice = planPriceMob;
-            planPaymentMode = paymentModeMob;
-            planLoyalty = loyaltyMob;
-        } else {
-            planName = planNameDesk;
-            dataBonus = dataBonusDesk;
-            planAppsTitle = planAppsTitleDesk;
-            planApps = planAppsDesk;
-            extraPlayTitle = extraPlayTitleDesk;
-            extraPlayApps = extraPlayAppsDesk;
-            passport = passportDesk;
-            claroServicesTitle = claroServicesTitleDesk;
-            claroServicesApps = claroServicesAppsDesk;
-            dependentQuantity = dependentQuantityDesk;
-            dependentPrice = dependentPriceDesk;
-            planFullPrice = planFullPriceDesk;
-            planPrice = planPriceDesk;
-            planPaymentMode = paymentModeDesk;
-            planLoyalty = loyaltyDesk;
-        }
-
         PlanProduct plan = cart.getPlan();
         boolean hasLoyalty = cart.hasLoyalty();
         int depQtt = cart.hasDependent();
 
+        String planContentParent;
+        if (cart.isDeviceCart()) {
+            planContentParent = "//*[@id='sidebar-resume' and not(ancestor::*[@id='cart-summary-mobile'])]//*[@class='render-claro-cart-entry']";
+        } else {
+            planContentParent = driverWeb.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
+        }
+
         //Valida nome
         String name = cart.getPromotion().isRentabilization() ? cart.getPromotion().getName() : plan.getName();
+        WebElement planName = driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='name']");
+        driverWeb.javaScriptScrollTo(planName);
         validateElementText(name, planName);
 
         //Abre Resumo mobile
         if (driverWeb.isMobile() && !cart.isDeviceCart()) {
             driverWeb.javaScriptClick(driverWeb.findById("cart-info-toggle"));
-            driverWeb.waitElementVisible(planPrice, 2); //Usa o preço como referencia para aguardar o Resumo mobile abrir
+            driverWeb.waitElementVisible(planName, 2); //Usa o nome como referência para aguardar o Resumo mobile abrir
         }
 
         if (plan.getCategories().stream().noneMatch(c -> c.getCode().equals("prepago"))) { //Não valida caso seja carrinho com Plano Pré
             //Valida bônus, caso configurado
+            List<WebElement> dataBonus = driverWeb.findElements(planContentParent + "//*[@data-plan-content='bonus']", "xpath");
+
             if (plan.hasBonus() && !cart.getPromotion().isRentabilization()) {
                 assertEquals("Quantidade de items configurados vs exibidos no Front diferente", plan.getDataBonus().size(), dataBonus.size());
 
@@ -302,36 +261,50 @@ public class ComumPage {
 
             //Valida app ilimitados, caso configurado
             if (plan.hasPlanApps() && hasLoyalty) {
+                //Título
+                WebElement planAppsTitle = driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='planappstitle']");
+
+                //Apps
+                List<WebElement> planApps = driverWeb.findElements(planContentParent + "//*[@data-plan-content='planapps']//img", "xpath");
+
                 validatePlanApps(plan, planAppsTitle, planApps, driverWeb);
             }
 
             //Valida título extraPlay, caso configurado
             if (plan.hasExtraPlayTitle()) {
-                validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
+                validateElementText(plan.getExtraPlayTitle(), driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='extraplaytitle']"));
             }
 
             //Valida apps extraPlay, caso configurado
             if (plan.hasExtraPlayApps()) {
+                List<WebElement> extraPlayApps = driverWeb.findElements(planContentParent + "//*[@data-plan-content='extraplayapps']//img", "xpath");
                 validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
             }
 
             //Valida passaporte(s), caso configurado
             if (plan.hasPassport()) {
+                List<WebElement> passport = driverWeb.findElements(planContentParent + "//*[@data-plan-content='passport']", "xpath");
                 validatePlanPassport(plan.getPassports(), passport, driverWeb);
             }
 
             //Valida serviços Claro, caso configurado
             if (plan.hasClaroServices()) {
+                //Título
+                WebElement claroServicesTitle = driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='services']/p");
+
+                //Apps
+                List<WebElement> claroServicesApps = driverWeb.findElements(planContentParent + "//*[@data-plan-content='services']//img", "xpath");
+
                 validateClaroServices(plan, claroServicesTitle, claroServicesApps, driverWeb);
             }
 
             //Valida dependentes adicionados
             if (depQtt > 0) {
                 String depQuantityRef = String.format("+ %d %s", depQtt, depQtt == 1 ? "dependente" : "dependentes");
-                validateElementText(depQuantityRef, dependentQuantity);
+                validateElementText(depQuantityRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='dependentquantity']"));
 
                 String depPriceAndChipRef = String.format("R$ %s ( + %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
-                validateElementText(depPriceAndChipRef, dependentPrice);
+                validateElementText(depPriceAndChipRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='dependentprice']"));
             }
 
             //Valida método de pagamento
@@ -339,13 +312,14 @@ public class ComumPage {
             switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
                 case TICKET -> paymentModeRef = "Boleto";
                 case DEBITCARD -> paymentModeRef = "Débito automático";
-                //TODO cartão de crédito
+                //TODO cartão de crédito (controle fácil)
             }
-            validateElementText(paymentModeRef, planPaymentMode);
+            validateElementText(paymentModeRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='paymentmode']"));
 
             //Valida fidelização
             String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
-            validateElementText(loyaltyRef, planLoyalty);
+            String loyaltyPlatform = driverWeb.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
+            validateElementText(loyaltyRef, driverWeb.findByXpath(planContentParent + loyaltyPlatform));
         }
 
         //Valida preço
@@ -354,26 +328,29 @@ public class ComumPage {
             priceRef += cart.getEntry("dependente").getTotalPrice();
         }
 
-        String basePriceFormatted = cart.getPlan().getFormattedPrice();
-        String totalPriceFormatted = formatPrice(priceRef);
-        String mobilePriceSummaryHeader;
+        String basePriceFormattedRef = cart.getPlan().getFormattedPrice();
+        String totalPriceFormattedRef = formatPrice(priceRef);
+        String mobilePriceSummaryHeaderRef;
+        WebElement planPrice = driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='price']");
 
         if (cart.getPromotion().isRentabilization()) { //Cart rentab
             //Preço "De"
-            String fullPrice = String.format("De %s", basePriceFormatted);
-            validateElementText(fullPrice, planFullPrice.findElement(By.xpath("..")));
+            String fullPriceRef = String.format("De %s", basePriceFormattedRef);
+            validateElementText(fullPriceRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='fullprice']/.."));
 
             //Preço "por"
-            String rentabilizationPrice = String.format("por R$ %s /mês", totalPriceFormatted);
-            validateElementText(rentabilizationPrice, planPrice.findElement(By.xpath("..")));
+            String rentabilizationPriceRef = String.format("por R$ %s /mês", totalPriceFormattedRef);
+            validateElementText(rentabilizationPriceRef, planPrice.findElement(By.xpath("..")));
 
-            mobilePriceSummaryHeader = String.format("De %s | R$ %s", basePriceFormatted, totalPriceFormatted);
+            mobilePriceSummaryHeaderRef = String.format("De %s | R$ %s", basePriceFormattedRef, totalPriceFormattedRef);
         } else { //Cart comum
-            validateElementText(totalPriceFormatted, planPrice);
-            mobilePriceSummaryHeader = String.format(" | %s", totalPriceFormatted);
+            validateElementText(totalPriceFormattedRef, planPrice);
+            mobilePriceSummaryHeaderRef = String.format(" | %s", totalPriceFormattedRef);
         }
-        if (driverWeb.isMobile() && !cart.isDeviceCart()) { //Preço mobile header do Resumo
-            //TODO ECCMAUT-1408 validateElementText(mobilePriceSummaryHeader, planPriceMobHeader);
+
+        //Valida preço no header do Resumo mobile
+        if (driverWeb.isMobile() && !cart.isDeviceCart()) {
+            //TODO ECCMAUT-1408 validateElementText(mobilePriceSummaryHeaderRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='price-mobile']"));
         }
 
         driverWeb.actionPause(500);
@@ -385,20 +362,12 @@ public class ComumPage {
         DeviceProduct device = cart.getDevice();
         boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
         boolean commonChipFlow = cart.getClaroChip().getChipType() == SIM;
-
-        String deviceContentParent = "//*[@class='mdn-Container-fluid']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
-
-        ///////////////////////
-        //TODO Tela de Parabens tem outra classe. Remover este bloco e atualizar os xpath apos ter sido implementado os atributos seletores no front
-        if (driverWeb.getDriver().getCurrentUrl().contains("orderConfirmation")) {
-            deviceContentParent = "//*[@class='mdn-Container']/div/div[contains(@class, 'mdn-u-my-sm-3')]";
-        }
-        ///////////////////////
+        String deviceContentParent = "//*[@id='sidebar-resume' and not(ancestor::*[@id='cart-summary-mobile'])]";
 
         //Subtotal
         double subtotalPrice = device.getCampaignPrice(!commonChipFlow);
         WebElement subtotal = driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-valor-subtotal']/..");
-        driverWeb.javaScriptClick(deviceContentParent + "//*[@id='sidebar-resume']/div/a", "xpath");
+        driverWeb.javaScriptClick(deviceContentParent + "/div/a", "xpath");
         driverWeb.waitElementVisible(subtotal, 5);
         validateElementText("Subtotal: R$ " + formatPrice(subtotalPrice), subtotal);
 
@@ -407,7 +376,8 @@ public class ComumPage {
 
         //Desconto Cupom
         if (cart.getAppliedCoupon() != null) {
-            validateElementText("Desconto Cupom -R$ " + formatPrice(cart.getEntry(device.getCode()).getDiscount()), driverWeb.findByXpath(deviceContentParent + "//*[@id='sidebar-resume']/div/div[1]/div/div[3]"));
+            String voucherDiscountPriceRef = formatPrice(cart.getEntry(device.getCode()).getDiscount());
+            validateElementText("Desconto Cupom -R$ " + voucherDiscountPriceRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
 
         //Total
