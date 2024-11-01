@@ -15,7 +15,7 @@ public class Massas {
             "segmento",
             "cpf",
             "msisdn",
-            "idnomePlano",
+            "idPlano",
             "nomePlano",
             "idpromo",
             "promo",
@@ -40,8 +40,8 @@ public class Massas {
         public String cpf;
         @JsonProperty("msisdn")
         public String msisdn;
-        @JsonProperty("idnomePlano")
-        public String idnomePlano;
+        @JsonProperty("idPlano")
+        public String idPlano;
         @JsonProperty("nomePlano")
         public String nomePlano;
         @JsonProperty("idpromo")
