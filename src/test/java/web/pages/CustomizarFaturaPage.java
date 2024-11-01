@@ -71,7 +71,7 @@ public class CustomizarFaturaPage {
         agencia = driverWeb.findElement("txt-agencia", "id");
         conta = driverWeb.findElement("txt-conta", "id");
 
-        Assert.assertEquals(banco.getFirstSelectedOption().getText(), "Banco");
+        Assert.assertEquals("Banco", banco.getFirstSelectedOption().getText());
 
         Assert.assertEquals(agencia.getAttribute("value"), "");
         Assert.assertFalse(agencia.isEnabled());

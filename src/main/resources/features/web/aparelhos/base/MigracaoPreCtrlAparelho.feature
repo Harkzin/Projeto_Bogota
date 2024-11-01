@@ -77,7 +77,7 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
     Entao é direcionado para a tela de SMS
       #Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche o campo [Código enviado Por SMS] com o token recebido
+    E preenche o campo [Código de verificação] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao será direcionado para a tela [Forma de Pagamento]

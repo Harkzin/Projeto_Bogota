@@ -56,8 +56,8 @@ public class PdpAparelhosPage {
     @FindBy(id = "txt-telefone-login")
     private WebElement campoTelefoneLogin;
 
-    @FindBy(id = "rdn-mudar-plano")
-    private WebElement mudarMeuPlano;
+    @FindBy(xpath = "//*[@id='rdn-mudar-plano']/..")
+    private WebElement paiMudarMeuPlano;
 
     private boolean prePaidPlanSelected;
     private String deviceChipType;
@@ -247,6 +247,36 @@ public class PdpAparelhosPage {
             }
         }
 
+        //Valida modal eSim
+        if (chipEsim != null) {
+            //Abre modal
+            driverWeb.javaScriptClick("//*[@data-analytics-event-label='saiba-mais-sobre-esim-claro']", "xpath");
+
+            WebElement closeModal = driverWeb.findElement("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementVisible(closeModal, 2);
+
+            //Valida elementos da lista de textos
+            List<WebElement> textList = driverWeb.findElements("//*[@data-component='”accordion”']/div", "xpath");
+
+            textList.forEach(i -> {
+                WebElement title = i.findElement(By.tagName("a"));
+                WebElement content = i.findElement(By.tagName("p"));
+
+                assertTrue(title.isDisplayed());
+                assertFalse(title.getText().isEmpty());
+
+                driverWeb.javaScriptClick(title);
+                driverWeb.actionPause(1000);
+
+                assertTrue(content.isDisplayed());
+                assertFalse(content.getText().isEmpty());
+            });
+
+            //Fecha modal
+            driverWeb.javaScriptClick("//*[@class='js-modalEsim']//button", "xpath");
+            driverWeb.waitElementInvisible(closeModal, 2);
+        }
+
         //Infos Técnicas
         if (device.hasDeviceFeatures()) {
             driverWeb.javaScriptClick("//*[@id='tab-info-tecnicas']/h2", "xpath");
@@ -295,8 +325,12 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarInformacoesExibidasAposLogin(){
-        driverWeb.waitElementVisible(mudarMeuPlano.findElement(By.xpath("..")), 20);
+    public void validarInformacoesExibidasAposLogin() {
+        driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
+    }
+
+    public void selecionarMudarMeuPlano() {
+        driverWeb.javaScriptClick(driverWeb.findById("rdn-mudar-plano"));
     }
 
     public void selecionarPlataforma(String category) {

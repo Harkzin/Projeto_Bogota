@@ -38,6 +38,8 @@ public class DependentesSteps {
 
     @E("adiciona o segundo dependente, com numero {string}")
     public void adicionarSegundoDependentePort(String numero) {
+        cart.addPortabilityDependent("DEP2",numero);
+
         dependentesPage.clicarAdicionarOutroDependente(2);
         dependentesPage.inserirNumeroDependentes(numero);
         dependentesPage.clicarConfirmarDependente();

@@ -70,15 +70,32 @@ public class CarrinhoSteps {
     }
 
     @E("preenche os campos: [E-mail] e [CPF] {string}")
-    public void preencherCamposCarrinhoBaseAparelho(String cpf) {
+    public void preencherCamposCarrinhoBasePreAparelho(String cpf) {
         carrinhoPage.inserirEmail();
         carrinhoPage.inserirDadosBase(cpf);
+    }
+
+    @E("preenche o campo [E-mail]")
+    public void preencherCamposCarrinhoBaseAparelho() {
+        carrinhoPage.inserirEmail();
     }
 
     @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoPortabilidade(String telefone, String cpfAprovado, String cpfDiretrix) {
         carrinhoPage.inserirEmail();
         carrinhoPage.inserirDadosPortabilidade(telefone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+    }
+
+    @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] para Pix")
+    public void preencherCamposCarrinhoPortabilidadePix(String telefone) {
+        carrinhoPage.inserirEmail();
+        carrinhoPage.inserirDadosPortabilidadePix(telefone);
+    }
+
+    @E("preenche os campos: [Celular] {string}, [E-mail] e [CPF] para Pix")
+    public void preencherCamposCarrinhoAquisicaoPix(String telefone) {
+        carrinhoPage.inserirEmail();
+        carrinhoPage.inserirDadosAquisicaoPix(telefone);
     }
 
     @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
@@ -125,5 +142,10 @@ public class CarrinhoSteps {
     @Quando("o usuário clicar no botão [Continuar] da tela de Carrinho de Acessórios")
     public void clicarContinuarAcessorios() {
         carrinhoPage.clicaBotaoContinuarAcessorios();
+    }
+
+    @Quando("clicar no botão [Continuar comprando]")
+    public void clicarBotaoContinuarComprando(){
+        carrinhoPage.clicaBotaoContinuarComprando();
     }
 }

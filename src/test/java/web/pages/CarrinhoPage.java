@@ -58,6 +58,16 @@ public class CarrinhoPage {
         return cpf;
     }
 
+    private String getCpfForPixFlow() {
+        String cpf;
+
+        do {
+            cpf = getCpfForPlanFlow(true, false);
+        } while (!cpf.matches(".*1$"));
+
+        return cpf;
+    }
+
     private void validarCamposBase(boolean isDeviceCart) {
         telefoneMigracao = driverWeb.findElement("txt-telefone-migracao", "id");
         cpfMigracao = driverWeb.findElement("txt-cpf-migracao", "id");
@@ -210,6 +220,16 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
+    public void inserirDadosPortabilidadePix(String telefone) {
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, getCpfForPixFlow());
+    }
+
+    public void inserirDadosAquisicaoPix(String telefone) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfAquisicao, getCpfForPixFlow());
+    }
+
     public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
         driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
@@ -253,5 +273,9 @@ public class CarrinhoPage {
 
     public String getCartGuid() {
         return driverWeb.waitElementPresence("//*[@id='cart-dynatrace-guid']", 40).getAttribute("textContent");
+    }
+
+    public void clicaBotaoContinuarComprando() {
+        driverWeb.javaScriptClick("btn-continuar-comprando", "id");
     }
 }
