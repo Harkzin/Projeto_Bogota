@@ -221,4 +221,40 @@ public final class RestAPI {
             throw new RuntimeException(e);
         }
     }
+
+    private static String getApigeeToken(String basic) {
+        final HttpRequest apigeeTokenRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://test.apigw.claro.com.br/oauth2/v1/token")) //Necessário VPN (local) ou liberação de acesso (Jenkins/Bstack)
+                .timeout(ofSeconds(10))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Authorization", "Basic " + basic)
+                .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials"))
+                .build();
+
+        try {
+            String response = clientHttp.send(apigeeTokenRequest, HttpResponse.BodyHandlers.ofString()).body();
+            return objMapper.readTree(response).get("access_token").asText();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static JsonNode getCustomerProductDetails(String msisdn) {
+        final HttpRequest customersProductDetailsRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://test.apigw.claro.com.br/mobile/v1/customers/productdetails")) //Necessário VPN (local) ou liberação de acesso (Jenkins/Bstack)
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getApigeeToken("V09Dc0xwNmZwMmNWdVpQWkZvVklqQTJNZUFWdnpuR2k6M1pUbzdmT0hvZGZ6R3BDRg=="))
+                .header("Accept", "application/json")
+                .header("X-QueryString", "msisdn=" + msisdn)
+                .GET()
+                .build();
+
+        try {
+            String response = clientHttp.send(customersProductDetailsRequest, HttpResponse.BodyHandlers.ofString()).body();
+            System.out.println(response);
+            return objMapper.readTree(response).get("data");
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
