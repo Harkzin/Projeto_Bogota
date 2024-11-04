@@ -9,6 +9,7 @@ import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 import org.junit.Assert;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static web.support.utils.Constants.*;
@@ -221,6 +222,7 @@ public class CarrinhoPage {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
+
     public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
@@ -251,13 +253,14 @@ public class CarrinhoPage {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
     }
 
+
     public void clicarContinuar() {
         driverWeb.javaScriptClick("btn-continuar", "id");
     }
 
     public void validaMsgErro(String msgExibida) {
         driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
-        WebElement contentMessageError =  driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+        WebElement contentMessageError = driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
         driverWeb.waitElementVisible(contentMessageError, 10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
@@ -280,7 +283,24 @@ public class CarrinhoPage {
     public void clicaBotaoContinuarComprando() {
         driverWeb.javaScriptClick("btn-continuar-comprando", "id");
     }
+
     public void restaurarStatusMassa() {
         ConsultaCPFMSISDN.restaurarStatusParaAtivoCenariosBloqueio();
+    }
+
+    public void verificarErroPasso1() {
+        try {
+            WebElement modal = driverWeb.findElement("colorbox", "id");
+
+            if (modal.isDisplayed()) {
+                System.out.println("Erro: O modal de aviso está visível. Não é possível continuar.");
+            } else {
+                System.out.println("O modal não está visível. Prosseguindo normalmente.");
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("O modal não está presente. Prosseguindo normalmente.");
+        } catch (Exception e) {
+            System.out.println("Ocorreu um erro ao verificar o modal: " + e.getMessage());
+        }
     }
 }
