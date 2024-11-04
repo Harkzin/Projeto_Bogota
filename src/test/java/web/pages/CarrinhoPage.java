@@ -172,6 +172,8 @@ public class CarrinhoPage {
         celularAcessorios = driverWeb.findElement("txt-celular", "id");
         cpfAcessorios = driverWeb.findElement("txt-cpf", "id");
         emailAcessorios = driverWeb.findElement("txt-email", "id");
+        driverWeb.waitElementClickable(driverWeb.findElement("//*[@id='txt-resumo-do-pedido']/following-sibling::i", "xpath"), 10);
+        driverWeb.javaScriptClick(driverWeb.findElement("//*[@id='txt-resumo-do-pedido']/following-sibling::i", "xpath"));
     }
 
     public void inserirDadosCarrinhoAcessorios(String celular, String cpf, String email) {
