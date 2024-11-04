@@ -49,13 +49,13 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
 #    Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
 #    Então o valor do Plano será atualizado no Resumo da compra para fatura digital
 #    E preenche os dados bancários
-#    E marca o checkbox de termos de aceite
+    E marca o checkbox de termos de aceite
 #
-#    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-#    Então é direcionado para a tela de readequação THAB
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Então é direcionado para a tela de readequação THAB
 #
-#    Quando o usuário selecionar o plano de controle antecipado ofertado
-#    Então é direcionado para a tela de Customizar Fatura THAB
+    Quando o usuário selecionar o plano de controle antecipado ofertado
+    Então é direcionado para a tela de Customizar Fatura THAB
 #      Mas não deve haver alterações no valor e nem nas informações do Plano
 #    E não deve ser exibido as opções de pagamento
 #    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
