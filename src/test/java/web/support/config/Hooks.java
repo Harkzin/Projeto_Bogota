@@ -36,7 +36,7 @@ public class Hooks {
 
                 Assert.fail("Erro: " + mensagemErro);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
