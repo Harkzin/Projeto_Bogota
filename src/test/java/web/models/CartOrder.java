@@ -2,6 +2,7 @@ package web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import web.models.product.DeviceProduct;
@@ -306,6 +307,44 @@ public class CartOrder {
         return claroChip;
     }
 
+    public Essential.User getUser() {
+        return essential.user;
+    }
+
+    public void setTelephone(String msisdn) {
+        essential.telephone = msisdn;
+    }
+
+    public void populateCustomerProductDetails() {
+        JsonNode response = getCustomerProductDetails(essential.user.claroTelephone);
+
+        //User
+        getUser().name = response.get("product").get("customerName").toString();
+        getUser().displayName = essential.user.name;
+        getUser().cpf = response.get("product").get("cpf").toString();
+
+        if (response.get("discountValue") != null) {
+            getUser().claroClubBalance = response.get("discountValue").asDouble();
+        }
+
+        //User.ClaroSubscription
+        getUser().claroSubscription = new Essential.User.ClaroSubscription();
+        JsonNode planPrice = response.get("product").get("planPrice");
+        getUser().claroSubscription.planTypePrice = planPrice.get("planTypePrice").toString();
+
+        if (!getUser().claroSubscription.planTypePrice.equals("PRE_PAGO")) {
+            getUser().claroSubscription.claroPlan = planPrice.get("id").toString();
+            getUser().claroSubscription.claroPlanName = planPrice.get("name").toString();
+            getUser().claroSubscription.claroPlanPrice = planPrice.get("planValue").asDouble();
+            getUser().claroSubscription.claroMonthlyPrice = response.get("product").get("netSubscriberValue").asDouble();
+            getUser().claroSubscription.customerMobileSubType = response.get("product").get("customerMobileSubType").toString();
+            getUser().claroSubscription.loyalty = response.get("loyalty") != null;
+        }
+
+        //Address
+        //TODO
+    }
+
     public static class ClaroChip {
 
         private String activationCode;
@@ -397,10 +436,10 @@ public class CartOrder {
 
     public static class Essential {
 
-        public String code;
-        public User user;
-        public String telephone;
-        public ProcessType processType;
+        private String code;
+        private final User user;
+        private String telephone;
+        private ProcessType processType;
 
         private Essential() {
             user = new Essential.User();
@@ -408,9 +447,7 @@ public class CartOrder {
 
         public static class User {
 
-            private User() {
-                claroSubscription = new ClaroSubscription();
-            }
+            private User() {}
 
             private String name;
             private String displayName;
@@ -424,7 +461,7 @@ public class CartOrder {
             private boolean optinWhatsapp;
             private String type;
             private double claroClubBalance;
-            private final ClaroSubscription claroSubscription;
+            private ClaroSubscription claroSubscription;
 
             public String getName() {
                 return name;
@@ -521,6 +558,7 @@ public class CartOrder {
                 private String claroPlan;
                 private String claroPlanName;
                 private double claroPlanPrice;
+                private double claroMonthlyPrice;
                 private String customerMobileSubType;
                 private boolean loyalty;
                 private String planTypePrice;
@@ -547,6 +585,10 @@ public class CartOrder {
 
                 public String getPlanTypePrice() {
                     return planTypePrice;
+                }
+
+                public double getClaroMonthlyPrice() {
+                    return claroMonthlyPrice;
                 }
             }
         }

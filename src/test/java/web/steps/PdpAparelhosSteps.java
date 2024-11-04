@@ -66,11 +66,13 @@ public class PdpAparelhosSteps  {
 
     @E("preenche o campo [Seu numero Claro] com {string}")
     public void preencheOCampoSeuNumeroClaroCom(String msisdn) {
+        cart.getUser().setClaroTelephone(msisdn);
         pdpAparelhosPage.preencheCampoSeuNumero(msisdn);
     }
 
     @Quando("clicar no botão [Acessar] do popover")
     public void clicaEmAcessar() {
+        cart.populateCustomerProductDetails();
         pdpAparelhosPage.clicaAcessarLogin();
     }
 
