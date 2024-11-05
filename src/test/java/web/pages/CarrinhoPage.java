@@ -221,6 +221,12 @@ public class CarrinhoPage {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
+
+    public void inserirDadosPortabilidadeNumeroBase(String telefone, String cpf) {
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, cpf);
+    }
+
     public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
@@ -257,7 +263,7 @@ public class CarrinhoPage {
 
     public void validaMsgErro(String msgExibida) {
         driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
-        WebElement contentMessageError =  driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+        WebElement contentMessageError = driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
         driverWeb.waitElementVisible(contentMessageError, 10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));

@@ -81,14 +81,15 @@ public class CarrinhoSteps {
 
     @E("preenche os campos: [Telefone a ser portado com DDD] {string} {string} {string} comboMulti {string}, [E-mail] e [CPF] multaServico {string} multaAparelho {string} dependente {string} claroClube {string} crivo {string}")
     public void preencheOsCamposTelefoneASerPortadoComDDDEMailECPF(String segmento, String formaPagamento, String formaEnvio,
-                                                        String combo, String multaServico, String multaAparelho,
-                                                        String dependente, String claroClube, String crivo) {
+                                                                   String combo, String multaServico, String multaAparelho,
+                                                                   String dependente, String claroClube, String crivo) {
         AbstractMap.SimpleEntry<String, String> dadosBase = consultarDadosBase(segmento, formaPagamento, formaEnvio, combo,
                 multaServico, multaAparelho, dependente,
                 claroClube, crivo);
         carrinhoPage.inserirDadosPortabilidadeNumeroBase(dadosBase.getKey(), dadosBase.getValue());
         carrinhoPage.inserirEmail();
     }
+
     @E("preenche os campos: [E-mail] e [CPF] {string}")
     public void preencherCamposCarrinhoBasePreAparelho(String cpf) {
         carrinhoPage.inserirEmail();
