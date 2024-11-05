@@ -73,12 +73,13 @@ public class PdpAparelhosSteps  {
     @Quando("clicar no botão [Acessar] do popover")
     public void clicaEmAcessar() {
         cart.populateCustomerProductDetails();
+        cart.updatePlanForDevice(cart.getUser().getClaroSubscription().getClaroPlan());
         pdpAparelhosPage.clicaAcessarLogin();
     }
 
     @Entao("é exibido as opções e informações para cliente claro")
     public void deveExibirInformacoesClienteClaro() {
-        pdpAparelhosPage.validarInformacoesExibidasAposLogin();
+        pdpAparelhosPage.validarPdpAposLogin(cart.getDevice(), cart.getUser().getClaroSubscription());
     }
 
     @E("seleciona a opção [Trazer meu número para Claro]")

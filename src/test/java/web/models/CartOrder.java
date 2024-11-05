@@ -133,26 +133,37 @@ public class CartOrder {
         this.planId = planId;
 
         PlanProduct plan = createProduct(planId, PlanProduct.class);
-
+        double planFullPrice = plan.getPrice();
         double promoDiscount = 0D;
+
         if (plan.getCategories().stream().noneMatch(c -> c.getCode().equals("prepago"))) {
             if (isDeviceCart()) {
-                promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
+                if (essential.processType != APARELHO_TROCA_APARELHO) {
+                    promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
+                } else {
+                    planFullPrice = essential.user.getClaroSubscription().claroPlanPrice; //Preço vem da API de login, sem desconto de promoção
+                }
             } else {
                 promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
             }
         }
 
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), promoDiscount));
+        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, planFullPrice, promoDiscount));
         getEntry(planId).paymentMode = TICKET; //Pagamento default atual
     }
 
     public void updatePlanForDevice(String planId) {
         getDevice().setDevicePriceInfo(getEntry(deviceId).bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
 
-        double deviceCampaignPrice = getDevice().getCampaignPrice(true);
-        getEntry(deviceId).basePrice = deviceCampaignPrice;
-        getEntry(deviceId).totalPrice = deviceCampaignPrice;
+        if (getDevice().hasCampaignPrice()) {
+            double deviceCampaignPrice = getDevice().getCampaignPrice(true);
+            getEntry(deviceId).basePrice = deviceCampaignPrice;
+            getEntry(deviceId).totalPrice = deviceCampaignPrice;
+        } else {
+            double deviceFullPrice = getDevice().getPrice();
+            getEntry(deviceId).basePrice = deviceFullPrice;
+            getEntry(deviceId).totalPrice = deviceFullPrice;
+        }
 
         setPlan(planId);
     }
@@ -493,6 +504,7 @@ public class CartOrder {
 
             public void setClaroTelephone(String claroTelephone) {
                 this.claroTelephone = claroTelephone;
+                telephone = claroTelephone;
             }
 
             public String getTelephone() {

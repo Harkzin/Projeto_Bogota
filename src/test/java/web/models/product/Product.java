@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
 
-@SuppressWarnings("UnusedDeclaration")
 public abstract class Product {
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("classifications")
     protected List<Classification> classifications;
 

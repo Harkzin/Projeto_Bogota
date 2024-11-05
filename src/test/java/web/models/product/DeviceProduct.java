@@ -74,6 +74,10 @@ public final class DeviceProduct extends Product {
         }
     }
 
+    public boolean hasCampaignPrice() {
+        return devicePriceInfo.campaignPrice != null;
+    }
+
     public double getCampaignPrice(boolean withoutSIM) {
         if (withoutSIM) {
             return devicePriceInfo.campaignPriceWithoutSIM.value;

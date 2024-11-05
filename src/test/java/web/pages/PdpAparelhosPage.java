@@ -59,8 +59,18 @@ public class PdpAparelhosPage {
     @FindBy(xpath = "//*[@id='rdn-mudar-plano']/..")
     private WebElement paiMudarMeuPlano;
 
+    @FindBy(id = "rdn-mudar-plano")
+    private WebElement mudarMeuPlano;
+
+    @FindBy(id = "rdn-manter-com-fidelidade")
+    private WebElement manterPlanoFidelidade;
+
+    @FindBy(id = "rdn-manter-sem-fidelidade")
+    private WebElement manterPlanoSemFid;
+
     private boolean prePaidPlanSelected;
     private String deviceChipType;
+    private boolean eSimSelected;
 
     private void validarInfosPlano(Entry planEntry) {
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
@@ -150,30 +160,35 @@ public class PdpAparelhosPage {
         }
     }
 
-    private void validarPrecoCampanhaAparelho(DeviceProduct device, boolean eSimSelected) {
+    private void validarPrecoCampanhaAparelho(DeviceProduct device) {
         //Preço base "De"
-        if (!prePaidPlanSelected) {
+        if (!prePaidPlanSelected && device.hasCampaignPrice()) {
             WebElement fullPrice = driverWeb.findById("value-total-aparelho-pdp");
             driverWeb.waitElementVisible(fullPrice, 10);
             validateElementText(device.getFormattedPrice(), fullPrice);
         }
 
-        //Preço de campanha "por apenas"
-        WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
-        validateElementText(device.getFormattedCampaignPrice(device.getSimType().equals("ESC") || eSimSelected), campaignPrice);
-
-        //Parcelamento
-        WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
-
-        String installmentPrice;
-        if (eSimSelected) {
-            installmentPrice = device.getFormattedInstallmentPrice(); //Parcelamento sem valor do chip incluído
+        if (!device.hasCampaignPrice()) {
+            //Caso seja o fluxo [Manter o plano] e não existir linha de preço configurada = preço full. Parcelamento também não é exibido.
+            validateElementText(device.getFormattedPrice(), driverWeb.findByXpath("//*[contains(@class, 'js-old-device-price-update')]"));
         } else {
-            installmentPrice = "R$ " + formatPrice(device.getCampaignPrice(false) / device.getInstallmentQuantity()); //Valor com chip comum incluído
-        }
+            //Preço de campanha "por apenas"
+            WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
+            validateElementText(device.getFormattedCampaignPrice(device.getSimType().equals("ESC") || eSimSelected), campaignPrice);
 
-        String installmentsRef = String.format("ou %dx de %s s/ juros", device.getInstallmentQuantity(), installmentPrice);
-        //TODO validateElementText(installmentsRef, installments); //Bug em Prod: parcelamento com eSIM (valor não muda) e fluxo de base (parcelamento não aparece)
+            //Parcelamento
+            WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
+            String installmentPrice;
+
+            if (eSimSelected) {
+                installmentPrice = device.getFormattedInstallmentPrice(); //Parcelamento sem valor do chip incluído
+            } else {
+                installmentPrice = "R$ " + formatPrice(device.getCampaignPrice(false) / device.getInstallmentQuantity()); //Valor com chip comum incluído
+            }
+
+            String installmentsRef = String.format("ou %dx de %s s/ juros", device.getInstallmentQuantity(), installmentPrice);
+            //TODO validateElementText(installmentsRef, installments); //Bug em Prod: parcelamento com eSIM (valor não muda) e fluxo de base (parcelamento não aparece)
+        }
     }
 
     public void validarPdpAparelho(CartOrder cart) {
@@ -220,7 +235,9 @@ public class PdpAparelhosPage {
         if (device.inStock()) {
             //Plano
             validarInfosPlano(planEntry);
-            validarPrecoCampanhaAparelho(device, cart.getClaroChip().getChipType() == ESIM);
+
+            //Preço Aparelho
+            validarPrecoCampanhaAparelho(device);
         }
 
         //Tipos Chip
@@ -325,12 +342,35 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarInformacoesExibidasAposLogin() {
+    public void validarPdpAposLogin(DeviceProduct device, CartOrder.Essential.User.ClaroSubscription claroSubscription) {
+        String planNameRef;
+
+        //Opções para cliente Claro
         driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
+
+        if (!claroSubscription.getPlanTypePrice().equals("PRE_PAGO")) {
+            assertTrue(manterPlanoFidelidade.findElement(By.xpath("..")).isDisplayed());
+            assertTrue(manterPlanoSemFid.findElement(By.xpath("..")).isDisplayed());
+            assertTrue(manterPlanoFidelidade.isSelected()); //Opção default pós login
+
+            planNameRef = claroSubscription.getClaroPlanName();
+        } else {
+            assertFalse(manterPlanoFidelidade.findElement(By.xpath("..")).isDisplayed());
+            assertFalse(manterPlanoSemFid.findElement(By.xpath("..")).isDisplayed());
+            assertTrue(mudarMeuPlano.isSelected()); //Única opção para Pré
+
+            planNameRef = "Claro Pré";
+        }
+
+        //Seção Plano atual
+        validateElementText(planNameRef, driverWeb.findByXpath("//div[contains(@class, 'js-is-logged')]/div[2]/p[1]"));
+
+        //Preço Aparelho
+        validarPrecoCampanhaAparelho(device);
     }
 
     public void selecionarMudarMeuPlano() {
-        driverWeb.javaScriptClick(driverWeb.findById("rdn-mudar-plano"));
+        driverWeb.javaScriptClick(mudarMeuPlano);
     }
 
     public void selecionarPlataforma(String category) {
@@ -368,13 +408,21 @@ public class PdpAparelhosPage {
 
         driverWeb.javaScriptClick(selectPlan);
         validarInfosPlano(planEntry);
-        validarPrecoCampanhaAparelho(device, cart.getClaroChip().getChipType() == ESIM);
+        validarPrecoCampanhaAparelho(device);
     }
 
     public void selecionarSIM(DeviceProduct device, boolean isEsim) {
-        driverWeb.javaScriptClick(isEsim ? "rdn-chip-type-ESIM" : "rdn-chip-type-SIM", "id" );
+        String chipSelector;
+        if (isEsim) {
+            chipSelector = "rdn-chip-type-ESIM";
+            eSimSelected = true;
+        } else {
+            chipSelector = "rdn-chip-type-SIM";
+        }
+
+        driverWeb.javaScriptClick(chipSelector, "id" );
         driverWeb.actionPause(500);
-        validarPrecoCampanhaAparelho(device, isEsim);
+        validarPrecoCampanhaAparelho(device);
     }
 
     public void clicarComprar(String deviceId) {
