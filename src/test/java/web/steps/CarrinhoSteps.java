@@ -171,7 +171,7 @@ public class CarrinhoSteps {
     }
 
     @Quando("clicar no botão [Continuar comprando]")
-    public void clicarBotaoContinuarComprando(){
+    public void clicarBotaoContinuarComprando() {
         carrinhoPage.clicaBotaoContinuarComprando();
     }
 
