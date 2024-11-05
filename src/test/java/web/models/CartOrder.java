@@ -152,18 +152,13 @@ public class CartOrder {
         getEntry(planId).paymentMode = TICKET; //Pagamento default atual
     }
 
-    public void updatePlanForDevice(String planId) {
-        getDevice().setDevicePriceInfo(getEntry(deviceId).bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+    public void updatePlanAndDevicePrice(String planId) {
+        PositionsAndPrices.Entry deviceEntry = getEntry(deviceId);
 
-        if (getDevice().hasCampaignPrice()) {
-            double deviceCampaignPrice = getDevice().getCampaignPrice(true);
-            getEntry(deviceId).basePrice = deviceCampaignPrice;
-            getEntry(deviceId).totalPrice = deviceCampaignPrice;
-        } else {
-            double deviceFullPrice = getDevice().getPrice();
-            getEntry(deviceId).basePrice = deviceFullPrice;
-            getEntry(deviceId).totalPrice = deviceFullPrice;
-        }
+        getDevice().setDevicePriceInfo(deviceEntry.bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+        double price = getDevice().hasCampaignPrice() ? getDevice().getCampaignPrice(true) : getDevice().getPrice(); //Caso não exista linha de preço configurada = preço full
+        deviceEntry.basePrice = price;
+        deviceEntry.totalPrice = price;
 
         setPlan(planId);
     }
@@ -209,10 +204,6 @@ public class CartOrder {
 
     public void setProcessType(ProcessType processType) {
         essential.processType = processType;
-
-        if (isDeviceCart()) {
-            updatePlanForDevice(focusPlan);
-        }
     }
 
     public ProcessType getProcessType() {
@@ -277,8 +268,9 @@ public class CartOrder {
             throw new RuntimeException(e);
         }
 
-        getEntry(planId).totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
-        getEntry(planId).paymentMode = allPromotionResults.paymentMethod;
+        PositionsAndPrices.Entry planEntry = getEntry(planId);
+        planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+        planEntry.paymentMode = allPromotionResults.paymentMethod;
     }
 
     public void setGuid(String guid) {

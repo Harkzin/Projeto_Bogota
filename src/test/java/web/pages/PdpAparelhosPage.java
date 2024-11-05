@@ -21,7 +21,6 @@ import java.util.stream.IntStream;
 import static org.junit.Assert.*;
 import static web.models.CartOrder.PositionsAndPrices.*;
 import static web.pages.ComumPage.*;
-import static web.support.utils.Constants.ChipType.*;
 import static web.support.utils.Constants.focusPlan;
 
 @Component
@@ -63,7 +62,7 @@ public class PdpAparelhosPage {
     private WebElement mudarMeuPlano;
 
     @FindBy(id = "rdn-manter-com-fidelidade")
-    private WebElement manterPlanoFidelidade;
+    private WebElement manterPlanoFid;
 
     @FindBy(id = "rdn-manter-sem-fidelidade")
     private WebElement manterPlanoSemFid;
@@ -71,6 +70,7 @@ public class PdpAparelhosPage {
     private boolean prePaidPlanSelected;
     private String deviceChipType;
     private boolean eSimSelected;
+    private DeviceProduct device;
 
     private void validarInfosPlano(Entry planEntry) {
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
@@ -160,7 +160,7 @@ public class PdpAparelhosPage {
         }
     }
 
-    private void validarPrecoCampanhaAparelho(DeviceProduct device) {
+    private void validarPrecoCampanhaAparelho() {
         //Preço base "De"
         if (!prePaidPlanSelected && device.hasCampaignPrice()) {
             WebElement fullPrice = driverWeb.findById("value-total-aparelho-pdp");
@@ -192,7 +192,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarPdpAparelho(CartOrder cart) {
-        DeviceProduct device = cart.getDevice();
+        this.device = cart.getDevice();
         Entry planEntry = cart.getEntry(focusPlan);
 
         driverWeb.waitPageLoad(device.getCode(), 10);
@@ -237,7 +237,7 @@ public class PdpAparelhosPage {
             validarInfosPlano(planEntry);
 
             //Preço Aparelho
-            validarPrecoCampanhaAparelho(device);
+            validarPrecoCampanhaAparelho();
         }
 
         //Tipos Chip
@@ -311,8 +311,9 @@ public class PdpAparelhosPage {
         }
     }
 
-    public void selecionarCorAparelho(String id) {
-        driverWeb.javaScriptClick(String.format("//a[contains(@href, '%s')]", id), "xpath");
+    public void selecionarCorAparelho(DeviceProduct newDevice) {
+        this.device = newDevice;
+        driverWeb.javaScriptClick(String.format("//a[contains(@href, '%s')]", newDevice.getCode()), "xpath");
     }
 
     public void validarProdutoSemEstoque() {
@@ -327,6 +328,7 @@ public class PdpAparelhosPage {
         }
 
         driverWeb.actionPause(3000);
+        validarPrecoCampanhaAparelho();
     }
 
     public void validarPopoverLogin() {
@@ -342,20 +344,20 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarPdpAposLogin(DeviceProduct device, CartOrder.Essential.User.ClaroSubscription claroSubscription) {
+    public void validarPdpAposLogin(CartOrder.Essential.User.ClaroSubscription claroSubscription) {
         String planNameRef;
 
         //Opções para cliente Claro
         driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
 
         if (!claroSubscription.getPlanTypePrice().equals("PRE_PAGO")) {
-            assertTrue(manterPlanoFidelidade.findElement(By.xpath("..")).isDisplayed());
+            assertTrue(manterPlanoFid.findElement(By.xpath("..")).isDisplayed());
             assertTrue(manterPlanoSemFid.findElement(By.xpath("..")).isDisplayed());
-            assertTrue(manterPlanoFidelidade.isSelected()); //Opção default pós login
+            assertTrue(manterPlanoFid.isSelected()); //Opção default pós login
 
             planNameRef = claroSubscription.getClaroPlanName();
         } else {
-            assertFalse(manterPlanoFidelidade.findElement(By.xpath("..")).isDisplayed());
+            assertFalse(manterPlanoFid.findElement(By.xpath("..")).isDisplayed());
             assertFalse(manterPlanoSemFid.findElement(By.xpath("..")).isDisplayed());
             assertTrue(mudarMeuPlano.isSelected()); //Única opção para Pré
 
@@ -366,11 +368,24 @@ public class PdpAparelhosPage {
         validateElementText(planNameRef, driverWeb.findByXpath("//div[contains(@class, 'js-is-logged')]/div[2]/p[1]"));
 
         //Preço Aparelho
-        validarPrecoCampanhaAparelho(device);
+        validarPrecoCampanhaAparelho();
     }
 
     public void selecionarMudarMeuPlano() {
         driverWeb.javaScriptClick(mudarMeuPlano);
+        driverWeb.waitElementVisible(plataforma, 5);
+    }
+
+    public void selecionarManterPlanoFid() {
+        driverWeb.javaScriptClick(manterPlanoFid);
+        driverWeb.actionPause(2500);
+        validarPrecoCampanhaAparelho();
+    }
+
+    public void selecionarManterPlanoSemFid() {
+        driverWeb.javaScriptClick(manterPlanoSemFid);
+        driverWeb.actionPause(2500);
+        validarPrecoCampanhaAparelho();
     }
 
     public void selecionarPlataforma(String category) {
@@ -390,7 +405,6 @@ public class PdpAparelhosPage {
 
     public void selecionarPlano(CartOrder cart) {
         Entry planEntry = cart.getEntry(cart.getPlan().getCode());
-        DeviceProduct device = cart.getDevice();
         
         String planCode = planEntry.getProduct().getCode();
         WebElement selectPlan = driverWeb.findById("btn-selecionar-plano-" + planCode);
@@ -408,10 +422,10 @@ public class PdpAparelhosPage {
 
         driverWeb.javaScriptClick(selectPlan);
         validarInfosPlano(planEntry);
-        validarPrecoCampanhaAparelho(device);
+        validarPrecoCampanhaAparelho();
     }
 
-    public void selecionarSIM(DeviceProduct device, boolean isEsim) {
+    public void selecionarSIM(boolean isEsim) {
         String chipSelector;
         if (isEsim) {
             chipSelector = "rdn-chip-type-ESIM";
@@ -422,7 +436,7 @@ public class PdpAparelhosPage {
 
         driverWeb.javaScriptClick(chipSelector, "id" );
         driverWeb.actionPause(500);
-        validarPrecoCampanhaAparelho(device);
+        validarPrecoCampanhaAparelho();
     }
 
     public void clicarComprar(String deviceId) {
