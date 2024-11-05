@@ -61,7 +61,7 @@ public class HomeSteps {
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
         cart.setPlan(id);
-        homePage.validarCardPlano(cart.getPlan(), false);
+        homePage.validarCardPlano(cart.getPlan(), true);
         homePage.acessarPdpPlano(id);
     }
 
@@ -73,6 +73,5 @@ public class HomeSteps {
     @Entao("é direcionado para a Home")
     public void validarQueFoiDirecionadoParaAHome() {
         homePage.validarHomePage();
-        homePage.restaurarStatusMassa();
     }
 }

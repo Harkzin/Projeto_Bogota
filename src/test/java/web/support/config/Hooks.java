@@ -6,21 +6,24 @@ import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.springframework.beans.factory.annotation.Autowired;
+import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 public class Hooks {
 
     private final DriverWeb driverWeb;
+    private final CartOrder cartOrder;
 
     @Autowired
-    public Hooks(DriverWeb driverWeb) {
+    public Hooks(DriverWeb driverWeb, CartOrder cartOrder) {
         this.driverWeb = driverWeb;
+        this.cartOrder = cartOrder;
     }
 
     @After(order = 3)
     public void atualizarStatusMassa(Scenario scenario) {
         try {
-            ConsultaCPFMSISDN.restaurarStatusParaAtivo(scenario);
+            ConsultaCPFMSISDN.restaurarStatusPosCenario(scenario, driverWeb.getDriver().getCurrentUrl(), cartOrder.hasErrorPasso1);
         } catch (Exception ignored) {
         }
     }

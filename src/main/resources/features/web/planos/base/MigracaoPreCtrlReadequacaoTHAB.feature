@@ -2,7 +2,7 @@
 
 @Web
 Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
-  @Teste
+
   @Migracao
   @Controle
   @MigracaoPreCtrlTHAB

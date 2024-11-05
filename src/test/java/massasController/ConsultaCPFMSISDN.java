@@ -1,8 +1,6 @@
 package massasController;
 
 import io.cucumber.java.Scenario;
-import org.springframework.beans.factory.annotation.Autowired;
-import web.support.utils.DriverWeb;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,12 +17,6 @@ public class ConsultaCPFMSISDN {
     private static final String BASE_FILE_PATH = "src/main/resources/massas/Base.json";
     private static String msisdn;
     private static String cpf;
-    private static DriverWeb driverWeb = null;
-
-    @Autowired
-    public ConsultaCPFMSISDN(DriverWeb driverWeb) {
-        ConsultaCPFMSISDN.driverWeb = driverWeb;
-    }
 
     public static AbstractMap.SimpleEntry<String, String> consultarDadosBase(String segmento, String formaPagamento, String formaEnvio,
                                                                              String combo, String multaServico, String multaAparelho,
@@ -58,19 +50,14 @@ public class ConsultaCPFMSISDN {
         }
     }
 
-    public static void restaurarStatusParaAtivo(Scenario scenario) {
-        String url = driverWeb.getDriver().getCurrentUrl();
-        if (scenario.isFailed() && !url.contains("/checkout/orderConfirmation")) {
+    public static void restaurarStatusPosCenario(Scenario scenario, String url, boolean hasErrorPasso1) {
+        if (url.contains("/checkout/orderConfirmation")) {
+            restoreStatus("queimada");
+        } else if (hasErrorPasso1 && !scenario.getSourceTagNames().contains("@CenarioBloqueio")) {
+            restoreStatus("erroPasso1");
+        } else {
             restoreStatus("ativo");
         }
-    }
-
-    public static void restaurarStatusParaAtivoCenariosBloqueio() {
-        restoreStatus("ativo");
-    }
-
-    public static void marcarComoQueimada() {
-        restoreStatus("queimada");
     }
 
     private static Massas loadMassas(String baseFilePath) throws IOException {

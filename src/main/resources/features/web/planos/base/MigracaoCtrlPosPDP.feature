@@ -4,7 +4,6 @@
 Funcionalidade: ECCMAUT-258 - Migracao Controle para Pos - PDP
 
   #Massa: Controle - pagamento boleto - fatura impressa
-  @Teste
   @Migracao
   @Pos
   @MigracaoCtrlPosPDP

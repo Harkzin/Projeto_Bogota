@@ -216,11 +216,17 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfMigracao, cpf);
     }
 
+    public void inserirDadosPortabilidadeNumeroBase(String telefone, String cpf) {
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, cpf);
+    }
+
     public void inserirDadosPortabilidade(boolean cpfAprovado, boolean cpfDiretrix) {
         String telefone = ConsultaCPFMSISDN.consultarDadosPortabilidade();
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
+
     public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
@@ -249,6 +255,18 @@ public class CarrinhoPage {
 
     public void clicarEuQuero() {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
+        validaErroPasso1();
+    }
+
+    public void validaErroPasso1() {
+        try {
+            driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 1);
+            WebElement modalErro = driverWeb.findElement("cboxLoadedContent", "id");
+            if (modalErro.isDisplayed()) {
+                cartOrder.hasErrorPasso1 = true;
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     public void clicarContinuar() {
@@ -257,7 +275,7 @@ public class CarrinhoPage {
 
     public void validaMsgErro(String msgExibida) {
         driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
-        WebElement contentMessageError =  driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+        WebElement contentMessageError = driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
         driverWeb.waitElementVisible(contentMessageError, 10);
         Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
@@ -279,8 +297,5 @@ public class CarrinhoPage {
 
     public void clicaBotaoContinuarComprando() {
         driverWeb.javaScriptClick("btn-continuar-comprando", "id");
-    }
-    public void restaurarStatusMassa() {
-        ConsultaCPFMSISDN.restaurarStatusParaAtivoCenariosBloqueio();
     }
 }

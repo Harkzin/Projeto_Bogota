@@ -2,7 +2,7 @@
 
 @Web
 Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo endereco
-  @Teste
+
   @Portabilidade
   @Pos
   @PortPosExpressaMesmoEnd

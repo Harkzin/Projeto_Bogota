@@ -1,7 +1,6 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,10 +37,6 @@ public class ParabensPage {
 
     public void clicarOkEntendi() {
         driverWeb.javaScriptClick("btn-entendi-modal-abr", "id");
-    }
-
-    public void marcarMassaQueimada() {
-        ConsultaCPFMSISDN.marcarComoQueimada();
     }
 
     public void validarCamposPedido() {

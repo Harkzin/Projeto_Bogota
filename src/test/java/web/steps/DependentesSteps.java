@@ -39,7 +39,6 @@ public class DependentesSteps {
         dependentesPage.clicarConfirmarDependente();
     }
 
-    //TODO verificar cart.addPortabilityDependent("DEP2",numero);
     @E("adiciona o segundo dependente, com numero de portabilidade")
     public void adicionarSegundoDependentePort(String numero) {
         cart.addPortabilityDependent("DEP2", numero);

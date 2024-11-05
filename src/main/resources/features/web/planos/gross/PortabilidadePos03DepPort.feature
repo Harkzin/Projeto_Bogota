@@ -2,7 +2,7 @@
 
 @Web
 Funcionalidade: ECCMAUT-972 - Portabilidade Pos - 03 Dependentes
-  @Teste
+
   @Portabilidade
   @Pos
   @PortabilidadePos03DepPort

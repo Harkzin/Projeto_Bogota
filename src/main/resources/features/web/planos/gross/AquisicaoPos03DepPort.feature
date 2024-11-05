@@ -25,9 +25,9 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 03 Dependentes Portabilidade
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E adiciona o primeiro dependente, com numero "910400082"
-    E adiciona o segundo dependente, com numero "910400081"
-    E adiciona o terceiro dependente, com numero "910400080"
+    E adiciona o primeiro dependente, com numero de portabilidade
+    E adiciona o segundo dependente, com numero de portabilidade
+    E adiciona o terceiro dependente, com numero de portabilidade
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura

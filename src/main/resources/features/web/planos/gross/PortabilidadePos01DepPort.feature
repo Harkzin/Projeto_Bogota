@@ -2,7 +2,7 @@
 
 @Web
 Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
-  @Teste
+
   @Aquisicao
   @Pos
   @PortabilidadePos01DepPort

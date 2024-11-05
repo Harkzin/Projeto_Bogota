@@ -4,7 +4,6 @@
 Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de Multa
 
   #Massa: Pós - pagamento boleto - fatura correios
-  @Teste
   @Migracao
   @Controle
   @MigracaoPosCtrlAceiteMulta

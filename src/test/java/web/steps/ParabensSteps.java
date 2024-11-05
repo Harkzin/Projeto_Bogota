@@ -35,7 +35,6 @@ public class ParabensSteps {
 
     @Entao("os dados do pedido estão corretos")
     public void validarDadosPedido() {
-        parabensPage.marcarMassaQueimada();
         parabensPage.validarCamposPedido();
     }
 }

@@ -2,7 +2,7 @@
 
 @Web
 Funcionalidade: ECCMAUT-942 - Portabilidade Controle com e-Sim
-  @Teste
+
   @Aquisicao
   @Controle
   @PortabilidadePosEsim
