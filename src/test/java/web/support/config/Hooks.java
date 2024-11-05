@@ -24,25 +24,6 @@ public class Hooks {
         this.cartOrder = cartOrder;
     }
 
-    @After(order = 4)
-    public void verificarModalDeErro(Scenario scenario) {
-        WebDriver driver = driverWeb.getDriver();
-        try {
-            WebElement modalErro = driver.findElement(By.id("cboxLoadedContent"));
-            if (modalErro.isDisplayed()) {
-                String mensagemErro = modalErro.findElement(By.className("cartMessage")).getText();
-
-                scenario.attach(mensagemErro, "text/plain", "Erro no modal");
-
-                byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-                scenario.attach(screenshot, "image/png", "screenshot");
-
-                Assert.fail("Erro: " + mensagemErro);
-            }
-        } catch (Exception ignored) {
-        }
-    }
-
     @After(order = 3)
     public void atualizarStatusMassa(Scenario scenario) {
         try {
