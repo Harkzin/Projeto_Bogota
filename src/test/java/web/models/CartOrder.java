@@ -278,7 +278,11 @@ public class CartOrder {
     }
 
     public boolean hasLoyalty() {
-        return allPromotionResults.loyalty;
+        if (!isDeviceCart()) {
+            return allPromotionResults.loyalty;
+        } else {
+            return !getEntry(deviceId).bpo.equals("PPV"); //Para Aparelhos, a única opção sem fid é no fluxo de base [Manter o Plano sem Fid], campanha PPV
+        }
     }
 
     public void setRentabilizationCart(String url) {

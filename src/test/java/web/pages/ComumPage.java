@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
+import web.models.CartOrder.PositionsAndPrices;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
+import static web.models.CartOrder.PositionsAndPrices.*;
 import static web.models.product.PlanProduct.*;
 import static web.models.product.PlanProduct.Passport.*;
 import static web.models.product.PlanProduct.Passport.PassportTraffic.*;
@@ -128,7 +130,8 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        PlanProduct plan = cart.getPlan();
+        Entry planEntry = cart.getEntry(cart.getPlan().getCode());
+        PlanProduct plan = (PlanProduct) planEntry.getProduct();
         boolean hasLoyalty = cart.hasLoyalty();
         int depQtt = cart.hasDependent();
 
@@ -213,21 +216,35 @@ public class ComumPage {
 
             //Valida método de pagamento
             String paymentModeRef = "";
-            switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
-                case TICKET -> paymentModeRef = "Boleto";
-                case DEBITCARD -> paymentModeRef = "Débito automático";
-                //TODO cartão de crédito (controle fácil)
+            if (cart.getProcessType() == APARELHO_TROCA_APARELHO) {
+                paymentModeRef = "Sem alteração de plano";
+            } else {
+                switch (planEntry.getPaymentMode()) {
+                    case TICKET -> paymentModeRef = "Boleto";
+                    case DEBITCARD -> paymentModeRef = "Débito automático";
+                    //TODO cartão de crédito (controle fácil)
+                }
             }
             validateElementText(paymentModeRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='paymentmode']"));
 
             //Valida fidelização
-            String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
-            String loyaltyPlatform = driverWeb.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
-            validateElementText(loyaltyRef, driverWeb.findByXpath(planContentParent + loyaltyPlatform));
+            String loyaltyRef;
+            if (hasLoyalty) {
+                if (cart.getProcessType() == APARELHO_TROCA_APARELHO) {
+                    loyaltyRef = "Fidelizado por 12 meses no seu plano atual";
+                } else {
+                    loyaltyRef = "Fidelizado por 12 meses";
+                }
+            } else {
+                loyaltyRef = "Sem fidelização";
+            }
+
+            String loyaltySelector = driverWeb.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
+            validateElementText(loyaltyRef, driverWeb.findByXpath(planContentParent + loyaltySelector));
         }
 
         //Valida preço
-        double priceRef = cart.getEntry(cart.getPlan().getCode()).getTotalPrice();
+        double priceRef = planEntry.getTotalPrice();
         if (depQtt > 0) { //Com dep
             priceRef += cart.getEntry("dependente").getTotalPrice();
         }
@@ -263,7 +280,9 @@ public class ComumPage {
     public void validarResumoCompraAparelho(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        DeviceProduct device = cart.getDevice();
+        Entry deviceEntry = cart.getEntry(cart.getDevice().getCode());
+        DeviceProduct device = (DeviceProduct) deviceEntry.getProduct();
+
         boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
         boolean commonChipFlow = cart.getClaroChip().getChipType() == SIM;
         String deviceContentParent = "//*[@id='sidebar-resume' and not(ancestor::*[@id='cart-summary-mobile'])]";
@@ -280,12 +299,12 @@ public class ComumPage {
 
         //Desconto Cupom
         if (cart.getAppliedCoupon() != null) {
-            String voucherDiscountPriceRef = formatPrice(cart.getEntry(device.getCode()).getDiscount());
+            String voucherDiscountPriceRef = formatPrice(deviceEntry.getDiscount());
             validateElementText("Desconto Cupom -R$ " + voucherDiscountPriceRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
 
         //Total
-        double totalPrice = cart.getEntry(device.getCode()).getTotalPrice();
+        double totalPrice = deviceEntry.getTotalPrice();
         if (commonChipFlow) {
             totalPrice += 10D;
         }
