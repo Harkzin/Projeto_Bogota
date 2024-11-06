@@ -2,19 +2,20 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static web.pages.ComumPage.validateElementActiveVisible;
-import static web.pages.ComumPage.validateElementText;
+import static web.pages.ComumPage.*;
 
 @Component
 @ScenarioScope
@@ -33,8 +34,17 @@ public class FormaPagamentoPage {
     @FindBy(id = "btn-aplicar-cupom")
     private WebElement aplicarCupom;
 
+    @FindBy(xpath = "//*[@id='tab-cartao']/input")
+    private WebElement tabCartao;
+
+    @FindBy(xpath = "//*[@id='tab-pix']/input")
+    private WebElement tabPix;
+
     @FindBy(id = "btn-adicionar-cartao")
     private WebElement adicionarCartao;
+
+    @FindBy(xpath = "//*[@id='utilizar-claro-clube']//input")
+    private WebElement usarClaroClube;
 
     @FindBy(id = "btn-finalizar-pix")
     private WebElement finalizarPix;
@@ -45,16 +55,34 @@ public class FormaPagamentoPage {
     private WebElement cardCVV;
     private WebElement cardConfirm;
 
-    public void validarPaginaFormaPagamento() {
+    public void validarPaginaFormaPagamento(CartOrder cart) {
         driverWeb.waitPageLoad("/payment-device-method", 60);
-        driverWeb.actionPause(2000);
+        driverWeb.actionPause(3000);
+
         PageFactory.initElements(driverWeb.getDriver(), this);
 
+        //Cupom
         assertTrue("Campo cupom deve estar vazio ao abrir a pagina", cupom.getAttribute("value").isEmpty());
         validateElementActiveVisible(cupom);
         validateElementActiveVisible(aplicarCupom);
         validateElementActiveVisible(adicionarCartao);
 
+        //Claro Clube
+        double claroClubBalance = cart.getUser().getClaroClubBalance();
+
+        if (cart.isDeviceCart() && claroClubBalance > 0D) {
+            driverWeb.waitElementVisible(usarClaroClube.findElement(By.xpath("..")), 10); //Pai input (toggle)
+            assertFalse(usarClaroClube.isSelected()); //Toggle na posição off
+
+            double deviceTotalPrice = cart.getEntry(cart.getDevice().getCode()).getTotalPrice();
+            double claroClubMaxDiscount = Math.min(claroClubBalance, deviceTotalPrice); //Caso possua muita pontuação, o desconto máximo será o próprio valor do Aparelho (pagamento 100% Claro Clube)
+            String claroClubeRef = String.format("Utilizar meus créditos Claro Clube de R$ %s nesta compra", formatPrice(claroClubMaxDiscount));
+
+            validateElementText(claroClubeRef, driverWeb.findByXpath("//*[@id='utilizar-claro-clube']//p"));
+        }
+
+        validateElementText("Cartão de crédito", tabCartao.findElement(By.xpath("..")));
+        validateElementText("Pix", tabPix.findElement(By.xpath(".."))); //Em caso de contingência do Cart, não será exibido
         assertFalse(finalizarPix.isDisplayed());
     }
 
@@ -76,7 +104,7 @@ public class FormaPagamentoPage {
         driverWeb.javaScriptClick(aplicarCupom);
     }
 
-    public void validarAplicarCupom(String voucher) {
+    public void validarCupomAplicado(String voucher) {
         //Botão [Remover] é injetado no html
         validateElementActiveVisible(driverWeb.waitElementPresence("//button[@data-analytics-custom-title='aplicar_cupom']", 10));
 
@@ -91,12 +119,19 @@ public class FormaPagamentoPage {
         validateElementText("Código do cupom aplicado com sucesso!", driverWeb.findByXpath("//*[contains(@class, 'js-voucher-msg')]"));
     }
 
+    public void clicarUsarClaroClube() {
+        driverWeb.javaScriptClick(usarClaroClube);
+
+        driverWeb.actionPause(2500); //Página recarrega
+        assertTrue(usarClaroClube.isSelected());
+    }
+
     public void clicarAdicionarCartao() {
         driverWeb.javaScriptClick(adicionarCartao);
     }
 
     public void clicarAbaPix() {
-        driverWeb.javaScriptClick(driverWeb.findById("tab-pix"));
+        driverWeb.javaScriptClick(tabPix);
     }
 
     public void validarIframe() {

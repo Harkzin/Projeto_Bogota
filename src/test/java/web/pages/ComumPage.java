@@ -299,8 +299,14 @@ public class ComumPage {
 
         //Desconto Cupom
         if (cart.getAppliedCoupon() != null) {
-            String voucherDiscountPriceRef = formatPrice(deviceEntry.getDiscount());
-            validateElementText("Desconto Cupom -R$ " + voucherDiscountPriceRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
+            String voucherDiscountRef = formatPrice(deviceEntry.getDiscount());
+            validateElementText("Desconto Cupom -R$ " + voucherDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
+        }
+
+        //Desconto Claro Clube
+        if (cart.getClaroClube().getDiscountValue() > 0D) {
+            String claroClubDiscountRef = formatPrice(deviceEntry.getDiscount());
+            validateElementText("Desconto Cupom -R$ " + claroClubDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
 
         //Total

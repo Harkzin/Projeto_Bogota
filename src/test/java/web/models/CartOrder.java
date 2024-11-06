@@ -27,6 +27,7 @@ public class CartOrder {
         payment = new Payment();
         delivery = new Delivery();
         claroChip = new ClaroChip();
+        claroClube = new ClaroClube();
     }
 
     private boolean thab;
@@ -262,15 +263,17 @@ public class CartOrder {
     }
 
     public void updatePlanCartPromotion() {
-        try {
-            allPromotionResults = objMapper.readValue(getPlanCartPromotion(guid), Promotion.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        if (essential.processType != APARELHO_TROCA_APARELHO || !getEntry(deviceId).bpo.equals("PPV")) { //Fluxo Aparelhos [Manter o Plano sem Fid] não existe promo
+            try {
+                allPromotionResults = objMapper.readValue(getPlanCartPromotion(guid), Promotion.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
 
-        PositionsAndPrices.Entry planEntry = getEntry(planId);
-        planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
-        planEntry.paymentMode = allPromotionResults.paymentMethod;
+            PositionsAndPrices.Entry planEntry = getEntry(planId);
+            planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+            planEntry.paymentMode = allPromotionResults.paymentMethod;
+        }
     }
 
     public void setGuid(String guid) {
@@ -318,10 +321,6 @@ public class CartOrder {
         return essential.user;
     }
 
-    public void setTelephone(String msisdn) {
-        essential.telephone = msisdn;
-    }
-
     public void populateCustomerProductDetails() {
         JsonNode response = getCustomerProductDetails(essential.user.claroTelephone);
 
@@ -352,6 +351,10 @@ public class CartOrder {
         //TODO
     }
 
+    public ClaroClube getClaroClube() {
+        return claroClube;
+    }
+
     public static class ClaroChip {
 
         private String activationCode;
@@ -373,16 +376,52 @@ public class CartOrder {
 
     public static class ClaroClube {
 
-        public int awardPoints;
-        public double discountValue;
-        public boolean isClaroClubeApplied;
-        public String redeemId;
-        public boolean redeemed;
-        public boolean refund;
-        public boolean reserved;
-        public boolean used;
-
         private ClaroClube() {}
+
+        private int awardPoints;
+        private double discountValue;
+        private boolean isClaroClubeApplied;
+        private String redeemId;
+        private boolean redeemed;
+        private boolean refund;
+        private boolean reserved;
+        private boolean used;
+
+        public int getAwardPoints() {
+            return awardPoints;
+        }
+
+        public double getDiscountValue() {
+            return discountValue;
+        }
+
+        public void setDiscountValue(double discountValue) {
+            this.discountValue = discountValue;
+        }
+
+        public boolean isClaroClubeApplied() {
+            return isClaroClubeApplied;
+        }
+
+        public String getRedeemId() {
+            return redeemId;
+        }
+
+        public boolean isRedeemed() {
+            return redeemed;
+        }
+
+        public boolean isRefund() {
+            return refund;
+        }
+
+        public boolean isReserved() {
+            return reserved;
+        }
+
+        public boolean isUsed() {
+            return used;
+        }
     }
 
     public static class ClaroSapResponse {
