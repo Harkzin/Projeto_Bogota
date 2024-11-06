@@ -1,11 +1,11 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
+Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM - Pix
 
   @Pos
-  @Portabilidade
-  @PortPosAparEsimPix
+  @Aquisicao
+  @AquisPosAparEsimPix
   Cenario: Aquisicao Pos Aparelho - eSIM - Pix
 
     Dado que o usuário acesse a Loja Online
