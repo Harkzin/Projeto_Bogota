@@ -249,16 +249,9 @@ public class CarrinhoPage {
 
     public void clicarEuQuero() {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
-        validaErroPasso1();
-    }
-
-    public void validaErroPasso1() {
         try {
-            driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 1);
-            WebElement modalErro = driverWeb.findElement("cboxLoadedContent", "id");
-            if (modalErro.isDisplayed()) {
-                cartOrder.hasErrorPasso1 = true;
-            }
+            driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 10);
+            cartOrder.hasErrorPasso1 = true;
         } catch (Exception ignored) {
         }
     }

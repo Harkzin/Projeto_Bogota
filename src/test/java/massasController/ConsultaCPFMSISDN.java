@@ -28,7 +28,7 @@ public class ConsultaCPFMSISDN {
             Massas massas = loadMassas();
             Massas.Massa massa = findMassaLiberada(massas, segmento, formaPagamento, formaEnvio, combo,
                     multaServico, multaAparelho, claroClube, crivo);
-            updateMassaStatus(massas, massa, "bloqueada");
+            updateMassaStatus(massas, massa);
             msisdn = massa.msisdn;
             cpf = massa.cpf;
             return new AbstractMap.SimpleEntry<>(msisdn, cpf);
@@ -44,7 +44,7 @@ public class ConsultaCPFMSISDN {
                     .filter(m -> m.status.equals("ativo") && m.segmento.equalsIgnoreCase("portabilidade"))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Nenhuma massa ativa encontrada para o segmento 'portabilidade'"));
-            updateMassaStatus(massas, massa, "bloqueada");
+            updateMassaStatus(massas, massa);
             massasConsultadas.add(massa);
             return massa.msisdn;
         } catch (IOException e) {
@@ -53,8 +53,13 @@ public class ConsultaCPFMSISDN {
     }
 
     public static void restaurarStatusPosCenario(Scenario scenario, String url, boolean hasErrorPasso1) {
-        String status = url.contains("/checkout/orderConfirmation") || !hasErrorPasso1 && !scenario.getSourceTagNames().contains("@CenarioBloqueio") ? "queimada" : hasErrorPasso1 ? "erroPasso1" : "ativo";
-        restoreStatus(status);
+        if (url.contains("/checkout/orderConfirmation")) {
+            restoreStatus("queimada");
+        } else if (hasErrorPasso1) {
+            restoreStatus("erroPasso1");
+        } else {
+            restoreStatus("ativo");
+        }
     }
 
     private static Massas loadMassas() throws IOException {
@@ -106,8 +111,8 @@ public class ConsultaCPFMSISDN {
         }
     }
 
-    private static void updateMassaStatus(Massas massas, Massas.Massa massa, String newStatus) {
-        massa.setStatus(newStatus);
+    private static void updateMassaStatus(Massas massas, Massas.Massa massa) {
+        massa.setStatus("bloqueada");
         msisdn = massa.msisdn;
         saveMassas(massas);
     }

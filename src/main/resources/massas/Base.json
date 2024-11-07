@@ -3,8 +3,8 @@
     {
       "id": 3,
       "segmento": "Controle",
-      "cpf": "53750363471",
-      "msisdn": "11947728811",
+      "cpf": "57726285001",
+      "msisdn": "11947728661",
       "idPlano": "16454",
       "nomePlano": "Claro Controle App 3GB + Minutos Ilimitados",
       "idpromo": "35789",
@@ -17,7 +17,7 @@
       "crivo": "na",
       "comboMulti": "false",
       "claroClube": false,
-      "status": "erroPasso1"
+      "status": "ativo"
     },
     {
       "id": 5,
