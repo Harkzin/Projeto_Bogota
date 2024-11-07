@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.models.CartOrder.PositionsAndPrices;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
@@ -144,7 +143,7 @@ public class ComumPage {
 
         //Valida nome
         String name = cart.getPromotion().isRentabilization() ? cart.getPromotion().getName() : plan.getName();
-        WebElement planName = driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='name']");
+        WebElement planName = driverWeb.findByXpath(planContentParent + "//*[contains(@class, 'product-fullname')]"); //TODO Bug merge RL22 "//*[@data-plan-content='name']");
         driverWeb.javaScriptScrollTo(planName);
         validateElementText(name, planName);
 
@@ -290,8 +289,12 @@ public class ComumPage {
         //Subtotal
         double subtotalPrice = device.getCampaignPrice(!commonChipFlow);
         WebElement subtotal = driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-valor-subtotal']/..");
-        driverWeb.javaScriptClick(deviceContentParent + "/div/a", "xpath");
-        driverWeb.waitElementVisible(subtotal, 5);
+        WebElement toggle = driverWeb.findByXpath(deviceContentParent + "/div/a");
+        driverWeb.javaScriptScrollTo(toggle);
+        if (!subtotal.isDisplayed()) {
+            driverWeb.javaScriptClick(toggle); //Abre Resumo
+            driverWeb.waitElementVisible(subtotal, 5);
+        }
         validateElementText("Subtotal: R$ " + formatPrice(subtotalPrice), subtotal);
 
         //Envio

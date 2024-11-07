@@ -77,6 +77,4 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM - Pix
     Quando o usuário clicar na aba [Pix]
     E clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns Pix
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-      Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
