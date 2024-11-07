@@ -14,7 +14,7 @@ Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de 
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de troca de Plano
-    E preenche os campos: [Telefone com DDD] "Pos" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "true" multaAparelho "false" dependente "false" claroClube "false" crivo "na"
+    E preenche os campos: [Telefone com DDD] "Pos" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "true" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então será exibido o modal [Aviso Troca de Plano]

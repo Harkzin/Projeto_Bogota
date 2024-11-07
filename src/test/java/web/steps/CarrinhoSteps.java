@@ -1,6 +1,7 @@
 package web.steps;
 
 import io.cucumber.java.pt.*;
+import massasController.ConsultaCPFMSISDN;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.CarrinhoPage;
 import web.models.CartOrder;
@@ -68,25 +69,10 @@ public class CarrinhoSteps {
         carrinhoPage.inserirDadosBase(telefone, cpf);
     }
 
-    @E("preenche os campos: [Telefone com DDD] {string} {string} {string} comboMulti {string}, [E-mail] e [CPF] multaServico {string} multaAparelho {string} dependente {string} claroClube {string} crivo {string}")
-    public void preencheOsCamposTelefoneComDDDEMailECPF(String segmento, String formaPagamento, String formaEnvio,
-                                                        String combo, String multaServico, String multaAparelho,
-                                                        String dependente, String claroClube, String crivo) {
-        AbstractMap.SimpleEntry<String, String> dadosBase = consultarDadosBase(segmento, formaPagamento, formaEnvio, combo,
-                multaServico, multaAparelho, dependente,
-                claroClube, crivo);
+    @E("preenche os campos: [Telefone com DDD] {string} {string} {string} comboMulti {string}, [E-mail] e [CPF] multaServico {string} multaAparelho {string} claroClube {string} crivo {string}")
+    public void preencheOsCamposTelefoneComDDDEMailECPF(String segmento, String formaPagamento, String formaEnvio, String combo, String multaServico, String multaAparelho, String claroClube, String crivo) {
+        AbstractMap.SimpleEntry<String, String> dadosBase = consultarDadosBase(segmento, formaPagamento, formaEnvio, combo, multaServico, multaAparelho, claroClube, crivo);
         carrinhoPage.inserirDadosBase(dadosBase.getKey(), dadosBase.getValue());
-        carrinhoPage.inserirEmail();
-    }
-
-    @E("preenche os campos: [Telefone a ser portado com DDD] {string} {string} {string} comboMulti {string}, [E-mail] e [CPF] multaServico {string} multaAparelho {string} dependente {string} claroClube {string} crivo {string}")
-    public void preencheOsCamposTelefoneASerPortadoComDDDEMailECPF(String segmento, String formaPagamento, String formaEnvio,
-                                                                   String combo, String multaServico, String multaAparelho,
-                                                                   String dependente, String claroClube, String crivo) {
-        AbstractMap.SimpleEntry<String, String> dadosBase = consultarDadosBase(segmento, formaPagamento, formaEnvio, combo,
-                multaServico, multaAparelho, dependente,
-                claroClube, crivo);
-        carrinhoPage.inserirDadosPortabilidadeNumeroBase(dadosBase.getKey(), dadosBase.getValue());
         carrinhoPage.inserirEmail();
     }
 
@@ -103,7 +89,7 @@ public class CarrinhoSteps {
 
     @E("preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencheOsCamposTelefoneComDDDPortabilidadeEMailECPFCPFAprovadoNaClearSaleCPFNaDiretrix(String cpfAprovado, String cpfDiretrix) {
-        carrinhoPage.inserirDadosPortabilidade(Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        carrinhoPage.inserirDadosPortabilidade(ConsultaCPFMSISDN.consultarDadosPortabilidade(), Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
         carrinhoPage.inserirEmail();
     }
 

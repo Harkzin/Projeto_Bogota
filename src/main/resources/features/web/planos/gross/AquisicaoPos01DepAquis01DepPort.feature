@@ -5,6 +5,7 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
 
   @Aquisicao
   @Pos
+  @DepPort
   @AquisicaoPos01DepAquis01DepPort
   Cenario: Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 Portabilidade
 

@@ -216,15 +216,9 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfMigracao, cpf);
     }
 
-    public void inserirDadosPortabilidade(boolean cpfAprovado, boolean cpfDiretrix) {
-        String telefone = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+    public void inserirDadosPortabilidade(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
-    }
-
-    public void inserirDadosPortabilidadeNumeroBase(String telefone, String cpf) {
-        driverWeb.sendKeys(telefonePortabilidade, telefone);
-        driverWeb.sendKeys(cpfPortabilidade, cpf);
     }
 
     public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
@@ -255,6 +249,18 @@ public class CarrinhoPage {
 
     public void clicarEuQuero() {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
+        validaErroPasso1();
+    }
+
+    public void validaErroPasso1() {
+        try {
+            driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 1);
+            WebElement modalErro = driverWeb.findElement("cboxLoadedContent", "id");
+            if (modalErro.isDisplayed()) {
+                cartOrder.hasErrorPasso1 = true;
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     public void clicarContinuar() {

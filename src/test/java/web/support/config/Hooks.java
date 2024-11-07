@@ -20,12 +20,9 @@ public class Hooks {
         this.cartOrder = cartOrder;
     }
 
-    @After(order = 3)
+    @After(order = 3, value = "@Portabilidade or @Migracao or @Troca or @DepPort")
     public void atualizarStatusMassa(Scenario scenario) {
-        try {
-            ConsultaCPFMSISDN.restaurarStatusPosCenario(scenario, driverWeb.getDriver().getCurrentUrl(), cartOrder.hasErrorPasso1);
-        } catch (Exception ignored) {
-        }
+        ConsultaCPFMSISDN.restaurarStatusPosCenario(scenario, driverWeb.getDriver().getCurrentUrl(), cartOrder.hasErrorPasso1);
     }
 
     @After(order = 2)
@@ -43,7 +40,7 @@ public class Hooks {
     @After(order = 1)
     public void closeBrowser() {
         if (System.getProperty("api", "false").equals("false")) {
-            driverWeb.getDriver().quit();
+//            driverWeb.getDriver().quit();
         }
     }
 }

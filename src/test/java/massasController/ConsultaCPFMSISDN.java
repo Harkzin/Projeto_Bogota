@@ -10,6 +10,7 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+
 import static web.support.api.RestAPI.objMapper;
 
 public class ConsultaCPFMSISDN {
@@ -17,18 +18,20 @@ public class ConsultaCPFMSISDN {
     private static final String BASE_FILE_PATH = "src/main/resources/massas/Base.json";
     private static String msisdn;
     private static String cpf;
+    private static final List<Massas.Massa> massasConsultadas = new ArrayList<>();
 
-    public static AbstractMap.SimpleEntry<String, String> consultarDadosBase(String segmento, String formaPagamento, String formaEnvio,
-                                                                             String combo, String multaServico, String multaAparelho,
-                                                                             String dependente, String claroClube, String crivo) {
+    public static AbstractMap.SimpleEntry<String, String> consultarDadosBase(String segmento, String formaPagamento,
+                                                                             String formaEnvio, String combo,
+                                                                             String multaServico, String multaAparelho,
+                                                                             String claroClube, String crivo) {
         try {
-            Massas massas = loadMassas(BASE_FILE_PATH);
-            Massas.Massa massa = findMassaLiberada(massas, segmento, formaPagamento, formaEnvio, combo, multaServico, multaAparelho, dependente, claroClube, crivo);
-            updateMassaStatus(massas, massa, "bloqueada", BASE_FILE_PATH);
+            Massas massas = loadMassas();
+            Massas.Massa massa = findMassaLiberada(massas, segmento, formaPagamento, formaEnvio, combo,
+                    multaServico, multaAparelho, claroClube, crivo);
+            updateMassaStatus(massas, massa, "bloqueada");
             msisdn = massa.msisdn;
             cpf = massa.cpf;
             return new AbstractMap.SimpleEntry<>(msisdn, cpf);
-
         } catch (IOException e) {
             throw new RuntimeException("Erro ao consultar dados liberados: " + e.getMessage(), e);
         }
@@ -36,39 +39,33 @@ public class ConsultaCPFMSISDN {
 
     public static String consultarDadosPortabilidade() {
         try {
-            Massas massas = loadMassas(BASE_FILE_PATH);
+            Massas massas = loadMassas();
             Massas.Massa massa = massas.massasList.stream()
                     .filter(m -> m.status.equals("ativo") && m.segmento.equalsIgnoreCase("portabilidade"))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Nenhuma massa ativa encontrada para o segmento 'portabilidade'"));
-
-            updateMassaStatus(massas, massa, "bloqueada", BASE_FILE_PATH);
+            updateMassaStatus(massas, massa, "bloqueada");
+            massasConsultadas.add(massa);
             return massa.msisdn;
-
         } catch (IOException e) {
             throw new RuntimeException("Erro ao consultar dados de portabilidade: " + e.getMessage(), e);
         }
     }
 
     public static void restaurarStatusPosCenario(Scenario scenario, String url, boolean hasErrorPasso1) {
-        if (url.contains("/checkout/orderConfirmation")) {
-            restoreStatus("queimada");
-        } else if (hasErrorPasso1 && !scenario.getSourceTagNames().contains("@CenarioBloqueio")) {
-            restoreStatus("erroPasso1");
-        } else {
-            restoreStatus("ativo");
-        }
+        String status = url.contains("/checkout/orderConfirmation") || !hasErrorPasso1 && !scenario.getSourceTagNames().contains("@CenarioBloqueio") ? "queimada" : hasErrorPasso1 ? "erroPasso1" : "ativo";
+        restoreStatus(status);
     }
 
-    private static Massas loadMassas(String baseFilePath) throws IOException {
-        byte[] jsonData = Files.readAllBytes(Paths.get(BASE_FILE_PATH));
-        return objMapper.readValue(jsonData, Massas.class);
+    private static Massas loadMassas() throws IOException {
+        return objMapper.readValue(Files.readAllBytes(Paths.get(BASE_FILE_PATH)), Massas.class);
     }
 
-    private static Massas.Massa findMassaLiberada(Massas massas, String segmento, String formaPagamento, String formaEnvio,
-                                                  String combo, String multaServico, String multaAparelho,
-                                                  String dependente, String claroClube, String crivo) {
-        List<Predicate<Massas.Massa>> filters = createFilters(segmento, formaPagamento, formaEnvio, combo, multaServico, multaAparelho, dependente, claroClube, crivo);
+    private static Massas.Massa findMassaLiberada(Massas massas, String segmento, String formaPagamento,
+                                                  String formaEnvio, String combo, String multaServico,
+                                                  String multaAparelho, String claroClube, String crivo) {
+        List<Predicate<Massas.Massa>> filters = createFilters(segmento, formaPagamento, formaEnvio, combo,
+                multaServico, multaAparelho, claroClube, crivo);
         return massas.massasList.stream()
                 .filter(filters.stream().reduce(x -> true, Predicate::and))
                 .findFirst()
@@ -77,49 +74,39 @@ public class ConsultaCPFMSISDN {
 
     private static List<Predicate<Massas.Massa>> createFilters(String segmento, String formaPagamento, String formaEnvio,
                                                                String combo, String multaServico, String multaAparelho,
-                                                               String dependente, String claroClube, String crivo) {
+                                                               String claroClube, String crivo) {
         List<Predicate<Massas.Massa>> filters = new ArrayList<>();
         filters.add(m -> m.status.equals("ativo"));
         filters.add(m -> m.segmento.equals(segmento));
         filters.add(m -> m.formaPagamento.equals(formaPagamento));
         filters.add(m -> m.formaEnvio.equals(formaEnvio));
         filters.add(m -> m.comboMulti.equals(combo));
-        addOptionalFilters(filters, multaServico, multaAparelho, dependente, claroClube, crivo);
+        addOptionalFilters(filters, multaServico, multaAparelho, claroClube, crivo);
         return filters;
     }
 
     private static void addOptionalFilters(List<Predicate<Massas.Massa>> filters, String multaServico, String multaAparelho,
-                                           String dependente, String claroClube, String crivo) {
-        if (multaServico != null) {
-            filters.add(m -> m.multaServico == Boolean.parseBoolean(multaServico));
-        }
-        if (multaAparelho != null) {
-            filters.add(m -> m.multaAparelho == Boolean.parseBoolean(multaAparelho));
-        }
-        if (dependente != null) {
-            filters.add(m -> m.dependente == Boolean.parseBoolean(dependente));
-        }
-        if (claroClube != null) {
-            filters.add(m -> m.claroClube == Boolean.parseBoolean(claroClube));
-        }
-        if (crivo != null) {
-            filters.add(m -> m.crivo.equals(crivo));
-        }
+                                           String claroClube, String crivo) {
+        if (multaServico != null) filters.add(m -> m.multaServico == Boolean.parseBoolean(multaServico));
+        if (multaAparelho != null) filters.add(m -> m.multaAparelho == Boolean.parseBoolean(multaAparelho));
+        if (claroClube != null) filters.add(m -> m.claroClube == Boolean.parseBoolean(claroClube));
+        if (crivo != null) filters.add(m -> m.crivo.equals(crivo));
     }
 
     private static void restoreStatus(String status) {
         try {
-            Massas massas = loadMassas(BASE_FILE_PATH);
+            Massas massas = loadMassas();
             massas.massasList.stream()
-                    .filter(m -> m.msisdn.equals(msisdn))
+                    .filter(m -> m.msisdn.equals(msisdn) || massasConsultadas.stream().anyMatch(mc -> mc.msisdn.equals(m.msisdn)))
                     .forEach(m -> m.status = status);
             saveMassas(massas);
+            massasConsultadas.clear();
         } catch (IOException e) {
             throw new RuntimeException("Erro ao restaurar status da massa: " + e.getMessage(), e);
         }
     }
 
-    private static void updateMassaStatus(Massas massas, Massas.Massa massa, String newStatus, String baseFilePath) {
+    private static void updateMassaStatus(Massas massas, Massas.Massa massa, String newStatus) {
         massa.setStatus(newStatus);
         msisdn = massa.msisdn;
         saveMassas(massas);
@@ -127,8 +114,7 @@ public class ConsultaCPFMSISDN {
 
     private static void saveMassas(Massas massas) {
         try {
-            File file = new File(BASE_FILE_PATH);
-            objMapper.writeValue(file, massas);
+            objMapper.writeValue(new File(BASE_FILE_PATH), massas);
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar dados no arquivo local: " + e.getMessage(), e);
         }

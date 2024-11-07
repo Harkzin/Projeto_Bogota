@@ -32,30 +32,31 @@ public class DependentesSteps {
 
     @E("adiciona o primeiro dependente, com numero de portabilidade")
     public void adicionarPrimeiroDependentePort() {
+        String numero = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+        cart.addPortabilityDependent("DEP1", numero);
+
         dependentesPage.clicarAdicionarDependente(1);
-        String numeroPortabilidadeCompleto = ConsultaCPFMSISDN.consultarDadosPortabilidade();
-        String numeroPortabilidadeSemDDD = numeroPortabilidadeCompleto.substring(2);
-        dependentesPage.inserirNumeroDependentes(numeroPortabilidadeSemDDD);
+        dependentesPage.inserirNumeroDependentes(ConsultaCPFMSISDN.consultarDadosPortabilidade().substring(2));
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o segundo dependente, com numero de portabilidade")
-    public void adicionarSegundoDependentePort(String numero) {
+    public void adicionarSegundoDependentePort() {
+        String numero = ConsultaCPFMSISDN.consultarDadosPortabilidade();
         cart.addPortabilityDependent("DEP2", numero);
 
         dependentesPage.clicarAdicionarOutroDependente(2);
-        String numeroPortabilidadeCompleto = ConsultaCPFMSISDN.consultarDadosPortabilidade();
-        String numeroPortabilidadeSemDDD = numeroPortabilidadeCompleto.substring(2);
-        dependentesPage.inserirNumeroDependentes(numeroPortabilidadeSemDDD);
+        dependentesPage.inserirNumeroDependentes(numero.substring(2));
         dependentesPage.clicarConfirmarDependente();
     }
 
     @E("adiciona o terceiro dependente, com numero de portabilidade")
     public void adicionarTerceiroDependentePort() {
+        String numero = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+        cart.addPortabilityDependent("DEP3", numero);
+
         dependentesPage.clicarAdicionarOutroDependente(3);
-        String numeroPortabilidadeCompleto = ConsultaCPFMSISDN.consultarDadosPortabilidade();
-        String numeroPortabilidadeSemDDD = numeroPortabilidadeCompleto.substring(2);
-        dependentesPage.inserirNumeroDependentes(numeroPortabilidadeSemDDD);
+        dependentesPage.inserirNumeroDependentes(numero.substring(2));
         dependentesPage.clicarConfirmarDependente();
     }
 

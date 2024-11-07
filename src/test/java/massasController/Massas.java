@@ -58,8 +58,6 @@ public class Massas {
         public String formaPagamento;
         @JsonProperty("formaEnvio")
         public String formaEnvio;
-        @JsonProperty("dependente")
-        public boolean dependente;
         @JsonProperty("crivo")
         public String crivo;
         @JsonProperty("comboMulti")

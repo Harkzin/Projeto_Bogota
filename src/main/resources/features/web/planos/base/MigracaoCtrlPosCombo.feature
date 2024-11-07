@@ -14,7 +14,7 @@ Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
     Quando selecionar o Plano Pós de id "17522" na Home
     Então é direcionado para a tela de Carrinho
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "true", [E-mail] e [CPF] multaServico "true" multaAparelho "false" dependente "false" claroClube "false" crivo "na"
+    E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "true", [E-mail] e [CPF] multaServico "true" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Termos Combo
