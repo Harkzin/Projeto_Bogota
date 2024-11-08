@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
+import web.models.CartOrder.Essential.User.ClaroSubscription;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.Constants.ProcessType;
@@ -71,6 +72,7 @@ public class PdpAparelhosPage {
     private String deviceChipType;
     private boolean eSimSelected;
     private DeviceProduct device;
+    private boolean userLogged;
 
     private void validarInfosPlano(Entry planEntry) {
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
@@ -91,6 +93,7 @@ public class PdpAparelhosPage {
             //Preço - Card
             WebElement priceCard = driverWeb.findByXpath(String.format("//*[@id='%s']/div/dl/dd", plan.getCode()));
             validateElementText(formattedEntryTotalPrice + " / mês", priceCard);
+            driverWeb.actionPause(500);
 
             //Modal <Mais detalhes> do plano
             //Abre modal
@@ -132,6 +135,7 @@ public class PdpAparelhosPage {
             //Fecha modal
             driverWeb.javaScriptClick(moreDetails.findElement(By.xpath(".//button")));
             driverWeb.waitElementInvisible(moreDetails, 2);
+            driverWeb.actionPause(500);
         } else {
             //Valida preço card Pré
             validateElementText("Grátis", driverWeb.findByXpath(String.format("//*[@id='%s']/div/p", plan.getCode())));
@@ -170,11 +174,14 @@ public class PdpAparelhosPage {
 
         if (!device.hasCampaignPrice()) {
             //Caso seja o fluxo [Manter o plano] e não existir linha de preço configurada = preço full. Parcelamento também não é exibido.
-            validateElementText(device.getFormattedPrice(), driverWeb.findByXpath("//*[contains(@class, 'js-old-device-price-update')]"));
+            WebElement priceWithoutCampaignDiscount = driverWeb.findByXpath("//*[contains(@class, 'js-old-device-price-update')]");
+            driverWeb.javaScriptScrollTo(priceWithoutCampaignDiscount);
+            validateElementText(device.getFormattedPrice(), priceWithoutCampaignDiscount);
         } else {
             //Preço de campanha "por apenas"
             WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
-            validateElementText(device.getFormattedCampaignPrice(device.getSimType().equals("ESC") || eSimSelected), campaignPrice);
+            driverWeb.javaScriptScrollTo(campaignPrice);
+            validateElementText(device.getFormattedCampaignPrice(device.getSimType().equals("ESC") || eSimSelected || userLogged), campaignPrice);
 
             //Parcelamento
             WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");
@@ -187,7 +194,7 @@ public class PdpAparelhosPage {
             }
 
             String installmentsRef = String.format("ou %dx de %s s/ juros", device.getInstallmentQuantity(), installmentPrice);
-            //TODO validateElementText(installmentsRef, installments); //Bug em Prod: parcelamento com eSIM (valor não muda) e fluxo de base (parcelamento não aparece)
+            //TODO validateElementText(installmentsRef, installments); //Bug em Prod: parcelamento fluxo eSIM vs chip comum, valor não muda
         }
     }
 
@@ -292,6 +299,7 @@ public class PdpAparelhosPage {
             //Fecha modal
             driverWeb.javaScriptClick("//*[@class='js-modalEsim']//button", "xpath");
             driverWeb.waitElementInvisible(closeModal, 2);
+            driverWeb.actionPause(500);
         }
 
         //Infos Técnicas
@@ -308,6 +316,8 @@ public class PdpAparelhosPage {
                 validateElementText(device.getDeviceFeatures().get(i).get(0) + ":", featureType);
                 validateElementText(device.getDeviceFeatures().get(i).get(1), featureValue);
             });
+
+            driverWeb.actionPause(500);
         }
     }
 
@@ -321,14 +331,21 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarFluxo(ProcessType processType) {
+        boolean claroCustomer = false;
+
         switch (processType) {
-            case EXCHANGE, MIGRATE, APARELHO_TROCA_APARELHO -> driverWeb.javaScriptClick(fluxoBase);
+            case EXCHANGE, MIGRATE, APARELHO_TROCA_APARELHO -> {
+                driverWeb.javaScriptClick(fluxoBase);
+                claroCustomer = true;
+            }
             case PORTABILITY -> driverWeb.javaScriptClick(fluxoPortabilidade);
             case ACQUISITION -> driverWeb.javaScriptClick(fluxoAquisicao);
         }
 
         driverWeb.actionPause(3000);
-        validarPrecoCampanhaAparelho();
+        if (!claroCustomer || userLogged) { //Não valida apenas no fluxo de base antes de realizar login
+            validarPrecoCampanhaAparelho();
+        }
     }
 
     public void validarPopoverLogin() {
@@ -344,7 +361,8 @@ public class PdpAparelhosPage {
         driverWeb.javaScriptClick("btn-acessar", "id");
     }
 
-    public void validarPdpAposLogin(CartOrder.Essential.User.ClaroSubscription claroSubscription) {
+    public void validarPdpAposLogin(ClaroSubscription claroSubscription) {
+        userLogged = true;
         String planNameRef;
 
         //Opções para cliente Claro
@@ -365,7 +383,9 @@ public class PdpAparelhosPage {
         }
 
         //Seção Plano atual
-        validateElementText(planNameRef, driverWeb.findByXpath("//div[contains(@class, 'js-is-logged')]/div[2]/p[1]"));
+        WebElement customerPlan = driverWeb.findByXpath("//div[contains(@class, 'js-is-logged')]/div[2]/p[1]");
+        driverWeb.javaScriptScrollTo(customerPlan);
+        validateElementText(planNameRef, customerPlan);
 
         //Preço Aparelho
         validarPrecoCampanhaAparelho();
@@ -373,7 +393,7 @@ public class PdpAparelhosPage {
 
     public void selecionarMudarMeuPlano() {
         driverWeb.javaScriptClick(mudarMeuPlano);
-        driverWeb.waitElementVisible(plataforma, 5);
+        driverWeb.waitElementVisible(driverWeb.waitElementPresence("//*[@id='slc-plataforma-plano']", 4), 5);
     }
 
     public void selecionarManterPlanoFid() {

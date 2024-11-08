@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
+import org.jsoup.HttpStatusException;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.models.product.Product;
@@ -321,30 +322,35 @@ public class CartOrder {
         return essential.user;
     }
 
-    public void populateCustomerProductDetails() {
-        JsonNode response = getCustomerProductDetails(essential.user.claroTelephone);
+    public void populateCustomerProductDetails() throws HttpStatusException {
+        JsonNode response = customerProductDetailsRequest(essential.user.claroTelephone);
+        JsonNode productNodeResponse = response.path("product");
 
         //User
-        getUser().name = response.get("product").get("customerName").toString();
+        getUser().name = productNodeResponse.get("customerName").asText();
         getUser().displayName = essential.user.name;
-        getUser().cpf = response.get("product").get("cpf").toString();
+        getUser().cpf = productNodeResponse.get("cpf").asText();
 
         if (response.get("discountValue") != null) {
             getUser().claroClubBalance = response.get("discountValue").asDouble();
         }
 
         //User.ClaroSubscription
+        JsonNode planPriceNodeResponse = productNodeResponse.path("planPrice");
         getUser().claroSubscription = new Essential.User.ClaroSubscription();
-        JsonNode planPrice = response.get("product").get("planPrice");
-        getUser().claroSubscription.planTypePrice = planPrice.get("planTypePrice").toString();
+        getUser().claroSubscription.planTypePrice = planPriceNodeResponse.get("planTypePrice").asText();
 
         if (!getUser().claroSubscription.planTypePrice.equals("PRE_PAGO")) {
-            getUser().claroSubscription.claroPlan = planPrice.get("id").toString();
-            getUser().claroSubscription.claroPlanName = planPrice.get("name").toString();
-            getUser().claroSubscription.claroPlanPrice = planPrice.get("planValue").asDouble();
-            getUser().claroSubscription.claroMonthlyPrice = response.get("product").get("netSubscriberValue").asDouble();
-            getUser().claroSubscription.customerMobileSubType = response.get("product").get("customerMobileSubType").toString();
+            getUser().claroSubscription.claroPlan = planPriceNodeResponse.get("id").asText();
+            getUser().claroSubscription.claroPlanName = planPriceNodeResponse.get("name").asText();
+            getUser().claroSubscription.claroPlanPrice = planPriceNodeResponse.get("planValue").asDouble();
+            getUser().claroSubscription.claroMonthlyPrice = productNodeResponse.get("netSubscriberValue").asDouble();
+            getUser().claroSubscription.customerMobileSubType = productNodeResponse.get("customerMobileSubType").asText();
             getUser().claroSubscription.loyalty = response.get("loyalty") != null;
+
+            updatePlanAndDevicePrice(getUser().getClaroSubscription().getClaroPlan());
+        } else {
+            updatePlanAndDevicePrice(focusPlan); //Para cliente Pré será exibido apenas planos Controle, com o focusPlan setado por padrão (considerando que o plano foco é o primeiro Controle)
         }
 
         //Address

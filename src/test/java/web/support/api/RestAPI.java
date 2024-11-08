@@ -1,10 +1,12 @@
 package web.support.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import web.support.utils.Constants.Email;
@@ -24,12 +26,16 @@ public final class RestAPI {
     private RestAPI() {}
 
     public static final HttpClient clientHttp = HttpClient.newHttpClient();
-
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
-
     public static final ObjectMapper objMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+
+    private static void validateStatusCodeOk(String message, int status, String url) throws HttpStatusException {
+        if (status != 200) {
+            throw new HttpStatusException("Erro na API de Login. Response Body=" + message, status, url);
+        }
+    }
 
     public static String getCpf() {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
@@ -224,7 +230,7 @@ public final class RestAPI {
 
     private static String getApigeeToken(String basic) {
         final HttpRequest apigeeTokenRequest = HttpRequest.newBuilder()
-                .uri(URI.create("https://test.apigw.claro.com.br/oauth2/v1/token")) //Necessário VPN (local) ou liberação de acesso (Jenkins/Bstack)
+                .uri(URI.create("https://test.apigw.claro.com.br/oauth2/v1/token"))
                 .timeout(ofSeconds(10))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .header("Authorization", "Basic " + basic)
@@ -235,26 +241,36 @@ public final class RestAPI {
             String response = clientHttp.send(apigeeTokenRequest, HttpResponse.BodyHandlers.ofString()).body();
             return objMapper.readTree(response).get("access_token").asText();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Verificar conexao com a VPN (local) ou liberacao de acesso (Jenkins/Bstack).\n" + e);
         }
     }
 
-    public static JsonNode getCustomerProductDetails(String msisdn) {
-        final HttpRequest customersProductDetailsRequest = HttpRequest.newBuilder()
+    public static JsonNode customerProductDetailsRequest(String msisdn) throws HttpStatusException {
+        final HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://test.apigw.claro.com.br/mobile/v1/customers/productdetails")) //Necessário VPN (local) ou liberação de acesso (Jenkins/Bstack)
-                .timeout(ofSeconds(10))
+                .timeout(ofSeconds(15))
                 .header("Authorization", "Bearer " + getApigeeToken("V09Dc0xwNmZwMmNWdVpQWkZvVklqQTJNZUFWdnpuR2k6M1pUbzdmT0hvZGZ6R3BDRg=="))
                 .header("Accept", "application/json")
                 .header("X-QueryString", "msisdn=" + msisdn)
                 .GET()
                 .build();
 
+        HttpResponse<String> response;
         try {
-            String response = clientHttp.send(customersProductDetailsRequest, HttpResponse.BodyHandlers.ofString()).body();
-            System.out.println(response);
-            return objMapper.readTree(response).get("data");
+            response = clientHttp.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        validateStatusCodeOk(response.body(), response.statusCode(), response.uri().toASCIIString());
+
+        JsonNode jnode;
+        try {
+            jnode = objMapper.readTree(response.body());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return jnode.path("data");
     }
 }

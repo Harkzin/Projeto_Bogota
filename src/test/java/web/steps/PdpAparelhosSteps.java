@@ -3,6 +3,7 @@ package web.steps;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
+import org.jsoup.HttpStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PdpAparelhosPage;
 import web.models.CartOrder;
@@ -73,13 +74,12 @@ public class PdpAparelhosSteps  {
 
     @Quando("clicar no botão [Acessar] do popover")
     public void clicaEmAcessar() {
-        cart.populateCustomerProductDetails();
-        cart.updatePlanAndDevicePrice(cart.getUser().getClaroSubscription().getClaroPlan());
         pdpAparelhosPage.clicaAcessarLogin();
     }
 
     @Entao("é exibido as opções e informações para cliente claro")
-    public void deveExibirInformacoesClienteClaro() {
+    public void deveExibirInformacoesClienteClaro() throws HttpStatusException {
+        cart.populateCustomerProductDetails();
         pdpAparelhosPage.validarPdpAposLogin(cart.getUser().getClaroSubscription());
     }
 
