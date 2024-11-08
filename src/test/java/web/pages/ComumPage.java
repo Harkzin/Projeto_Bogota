@@ -262,15 +262,15 @@ public class ComumPage {
             String rentabilizationPriceRef = String.format("por R$ %s /mês", totalPriceFormattedRef);
             validateElementText(rentabilizationPriceRef, planPrice.findElement(By.xpath("..")));
 
-            mobilePriceSummaryHeaderRef = String.format("De %s | R$ %s", basePriceFormattedRef, totalPriceFormattedRef);
+            mobilePriceSummaryHeaderRef = String.format("De %s | R$%s", basePriceFormattedRef, totalPriceFormattedRef);
         } else { //Cart comum
             validateElementText(totalPriceFormattedRef, planPrice);
-            mobilePriceSummaryHeaderRef = String.format(" | %s", totalPriceFormattedRef);
+            mobilePriceSummaryHeaderRef = String.format("| R$%s", totalPriceFormattedRef);
         }
 
         //Valida preço no header do Resumo mobile
         if (driverWeb.isMobile() && !cart.isDeviceCart()) {
-            //TODO ECCMAUT-1408 validateElementText(mobilePriceSummaryHeaderRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='price-mobile']"));
+            validateElementText(mobilePriceSummaryHeaderRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='price-mobile']"));
         }
 
         driverWeb.actionPause(500);
