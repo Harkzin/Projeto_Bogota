@@ -44,22 +44,36 @@ public class ConsultaCPFMSISDN {
                     .filter(m -> m.status.equals("ativo") && m.segmento.equalsIgnoreCase("portabilidade"))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("Nenhuma massa ativa encontrada para o segmento 'portabilidade'"));
+
             updateMassaStatus(massas, massa);
+
             massasConsultadas.add(massa);
             return massa.msisdn;
+
         } catch (IOException e) {
             throw new RuntimeException("Erro ao consultar dados de portabilidade: " + e.getMessage(), e);
+        } catch (RuntimeException e) {
+            restaurarStatusPosCenario(null, "", false);
+            throw e;
+        } finally {
+            restaurarStatusPosCenario(null, "", false);
         }
     }
 
-    public static void restaurarStatusPosCenario(Scenario scenario, String url, boolean hasErrorPasso1) {
-        if (url.contains("/checkout/orderConfirmation")) {
-            restoreStatus("queimada");
-        } else if (hasErrorPasso1) {
-            restoreStatus("erroPasso1");
-        } else {
-            restoreStatus("ativo");
-        }
+    private static List<Predicate<Massas.Massa>> createFilters(String segmento, String formaPagamento, String formaEnvio,
+                                                               String combo, String multaServico, String multaAparelho,
+                                                               String claroClube, String crivo) {
+        List<Predicate<Massas.Massa>> filters = new ArrayList<>();
+        filters.add(m -> m.status.equals("ativo"));
+        filters.add(m -> m.segmento.equals(segmento));
+        filters.add(m -> m.formaPagamento.equals(formaPagamento));
+        filters.add(m -> m.formaEnvio.equals(formaEnvio));
+        filters.add(m -> m.comboMulti.equals(combo));
+        filters.add(m -> m.multaServico == Boolean.parseBoolean(multaServico));
+        filters.add(m -> m.multaAparelho == Boolean.parseBoolean(multaAparelho));
+        filters.add(m -> m.claroClube == Boolean.parseBoolean(claroClube));
+        filters.add(m -> m.crivo.equals(crivo));
+        return filters;
     }
 
     private static Massas loadMassas() throws IOException {
@@ -77,25 +91,14 @@ public class ConsultaCPFMSISDN {
                 .orElseThrow(() -> new RuntimeException("Nenhuma massa liberada encontrada"));
     }
 
-    private static List<Predicate<Massas.Massa>> createFilters(String segmento, String formaPagamento, String formaEnvio,
-                                                               String combo, String multaServico, String multaAparelho,
-                                                               String claroClube, String crivo) {
-        List<Predicate<Massas.Massa>> filters = new ArrayList<>();
-        filters.add(m -> m.status.equals("ativo"));
-        filters.add(m -> m.segmento.equals(segmento));
-        filters.add(m -> m.formaPagamento.equals(formaPagamento));
-        filters.add(m -> m.formaEnvio.equals(formaEnvio));
-        filters.add(m -> m.comboMulti.equals(combo));
-        addOptionalFilters(filters, multaServico, multaAparelho, claroClube, crivo);
-        return filters;
-    }
-
-    private static void addOptionalFilters(List<Predicate<Massas.Massa>> filters, String multaServico, String multaAparelho,
-                                           String claroClube, String crivo) {
-        if (multaServico != null) filters.add(m -> m.multaServico == Boolean.parseBoolean(multaServico));
-        if (multaAparelho != null) filters.add(m -> m.multaAparelho == Boolean.parseBoolean(multaAparelho));
-        if (claroClube != null) filters.add(m -> m.claroClube == Boolean.parseBoolean(claroClube));
-        if (crivo != null) filters.add(m -> m.crivo.equals(crivo));
+    public static void restaurarStatusPosCenario(Scenario scenario, String url, boolean hasErrorPasso1) {
+        if (url.contains("/checkout/orderConfirmation")) {
+            restoreStatus("queimada");
+        } else if (hasErrorPasso1) {
+            restoreStatus("erroPasso1");
+        } else {
+            restoreStatus("ativo");
+        }
     }
 
     private static void restoreStatus(String status) {
