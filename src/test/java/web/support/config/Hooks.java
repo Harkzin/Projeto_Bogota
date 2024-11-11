@@ -2,18 +2,27 @@ package web.support.config;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
+import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.springframework.beans.factory.annotation.Autowired;
+import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
 public class Hooks {
 
     private final DriverWeb driverWeb;
+    private final CartOrder cartOrder;
 
     @Autowired
-    public Hooks(DriverWeb driverWeb) {
+    public Hooks(DriverWeb driverWeb, CartOrder cartOrder) {
         this.driverWeb = driverWeb;
+        this.cartOrder = cartOrder;
+    }
+
+    @After(order = 3, value = "@Portabilidade or @Migracao or @Troca or @DepPort")
+    public void atualizarStatusMassa(Scenario scenario) {
+        ConsultaCPFMSISDN.restaurarStatusPosCenario(scenario, driverWeb.getDriver().getCurrentUrl(), cartOrder.hasErrorPasso1);
     }
 
     @After(order = 2)
@@ -31,7 +40,7 @@ public class Hooks {
     @After(order = 1)
     public void closeBrowser() {
         if (System.getProperty("api", "false").equals("false")) {
-            driverWeb.getDriver().quit();
+//            driverWeb.getDriver().quit();
         }
     }
 }

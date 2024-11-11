@@ -32,6 +32,7 @@ public class CartOrder {
 
     public boolean isDebitPaymentFlow;
     public boolean hasLoyalty = true;
+    public boolean hasErrorPasso1 = false;
 
     private final Essential essential;
     private final PositionsAndPrices positionsAndPrices;

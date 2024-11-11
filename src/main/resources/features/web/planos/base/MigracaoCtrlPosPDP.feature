@@ -4,7 +4,6 @@
 Funcionalidade: ECCMAUT-258 - Migracao Controle para Pos - PDP
 
   #Massa: Controle - pagamento boleto - fatura impressa
-
   @Migracao
   @Pos
   @MigracaoCtrlPosPDP
@@ -27,7 +26,7 @@ Funcionalidade: ECCMAUT-258 - Migracao Controle para Pos - PDP
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "11947727032", [E-mail] e [CPF] "68647989848"
+    E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura

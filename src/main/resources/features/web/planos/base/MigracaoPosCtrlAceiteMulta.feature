@@ -4,7 +4,6 @@
 Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de Multa
 
   #Massa: Pós - pagamento boleto - fatura correios
-
   @Migracao
   @Controle
   @MigracaoPosCtrlAceiteMulta
@@ -15,7 +14,7 @@ Funcionalidade: ECCMAUT-491 - Migracao - Downgrade Pos - Controle com Aceite de 
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de troca de Plano
-    E preenche os campos: [Telefone com DDD] "11947726648", [E-mail] e [CPF] "73431972829"
+    E preenche os campos: [Telefone com DDD] "Pos" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "true" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então será exibido o modal [Aviso Troca de Plano]

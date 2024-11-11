@@ -23,7 +23,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
     Entao é direcionado para a tela de Carrinho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais

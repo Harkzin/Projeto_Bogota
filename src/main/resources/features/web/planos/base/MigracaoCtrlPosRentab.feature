@@ -10,11 +10,11 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
   @MigracaoCtrlPosRentab
   Cenario: Migracao Controle Pos - Rentabilizacao
     Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=2f32ad67fb014807268c284b61facdfd&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
-    E preenche os campos: [Telefone com DDD] "11940660390", [E-mail] e [CPF] "36163924894"
+    E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
-      #Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
       E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
       E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
       E deve ser exibido as datas de vencimento
