@@ -52,9 +52,6 @@ public class ConsultaCPFMSISDN {
 
         } catch (IOException e) {
             throw new RuntimeException("Erro ao consultar dados de portabilidade: " + e.getMessage(), e);
-        } catch (RuntimeException e) {
-            restaurarStatusPosCenario(null, "", false);
-            throw e;
         } finally {
             restaurarStatusPosCenario(null, "", false);
         }
