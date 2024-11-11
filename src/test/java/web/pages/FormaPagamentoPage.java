@@ -97,11 +97,11 @@ public class FormaPagamentoPage {
     }
 
     public void clicarAbaPix() {
-        driverWeb.javaScriptClick(driverWeb.findById("tab-pix"));
+        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-pix']/div"));
     }
 
     public void clicarAbaCartaoDeCredito() {
-        driverWeb.javaScriptClick(driverWeb.findById("tab-cartao"));
+        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-cartao']/div"));
     }
 
     public void validarFinalizaPix() {

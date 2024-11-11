@@ -83,8 +83,13 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
     Entao será direcionado para a tela [Forma de Pagamento]
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+
+    Quando o usuário clicar na aba [Pix]
+    Então será exibido o botão de [Finalizar pedido com Pix]
+
+    Quando o usuário clicar na aba [Cartão de crédito]
     E o usuário clicar no botão [Adicionar cartão de crédito]
-    E será exibido o iframe de pagamento do cartão
+    Então será exibido o iframe de pagamento do cartão
     E preenche os dados do cartão: [Nome] "ECCMAUT MIGRA PRE CTRL", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "2"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
@@ -92,3 +97,5 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
+
+
