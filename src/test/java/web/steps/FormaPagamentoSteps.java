@@ -55,9 +55,19 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.clicarAbaPix();
     }
 
+    @Quando("o usuário clicar na aba [Cartão de crédito]")
+    public void clicarCartaoDeCredito() {
+        formaPagamentoPage.clicarAbaCartaoDeCredito();
+    }
+
     @Entao("será exibido o iframe de pagamento do cartão")
     public void exibeIframe() {
         formaPagamentoPage.validarIframe();
+    }
+
+    @Entao("será exibido o botão de [Finalizar pedido com Pix]")
+    public void exibeBotaoFinalizaPix() {
+        formaPagamentoPage.validarFinalizaPix();
     }
 
     @E("preenche os dados do cartão: [Nome] {string}, [Número] {string}, [Data de validade] {string}, [CVV] {string} e [Parcelas] {string}")
