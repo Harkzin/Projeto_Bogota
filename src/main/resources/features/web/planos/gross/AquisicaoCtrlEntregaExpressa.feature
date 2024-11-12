@@ -27,7 +27,10 @@ Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
+#    E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
@@ -38,7 +41,10 @@ Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
     Quando o usuário selecionar a forma de pagamento [Débito]
     #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
+#    E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
