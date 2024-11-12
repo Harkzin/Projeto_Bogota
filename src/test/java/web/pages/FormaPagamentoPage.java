@@ -2,7 +2,6 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -98,16 +97,8 @@ public class FormaPagamentoPage {
         driverWeb.javaScriptClick(adicionarCartao);
     }
 
-    public void clicarAbaPix() {
-        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-pix']/div"));
-    }
-
     public void clicarAbaCartaoDeCredito() {
         driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-cartao']/div"));
-    }
-
-    public void validarFinalizaPix() {
-        driverWeb.waitElementVisible(finalizarPix, 10);
     }
 
     public void validarIframe() {
