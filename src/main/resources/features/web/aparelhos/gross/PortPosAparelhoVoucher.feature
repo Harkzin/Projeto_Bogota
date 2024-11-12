@@ -71,9 +71,6 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
 
-    Quando o usuário clicar na aba [Pix]
-    Então será exibido o botão de [Finalizar pedido com Pix]
-
     Quando o usuário clicar na aba [Cartão de crédito]
     E o usuário adicionar o cupom "CUPOM100" e clicar no botão [Aplicar]
     Então o Aparelho receberá o desconto do cupom

@@ -57,6 +57,8 @@ public class FormaPagamentoPage {
         validateElementActiveVisible(adicionarCartao);
 
         assertFalse(finalizarPix.isDisplayed());
+        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-pix']/div"));
+        driverWeb.waitElementVisible(finalizarPix, 10);
     }
 
     public void validarPaginaFormaPagamentoAcessorios() {
@@ -106,7 +108,6 @@ public class FormaPagamentoPage {
 
     public void validarFinalizaPix() {
         driverWeb.waitElementVisible(finalizarPix, 10);
-        Assert.assertTrue(finalizarPix.isDisplayed());
     }
 
     public void validarIframe() {
