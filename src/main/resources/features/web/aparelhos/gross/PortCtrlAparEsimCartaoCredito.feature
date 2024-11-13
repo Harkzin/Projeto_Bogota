@@ -74,7 +74,6 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
 
-    Quando o usuário clicar na aba [Cartão de crédito]
     E o usuário clicar no botão [Adicionar cartão de crédito]
     Então será exibido o iframe de pagamento do cartão
     E preenche os dados do cartão: [Nome] "ECCOM APROV", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
