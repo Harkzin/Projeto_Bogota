@@ -51,7 +51,7 @@ public class FormaPagamentoSteps {
     }
 
     @Quando("o usuário clicar na aba [Pix]")
-    public void clicarPix() {
+    public void clicarAbaPix() {
         formaPagamentoPage.clicarAbaPix();
     }
 

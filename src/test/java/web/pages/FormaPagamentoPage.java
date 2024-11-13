@@ -54,8 +54,12 @@ public class FormaPagamentoPage {
         validateElementActiveVisible(cupom);
         validateElementActiveVisible(aplicarCupom);
         validateElementActiveVisible(adicionarCartao);
-
         assertFalse(finalizarPix.isDisplayed());
+
+        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-pix']/div"));
+        driverWeb.waitElementVisible(finalizarPix, 5);
+        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='tab-cartao']/div"));
+        driverWeb.waitElementVisible(adicionarCartao, 5);
     }
 
     public void validarPaginaFormaPagamentoAcessorios() {
@@ -95,8 +99,9 @@ public class FormaPagamentoPage {
         driverWeb.javaScriptClick(adicionarCartao);
     }
 
-    public void clicarAbaPix() {
-        driverWeb.javaScriptClick(driverWeb.findById("tab-pix"));
+    public void clicarAbaPix(){
+        driverWeb.javaScriptClick("//*[@id='tab-pix']/div", "xpath");
+        driverWeb.waitElementVisible(finalizarPix, 5);
     }
 
     public void validarIframe() {
