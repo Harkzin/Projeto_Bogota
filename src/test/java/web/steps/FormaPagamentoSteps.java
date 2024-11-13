@@ -70,7 +70,7 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.clicarFinalizarPix();
     }
 
-    @E("o usuário clicar na aba [Pix]")
+    @Quando("o usuário clicar na aba [Pix]")
     public void clicarAbaPix() {
         formaPagamentoPage.clicarAbaPix();
     }

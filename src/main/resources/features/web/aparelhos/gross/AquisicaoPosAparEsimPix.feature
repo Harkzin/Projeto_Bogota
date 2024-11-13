@@ -74,7 +74,7 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos Aparelho - eSIM - Pix
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
 
-    E o usuário clicar na aba [Pix]
+    Quando o usuário clicar na aba [Pix]
     E clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]
     Então é direcionado para a tela de Parabéns Pix
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
