@@ -136,6 +136,11 @@ public class CarrinhoSteps {
     public void validarModalAvisoTrocaPlano() {
         carrinhoPage.validarModalAvisoTrocaPlano();
     }
+    
+    @Entao("exibe a mensagem: O número informado não está ativo")
+    public void validarMensagemNumeroNaoAtivo() {
+        carrinhoPage.validarMensagemNumeroNaoAtivo();
+    }
 
     @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
     public void clicarEmAvisoTrocaPlano() {
