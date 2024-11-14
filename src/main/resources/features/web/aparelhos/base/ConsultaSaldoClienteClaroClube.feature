@@ -17,7 +17,7 @@ Funcionalidade: ECCMAUT-193 - Consulta de saldo Claro Clube - Cliente  Claro Clu
     Quando o usuário clicar no botão [Continuar] Claro Clube
     Então é direcionado para a tela de opções de token
 
-    Quando selecionar a opção [Receber código por e-mail] no e-mail "64475126aec442ce9ec10eb61a44bdd3@mailsac.com"
+    Quando o usuário selecionar a opção [Receber código por e-mail] no e-mail "64475126aec442ce9ec10eb61a44bdd3@mailsac.com"
     Então é direcionado para a tela de token por email
     E preenche o campo [Digite o código recebido] com o token
 
