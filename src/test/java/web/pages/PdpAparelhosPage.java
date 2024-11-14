@@ -3,6 +3,7 @@ package web.pages;
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -57,6 +58,9 @@ public class PdpAparelhosPage {
 
     @FindBy(xpath = "//*[@id='rdn-mudar-plano']/..")
     private WebElement paiMudarMeuPlano;
+
+    @FindBy(xpath = "//*[@id='txt-telefone-login']/following-sibling::small")
+    private WebElement erroDependente;
 
     private boolean prePaidPlanSelected;
 
@@ -289,7 +293,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarPopoverLogin() {
-        driverWeb.waitElementPresence("//div[@class='popover fade bottom in' and @role='tooltip']", 10);
+        driverWeb.waitElementPresence("//*[@id='mobile-login-not-consulted-modall' and contains(@class, 'mdn-isOpen')]", 10);
         driverWeb.waitElementVisible(campoTelefoneLogin,20);
     }
 
@@ -333,5 +337,10 @@ public class PdpAparelhosPage {
 
     public void clicarComprar(String deviceId) {
         driverWeb.javaScriptClick("btn-eu-quero-" + deviceId, "id");
+    }
+
+    public void validaMsgErroDependente(String msgExibida) {
+        driverWeb.waitElementPresence("//*[@id='txt-telefone-login']/following-sibling::small", 20);
+        Assert.assertTrue(erroDependente.getText().contains(msgExibida));
     }
 }
