@@ -41,6 +41,6 @@ public class Hooks {
     public void closeBrowser() {
         if (System.getProperty("api", "false").equals("false")) {
             driverWeb.getDriver().quit();
-        }g
+        }
     }
 }
