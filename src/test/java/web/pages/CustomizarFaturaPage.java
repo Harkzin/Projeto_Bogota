@@ -40,9 +40,11 @@ public class CustomizarFaturaPage {
     private WebElement agencia;
     private WebElement conta;
     private WebElement whatsappDebit;
+    private WebElement appDebit;
     private WebElement emailDebit;
     private WebElement correiosDebit;
     private WebElement whatsappTicket;
+    private WebElement appTicket;
     private WebElement emailTicket;
     private WebElement correiosTicket;
 
@@ -110,20 +112,24 @@ public class CustomizarFaturaPage {
 
     public void validarTiposFatura(boolean exibe, boolean isDebitPaymentFlow, boolean isThab) {
         whatsappDebit = driverWeb.findElement("rdn-whatsapp-debit", "id");
-        emailDebit = driverWeb.findElement("rdn-email-debit", "id");
-        correiosDebit = driverWeb.findElement("rdn-correios-debit", "id");
+        appDebit = driverWeb.findElement("rdn-app-debit", "id");
+        emailDebit = driverWeb.findElement("rdn-digital-debit", "id");
+        correiosDebit = driverWeb.findElement("rdn-printed-debit", "id");
 
         whatsappTicket = driverWeb.findElement("rdn-whatsapp-ticket", "id");
-        emailTicket = driverWeb.findElement("rdn-email-ticket", "id");
-        correiosTicket = driverWeb.findElement("rdn-correios-ticket", "id");
+        appTicket = driverWeb.findElement("rdn-app-ticket", "id");
+        emailTicket = driverWeb.findElement("rdn-digital-ticket", "id");
+        correiosTicket = driverWeb.findElement("rdn-printed-ticket", "id");
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {
                 Assert.assertTrue("Exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura App débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertTrue("Exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertTrue("Exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             } else {
                 Assert.assertFalse("Não exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura App débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertFalse("Não exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertFalse("Não exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             }
@@ -132,6 +138,7 @@ public class CustomizarFaturaPage {
         Consumer<Boolean> assertTicket = isDisplayed -> {
             if (isDisplayed) {
                 Assert.assertTrue("Exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertTrue("Exibe fatura App boleto", appTicket.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertTrue("Exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
                 if (isThab) {
                     Assert.assertNull("Não deve existir no html", correiosTicket);
@@ -140,6 +147,7 @@ public class CustomizarFaturaPage {
                 }
             } else {
                 Assert.assertFalse("Não exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                Assert.assertFalse("Não exibe fatura App boleto", appTicket.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertFalse("Não exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
                 Assert.assertFalse("Não exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
             }
@@ -147,12 +155,14 @@ public class CustomizarFaturaPage {
 
         Runnable assertDebitNull = () -> {
             Assert.assertNull("Não deve existir no html", whatsappDebit);
+            Assert.assertNull("Não deve existir no html", appDebit);
             Assert.assertNull("Não deve existir no html", emailDebit);
             Assert.assertNull("Não deve existir no html", correiosDebit);
         };
 
         Runnable assertTicketNull = () -> {
             Assert.assertNull("Não deve existir no html", whatsappTicket);
+            Assert.assertNull("Não deve existir no html", appTicket);
             Assert.assertNull("Não deve existir no html", emailTicket);
             Assert.assertNull("Não deve existir no html", correiosTicket);
         };
@@ -246,6 +256,7 @@ public class CustomizarFaturaPage {
             case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
             case DIGITAL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
             case PRINTED -> driverWeb.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
+            case APP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? appDebit : appTicket);
         }
         driverWeb.actionPause(3000);
     }
