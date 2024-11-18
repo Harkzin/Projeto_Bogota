@@ -132,4 +132,9 @@ public class HomePage {
     public void acessarMenuAcessorios() {
         driverWeb.javaScriptClick("//*[@id='tab-acessorios']/a", "xpath");
     }
+    
+    public void acessarPlpControle() {
+        abrirMenuMobile();
+        driverWeb.javaScriptClick("//*[@id='tab-controle']/a", "xpath");
+    }
 }
