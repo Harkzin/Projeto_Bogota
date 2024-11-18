@@ -1,22 +1,26 @@
 package web.pages;
 
-import io.cucumber.spring.ScenarioScope;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Consumer;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.cucumber.spring.ScenarioScope;
 import web.models.CartOrder;
+import static web.support.api.RestAPI.getBankAccount;
 import web.support.utils.Constants;
 import web.support.utils.Constants.PaymentMode;
-import web.support.utils.DriverWeb;
-
 import static web.support.utils.Constants.ProcessType.MIGRATE;
-import static web.support.api.RestAPI.getBankAccount;
-
-import java.util.*;
-import java.util.function.Consumer;
+import web.support.utils.DriverWeb;
 
 @Component
 @ScenarioScope
@@ -41,10 +45,14 @@ public class CustomizarFaturaPage {
     private WebElement conta;
     private WebElement whatsappDebit;
     private WebElement emailDebit;
+    private WebElement digitalDebit;
     private WebElement correiosDebit;
+    private WebElement printedDebit;
     private WebElement whatsappTicket;
     private WebElement emailTicket;
+    private WebElement digitalTicket;
     private WebElement correiosTicket;
+    private WebElement printedTicket;
 
     private WebElement concordo;
 
@@ -111,11 +119,15 @@ public class CustomizarFaturaPage {
     public void validarTiposFatura(boolean exibe, boolean isDebitPaymentFlow, boolean isThab) {
         whatsappDebit = driverWeb.findElement("rdn-whatsapp-debit", "id");
         emailDebit = driverWeb.findElement("rdn-email-debit", "id");
+        digitalDebit = driverWeb.findElement("rdn-digital-debit", "id");//Elemento Id implementado na Task ECCMAUT-145
         correiosDebit = driverWeb.findElement("rdn-correios-debit", "id");
+        printedDebit = driverWeb.findElement("rdn-printed-debit", "id");//Elemento Id implementado na Task ECCMAUT-145
 
         whatsappTicket = driverWeb.findElement("rdn-whatsapp-ticket", "id");
-        emailTicket = driverWeb.findElement("rdn-email-ticket", "id");
-        correiosTicket = driverWeb.findElement("rdn-correios-ticket", "id");
+        // emailTicket = driverWeb.findElement("rdn-email-ticket", "id");
+        digitalTicket = driverWeb.findElement("rdn-digital-ticket", "id");//Elemento Id implementado na Task ECCMAUT-145
+        // correiosTicket = driverWeb.findElement("rdn-correios-ticket", "id");
+        printedTicket = driverWeb.findElement("rdn-printed-ticket", "id");//Elemento Id implementado na Task ECCMAUT-145
 
         Consumer<Boolean> assertDebit = isDisplayed -> {
             if (isDisplayed) {
@@ -188,37 +200,39 @@ public class CustomizarFaturaPage {
     public void validarDatasVencimento(boolean exibe, boolean isDebitPaymentFlow) {
         WebElement datasDebit = driverWeb.findElement("datas-vencimento-debit", "id");
         WebElement datasTicket = driverWeb.findElement("datas-vencimento-ticket", "id");
-
-        if (exibe) { //fluxo gross ou base em migra pré-ctrl e ctrl-pós
+        if (exibe) { // fluxo gross ou base em migra pré-ctrl e ctrl-pós
             List<WebElement> dias;
-
             if (isDebitPaymentFlow) {
                 Assert.assertTrue(datasDebit.isDisplayed());
                 Assert.assertFalse(datasTicket.isDisplayed());
 
-                dias = datasDebit.findElements(By.tagName("span"));
+                // Alterando de span para option para atender o ECCMAUT145
+                dias = datasDebit.findElements(By.tagName("option"));
             } else {
                 Assert.assertFalse(datasDebit.isDisplayed());
                 Assert.assertTrue(datasTicket.isDisplayed());
-
-                dias = datasTicket.findElements(By.tagName("span"));
+                dias = datasTicket.findElements(By.tagName("option"));
             }
 
-            Assert.assertEquals("Seis datas de vencimento devem existir", 6, dias.size());
+            // Verifica que há exatamente 6 opções
+            Assert.assertEquals("Seis datas de vencimento devem existir", 6, dias.size()-1);
 
             int selected = 0;
             for (WebElement diaVencimento : dias) {
-                WebElement input = diaVencimento.findElement(By.tagName("input"));
-                WebElement label = diaVencimento.findElement(By.tagName("label"));
-                int dia = Integer.parseInt(label.getText());
+                if (!diaVencimento.getText().equalsIgnoreCase("Selecione")) {  // Ignora a opção 'Selecione'
+                    int dia = Integer.parseInt(diaVencimento.getText().trim());
 
-                Assert.assertTrue(label.isDisplayed());
-                Assert.assertTrue("Número exibido deve ser umm dia do mês", dia >= 1 && dia <= 31);
-                if (input.isSelected()) selected++;
+                    // Valida o dia do mês
+                    Assert.assertTrue("Número exibido deve ser um dia do mês", dia >= 1 && dia <= 31);
+
+                    // Conta as opções selecionadas
+                    if (diaVencimento.isSelected()) selected++;
+                }
             }
 
+            // Verifica se apenas uma data está selecionada
             Assert.assertEquals("Apenas uma data selecionada", 1, selected);
-        } else { //fluxo base em troca de plano mesma plataforma (ctrl-ctrl e pos-pos)
+        } else { // fluxo base em troca de plano mesma plataforma (ctrl-ctrl e pos-pos)
             Assert.assertNull(datasDebit);
             Assert.assertNull(datasTicket);
         }
@@ -249,7 +263,7 @@ public class CustomizarFaturaPage {
         }
         driverWeb.actionPause(3000);
     }
-
+    
     public void preencherDadosBancarios() {
         HashMap<Integer, String> banks = new HashMap<>();
         banks.put(1, "001"); //Banco do Brasil

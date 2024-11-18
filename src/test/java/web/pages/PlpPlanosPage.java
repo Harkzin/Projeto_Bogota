@@ -1,17 +1,18 @@
 package web.pages;
 
-import io.cucumber.spring.ScenarioScope;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.cucumber.spring.ScenarioScope;
 import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 @ScenarioScope
@@ -90,4 +91,47 @@ public class PlpPlanosPage {
     public void selecionarPlano(String id) {
         driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
     }
+    public void validarPopUpControleFacil() {
+        // Localiza o pop-up de planos Controle Fácil
+        WebElement popUp = driverWeb.findElement("(//div[@class='mdn-Modal-content'])[4]", "xpath");
+        
+        // Verifica se o pop-up está visível
+    Assert.assertTrue("No momento, o plano que escolheu não está disponível para você. Mas que tal essa oferta pagando com cartão de crédito?", popUp.isDisplayed());
+
+    // Valida o título do pop-up, se necessário
+    WebElement tituloPopUp = popUp.findElement(By.xpath(".//h3"));
+    String textoEsperado = "18GB";
+    Assert.assertEquals("O título do pop-up não corresponde ao esperado", textoEsperado, tituloPopUp.getText().trim());
+
+    // Localiza e valida o texto "15GB no Plano"
+    WebElement planoGb = popUp.findElement(By.xpath(".//p[contains(@class, 'portabilidade') and text()='15GB no Plano']"));
+    Assert.assertTrue("O texto '15GB no Plano' não está visível.", planoGb.isDisplayed());
+
+    // Localiza e valida o texto "5GB Bônus na portabilidade"
+    WebElement bonusGb = popUp.findElement(By.xpath(".//p[contains(@class, 'portabilidade') and text()='5GB Bônus na portabilidade']"));
+    Assert.assertTrue("O texto '5GB Bônus na portabilidade' não está visível.", bonusGb.isDisplayed());
+
+    // Localiza e valida o valor do plano (ex.: R$ 54,90)
+    WebElement valorPlano = popUp.findElement(By.xpath("//dl[@class='mdn-Price']//dd[@class='mdn-Price-price']"));
+    Assert.assertTrue("O valor do plano 'R$ 54,90' não está visível.", valorPlano.isDisplayed());
+
+    // Validação final do valor mensal (ex.: "/mês")
+    WebElement valorMes = popUp.findElement(By.xpath(".//span[@class='mdn-Price-price-period' and contains(text(), '/mês')]"));
+    Assert.assertTrue("O período '/mês' do valor do plano não está visível.", valorMes.isDisplayed());
+}
+    
+public void clicarNoPopUp() {
+    driverWeb.javaScriptClick("buttonModalControleFacil", "id");
+}
+public void clicarNoBotãoBoleto() {
+    // Localiza o elemento "Boleto" e o clica usando JavaScript
+    driverWeb.actionPause(3000);
+    driverWeb.javaScriptClick("//div[normalize-space()='Boleto']", "xpath");
+}
+public void clicarNoBotãoDebitoAlt() {
+    // Localiza o elemento "Debito" e o clica usando JavaScript
+    driverWeb.actionPause(3000);
+    driverWeb.javaScriptClick("//div[normalize-space()='Débito automático']", "xpath");
+    driverWeb.actionPause(9000);
+}
 }

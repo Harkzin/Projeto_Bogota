@@ -1,13 +1,13 @@
 package web.steps;
 
-import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Mas;
 import org.springframework.beans.factory.annotation.Autowired;
-import web.pages.ComumPage;
-import web.models.CartOrder;
 
-import static web.support.utils.Constants.*;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Mas;
+import web.models.CartOrder;
+import web.pages.ComumPage;
+import static web.support.utils.Constants.planSingleToCombo;
 
 public class ComumSteps {
 
@@ -23,6 +23,14 @@ public class ComumSteps {
     @Mas("não deve haver alterações no valor e nem nas informações do Plano")
     public void validarResumoCompraPlano() {
         comumPage.validarResumoCompraPlano(cart);
+    }
+    @Mas("não deve haver alterações no valor e nem nas informações do Plano Pos")
+    public void validarResumoCompraPlanoPos() {
+        comumPage.validarResumoCompraPlanoPos(cart);
+    }
+    @Mas("não deve haver alterações no valor e nem nas informações do Plano Controle")
+    public void validarResumoCompraPlanoControle() {
+        comumPage.validarResumoCompraPlanoControle(cart);
     }
 
     @Entao("o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito/Boleto")

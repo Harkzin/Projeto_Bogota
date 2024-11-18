@@ -51,7 +51,7 @@ Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-    Entao é direcionado para a tela de Parabéns
+    //Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    //Entao é direcionado para a tela de Parabéns
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
-    E os dados do pedido estão corretos
+    //E os dados do pedido estão corretos

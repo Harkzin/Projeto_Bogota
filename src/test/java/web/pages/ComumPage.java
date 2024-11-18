@@ -1,21 +1,25 @@
 package web.pages;
 
-import io.cucumber.spring.ScenarioScope;
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import web.models.CartOrder;
-import web.models.product.PlanProduct;
-import web.support.utils.DriverWeb;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.*;
+import org.apache.commons.lang3.StringUtils;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import io.cucumber.spring.ScenarioScope;
+import web.models.CartOrder;
+import web.models.product.PlanProduct;
 import static web.support.utils.Constants.DEPENDENT_PRICE;
-import static web.support.utils.Constants.ProcessType.*;
+import static web.support.utils.Constants.ProcessType.ACQUISITION;
+import static web.support.utils.Constants.ProcessType.PORTABILITY;
+import web.support.utils.DriverWeb;
 
 @Component
 @ScenarioScope
@@ -231,4 +235,108 @@ public class ComumPage {
             validateElementText(chipPrice, deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/ul/li[2]/div[2]/div[3]/p[2]");
         }
     }
+    public void validarResumoCompraPlanoPos(CartOrder cart){
+
+        PlanProduct plan = cart.getPlan();
+        boolean isDebit = cart.isDebitPaymentFlow;
+        boolean hasLoyalty = cart.hasLoyalty;
+        String contentParent = driverWeb.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
+
+                //Valida app ilimitados, caso configurado
+                if (plan.hasPlanApps() && hasLoyalty) {
+                    //Título
+                    WebElement planAppsTitle = driverWeb.findByXpath(contentParent + "//*[@data-plan-content='planappstitle']");
+        
+                    //Apps
+                    List<WebElement> planApps = driverWeb.findElements(contentParent + "//*[@data-plan-content='planapps']//img", "xpath");
+        
+                    validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
+                }
+        
+                //Valida título extraPlay, caso configurado
+                if (plan.hasExtraPlayTitle()) {
+                    validateElementText(plan.getExtraPlayTitle(), contentParent + "//*[@data-plan-content='extraplaytitle']");
+                }
+        
+                //Valida apps extraPlay, caso configurado
+                if (plan.hasExtraPlayApps()) {
+                    List<WebElement> extraPlayApps = driverWeb.findElements(contentParent + "//*[@data-plan-content='extraplayapps']//img", "xpath");
+        
+                    validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+                }
+        
+                //Valida serviços Claro, caso configurado
+                if (plan.hasClaroServices()) {
+                    //Título
+                    WebElement claroServicesTitle = driverWeb.findByXpath(contentParent + "//*[@data-plan-content='services']/p");
+        
+                    //Apps
+                    List<WebElement> claroServicesApps = driverWeb.findElements(contentParent + "//*[@data-plan-content='services']//img", "xpath");
+        
+                    validarServicosClaro(driverWeb, plan, claroServicesTitle, claroServicesApps);
+                }
+
+        if (!(plan.getName() == null)) {
+            driverWeb.waitElementPresence(contentParent + "//*[@data-plan-content='name']", 10);
+            validateElementText(plan.getName(), contentParent + "//*[@data-plan-content='name']");
+        }
+
+        String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
+        String loyaltyPlatform = driverWeb.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
+        validateElementText(loyaltyRef, contentParent + loyaltyPlatform);
+
+        //Valor do plano Pós
+        WebElement valorDoPlano = driverWeb.findById(contentParent + "hasPromotionalPricesMonetization");
+    }
+    public void validarResumoCompraPlanoControle(CartOrder cart){
+
+        PlanProduct plan = cart.getPlan();
+        boolean isDebit = cart.isDebitPaymentFlow;
+        boolean hasLoyalty = cart.hasLoyalty;
+        String contentParent = driverWeb.isMobile() ? "//*[@id='cart-summary-mobile']" : "//*[@id='cart-summary']";
+    
+        // Valida app ilimitados, caso configurado
+        if (plan.hasPlanApps() && hasLoyalty) {
+            // Título
+            WebElement planAppsTitle = driverWeb.findByXpath(contentParent + "//*[@data-plan-content='planappstitle']");
+            // Apps
+            List<WebElement> planApps = driverWeb.findElements(contentParent + "//*[@data-plan-content='planapps']//img", "xpath");
+            validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
+        }
+    
+        // Valida título extraPlay, caso configurado
+        if (plan.hasExtraPlayTitle()) {
+            validateElementText(plan.getExtraPlayTitle(), contentParent + "//*[@data-plan-content='extraplaytitle']");
+        }
+    
+        // Valida apps extraPlay, caso configurado
+        if (plan.hasExtraPlayApps()) {
+            List<WebElement> extraPlayApps = driverWeb.findElements(contentParent + "//*[@data-plan-content='extraplayapps']//img", "xpath");
+            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+        }
+    
+        // Valida serviços Claro, caso configurado
+        if (plan.hasClaroServices()) {
+            // Título
+            WebElement claroServicesTitle = driverWeb.findByXpath(contentParent + "//*[@data-plan-content='services']/p");
+            // Apps
+            List<WebElement> claroServicesApps = driverWeb.findElements(contentParent + "//*[@data-plan-content='services']//img", "xpath");
+            validarServicosClaro(driverWeb, plan, claroServicesTitle, claroServicesApps);
+        }
+    
+        // Valida nome do plano, caso configurado
+        if (!(plan.getName() == null)) {
+            driverWeb.waitElementPresence(contentParent + "//*[@data-plan-content='name']", 10);
+            validateElementText(plan.getName(), contentParent + "//*[@data-plan-content='name']");
+        }
+    
+        String loyaltyRef = hasLoyalty ? "Fidelizado por 12 meses" : "Sem fidelização";
+        String loyaltyPlatform = driverWeb.isMobile() ? "//*[@data-plan-content='loyalty-mobile']" : "//*[@data-plan-content='loyalty']";
+        validateElementText(loyaltyRef, contentParent + loyaltyPlatform);
+    
+        // Valor do plano Pós
+        WebElement valorDoPlano = driverWeb.findById(contentParent + "hasPromotionalPricesMonetization");
+        WebElement valorTotal = driverWeb.findByXpath(contentParent + "//*[@data-plan-content='price']");
+    }
+    
 }

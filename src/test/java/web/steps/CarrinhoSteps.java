@@ -1,11 +1,18 @@
 package web.steps;
 
-import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import web.pages.CarrinhoPage;
-import web.models.CartOrder;
 
-import static web.support.utils.Constants.ProcessType.*;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
+import web.models.CartOrder;
+import web.pages.CarrinhoPage;
+import static web.support.utils.Constants.ProcessType.ACQUISITION;
+import static web.support.utils.Constants.ProcessType.EXCHANGE;
+import static web.support.utils.Constants.ProcessType.EXCHANGE_PROMO;
+import static web.support.utils.Constants.ProcessType.MIGRATE;
+import static web.support.utils.Constants.ProcessType.PORTABILITY;
 
 public class CarrinhoSteps {
 
@@ -101,6 +108,10 @@ public class CarrinhoSteps {
     @Entao("será exibido o modal [Aviso Troca de Plano]")
     public void validarModalAvisoTrocaPlano() {
         carrinhoPage.validarModalAvisoTrocaPlano();
+    }
+    @Entao("exibe a mensagem: O número informado não está ativo")
+    public void validarMensagemNumeroNaoAtivo() {
+        carrinhoPage.validarMensagemNumeroNaoAtivo();
     }
 
     @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")

@@ -1,19 +1,23 @@
 package web.pages;
 
-import io.cucumber.spring.ScenarioScope;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.cucumber.spring.ScenarioScope;
 import web.models.product.PlanProduct;
+import static web.pages.ComumPage.validarMidiasPlano;
+import static web.pages.ComumPage.validarPlanPortability;
+import static web.pages.ComumPage.validateElementText;
+import static web.support.utils.Constants.urlAmbiente;
 import web.support.utils.DriverWeb;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
-import static web.pages.ComumPage.*;
-import static web.support.utils.Constants.*;
 
 @Component
 @ScenarioScope
@@ -131,5 +135,13 @@ public class HomePage {
 
     public void acessarMenuAcessorios(){
         driverWeb.javaScriptClick("//*[@id='tab-acessorios']/a","xpath");
+    }
+    public void acessarPlpControle() {
+        abrirMenuMobile();
+        driverWeb.javaScriptClick("//*[@id='tab-controle']/a", "xpath");
+    }
+    public void acessarPlpPos() {
+        abrirMenuMobile();
+        driverWeb.javaScriptClick("//*[@id='tab-pos']/a", "xpath");
     }
 }

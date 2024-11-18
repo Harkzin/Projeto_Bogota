@@ -1,19 +1,24 @@
 package web.models;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import web.models.product.DeviceProduct;
-import web.models.product.PlanProduct;
-import web.models.product.Product;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static web.support.utils.Constants.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import web.models.product.DeviceProduct;
+import web.models.product.PlanProduct;
+import web.models.product.Product;
 import static web.support.api.RestAPI.getProductDetails;
 import static web.support.api.RestAPI.objMapper;
-import static web.support.utils.Constants.InvoiceType.*;
-import static web.support.utils.Constants.PaymentMode.*;
-import static web.support.utils.Constants.ProcessType.*;
+import web.support.utils.Constants.DeliveryMode;
+import web.support.utils.Constants.InvoiceType;
+import static web.support.utils.Constants.InvoiceType.PRINTED;
+import web.support.utils.Constants.PaymentMode;
+import static web.support.utils.Constants.PaymentMode.TICKET;
+import web.support.utils.Constants.ProcessType;
+import static web.support.utils.Constants.ProcessType.ACQUISITION;
+import static web.support.utils.Constants.ProcessType.PORTABILITY;
+import static web.support.utils.Constants.focusPlan;
 
 public class CartOrder {
 

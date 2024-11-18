@@ -1,10 +1,11 @@
 package web.support.config;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Scenario;
 import web.support.utils.DriverWeb;
 
 public class Hooks {
@@ -28,10 +29,10 @@ public class Hooks {
         }
     }
 
-    @After(order = 1)
-    public void closeBrowser() {
-        if (System.getProperty("api", "false").equals("false")) {
-            driverWeb.getDriver().quit();
-        }
-    }
+    // @After(order = 1)
+    // public void closeBrowser() {
+    //     if (System.getProperty("api", "false").equals("false")) {
+    //         driverWeb.getDriver().quit();
+    //     }
+    // }
 }

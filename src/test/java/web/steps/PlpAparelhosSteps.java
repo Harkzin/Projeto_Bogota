@@ -1,10 +1,11 @@
 package web.steps;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import org.springframework.beans.factory.annotation.Autowired;
-import web.pages.PlpAparelhosPage;
 import web.models.CartOrder;
+import web.pages.PlpAparelhosPage;
 
 public class PlpAparelhosSteps {
 

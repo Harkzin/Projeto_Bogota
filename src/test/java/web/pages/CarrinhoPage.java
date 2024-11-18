@@ -1,20 +1,21 @@
 package web.pages;
 
-import io.cucumber.spring.ScenarioScope;
+import java.util.UUID;
+
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.cucumber.spring.ScenarioScope;
 import web.models.CartOrder;
-import web.support.utils.DriverWeb;
-import org.junit.Assert;
-
-import java.util.UUID;
-
-import static web.support.utils.Constants.*;
-import static web.support.utils.Constants.ProcessType.ACQUISITION;
-import static web.support.utils.Constants.ProcessType.PORTABILITY;
 import static web.support.api.RestAPI.checkCpfDiretrix;
 import static web.support.api.RestAPI.getCpf;
+import web.support.utils.Constants.ProcessType;
+import static web.support.utils.Constants.ProcessType.ACQUISITION;
+import static web.support.utils.Constants.ProcessType.PORTABILITY;
+import static web.support.utils.Constants.urlAmbiente;
+import web.support.utils.DriverWeb;
 
 @Component
 @ScenarioScope
@@ -245,6 +246,9 @@ public class CarrinhoPage {
 
         Assert.assertTrue(confirma.isDisplayed());
         Assert.assertTrue(cancelar.isDisplayed());
+    }
+    public void validarMensagemNumeroNaoAtivo() {
+        driverWeb.waitElementPresence("(//p[@class='cartMessage'][contains(text(),'O número informado não está ativo. Não fique sem f')])[2]", 10);
     }
 
     public void clicarAvisoTrocaPlano() {

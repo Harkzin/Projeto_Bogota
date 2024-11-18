@@ -1,12 +1,18 @@
 package web.steps;
 
-import io.cucumber.java.pt.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import web.pages.CustomizarFaturaPage;
-import web.models.CartOrder;
 
-import static web.support.utils.Constants.InvoiceType.*;
-import static web.support.utils.Constants.PaymentMode.*;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Mas;
+import io.cucumber.java.pt.Quando;
+import web.models.CartOrder;
+import web.pages.CustomizarFaturaPage;
+import static web.support.utils.Constants.InvoiceType.DIGITAL;
+import static web.support.utils.Constants.InvoiceType.PRINTED;
+import static web.support.utils.Constants.InvoiceType.WHATSAPP;
+import static web.support.utils.Constants.PaymentMode.DEBITCARD;
+import static web.support.utils.Constants.PaymentMode.TICKET;
 
 public class CustomizarFaturaSteps {
 
@@ -136,6 +142,10 @@ public class CustomizarFaturaSteps {
     public void eDirecionadoParaATelaDeTermosCombo() {
         customizarFaturaPage.validarPaginaTermosCombo();
     }
+    // @Então("é direcionado para a tela de Produto Controle Fácil")
+    // public void eDirecionadoParaATelaDeProdutoControleFacil() {
+    //     customizarFaturaPage.validarPaginaProdutoControleFacil();
+    // } //Implementando
 
     @Quando("o usuário clicar no botão Continuar da tela de Cliente Combo")
     public void oUsuárioClicarNoBotaoContinuarDaTelaDeClienteCombo() {

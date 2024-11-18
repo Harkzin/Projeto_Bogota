@@ -1,12 +1,13 @@
 package web.steps;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import org.springframework.beans.factory.annotation.Autowired;
-import web.pages.HomePage;
 import web.models.CartOrder;
+import web.pages.HomePage;
 
 public class HomeSteps {
 
@@ -39,11 +40,13 @@ public class HomeSteps {
 
     @Quando("o usuário clicar na opção [Controle] do header")
     public void acessarPlpControle() {
+        homePage.acessarPlpControle();
         //TODO
     }
 
     @Quando("o usuário clicar na opção [Pós] do header")
     public void acessarPlpPos() {
+        homePage.acessarPlpPos();
         //TODO
     }
 
