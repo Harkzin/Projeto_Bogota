@@ -23,8 +23,8 @@ public class PlpPlanosSteps {
         plpPlanosPage.selecionarPlano(id);
     }
     
-    @Quando("o usuário clicar no botão [Eu quero!] do card do plano {string} na PLP Controle")
-    public void selecionarPlanoControle(String id) {
+    @Quando("o usuário clicar no botão [Eu quero!] do card do plano {string} na PLP")
+    public void selecionarPlanoPlp(String id) {
         plpPlanosPage.selecionarPlano(id);
     }
 }

@@ -283,12 +283,6 @@ public class CarrinhoPage {
     public void clicarAvisoTrocaPlano() {
         driverWeb.javaScriptClick(confirma);
     }
-
-    public void validarMensagemNumeroNaoAtivo() {
-        driverWeb.waitElementPresence(
-                "(//p[@class='cartMessage'][contains(text(),'O número informado não está ativo. Não fique sem f')])[2]",
-                10);
-    }
     
     public void clicaBotaoContinuarComprando() {
         driverWeb.javaScriptClick("btn-continuar-comprando", "id");
