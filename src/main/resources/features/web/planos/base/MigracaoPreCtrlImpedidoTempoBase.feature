@@ -2,14 +2,12 @@
 
 @Regressivo
 @Web
-
 Funcionalidade: ECCMAUT-529 - [Planos Base] Migração Pré Pago para Controle com impedimento por tempo de base
 
   @Migracao
   @Controle
   @MigracaoPreCtrlImpedidoTempoBase
   Cenario: Migração Pré Pago para Controle com impedimento por tempo de base
-
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Controle] do header
     E o usuário clicar no botão [Eu quero!] do card do plano "17528" na PLP
