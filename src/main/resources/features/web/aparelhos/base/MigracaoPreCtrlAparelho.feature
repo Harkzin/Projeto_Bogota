@@ -60,7 +60,7 @@ Funcionalidade: ECCMAUT-199 Migracao Pre Controle Com Aparelho
     E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
-    Então não deve haver alterações no valor e nem nas informações do Plano
+    #MOM-2021 Então não deve haver alterações no valor e nem nas informações do Plano
       #Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
