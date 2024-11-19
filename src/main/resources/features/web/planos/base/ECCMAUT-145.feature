@@ -1,9 +1,12 @@
 # language: pt
-@Regressivo @Web
+@Regressivo
+@Web
 
 Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Controle Fácil (Crédito Reprovado Passo 3)
 
-  @Migracao @PrePago @ReadequacaoControleFacil
+  @Migracao
+  @PrePago
+  @ReadequacaoControleFacil
   Cenario: Migração Pré para Controle - Readequação Controle Fácil (Crédito Reprovado Passo 3)
 
     Dado que o usuário acesse a Loja Online
@@ -35,6 +38,7 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
     E marca o checkbox de termos de aceite
     
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+      #Finaliza com uma tela de Codigo de verificação não podendo dar continuidade no processo conforme evidencias.
     
 
 
