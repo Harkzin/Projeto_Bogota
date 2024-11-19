@@ -32,14 +32,20 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E o usuário clicar no botão [Débito] da pagina Costumizar Fatura
       # E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-      #   Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
+      # Quando o usuário selecionar o metodo de recebimento da fatura [WhatsApp]
     Quando preenche os dados bancários
     E deve ser exibido as datas de vencimento
     E marca o checkbox de termos de aceite
     
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
       #Finaliza com uma tela de Codigo de verificação não podendo dar continuidade no processo conforme evidencias.
-    
+    Entao é direcionado para a tela de SMS
+      # Mas não deve haver alterações no valor e nem nas informações do Plano
+    E preenche o campo [Código de verificação] com o token recebido
+
+    Quando o usuário clicar no botão [Finalizar] da tela de SMS
+    Entao é direcionado para a tela de Parabéns
+    E os dados do pedido estão corretos
 
 
 
