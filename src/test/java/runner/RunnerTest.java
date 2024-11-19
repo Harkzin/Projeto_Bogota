@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions.SnippetType;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "D:\\Users\\Fardim\\IdeaProjects\\ecommplanos_att\\src\\main\\resources\\features\\web\\planos\\base\\ECCMAUT-144.feature",
+        features = "src\\main\\resources\\features\\web\\aparelhos\\base\\ECCMAUT-198.feature",
         glue = {"web.steps", "api.steps", "web.support.config"},
         plugin = {"pretty", "json:target/reports/CucumberReport.json"},
         snippets = SnippetType.CAMELCASE,

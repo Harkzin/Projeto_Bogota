@@ -17,7 +17,9 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
       # Mas não deve haver alterações no valor e nem nas informações do Plano Controle
       
     Quando seleciona a opção [Migração], para o fluxo de troca de Plano
-    E preenche os campos: [Telefone com DDD] "11947728801", [E-mail] e [CPF] "08039137888"
+    # E preenche os campos: [Telefone com DDD] "11947728801", [E-mail] e [CPF] "08039137888"
+    E preenche os campos: [Telefone com DDD] "11947729413", [E-mail] e [CPF] "00000031070"
+    # E preenche os campos: [Telefone com DDD] "11994750073", [E-mail] e [CPF] "41682449467"
     E o usuário clicar no botão [Eu quero!] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP402"
@@ -32,12 +34,128 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E o usuário clicar no botão [Débito] da pagina Costumizar Fatura
       # E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-      #   Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
+      # Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
+
     Quando preenche os dados bancários
     E deve ser exibido as datas de vencimento
     E marca o checkbox de termos de aceite
     
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Entao é direcionado para a tela de SMS
+      # Mas não deve haver alterações no valor e nem nas informações do Plano
+    E preenche o campo [Código de verificação] com o token recebido
+      
+    Quando o usuário clicar no botão [Finalizar] da tela de SMS
+    Entao é direcionado para a tela de Parabéns
+    E os dados do pedido estão corretos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       #Finaliza com uma tela de Codigo de verificação não podendo dar continuidade no processo conforme evidencias.
     
 

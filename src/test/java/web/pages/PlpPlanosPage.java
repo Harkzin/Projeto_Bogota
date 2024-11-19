@@ -132,6 +132,6 @@ public void clicarNoBotãoDebitoAlt() {
     // Localiza o elemento "Debito" e o clica usando JavaScript
     driverWeb.actionPause(3000);
     driverWeb.javaScriptClick("//div[normalize-space()='Débito automático']", "xpath");
-    driverWeb.actionPause(9000);
+    driverWeb.actionPause(3000);
 }
 }

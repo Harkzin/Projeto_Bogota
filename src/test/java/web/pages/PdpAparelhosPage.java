@@ -1,7 +1,14 @@
 package web.pages;
 
-import io.cucumber.spring.ScenarioScope;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import org.apache.commons.lang3.StringUtils;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,18 +16,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.cucumber.spring.ScenarioScope;
 import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
+import static web.pages.ComumPage.formatPrice;
+import static web.pages.ComumPage.validarMidiasPlano;
+import static web.pages.ComumPage.validarPlanPortability;
+import static web.pages.ComumPage.validateElementText;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static org.junit.Assert.*;
-import static web.pages.ComumPage.*;
 
 @Component
 @ScenarioScope
@@ -227,7 +233,7 @@ public class PdpAparelhosPage {
     }
 
     public void validarPopoverLogin() {
-        driverWeb.waitElementPresence("//div[@class='popover fade bottom in' and @role='tooltip']", 10);
+        driverWeb.waitElementPresence("//*[@id=\"btn-entrar\"]", 10);
         driverWeb.waitElementVisible(campoTelefoneLogin,20);
     }
 

@@ -1,14 +1,14 @@
 # language: pt
 @Regressivo @Web
 
-Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Controle Fácil (Crédito Reprovado Passo 3)
+Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Readequação Controle Fácil Espelhado | CPF Score Zerado
 
-  @Migracao @PrePago @ReadequacaoControleFacil
-  Cenario: Migração Pré para Controle - Readequação Controle Fácil (Crédito Reprovado Passo 3)
+  @Migracao @PrePago @Controle @ReadequacaoControleFacilEspelhado
+  Cenario: Migração Pré para Controle - Readequação Controle Fácil Espelhado | CPF Score Zerado
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Controle] do header
-    E o usuário clicar no botão [Eu quero!] do card do plano "17216" na PLP Controle
+    E o usuário clicar no botão [Eu quero!] do card do plano "17528" na PLP Controle
     Entao é direcionado para a tela de Carrinho
 
       # Mas não deve haver alterações no valor e nem nas informações do Plano Controle
@@ -16,7 +16,7 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
     Quando seleciona a opção [Migração], para o fluxo de troca de Plano
     E preenche os campos: [Telefone com DDD] "11947729413", [E-mail] e [CPF] "00000031070"
     E o usuário clicar no botão [Eu quero!] do Carrinho
-
+    E preenche os campos de dados pessoais: [Nome Completo] "ECCMAUT 487", [Data de Nascimento] "20022000" e [Nome da Mãe] "Marta Silva"
 
 
     # Entao é direcionado para a tela de Dados Pessoais
