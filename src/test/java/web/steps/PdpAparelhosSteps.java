@@ -134,4 +134,9 @@ public class PdpAparelhosSteps  {
     public void clicarComprar() {
         pdpAparelhosPage.clicarComprar(cart.getDevice().getCode());
     }
+
+    @Entao("será exibida a mensagem de erro para dependente: {string}")
+    public void eExibidaAMensagemDeErroDependente(String msgExibida) {
+        pdpAparelhosPage.validaMsgErroDependente(msgExibida);
+    }
 }
