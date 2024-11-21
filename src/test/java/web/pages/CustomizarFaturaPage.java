@@ -7,12 +7,11 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.support.utils.Constants;
+import web.support.utils.Constants.InvoiceType;
 import web.support.utils.Constants.PaymentMode;
 import web.support.utils.DriverWeb;
 
 import static org.junit.Assert.*;
-import static web.support.utils.Constants.ProcessType.MIGRATE;
 import static web.support.api.RestAPI.getBankAccount;
 
 import java.util.*;
@@ -23,30 +22,37 @@ import java.util.function.Consumer;
 public class CustomizarFaturaPage {
 
     private final DriverWeb driverWeb;
-    private final CartOrder cartOrder;
+    private final CartOrder cart;
 
     @Autowired
-    public CustomizarFaturaPage(DriverWeb driverWeb, CartOrder cartOrder) {
+    public CustomizarFaturaPage(DriverWeb driverWeb, CartOrder cart) {
         this.driverWeb = driverWeb;
-        this.cartOrder = cartOrder;
+        this.cart = cart;
     }
 
-    private boolean isComboFlow = false;
+    private boolean isComboFlow;
     private boolean isDebitClient;
+    private boolean showTermsOnly;
 
     private WebElement abaDebito;
     private WebElement abaBoleto;
+
     private Select banco;
     private WebElement agencia;
     private WebElement conta;
+
     private WebElement whatsappDebit;
     private WebElement emailDebit;
     private WebElement correiosDebit;
     private WebElement whatsappTicket;
     private WebElement emailTicket;
     private WebElement correiosTicket;
+
     private WebElement concordo;
     private WebElement naoConcordo;
+
+    private WebElement datasDebit;
+    private WebElement datasTicket;
     private Select diasVencimento;
 
     public void validarPaginaCustomizarFatura() {
@@ -54,6 +60,8 @@ public class CustomizarFaturaPage {
 
         abaDebito = driverWeb.findElement("tab-debito", "id");
         abaBoleto = driverWeb.findElement("tab-boleto", "id");
+
+        showTermsOnly = false;
     }
 
     public void validarPagiaCustomizarFaturaThab() {
@@ -63,6 +71,24 @@ public class CustomizarFaturaPage {
     public void validarPaginaTermosCombo() {
         driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 60);
         isComboFlow = true;
+        showTermsOnly = true;
+    }
+
+    public void validarPaginaTermos() { //Quando só é exibido o aceite dos termos (sem opções de pagamento, fatura e datas)
+        validarPaginaCustomizarFatura();
+        showTermsOnly = true;
+    }
+
+    public void validarPaginaMulta() {
+        driverWeb.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
+
+        concordo = driverWeb.findElement("btn-multa-concordo", "id");
+        naoConcordo = driverWeb.findElement("btn-multa-nao-concordo", "id");
+
+        assertTrue(driverWeb.findElement("txt-mensagem-multa", "id").isDisplayed());
+
+        assertTrue(concordo.isDisplayed());
+        assertTrue(naoConcordo.isDisplayed());
     }
 
     private void validarCamposDebito() {
@@ -104,7 +130,7 @@ public class CustomizarFaturaPage {
         isDebitClient = true; //TODO caso combo = ?
         assertNull(abaDebito);
         assertNull(abaBoleto);
-        return !cartOrder.isThab() && !isComboFlow; //TODO combo funcionará apenas boleto
+        return !cart.isThab() && !isComboFlow; //TODO combo funcionará apenas boleto
     }
 
     public void validarTiposFatura(boolean exibe, boolean isDebitPaymentFlow, boolean isThab) {
@@ -122,9 +148,9 @@ public class CustomizarFaturaPage {
                 assertTrue("Exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
                 assertTrue("Exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             } else {
-                assertFalse("Não exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
-                assertFalse("Não exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
-                assertFalse("Não exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
+                assertFalse("Nao exibe fatura WhatsApp débito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+                assertFalse("Nao exibe fatura E-mail débito", emailDebit.findElement(By.xpath("..")).isDisplayed());
+                assertFalse("Nao exibe fatura Correios débito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
             }
         };
 
@@ -133,27 +159,27 @@ public class CustomizarFaturaPage {
                 assertTrue("Exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
                 assertTrue("Exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
                 if (isThab) {
-                    assertNull("Não deve existir no html", correiosTicket);
+                    assertNull("Nao deve existir no html", correiosTicket);
                 } else {
                     assertTrue("Exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
                 }
             } else {
-                assertFalse("Não exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
-                assertFalse("Não exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
-                assertFalse("Não exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
+                assertFalse("Nao exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+                assertFalse("Nao exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
+                assertFalse("Nao exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
             }
         };
 
         Runnable assertDebitNull = () -> {
-            assertNull("Não deve existir no html", whatsappDebit);
-            assertNull("Não deve existir no html", emailDebit);
-            assertNull("Não deve existir no html", correiosDebit);
+            assertNull("Nao deve existir no html", whatsappDebit);
+            assertNull("Nao deve existir no html", emailDebit);
+            assertNull("Nao deve existir no html", correiosDebit);
         };
 
         Runnable assertTicketNull = () -> {
-            assertNull("Não deve existir no html", whatsappTicket);
-            assertNull("Não deve existir no html", emailTicket);
-            assertNull("Não deve existir no html", correiosTicket);
+            assertNull("Nao deve existir no html", whatsappTicket);
+            assertNull("Nao deve existir no html", emailTicket);
+            assertNull("Nao deve existir no html", correiosTicket);
         };
 
         if (exibe) { //fluxo gross, fluxo base com fatura impressa, migra pré-ctrl e thab
@@ -168,54 +194,73 @@ public class CustomizarFaturaPage {
                     assertDebitNull.run();
                 }
             }
-        } else { //fluxo base com fatura digital ou combo
-            if (!isComboFlow && (cartOrder.getProcessType() == MIGRATE)) { //fluxo combo ou migração
-                assertDebit.accept(false); //opções para débito existem no html, ocultas no front
-
-                    if (isDebitClient) { //fluxo débito com cliente débito - existe no html apenas as opções para débito, ocultas no front
-                        assertTicketNull.run();
-                    } else { //fluxo débito com cliente boleto - também existe no html as opções para boleto, ocultas no front
-                        assertTicket.accept(false);
-                    }
-            } else { //EXCHANGE e EXCHANGE_PROMO - fluxo de troca de plano, troca de promo ou combo (não existem no html)
+        } else { //Fluxo base com fatura digital ou combo
+            if (showTermsOnly) { //Fluxo combo ou Aparelhos (Manter o Plano) - Tela de termos
                 assertDebitNull.run();
                 assertTicketNull.run();
+            } else { //Fluxos base: Troca e Migração
+                assertDebit.accept(false); //Existe no html, oculto no front
+
+                if (isDebitClient) { //Tipos de envio de fatura para Boleto serão null ou existirão no html (oculto) de acordo com o método de pagamento atual da linha
+                    assertTicketNull.run();
+                } else {
+                    assertTicket.accept(false);
+                }
             }
         }
     }
 
-    public void validarDatasVencimento(boolean exibe, boolean isDebitPaymentFlow) {
-        WebElement datasDebit = driverWeb.findById("datas-vencimento-debit");
-        WebElement datasTicket = driverWeb.findById("datas-vencimento-ticket");
+    //###################################################################
 
-        if (exibe) { //Fluxo gross ou base em migra pré-ctrl e ctrl-pós
-            WebElement datas;
+    private void findDateElements() {
+        datasDebit = driverWeb.findById("datas-vencimento-debit");
+        datasTicket = driverWeb.findById("datas-vencimento-ticket");
+    }
 
-            if (isDebitPaymentFlow) {
-                datas = datasDebit;
-                assertTrue(datasDebit.isDisplayed());
-                assertFalse(datasTicket.isDisplayed());
-            } else {
-                datas = datasTicket;
-                assertFalse(datasDebit.isDisplayed());
-                assertTrue(datasTicket.isDisplayed());
-            }
+    public void validarExibeDatas(boolean isDebitPaymentFlow) { //Fluxo gross ou base em migra pré-ctrl e ctrl-pós
+        findDateElements();
+        WebElement datas;
 
-            diasVencimento = new Select(datas);
-            List<WebElement> dias;
-            dias = diasVencimento.getOptions();
-            dias.remove(0); //Remove opção "Selecione"
-            assertEquals("Seis datas de vencimento devem existir", 6, dias.size());
+        if (isDebitPaymentFlow) {
+            datas = datasDebit;
+            assertTrue(datasDebit.isDisplayed());
+            assertFalse(datasTicket.isDisplayed());
+        } else {
+            datas = datasTicket;
+            assertFalse(datasDebit.isDisplayed());
+            assertTrue(datasTicket.isDisplayed());
+        }
 
-            dias.forEach(d -> {
-                int dia = Integer.parseInt(d.getAttribute("textContent").trim());
-                assertTrue("Número exibido deve ser umm dia do mês", dia >= 1 && dia <= 31);
-            });
-        } else { //Fluxo base em troca de plano mesma plataforma (ctrl-ctrl e pos-pos)
+        diasVencimento = new Select(datas);
+        List<WebElement> dias;
+        dias = diasVencimento.getOptions();
+        dias.remove(0); //Remove opção "Selecione"
+        assertEquals("Seis datas de vencimento devem existir", 6, dias.size());
+
+        dias.forEach(d -> {
+            int dia = Integer.parseInt(d.getAttribute("textContent").trim());
+            assertTrue("Numero exibido deve ser um dia do mes", dia >= 1 && dia <= 31);
+        });
+    }
+
+    public void validarNaoExibeDatas() {
+        findDateElements();
+
+        if (showTermsOnly) { //Fluxo combo ou Aparelhos (Manter o Plano) - Tela de termos
             assertNull(datasDebit);
             assertNull(datasTicket);
+        } else { //Fluxo base em troca de plano (mesma plataforma, ctrl-ctrl ou pos-pos)
+            assertFalse(datasDebit.isDisplayed()); //Existe no html, oculto no front
+
+            if (isDebitClient) { //Datas para Boleto serão null ou existirão no html (oculto) de acordo com o método de pagamento atual da linha
+                assertNull(datasTicket);
+            } else {
+                assertFalse(datasTicket.isDisplayed());
+            }
         }
     }
+
+    //###################################################################
 
     public void selecionarDebito() {
         driverWeb.javaScriptClick(abaDebito.findElement(By.tagName("div")));
@@ -234,7 +279,7 @@ public class CustomizarFaturaPage {
         driverWeb.actionPause(3000);
     }
 
-    public void selecionarTipoFatura(Constants.InvoiceType invoiceType, boolean isDebitPaymentFlow) {
+    public void selecionarTipoFatura(InvoiceType invoiceType, boolean isDebitPaymentFlow) {
         switch (invoiceType) {
             case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
             case DIGITAL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
@@ -301,7 +346,14 @@ public class CustomizarFaturaPage {
     }
 
     public void aceitarTermos(boolean isDebitPaymentFlow) {
-        WebElement termos = driverWeb.findElement(isComboFlow ? "chk-termos" : isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment", "id");
+        String termsSelector;
+        if (showTermsOnly) { //Fluxo combo ou Aparelhos (Manter o Plano) - Tela de termos
+            termsSelector = "chk-termos";
+        } else {
+            termsSelector = isDebitPaymentFlow ? "chk-termos-clarodebitpayment" : "chk-termos-claroticketpayment";
+        }
+
+        WebElement termos = driverWeb.findById(termsSelector);
         assertFalse(termos.isSelected());
 
         driverWeb.javaScriptClick(termos);
@@ -318,18 +370,6 @@ public class CustomizarFaturaPage {
 
     public void clickNaoConcordo() {
         driverWeb.javaScriptClick(naoConcordo);
-    }
-
-    public void validarPaginaMulta() {
-        driverWeb.waitPageLoad("claro/pt/checkout/multi/payment-method/add", 10);
-
-        concordo = driverWeb.findElement("btn-multa-concordo", "id");
-        naoConcordo = driverWeb.findElement("btn-multa-nao-concordo", "id");
-
-        assertTrue(driverWeb.findElement("txt-mensagem-multa", "id").isDisplayed());
-
-        assertTrue(concordo.isDisplayed());
-        assertTrue(naoConcordo.isDisplayed());
     }
 
     public void clicarConcordo() {

@@ -19,9 +19,19 @@ public class CustomizarFaturaSteps {
         this.cart = cart;
     }
 
-    @Então("é direcionado para a tela de Customizar Fatura")
+    @Entao("é direcionado para a tela de Customizar Fatura")
     public void validarPagiaCustomizarFatura() {
         customizarFaturaPage.validarPaginaCustomizarFatura();
+    }
+
+    @Entao("é direcionado para a tela de Termos")
+    public void validarPagiaCustomizarFaturaTermos() {
+        customizarFaturaPage.validarPaginaTermos();
+    }
+
+    @Entao("é direcionado para a tela de Termos Combo")
+    public void eDirecionadoParaATelaDeTermosCombo() {
+        customizarFaturaPage.validarPaginaTermosCombo();
     }
 
     @E("deve ser exibido as opções de pagamento, com a opção [Débito] selecionada")
@@ -51,12 +61,12 @@ public class CustomizarFaturaSteps {
 
     @E("deve ser exibido as datas de vencimento")
     public void exibeDatasVencimento() {
-        customizarFaturaPage.validarDatasVencimento(true, cart.isDebitPaymentFlow);
+        customizarFaturaPage.validarExibeDatas(cart.isDebitPaymentFlow);
     }
 
     @E("não deve ser exibido as datas de vencimento")
     public void naoExibeDatasVencimento() {
-        customizarFaturaPage.validarDatasVencimento(false, cart.isDebitPaymentFlow);
+        customizarFaturaPage.validarNaoExibeDatas();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
@@ -106,7 +116,7 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.aceitarTermos(cart.isDebitPaymentFlow);
     }
 
-    @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos")
+    @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos")
     public void clicarContinuar() {
         customizarFaturaPage.clicarContinuar();
     }
@@ -121,24 +131,19 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.clickNaoConcordo();
     }
 
-    @Então("é direcionado pra tela de Customizar Fatura, com alerta de multa")
+    @Entao("é direcionado pra tela de Customizar Fatura, com alerta de multa")
     public void direcionadoPraTelaDeMulta() {
         customizarFaturaPage.validarPaginaMulta();
     }
 
-    @Então("é direcionado para a tela de Customizar Fatura THAB")
+    @Entao("é direcionado para a tela de Customizar Fatura THAB")
     public void validarPagiaCustomizarFaturaTHAB() {
-        customizarFaturaPage.validarPagiaCustomizarFaturaThab();
         cart.setThab();
-    }
-
-    @Então("é direcionado para a tela de Termos Combo")
-    public void eDirecionadoParaATelaDeTermosCombo() {
-        customizarFaturaPage.validarPaginaTermosCombo();
+        customizarFaturaPage.validarPagiaCustomizarFaturaThab();
     }
 
     @Quando("o usuário clicar no botão Continuar da tela de Cliente Combo")
-    public void oUsuárioClicarNoBotaoContinuarDaTelaDeClienteCombo() {
+    public void oUsuarioClicarNoBotaoContinuarDaTelaDeClienteCombo() {
         customizarFaturaPage.clicarContinuar();
     }
 

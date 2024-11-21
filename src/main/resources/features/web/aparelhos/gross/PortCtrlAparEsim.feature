@@ -69,7 +69,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Entao será direcionado para a tela [Forma de Pagamento]
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano

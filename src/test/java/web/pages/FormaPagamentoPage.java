@@ -120,9 +120,9 @@ public class FormaPagamentoPage {
     }
 
     public void clicarUsarClaroClube() {
-        driverWeb.javaScriptClick(usarClaroClube);
+        driverWeb.javaScriptClick(usarClaroClube.findElement(By.xpath("../span"))); //Click só funciona no <span>
 
-        driverWeb.actionPause(2500); //Página recarrega
+        driverWeb.actionPause(4000); //Página recarrega
         assertTrue(usarClaroClube.isSelected());
     }
 

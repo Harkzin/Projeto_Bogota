@@ -47,7 +47,7 @@ Funcionalidade: ECCMAUT-150  -  Troca Pos com Aceite de Multa
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de SMS
     E preenche o campo [Código enviado Por SMS] com o token recebido
 

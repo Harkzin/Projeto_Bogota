@@ -142,10 +142,19 @@ public class ComumPage {
         }
 
         //Valida nome
-        String name = cart.getPromotion().isRentabilization() ? cart.getPromotion().getName() : plan.getName();
-        WebElement planName = driverWeb.findByXpath(planContentParent + "//*[contains(@class, 'product-fullname')]"); //TODO Bug merge RL22 "//*[@data-plan-content='name']");
+        String nameRef;
+        if (cart.getProcessType() == APARELHO_TROCA_APARELHO) {
+            nameRef = cart.getUser().getClaroSubscription().getClaroPlanName(); //Fluxo Aparelhos - Manter o Plano
+        } else if (cart.getPromotion().isRentabilization()) {
+            nameRef = cart.getPromotion().getName(); //Fluxo rentab
+        } else {
+            nameRef = plan.getName(); //Fluxo normal
+        }
+
+        String nameSelector = cart.getProcessType() == APARELHO_TROCA_APARELHO ? "//*[contains(@class, 'd-sm-block d-xs-flex')]" : "//*[contains(@class, 'product-fullname')]"; //TODO Remover quando for adicionado o data = name no front
+        WebElement planName = driverWeb.findByXpath(planContentParent + nameSelector); //TODO Bug merge RL22 "//*[@data-plan-content='name']");
         driverWeb.javaScriptScrollTo(planName);
-        validateElementText(name, planName);
+        validateElementText(nameRef, planName);
 
         //Abre Resumo mobile
         if (driverWeb.isMobile() && !cart.isDeviceCart()) {
@@ -307,20 +316,22 @@ public class ComumPage {
         }
 
         //Desconto Claro Clube
-        if (cart.getClaroClube().getDiscountValue() > 0D) {
-            String claroClubDiscountRef = formatPrice(deviceEntry.getDiscount());
-            validateElementText("Desconto Cupom -R$ " + claroClubDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
+        if (cart.getClaroClube().isClaroClubeApplied()) {
+            String claroClubDiscountRef = formatPrice(cart.getClaroClube().getDiscountValue());
+            validateElementText("Desconto Claro clube -R$ " + claroClubDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
 
         //Total
         double totalPrice = deviceEntry.getTotalPrice();
         if (commonChipFlow) {
             totalPrice += 10D;
+        } else if (cart.getClaroClube().isClaroClubeApplied()) {
+            totalPrice -= cart.getClaroClube().getDiscountValue();
         }
         validateElementText("Total: R$ " + formatPrice(totalPrice), driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-valor-total']/.."));
 
         //Nome Aparelho
-        validateElementText(device.getName(), driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div/div/div/div[2]/div/p"));
+        validateElementText(device.getName(), driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']/div[1]/div/div/div[2]/div[1]//p"));
 
         //Cor
         validateElementText("Cor: " + device.getColor(), driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-descricao-cor']/.."));

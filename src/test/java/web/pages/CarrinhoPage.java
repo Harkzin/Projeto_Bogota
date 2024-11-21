@@ -272,6 +272,7 @@ public class CarrinhoPage {
     }
 
     public String getCartGuid() {
+        driverWeb.actionPause(2000); //Aguarda promoção ser aplicada no cart (updatePlanCartPromotion())
         return driverWeb.waitElementPresence("//*[@id='cart-dynatrace-guid']", 40).getAttribute("textContent");
     }
 

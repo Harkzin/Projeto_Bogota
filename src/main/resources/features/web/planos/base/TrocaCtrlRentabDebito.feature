@@ -22,7 +22,7 @@ Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
     E não deve ser exibido as datas de vencimento
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de SMS
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código de verificação] com o token recebido

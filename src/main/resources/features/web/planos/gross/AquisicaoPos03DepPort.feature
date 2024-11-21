@@ -58,7 +58,7 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 03 Dependentes Portabilidade
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de Parabéns
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

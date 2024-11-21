@@ -60,7 +60,7 @@ Funcionalidade: ECCMAUT-258 - Migracao Controle para Pos - PDP
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Entao é direcionado para a tela de SMS
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código de verificação] com o token recebido

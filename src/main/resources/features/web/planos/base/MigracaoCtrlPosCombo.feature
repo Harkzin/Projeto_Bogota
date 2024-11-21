@@ -24,7 +24,7 @@ Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
     E não deve ser exibido as datas de vencimento
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Entao é direcionado para a tela de SMS
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código de verificação] com o token recebido

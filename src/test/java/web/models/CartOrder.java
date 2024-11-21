@@ -150,8 +150,9 @@ public class CartOrder {
             }
         }
 
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, planFullPrice, promoDiscount));
-        getEntry(planId).paymentMode = TICKET; //Pagamento default atual
+        PositionsAndPrices.Entry planEntry = new PositionsAndPrices.Entry(plan, 1, planFullPrice, promoDiscount);
+        planEntry.paymentMode = TICKET; //Pagamento default atual
+        positionsAndPrices.entries.add(planEntry);
     }
 
     public void updatePlanAndDevicePrice(String planId) {
@@ -407,6 +408,10 @@ public class CartOrder {
 
         public boolean isClaroClubeApplied() {
             return isClaroClubeApplied;
+        }
+
+        public void setClaroClubeApplied(boolean claroClubeApplied) {
+            isClaroClubeApplied = claroClubeApplied;
         }
 
         public String getRedeemId() {
