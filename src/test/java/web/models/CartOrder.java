@@ -205,6 +205,7 @@ public class CartOrder {
     }
 
     public void setProcessType(ProcessType processType) {
+        System.out.println("Entrou no setProcessType");
         essential.processType = processType;
 
         if (isDeviceCart()) {

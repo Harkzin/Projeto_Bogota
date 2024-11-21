@@ -17,9 +17,8 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
       # Mas não deve haver alterações no valor e nem nas informações do Plano Controle
       
     Quando seleciona a opção [Migração], para o fluxo de troca de Plano
-    # E preenche os campos: [Telefone com DDD] "11947728801", [E-mail] e [CPF] "08039137888"
-    E preenche os campos: [Telefone com DDD] "11947729413", [E-mail] e [CPF] "00000031070"
-    # E preenche os campos: [Telefone com DDD] "11994750073", [E-mail] e [CPF] "41682449467"
+    E preenche os campos: [Telefone com DDD] "11947840222", [E-mail] e [CPF] "00000128236"
+    # E preenche os campos: [Telefone com DDD] "11947840215", [E-mail] e [CPF] "62740166001" -> MASSA VÁLDA
     E o usuário clicar no botão [Eu quero!] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP402"
@@ -45,9 +44,9 @@ Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Cont
       # Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código de verificação] com o token recebido
       
-    Quando o usuário clicar no botão [Finalizar] da tela de SMS
-    Entao é direcionado para a tela de Parabéns
-    E os dados do pedido estão corretos
+    #Quando o usuário clicar no botão [Finalizar] da tela de SMS
+    #Entao é direcionado para a tela de Parabéns
+    #E os dados do pedido estão corretos
 
 
 

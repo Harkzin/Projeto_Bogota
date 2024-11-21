@@ -53,8 +53,18 @@ public class PdpAparelhosSteps  {
 
     @E("seleciona a opção [Manter meu número Claro], para o fluxo de Manter o Plano com fidelidade + Aparelho")
     public void selecionarFluxoBaseManter() {
+        //Crie para ver o retorno do GetDevice + GetCode --> Felipe
+        System.out.println("Entrou no selecionarFluxoBaseManter");
+        //Até aqui
         cart.setProcessType(APARELHO_TROCA_APARELHO);
+        //Crie para ver o retorno do GetDevice + GetCode --> Felipe
+        System.out.println("Entrou no Cart(Aparelho_Troca_Aparelho");
+        //Até aqui
         cart.getEntry(cart.getDevice().getCode()).setBpo("CBA");
+        //Crie para ver o retorno do GetDevice + GetCode --> Felipe
+        String deviceCode = cart.getDevice().getCode();
+        System.out.println("Device Code: " + deviceCode);
+        //Até aqui
         pdpAparelhosPage.selecionarFluxo(APARELHO_TROCA_APARELHO);
     }
 
