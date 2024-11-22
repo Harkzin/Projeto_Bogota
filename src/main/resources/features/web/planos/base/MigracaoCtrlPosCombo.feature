@@ -13,12 +13,13 @@ Funcionalidade: ECCMAUT-260 - Migracao Controle para Pos Combo Multi
     Dado que o usuário acesse a Loja Online
     Quando selecionar o Plano Pós de id "17522" na Home
     Então é direcionado para a tela de Carrinho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
     E preenche os campos: [Telefone com DDD] "11947725638", [E-mail] e [CPF] "19398965178"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Termos Combo
-    E o plano do carrinho será atualizado para o Plano Combo correspondente
+      E o plano do carrinho será atualizado para o Plano Combo correspondente
     E não deve ser exibido as opções de pagamento
     E não deve ser exibido os meios de recebimento da fatura
     E não deve ser exibido as datas de vencimento

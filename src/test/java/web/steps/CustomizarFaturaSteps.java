@@ -46,17 +46,17 @@ public class CustomizarFaturaSteps {
 
     @Mas("não deve ser exibido as opções de pagamento")
     public void naoExibePagamento() {
-        cart.isDebitPaymentFlow = customizarFaturaPage.validarNaoExibeMeiosPagamento(); //Valida e já atualiza o isDebitPaymentFlow
+        cart.isDebitPaymentFlow = customizarFaturaPage.validarNaoExibeMeiosPagamento(cart.getProcessType()); //Valida e já atualiza o isDebitPaymentFlow
     }
 
     @E("deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada")
     public void exibeRecebimentoFatura() {
-        customizarFaturaPage.validarTiposFatura(true, cart.isDebitPaymentFlow, cart.isThab());
+        customizarFaturaPage.validarExibeTiposFatura(cart.isDebitPaymentFlow, cart.isThab());
     }
 
     @Mas("não deve ser exibido os meios de recebimento da fatura")
     public void naoExibeRecebimentoFatura() {
-        customizarFaturaPage.validarTiposFatura(false, cart.isDebitPaymentFlow, cart.isThab());
+        customizarFaturaPage.validarNaoExibeTiposFatura(cart.getProcessType());
     }
 
     @E("deve ser exibido as datas de vencimento")
