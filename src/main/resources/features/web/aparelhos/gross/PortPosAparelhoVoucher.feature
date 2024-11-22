@@ -38,6 +38,9 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
@@ -51,6 +54,9 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
       #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #MOM-2021 Então não deve haver alterações no valor e nem nas informações do Plano
