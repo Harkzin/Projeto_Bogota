@@ -86,16 +86,6 @@ public class FormaPagamentoPage {
         assertFalse(finalizarPix.isDisplayed());
     }
 
-    public void validarPaginaFormaPagamentoAcessorios() {
-        driverWeb.waitPageLoad("/payment-device-method", 10);
-        driverWeb.actionPause(2000);
-        PageFactory.initElements(driverWeb.getDriver(), this);
-
-        validateElementActiveVisible(adicionarCartao);
-
-        assertFalse(finalizarPix.isDisplayed());
-    }
-
     public void preencherCupom(String voucher) {
         driverWeb.sendKeys(cupom, voucher);
     }

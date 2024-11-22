@@ -29,11 +29,11 @@ Funcionalidade: ECCMAUT-197 - Aquisicao de acessorio com mais de 1 unidade
     E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP202"
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
-    Entao será direcionado para a tela [Forma de Pagamento] de acessórios
+    Entao será direcionado para a tela [Forma de Pagamento]
 
     Quando o usuário clicar no botão [Adicionar cartão de crédito]
     Entao será exibido o iframe de pagamento do cartão
-    E preenche os dados do cartão: [Nome] "ECCMAUT ACESS UM PROD PARCEL", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
+    E preenche os dados do cartão: [Nome] "ECOMM ACCEPT", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns
