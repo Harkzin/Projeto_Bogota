@@ -123,7 +123,6 @@ public class CustomizarFaturaPage {
             }
         }
 
-        //assertTrue(abaBoleto.findElement(By.tagName("div")).isDisplayed());
         driverWeb.waitElementVisible(abaBoleto.findElement(By.tagName("div")), 5);
         assertTrue(abaDebito.findElement(By.tagName("div")).isDisplayed());
     }
