@@ -30,7 +30,7 @@ Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
     E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
-    Então não deve haver alterações no valor e nem nas informações do Plano
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
@@ -44,7 +44,7 @@ Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
     E deve ser exibido as datas de vencimento
 
     Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
-    Então não deve haver alterações no valor e nem nas informações do Plano
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
