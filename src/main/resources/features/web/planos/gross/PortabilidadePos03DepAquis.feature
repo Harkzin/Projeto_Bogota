@@ -1,12 +1,13 @@
 #language: pt
 
 @Web
-Funcionalidade: ECCMAUT-1174 - Portabilidade Pos - 03 Dependente Aquisição
+Funcionalidade: ECCMAUT-1174 - Portabilidade Pos - 03 Dependente Aquisicao
 
   @Portabilidade
   @Pos
   @PortabilidadePos03DepAquis
-  Cenario: Portabilidade Pos - 03 Dependente Aquisição
+  Cenario: Portabilidade Pos - 03 Dependente Aquisicao
+
     Dado que o usuário acesse a Loja Online
     Quando selecionar o Plano Pós de id "17524" na Home
     Então é direcionado para a tela de Carrinho
@@ -59,5 +60,5 @@ Funcionalidade: ECCMAUT-1174 - Portabilidade Pos - 03 Dependente Aquisição
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

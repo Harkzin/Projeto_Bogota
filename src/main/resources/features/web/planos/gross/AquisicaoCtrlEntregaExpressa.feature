@@ -53,5 +53,5 @@ Funcionalidade: ECCMAUT-372 - Aquisicao Controle - Entrega expressa
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Entao é direcionado para a tela de Parabéns
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

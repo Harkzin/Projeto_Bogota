@@ -7,7 +7,6 @@ Funcionalidade: ECCMAUT-197 - Aquisicao de acessorio com mais de 1 unidade
   @AcessMaisDeUmaUni
   Cenario: Aquisicao de acessorio com mais de 1 unidade
 
-      #Não foram feitas as validações necessárias, pois a parte de validações está com a task ECCMAUT-351
     Dado que o usuário acesse a Loja Online
 
     Quando o usuário clicar na opção [Acessórios] do header

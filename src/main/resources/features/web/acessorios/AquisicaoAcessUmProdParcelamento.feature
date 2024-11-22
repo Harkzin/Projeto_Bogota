@@ -7,7 +7,6 @@ Funcionalidade: ECCMAUT-1092 - Aquisicao de acessorio com 1 produto - Parcelamen
   @AcessUmProdutoParcel
   Cenario: Aquisicao de acessorio com 1 produto - Parcelamento
 
-      #Não foram feitas as validações necessárias, pois a parte de validações está com a task ECCMAUT-351
     Dado que o usuário acesse a Loja Online
 
     Quando o usuário clicar na opção [Acessórios] do header

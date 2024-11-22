@@ -8,7 +8,6 @@ Funcionalidade: ECCMAUT-196 - Carrinho com produtos diferentes
   @AcessCarrinhoComProdutosDiferentes
   Cenario: Carrinho com produtos diferentes
 
-      #Não foram feitas as validações necessárias, pois a parte de validações está com a task ECCMAUT-351
     Dado que o usuário acesse a Loja Online
 
     Quando o usuário clicar na opção [Acessórios] do header

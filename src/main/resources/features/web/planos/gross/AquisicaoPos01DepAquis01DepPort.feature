@@ -59,5 +59,5 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de Parabéns
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

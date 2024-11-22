@@ -50,5 +50,5 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao é direcionado para a tela de Parabéns
-      #ECCMAUT351 Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

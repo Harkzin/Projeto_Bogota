@@ -57,6 +57,6 @@ Funcionalidade: ECCMAUT-528 - Portabilidade Pos - Entrega Expressa - Mesmo ender
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Entao é direcionado para a tela de Parabéns
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E clica no botão [Ok, Entendi] do modal de alerta de token
     E os dados do pedido estão corretos
