@@ -262,7 +262,7 @@ public class ComumPage {
         String mobilePriceSummaryHeaderRef;
         WebElement planPrice = driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='price']");
 
-        if (cart.getPromotion().isRentabilization()) { //Cart rentab
+        if (cart.getPromotion().isRentabilization() && cart.getPromotion().getDiscountValue() > 0) { //Cart rentab com promo que possui desconto no Plano
             //Preço "De"
             String fullPriceRef = String.format("De %s", basePriceFormattedRef);
             validateElementText(fullPriceRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='fullprice']/.."));

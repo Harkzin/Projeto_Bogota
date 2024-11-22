@@ -80,7 +80,7 @@ Funcionalidade: ECCMAUT-202 - Portabilidade Pos com Aparelho - Cartao + Voucher
 
     Quando o usuário clicar no botão [Adicionar cartão de crédito]
     Entao será exibido o iframe de pagamento do cartão
-    E preenche os dados do cartão: [Nome] "ECCOM APROV", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
+    E preenche os dados do cartão: [Nome] "ECOMM ACCEPT", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns

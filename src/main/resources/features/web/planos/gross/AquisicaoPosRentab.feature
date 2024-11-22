@@ -21,7 +21,6 @@ Funcionalidade: ECCMAUT-1069 - Aquisicao Pos Pago - Rentabilizacao
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
-      Mas não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário clicar no botão [Seguir sem dependentes]
     Então é direcionado para a tela de Customizar Fatura

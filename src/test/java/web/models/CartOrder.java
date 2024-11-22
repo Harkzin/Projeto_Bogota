@@ -862,5 +862,9 @@ public class CartOrder {
         public boolean isRentabilization() {
             return rentabilizationCampaign;
         }
+
+        public int getDiscountValue() {
+            return discountValue;
+        }
     }
 }

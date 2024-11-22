@@ -88,7 +88,7 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E o usuário clicar no botão [Adicionar cartão de crédito]
     E será exibido o iframe de pagamento do cartão
-    E preenche os dados do cartão: [Nome] "ECCMAUT MIGRA PRE CTRL", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "2"
+    E preenche os dados do cartão: [Nome] "ECCMAUT ACCEPT", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "2"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns
