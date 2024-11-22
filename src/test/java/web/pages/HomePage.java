@@ -30,7 +30,7 @@ public class HomePage {
         driverWeb.waitPageLoad(urlAmbiente, 20);
 
         if (driverWeb.isMobile()) {
-            WebElement btnFecharModal = driverWeb.findElement("//*[@id='modal-onleave'][1]/div/a","xpath");
+            WebElement btnFecharModal = driverWeb.findElement("//*[@id='modal-onleave'][1]/div/a", "xpath");
             driverWeb.waitElementVisible(btnFecharModal, 10);
             driverWeb.javaScriptClick(btnFecharModal);
         }
@@ -132,5 +132,10 @@ public class HomePage {
     public void acessarMenuAcessorios() {
         abrirMenuMobile();
         driverWeb.javaScriptClick("//*[@id='tab-acessorios']/a","xpath");
+    }
+    
+    public void acessarPlpControle() {
+        abrirMenuMobile();
+        driverWeb.javaScriptClick("//*[@id='tab-controle']/a", "xpath");
     }
 }

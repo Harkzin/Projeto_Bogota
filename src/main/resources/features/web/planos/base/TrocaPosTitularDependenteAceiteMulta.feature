@@ -13,7 +13,7 @@ Funcionalidade: ECCMAUT-150  -  Troca Pos com Aceite de Multa
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de troca de Plano
-    E preenche os campos: [Telefone com DDD] "11945581186", [E-mail] e [CPF] "19402441883"
+    E preenche os campos: [Telefone com DDD] "Pos" "Debito" "E-mail" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado pra tela de Customizar Fatura, com alerta de multa
@@ -25,6 +25,9 @@ Funcionalidade: ECCMAUT-150  -  Troca Pos com Aceite de Multa
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E não deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
 
@@ -35,6 +38,9 @@ Funcionalidade: ECCMAUT-150  -  Troca Pos com Aceite de Multa
     #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E não deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano

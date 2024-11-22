@@ -23,7 +23,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
     Entao é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E preenche os campos: [Telefone a ser portado com DDD] "11913971002", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Continuar] do Carrinho
     Entao é direcionado para a tela de Dados Pessoais
@@ -41,6 +41,9 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Entao não deve haver alterações no valor e nem nas informações do Plano
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
@@ -54,6 +57,9 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #MOM-2021 Entao não deve haver alterações no valor e nem nas informações do Plano

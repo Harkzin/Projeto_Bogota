@@ -2,6 +2,7 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.logging.log4j.util.TriConsumer;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -61,6 +62,9 @@ public class PdpAparelhosPage {
 
     @FindBy(id = "rdn-mudar-plano")
     private WebElement mudarMeuPlano;
+
+    @FindBy(xpath = "//*[@id='txt-telefone-login']/following-sibling::small")
+    private WebElement erroDependente;
 
     @FindBy(id = "rdn-manter-com-fidelidade")
     private WebElement manterPlanoFid;
@@ -462,5 +466,10 @@ public class PdpAparelhosPage {
 
     public void clicarComprar(String deviceId) {
         driverWeb.javaScriptClick("btn-eu-quero-" + deviceId, "id");
+    }
+
+    public void validaMsgErroDependente(String msgExibida) {
+        driverWeb.waitElementPresence("//*[@id='txt-telefone-login']/following-sibling::small", 20);
+        Assert.assertTrue(erroDependente.getText().contains(msgExibida));
     }
 }

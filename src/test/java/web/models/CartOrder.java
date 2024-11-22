@@ -37,6 +37,7 @@ public class CartOrder {
     private String deviceId;
 
     public boolean isDebitPaymentFlow;
+    public boolean hasErrorPasso1 = false;
 
     private final Essential essential;
     private final PositionsAndPrices positionsAndPrices;

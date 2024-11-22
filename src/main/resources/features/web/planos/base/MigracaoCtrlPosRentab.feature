@@ -12,7 +12,7 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
 
     Dado que o usuário acesse a URL parametrizada para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17522&coupon=ae3a66fc60cf93d5c6bd9cb212a8b67d&msisdn=msisdn&targetCampaign=migra&paymentMethod=ticket&loyalty=true&processType=MIGRATE"
     Então é direcionado para a tela de Carrinho com a oferta
-    E preenche os campos: [Telefone com DDD] "11940660390", [E-mail] e [CPF] "36163924894"
+    E preenche os campos: [Telefone com DDD] "Controle" "Boleto" "Correios" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
@@ -20,6 +20,9 @@ Funcionalidade: ECCMAUT-257 - Migracao Controle Pos - Rentabilizacao
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano

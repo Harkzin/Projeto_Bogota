@@ -48,6 +48,9 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Entao não deve haver alterações no valor e nem nas informações do Plano
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
@@ -61,6 +64,9 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #MOM-2021 Entao não deve haver alterações no valor e nem nas informações do Plano
@@ -84,6 +90,7 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao será direcionado para a tela [Forma de Pagamento]
+
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E o usuário clicar no botão [Adicionar cartão de crédito]
@@ -95,3 +102,4 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
+

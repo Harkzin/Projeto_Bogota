@@ -5,6 +5,7 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
 
   @Aquisicao
   @Pos
+  @DepPort
   @AquisicaoPos01DepAquis01DepPort
   Cenario: Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 Portabilidade
 
@@ -26,7 +27,7 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E adiciona o primeiro dependente, com número novo
-    E adiciona o segundo dependente, com numero "910400073"
+    E adiciona o segundo dependente, com numero de portabilidade
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
@@ -34,6 +35,9 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #Então não deve haver alterações no valor e nem nas informações do Plano
@@ -45,6 +49,9 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
     #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano

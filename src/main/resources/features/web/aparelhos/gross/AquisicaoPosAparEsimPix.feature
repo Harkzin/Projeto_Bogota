@@ -41,6 +41,9 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM - Pix
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Entao não deve haver alterações no valor e nem nas informações do Plano
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
@@ -54,6 +57,9 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM - Pix
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #MOM-2021 Entao não deve haver alterações no valor e nem nas informações do Plano

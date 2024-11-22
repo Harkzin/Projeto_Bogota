@@ -39,7 +39,7 @@ public class HomeSteps {
 
     @Quando("o usuário clicar na opção [Controle] do header")
     public void acessarPlpControle() {
-        //TODO
+        homePage.acessarPlpControle();
     }
 
     @Quando("o usuário clicar na opção [Pós] do header")

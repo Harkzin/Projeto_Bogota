@@ -43,9 +43,11 @@ public class CustomizarFaturaPage {
     private WebElement conta;
 
     private WebElement whatsappDebit;
+    private WebElement appDebit;
     private WebElement emailDebit;
     private WebElement correiosDebit;
     private WebElement whatsappTicket;
+    private WebElement appTicket;
     private WebElement emailTicket;
     private WebElement correiosTicket;
 
@@ -313,6 +315,7 @@ public class CustomizarFaturaPage {
             case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
             case DIGITAL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
             case PRINTED -> driverWeb.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
+            case APP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? appDebit : appTicket);
         }
         driverWeb.actionPause(3000);
     }

@@ -172,6 +172,8 @@ public class CarrinhoPage {
         celularAcessorios = driverWeb.findElement("txt-celular", "id");
         cpfAcessorios = driverWeb.findElement("txt-cpf", "id");
         emailAcessorios = driverWeb.findElement("txt-email", "id");
+        driverWeb.waitElementClickable(driverWeb.findElement("//*[@id='txt-resumo-do-pedido']/following-sibling::i", "xpath"), 10);
+        driverWeb.javaScriptClick(driverWeb.findElement("//*[@id='txt-resumo-do-pedido']/following-sibling::i", "xpath"));
     }
 
     public void inserirDadosCarrinhoAcessorios(String celular, String cpf, String email) {
@@ -220,6 +222,11 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
+    public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+    }
+
     public void inserirDadosPortabilidadePix(String telefone) {
         driverWeb.sendKeys(telefonePortabilidade, telefone);
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPixFlow());
@@ -243,6 +250,11 @@ public class CarrinhoPage {
 
     public void clicarEuQuero() {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
+        try {
+            driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 10);
+            cartOrder.hasErrorPasso1 = true;
+        } catch (Exception ignored) {
+        }
     }
 
     public void clicarContinuar() {
@@ -251,7 +263,7 @@ public class CarrinhoPage {
 
     public void validaMsgErro(String msgExibida) {
         driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
-        WebElement contentMessageError =  driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+        WebElement contentMessageError = driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
         driverWeb.waitElementVisible(contentMessageError, 10);
         assertTrue(contentMessageError.getText().contains(msgExibida));

@@ -12,7 +12,7 @@ Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
 
     Dado que o usuário acesse a URL parametrizada para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17528&coupon=cd3593b3dba52709ae89ae5aa1db8dbf61993f1047e42a2d3d942e9b77c2885b&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
     Então é direcionado para a tela de Carrinho com a oferta
-    E preenche os campos: [Telefone com DDD] "11947726224", [E-mail] e [CPF] "93041484803"
+    E preenche os campos: [Telefone com DDD] "Controle" "Debito" "E-mail" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura

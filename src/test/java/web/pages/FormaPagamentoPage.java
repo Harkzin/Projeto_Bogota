@@ -34,10 +34,10 @@ public class FormaPagamentoPage {
     @FindBy(id = "btn-aplicar-cupom")
     private WebElement aplicarCupom;
 
-    @FindBy(xpath = "//*[@id='tab-cartao']/input")
+    @FindBy(xpath = "//*[@id='tab-cartao']/div")
     private WebElement tabCartao;
 
-    @FindBy(xpath = "//*[@id='tab-pix']/input")
+    @FindBy(xpath = "//*[@id='tab-pix']/div")
     private WebElement tabPix;
 
     @FindBy(id = "btn-adicionar-cartao")
@@ -81,9 +81,13 @@ public class FormaPagamentoPage {
             validateElementText(claroClubeRef, driverWeb.findByXpath("//*[@id='utilizar-claro-clube']//p"));
         }
 
-        validateElementText("Cartão de crédito", tabCartao.findElement(By.xpath("..")));
-        validateElementText("Pix", tabPix.findElement(By.xpath(".."))); //Em caso de contingência do Cart, não será exibido
+        validateElementText("Cartão de crédito", tabCartao);
+        validateElementText("Pix", tabPix); //Em caso de contingência do Cart, não será exibido
         assertFalse(finalizarPix.isDisplayed());
+
+        clicarAbaPix();
+        driverWeb.javaScriptClick(tabCartao);
+        driverWeb.waitElementVisible(adicionarCartao, 5);
     }
 
     public void preencherCupom(String voucher) {
@@ -122,6 +126,7 @@ public class FormaPagamentoPage {
 
     public void clicarAbaPix() {
         driverWeb.javaScriptClick(tabPix);
+        driverWeb.waitElementVisible(finalizarPix, 5);
     }
 
     public void validarIframe() {

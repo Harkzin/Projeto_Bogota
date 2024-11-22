@@ -13,7 +13,7 @@ Funcionalidade: ECCMAUT-971 - Portabilidade Pos - 02 Dependentes
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
-    E preenche os campos: [Celular de contato] "11910211968", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
@@ -25,8 +25,8 @@ Funcionalidade: ECCMAUT-971 - Portabilidade Pos - 02 Dependentes
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E adiciona o primeiro dependente, com numero "910211967"
-    E adiciona o segundo dependente, com numero "910211966"
+    E adiciona o primeiro dependente, com numero de portabilidade
+    E adiciona o segundo dependente, com numero de portabilidade
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
@@ -34,6 +34,9 @@ Funcionalidade: ECCMAUT-971 - Portabilidade Pos - 02 Dependentes
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
@@ -45,6 +48,9 @@ Funcionalidade: ECCMAUT-971 - Portabilidade Pos - 02 Dependentes
     #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
