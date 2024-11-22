@@ -1,8 +1,8 @@
-package src.test.java.web.support.token;
+package web.support.token;
 
-import src.test.java.web.support.token.database.ConfigLoader;
-import src.test.java.web.support.token.database.DatabaseConfig;
-import src.test.java.web.support.utils.CryptographySHA256;
+import web.support.token.database.ConfigLoader;
+import web.support.token.database.DatabaseConfig;
+import web.support.utils.CryptographySHA256;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

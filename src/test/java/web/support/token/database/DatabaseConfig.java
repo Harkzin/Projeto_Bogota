@@ -1,4 +1,4 @@
-package src.test.java.web.support.token.database;
+package web.support.token.database;
 
 public class DatabaseConfig {
     private String jdbcUrl;

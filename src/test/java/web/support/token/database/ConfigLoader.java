@@ -1,4 +1,4 @@
-package src.test.java.web.support.token.database;
+package web.support.token.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;

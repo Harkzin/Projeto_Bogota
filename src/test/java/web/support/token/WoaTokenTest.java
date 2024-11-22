@@ -1,4 +1,4 @@
-package src.test.java.web.support.token;
+package web.support.token;
 
 public class WoaTokenTest {
 

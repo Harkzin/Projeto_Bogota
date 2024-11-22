@@ -1,4 +1,4 @@
-package src.test.java.web.support.utils;
+package web.support.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
