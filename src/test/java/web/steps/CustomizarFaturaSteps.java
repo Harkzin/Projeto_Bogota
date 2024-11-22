@@ -84,6 +84,12 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.selecionarTipoFatura(WHATSAPP, cart.isDebitPaymentFlow);
     }
 
+    @Quando("o usuário selecionar o método de recebimento da fatura [App Minha Claro]")
+    public void selecionarFaturaAppMinhaClaro() {
+        cart.setSelectedInvoiceType(APP);
+        customizarFaturaPage.selecionarTipoFatura(APP, cart.isDebitPaymentFlow);
+    }
+
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
         cart.setSelectedInvoiceType(DIGITAL);

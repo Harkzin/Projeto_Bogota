@@ -45,7 +45,8 @@ public final class Constants {
     public enum InvoiceType {
         WHATSAPP,
         DIGITAL, //E-mail
-        PRINTED //Correios
+        PRINTED, //Correios
+        APP //App Minha Claro
     }
 
     public enum PaymentMode {
