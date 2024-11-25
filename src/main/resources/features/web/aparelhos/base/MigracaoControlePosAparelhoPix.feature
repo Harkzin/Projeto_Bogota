@@ -54,7 +54,7 @@ Funcionalidade: ECCMAUT-201 - Migracao Controle para Pos com Aparelho - Pix
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar a forma de pagamento [Débito]
-    #MOM-2021 Entao o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
+    Entao o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
@@ -64,15 +64,15 @@ Funcionalidade: ECCMAUT-201 - Migracao Controle para Pos com Aparelho - Pix
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
-    #MOM-2021 Entao não deve haver alterações no valor e nem nas informações do Plano
+    Entao não deve haver alterações no valor e nem nas informações do Plano
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    #MOM-2021 Entao o valor do Plano será atualizado no Resumo da compra para fatura impressa
+    Entao o valor do Plano será atualizado no Resumo da compra para fatura impressa
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
-    #MOM-2021 Entao o valor do Plano será atualizado no Resumo da compra para fatura digital
+    Entao o valor do Plano será atualizado no Resumo da compra para fatura digital
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E preenche os dados bancários
     E marca o checkbox de termos de aceite

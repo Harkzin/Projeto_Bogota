@@ -186,7 +186,7 @@ public class PdpAparelhosPage {
             WebElement campaignPrice = driverWeb.findById("value-desconto-aparelho-pdp");
             driverWeb.javaScriptScrollTo(campaignPrice);
             //validateElementText(device.getFormattedCampaignPrice(device.getSimType().equals("ESC") || eSimSelected || userLogged), campaignPrice);
-            //TODO Aviso - Inconsistência da PDP. As vezes é somado 10 reais de chip em fluxo de base (apenas gross tem venda de chip)
+            //TODO ECCMAUT-1460 - Inconsistência da PDP. As vezes é somado 10 reais de chip em fluxo de base (apenas gross tem venda de chip)
 
             //Parcelamento
             WebElement installments = driverWeb.findById("value-parcela-aparelho-pdp");

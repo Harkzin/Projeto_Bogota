@@ -46,7 +46,7 @@ Funcionalidade: ECCMAUT-1173 - Aquisicao Pos - 02 Dependentes - 1 Aquisicao e 1 
     Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar a forma de pagamento [Débito]
-    #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 

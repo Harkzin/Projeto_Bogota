@@ -1,7 +1,6 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,10 @@ import web.support.utils.DriverWeb;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static org.junit.Assert.*;
+import static web.pages.ComumPage.*;
+import static web.pages.ComumPage.validateElementText;
 
 @Component
 @ScenarioScope
@@ -24,42 +27,42 @@ public class PlpPlanosPage {
         this.driverWeb = driverWeb;
     }
 
+    public void validarPlpControle() {
+        driverWeb.waitPageLoad("controle", 10);
+    }
+
     //TODO Não testado, nenhum cenário passa pela PLP em 13/06/2024.
     public void validarCardPlano(PlanProduct plan, boolean isDebitPaymentFlow) {
         //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
         //Valida nome
-        if (!(plan.getName() == null)) {
-            WebElement planName = cardParent.findElement(By.xpath("h2"));
-            ComumPage.validateElementText(plan.getName(), planName);
-        }
+        assertNotNull(plan.getName());
+        WebElement planName = cardParent.findElement(By.xpath("h2"));
+        driverWeb.javaScriptScrollTo(planName);
+        validateElementText(plan.getName(), planName);
 
         //Valida preço
-        WebElement price = cardParent
-                .findElement(By.xpath("div[@data-price-for]//p[contains(@class, 'p-valor')]"));
-        Assert.assertEquals(plan.getFormattedPrice(isDebitPaymentFlow, true), price.getText().trim());
-        Assert.assertTrue(price.isDisplayed());
+        WebElement price = cardParent.findElement(By.xpath(".//*[contains(@class, 'component-preco')]"));
+        String priceRef = String.format("R$ %s /mês", plan.getFormattedPrice(isDebitPaymentFlow, true));
+        validateElementText(priceRef, price);
 
         //Valida apps ilimitados
         if (plan.hasPlanApps()) {
-            List<WebElement> planApps = cardParent
-                    .findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
-            ComumPage.validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
+            List<WebElement> planApps = cardParent.findElements(By.xpath("div[@class='characteristics']/div[@class='component-apps-ilimitados apps-ilimitados']//img"));
+            validatePlanMedias(plan.getPlanApps(), planApps, driverWeb);
         }
 
         //Valida título extraPlay
         if (plan.hasExtraPlayTitle()) {
-            WebElement extraPlayTitle = cardParent
-                    .findElement(By.xpath("div[@class='characteristics']/div[contains(@class, 'title-extra-play')][1]/p"));
-            ComumPage.validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
+            WebElement extraPlayTitle = cardParent.findElement(By.xpath("div[@class='characteristics']/div[contains(@class, 'title-extra-play')][1]/p"));
+            validateElementText(plan.getExtraPlayTitle(), extraPlayTitle);
         }
 
         //Valida apps extraPlay
         if (plan.hasExtraPlayApps()) {
-            List<WebElement> extraPlayApps = cardParent
-                    .findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
-            ComumPage.validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            List<WebElement> extraPlayApps = cardParent.findElements(By.xpath("div[@class='characteristics']/div[contains(@class, 'component-apps-ilimitados extra-play')]//img"));
+            validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida planPortability (GB e bônus - antigo)
@@ -73,16 +76,14 @@ public class PlpPlanosPage {
             //Remove o elemento do [título extraPlay] que vem junto na lista, planportability e clarotitleextraplay usam as mesmas classes css.
             //A posição entre eles pode mudar, não servindo como referência.
             if (plan.hasExtraPlayTitle()) {
-                planPortability.remove(planPortability
-                        .stream()
+                planPortability.remove(planPortability.stream()
                         .filter(webElement -> webElement.getText().equals(plan.getExtraPlayTitle()))
                         .findFirst().orElseThrow());
             }
 
             IntStream.range(0, planPortability.size()).forEachOrdered(i -> {
-                Assert.assertEquals(plan.getPlanPortability().get(i), planPortability.get(i).getText());
-
-                Assert.assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
+                assertEquals(plan.getPlanPortability().get(i), planPortability.get(i).getText());
+                assertTrue("Texto planPortability visível", planPortability.get(i).isDisplayed());
             });
         }
     }

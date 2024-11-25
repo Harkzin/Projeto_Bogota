@@ -85,7 +85,9 @@ public class FormaPagamentoPage {
         validateElementText("Pix", tabPix); //Em caso de contingência do Cart, não será exibido
         assertFalse(finalizarPix.isDisplayed());
 
+        //Valida abas meios de pagamento
         clicarAbaPix();
+        driverWeb.actionPause(2000);
         driverWeb.javaScriptClick(tabCartao);
         driverWeb.waitElementVisible(adicionarCartao, 5);
     }
