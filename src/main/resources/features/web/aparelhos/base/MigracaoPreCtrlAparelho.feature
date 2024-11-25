@@ -12,7 +12,7 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
-    Entao é direcionado para a tela PLP de Aparelho
+    Entao é direcionado para a PLP de Aparelhos
 
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "000000000000018006"
     Entao é direcionado para a PDP do Aparelho selecionado
@@ -50,6 +50,7 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
     Entao não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Entao não deve haver alterações no valor e nem nas informações do Plano
@@ -67,6 +68,7 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
     Entao não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     #MOM-2021 Entao não deve haver alterações no valor e nem nas informações do Plano
@@ -90,12 +92,11 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao será direcionado para a tela [Forma de Pagamento]
-
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E o usuário clicar no botão [Adicionar cartão de crédito]
     E será exibido o iframe de pagamento do cartão
-    E preenche os dados do cartão: [Nome] "ECCMAUT ACCEPT", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "2"
+    E preenche os dados do cartão: [Nome] "ECOMM ACCEPT", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "2"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns
