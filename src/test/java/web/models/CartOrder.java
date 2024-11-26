@@ -22,31 +22,28 @@ import static web.support.utils.Constants.ProcessType.*;
 
 public class CartOrder {
 
-    public CartOrder() {
-        essential = new Essential();
-        positionsAndPrices = new PositionsAndPrices();
-        payment = new Payment();
-        delivery = new Delivery();
-        claroChip = new ClaroChip();
-        claroClube = new ClaroClube();
-        appliedCouponCodes = new ArrayList<>();
-        dependentsInformation = new ArrayList<>();
-    }
-
-    private boolean thab;
-
     private String planId;
     private String deviceId;
 
     public boolean isDebitPaymentFlow;
     public boolean hasErrorPasso1 = false;
 
+    // Essential -------------------------------------------------
     @JsonProperty("essential")
     private final Essential essential;
 
+
+    // Positions and Prices --------------------------------------
     @JsonProperty("positionsAndPrices")
     private final PositionsAndPrices positionsAndPrices;
 
+
+    // Dependent -------------------------------------------------
+    @JsonProperty("dependentsInformation")
+    private final List<DependentsInformation> dependentsInformation;
+
+
+    // Payment and Delivery --------------------------------------
     @JsonProperty("status")
     private Status status;
 
@@ -56,44 +53,21 @@ public class CartOrder {
     @JsonProperty("delivery")
     private final Delivery delivery;
 
-    @JsonProperty("claroChip")
-    private ClaroChip claroChip;
 
-    @JsonProperty("claroClube")
-    private ClaroClube claroClube;
+    // Order History ---------------------------------------------
+    @JsonProperty("acceptFine")
+    private boolean acceptFine;
 
-    @JsonProperty("claroSapResponse")
-    private ClaroSapResponse claroSapResponse;
 
-    @JsonProperty("subOrder")
-    private SubOrder subOrder;
+    // Administration --------------------------------------------
+    @JsonProperty("creationtime")
+    private String creationtime;
 
     @JsonProperty("abandonedCartOrder")
     private boolean abandonedCartOrder;
 
-    @JsonProperty("acceptFine")
-    private boolean acceptFine;
-
-    @JsonProperty("contingencyStepOne")
-    private boolean contingencyStepOne;
-
-    @JsonProperty("isPreSale")
-    private boolean isPreSale;
-
-    @JsonProperty("minhaClaroOrder")
-    private boolean minhaClaroOrder;
-
-    @JsonProperty("offerRealized")
-    private boolean offerRealized;
-
-    @JsonProperty("passedByClearSale")
-    private boolean passedByClearSale;
-
-    @JsonProperty("claroDdd")
-    private int claroDdd;
-
     @JsonProperty("allPromotionResults")
-    private Promotion allPromotionResults;
+    private Promotion allPromotionResults; //PromotionResult.promotion
 
     @JsonProperty("appliedCouponCodes")
     private final List<String> appliedCouponCodes;
@@ -104,20 +78,35 @@ public class CartOrder {
     @JsonProperty("chosenPlan")
     private String chosenPlan;
 
+    @JsonProperty("claroChip")
+    private ClaroChip claroChip;
+
+    @JsonProperty("claroClube")
+    private ClaroClube claroClube;
+
+    @JsonProperty("claroDdd")
+    private int claroDdd;
+
     @JsonProperty("claroLegacyOrderId")
     private String claroLegacyOrderId;
 
-    @JsonProperty("creationtime")
-    private String creationtime;
+    @JsonProperty("claroSapResponse")
+    private ClaroSapResponse claroSapResponse;
+
+    //TODO comboMultiContract
+
+    @JsonProperty("contingencyStepOne")
+    private boolean contingencyStepOne;
 
     @JsonProperty("dayInvoiceExpiration")
     private String dayInvoiceExpiration;
 
-    @JsonProperty("dependentsInformation")
-    private final List<DependentsInformation> dependentsInformation;
+    //TODO eSimActivationUrl ?
 
     @JsonProperty("eaTicket")
     private String eaTicket;
+
+    //TODO eSimTermsAccept ?
 
     @JsonProperty("eventId")
     private String eventId;
@@ -128,14 +117,28 @@ public class CartOrder {
     @JsonProperty("guid")
     private String guid;
 
+    @JsonProperty("isPreSale")
+    private boolean isPreSale;
+
+    //TODO isTheComboMultiFlowForProspectMovelCustomer
+
     @JsonProperty("journeyInformation")
     private String journeyInformation;
+
+    @JsonProperty("minhaClaroOrder")
+    private boolean minhaClaroOrder;
+
+    @JsonProperty("offerRealized")
+    private boolean offerRealized;
 
     @JsonProperty("offeredPlan")
     private String offeredPlan;
 
     @JsonProperty("orderTrackingUrl")
     private String orderTrackingUrl;
+
+    @JsonProperty("passedByClearSale")
+    private boolean passedByClearSale;
 
     @JsonProperty("portabilityClaroTicket")
     private String portabilityClaroTicket;
@@ -145,6 +148,24 @@ public class CartOrder {
 
     @JsonProperty("selectedInvoiceType")
     private InvoiceType selectedInvoiceType;
+
+    @JsonProperty("subOrder")
+    private SubOrder subOrder;
+
+    @JsonProperty("thab")
+    private boolean thab;
+
+    public CartOrder() {
+        essential = new Essential();
+        positionsAndPrices = new PositionsAndPrices();
+        payment = new Payment();
+        delivery = new Delivery();
+        claroChip = new ClaroChip();
+        claroClube = new ClaroClube();
+
+        appliedCouponCodes = new ArrayList<>();
+        dependentsInformation = new ArrayList<>();
+    }
 
     //######################################################################
 
@@ -394,32 +415,34 @@ public class CartOrder {
     }
 
     public void populateCustomerProductDetails() throws HttpStatusException {
-        JsonNode response = customerProductDetailsRequest(essential.user.claroTelephone);
+        Essential.User user = essential.user;
+        JsonNode response = customerProductDetailsRequest(user.claroTelephone);
         JsonNode productNodeResponse = response.path("product");
 
         //User
-        getUser().name = productNodeResponse.get("customerName").asText();
-        getUser().displayName = essential.user.name;
-        getUser().cpf = productNodeResponse.get("cpf").asText();
+        user.name = productNodeResponse.get("customerName").asText();
+        user.displayName = essential.user.name;
+        user.cpf = productNodeResponse.get("cpf").asText();
 
         if (response.get("discountValue") != null) {
-            getUser().claroClubBalance = response.get("discountValue").asDouble();
+            user.claroClubBalance = response.get("discountValue").asDouble();
         }
 
         //User.ClaroSubscription
         JsonNode planPriceNodeResponse = productNodeResponse.path("planPrice");
-        getUser().claroSubscription = new Essential.User.ClaroSubscription();
-        getUser().claroSubscription.planTypePrice = planPriceNodeResponse.get("planTypePrice").asText();
+        user.claroSubscription = new Essential.User.ClaroSubscription();
+        Essential.User.ClaroSubscription claroSubscription = user.claroSubscription;
+        claroSubscription.planTypePrice = planPriceNodeResponse.get("planTypePrice").asText();
 
-        if (!getUser().claroSubscription.planTypePrice.equals("PRE_PAGO")) {
-            getUser().claroSubscription.claroPlan = planPriceNodeResponse.get("id").asText();
-            getUser().claroSubscription.claroPlanName = planPriceNodeResponse.get("name").asText();
-            getUser().claroSubscription.claroPlanPrice = planPriceNodeResponse.get("planValue").asDouble();
-            getUser().claroSubscription.claroMonthlyPrice = productNodeResponse.get("netSubscriberValue").asDouble();
-            getUser().claroSubscription.customerMobileSubType = productNodeResponse.get("customerMobileSubType").asText();
-            getUser().claroSubscription.loyalty = response.get("loyalty") != null;
+        if (!claroSubscription.planTypePrice.equals("PRE_PAGO")) {
+            claroSubscription.claroPlan = planPriceNodeResponse.get("id").asText();
+            claroSubscription.claroPlanName = planPriceNodeResponse.get("name").asText();
+            claroSubscription.claroPlanPrice = planPriceNodeResponse.get("planValue").asDouble();
+            claroSubscription.claroMonthlyPrice = productNodeResponse.get("netSubscriberValue").asDouble();
+            claroSubscription.customerMobileSubType = productNodeResponse.get("customerMobileSubType").asText();
+            claroSubscription.loyalty = response.get("loyalty") != null;
 
-            updatePlanAndDevicePrice(getUser().getClaroSubscription().getClaroPlan());
+            updatePlanAndDevicePrice(user.getClaroSubscription().getClaroPlan());
         } else {
             updatePlanAndDevicePrice(focusPlan); //Para cliente Pré será exibido apenas planos Controle, com o focusPlan setado por padrão (considerando que o plano foco é o primeiro Controle)
         }
@@ -432,219 +455,11 @@ public class CartOrder {
         return claroClube;
     }
 
-    //###########################################################################
 
-    public static class ClaroChip {
+    // Inner Classes ###################################################################
 
-        @JsonProperty("activationCode")
-        private String activationCode;
-
-        @JsonProperty("claroChipType")
-        private ChipType claroChipType;
-
-        @JsonProperty("iccIdSim")
-        private String iccIdSim;
-
-        @JsonProperty("qrCdode")
-        private String qrCdode;
-
-        @JsonProperty("technology")
-        private String technology;
-
-        private ClaroChip() {}
-
-        //########################################
-
-        public ChipType getChipType() {
-            return claroChipType;
-        }
-
-        public void setChipType(ChipType chip) {
-            claroChipType = chip;
-        }
-    }
-
-    public static class ClaroClube {
-
-        @JsonProperty("awardPoints")
-        private int awardPoints;
-
-        @JsonProperty("discountValue")
-        private double discountValue;
-
-        @JsonProperty("isClaroClubeApplied")
-        private boolean isClaroClubeApplied;
-
-        @JsonProperty("redeemId")
-        private String redeemId;
-
-        @JsonProperty("redeemed")
-        private boolean redeemed;
-
-        @JsonProperty("refund")
-        private boolean refund;
-
-        @JsonProperty("reserved")
-        private boolean reserved;
-
-        @JsonProperty("used")
-        private boolean used;
-
-        private ClaroClube() {}
-
-        //########################################
-
-        public int getAwardPoints() {
-            return awardPoints;
-        }
-
-        public double getDiscountValue() {
-            return discountValue;
-        }
-
-        public void setDiscountValue(double discountValue) {
-            this.discountValue = discountValue;
-        }
-
-        public boolean isClaroClubeApplied() {
-            return isClaroClubeApplied;
-        }
-
-        public void setClaroClubeApplied(boolean claroClubeApplied) {
-            isClaroClubeApplied = claroClubeApplied;
-        }
-
-        public String getRedeemId() {
-            return redeemId;
-        }
-
-        public boolean isRedeemed() {
-            return redeemed;
-        }
-
-        public boolean isRefund() {
-            return refund;
-        }
-
-        public boolean isReserved() {
-            return reserved;
-        }
-
-        public boolean isUsed() {
-            return used;
-        }
-    }
-
-    public static class ClaroSapResponse {
-
-        @JsonProperty("center")
-        private String center;
-
-        @JsonProperty("invoiceNumber")
-        private String invoiceNumber;
-
-        @JsonProperty("nfeNumber")
-        private String nfeNumber;
-
-        @JsonProperty("salesOrg")
-        private String salesOrg;
-
-        @JsonProperty("sapOrderId")
-        private String sapOrderId;
-
-        @JsonProperty("sapStatusHistory")
-        private List<SapStatusHistory> sapStatusHistory;
-
-        private ClaroSapResponse() {}
-
-        //########################################
-
-        public static class SapStatusHistory {
-
-            @JsonProperty("date")
-            private String date;
-
-            @JsonProperty("id")
-            private String id;
-
-            @JsonProperty("description")
-            private String description;
-
-            @JsonProperty("orderType")
-            private String orderType;
-
-            private SapStatusHistory() {}
-
-            //########################################
-        }
-    }
-
-    public static class Delivery {
-
-        @JsonProperty("deliveryAddress")
-        private DeliveryAddress deliveryAddress;
-
-        @JsonProperty("deliveryMode")
-        private DeliveryMode deliveryMode;
-
-        private Delivery() {
-            deliveryAddress = new Delivery.DeliveryAddress();
-        }
-
-        //########################################
-
-        public static class DeliveryAddress {
-
-            @JsonProperty("streetname")
-            private String streetname;
-
-            @JsonProperty("streetnumber")
-            private String streetnumber;
-
-            @JsonProperty("building")
-            private String building;
-
-            @JsonProperty("postalcode")
-            private String postalcode;
-
-            @JsonProperty("town")
-            private String town;
-
-            @JsonProperty("stateCode")
-            private String stateCode;
-
-            @JsonProperty("neighbourhood")
-            private String neighbourhood;
-
-            @JsonProperty("shippingAddress")
-            private boolean shippingAddress;
-
-            @JsonProperty("billingAddress")
-            private boolean billingAddress;
-
-            private DeliveryAddress() {}
-
-            //########################################
-        }
-    }
-
-    public static class DependentsInformation {
-
-        @JsonProperty("id")
-        private String id;
-
-        @JsonProperty("msisdn")
-        private String msisdn;
-
-        @JsonProperty("processTypeOfDependent")
-        private ProcessType processTypeOfDependent;
-
-        private DependentsInformation() {}
-
-        //########################################
-    }
-
-    public static class Essential {
+    // Essential -------------------------------------------------
+    public static final class Essential {
 
         @JsonProperty("code")
         private String code;
@@ -856,7 +671,168 @@ public class CartOrder {
         }
     }
 
-    public static class Payment {
+
+    // Positions and Prices --------------------------------------
+    public static final class PositionsAndPrices {
+
+        @JsonProperty("entries")
+        private List<Entry> entries;
+
+        @JsonProperty("entryGroups")
+        private List<String> entryGroups;
+
+        @JsonProperty("totalPrice")
+        private double totalPrice;
+
+        private PositionsAndPrices() {
+            entries = new ArrayList<>();
+            entryGroups = new ArrayList<>();
+        }
+
+        //########################################
+
+        public static class Entry {
+
+            @JsonProperty("product")
+            private Product product;
+
+            @JsonProperty("quantity")
+            private int quantity;
+
+            @JsonProperty("basePrice")
+            private double basePrice;
+
+            @JsonProperty("totalPrice")
+            private double totalPrice;
+
+            @JsonProperty("discountValues")
+            private final List<Double> discountValues = new ArrayList<>();
+
+            @JsonProperty("entryNumber")
+            private int entryNumber;
+
+            @JsonProperty("paymentMode")
+            private PaymentMode paymentMode;
+
+            @JsonProperty("bpo")
+            private String bpo;
+
+            @JsonProperty("status")
+            private String status;
+
+            private Entry() {}
+
+            private Entry(Product product, int quantity, double basePrice, double discount) {
+                this.product = product;
+                this.quantity = quantity;
+                this.basePrice = basePrice;
+
+                discountValues.add(discount);
+                totalPrice = basePrice - discount;
+            }
+
+            //########################################
+
+            public double getBasePrice() {
+                return basePrice;
+            }
+
+            public double getTotalPrice() {
+                return totalPrice;
+            }
+
+            public double getDiscount() {
+                return discountValues.get(0);
+            }
+
+            public Product getProduct() {
+                return product;
+            }
+
+            private void setDiscount(double discount) {
+                totalPrice -= discount;
+                discountValues.set(0, discount);
+            }
+
+            public void setBpo(String bpo) {
+                this.bpo = bpo;
+            }
+
+            public PaymentMode getPaymentMode() {
+                return paymentMode;
+            }
+        }
+    }
+
+
+    // Dependent -------------------------------------------------
+    public static final class DependentsInformation {
+
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("msisdn")
+        private String msisdn;
+
+        @JsonProperty("processTypeOfDependent")
+        private ProcessType processTypeOfDependent;
+
+        private DependentsInformation() {}
+
+        //########################################
+    }
+
+
+    // Payment and Delivery --------------------------------------
+    public static final class Status {
+
+        @JsonProperty("status")
+        private String status;
+
+        @JsonProperty("orderProcess")
+        private List<OrderProcess> orderProcess;
+
+        private Status() {}
+
+        //########################################
+
+        public static class OrderProcess {
+
+            @JsonProperty("processDefinitionName")
+            private String processDefinitionName;
+
+            @JsonProperty("state")
+            private String state;
+
+            @JsonProperty("taskLogs")
+            private List<TaskLog> taskLogs;
+
+            private OrderProcess() {}
+
+            //########################################
+
+            public static class TaskLog {
+
+                @JsonProperty("actionId")
+                private String actionId;
+
+                @JsonProperty("startDate")
+                private String startDate;
+
+                @JsonProperty("endDate")
+                private String endDate;
+
+                @JsonProperty("returnCode")
+                private String returnCode;
+
+                private TaskLog() {}
+
+                //########################################
+            }
+        }
+    }
+
+    public static final class Payment {
 
         @JsonProperty("paymentAddress")
         private PaymentAddress paymentAddress;
@@ -988,146 +964,203 @@ public class CartOrder {
         }
     }
 
-    public static class PositionsAndPrices {
+    public static final class Delivery {
 
-        @JsonProperty("entries")
-        private List<Entry> entries;
+        @JsonProperty("deliveryAddress")
+        private DeliveryAddress deliveryAddress;
 
-        @JsonProperty("entryGroups")
-        private List<String> entryGroups;
+        @JsonProperty("deliveryMode")
+        private DeliveryMode deliveryMode;
 
-        @JsonProperty("totalPrice")
-        private double totalPrice;
-
-        private PositionsAndPrices() {
-            entries = new ArrayList<>();
-            entryGroups = new ArrayList<>();
+        private Delivery() {
+            deliveryAddress = new Delivery.DeliveryAddress();
         }
 
         //########################################
 
-        public static class Entry {
+        public static class DeliveryAddress {
 
-            @JsonProperty("product")
-            private Product product;
+            @JsonProperty("streetname")
+            private String streetname;
 
-            @JsonProperty("quantity")
-            private int quantity;
+            @JsonProperty("streetnumber")
+            private String streetnumber;
 
-            @JsonProperty("basePrice")
-            private double basePrice;
+            @JsonProperty("building")
+            private String building;
 
-            @JsonProperty("totalPrice")
-            private double totalPrice;
+            @JsonProperty("postalcode")
+            private String postalcode;
 
-            @JsonProperty("discountValues")
-            private final List<Double> discountValues = new ArrayList<>();
+            @JsonProperty("town")
+            private String town;
 
-            @JsonProperty("entryNumber")
-            private int entryNumber;
+            @JsonProperty("stateCode")
+            private String stateCode;
 
-            @JsonProperty("paymentMode")
-            private PaymentMode paymentMode;
+            @JsonProperty("neighbourhood")
+            private String neighbourhood;
 
-            @JsonProperty("bpo")
-            private String bpo;
+            @JsonProperty("shippingAddress")
+            private boolean shippingAddress;
 
-            @JsonProperty("status")
-            private String status;
+            @JsonProperty("billingAddress")
+            private boolean billingAddress;
 
-            private Entry() {}
-
-            private Entry(Product product, int quantity, double basePrice, double discount) {
-                this.product = product;
-                this.quantity = quantity;
-                this.basePrice = basePrice;
-
-                discountValues.add(discount);
-                totalPrice = basePrice - discount;
-            }
+            private DeliveryAddress() {}
 
             //########################################
-
-            public double getBasePrice() {
-                return basePrice;
-            }
-
-            public double getTotalPrice() {
-                return totalPrice;
-            }
-
-            public double getDiscount() {
-                return discountValues.get(0);
-            }
-
-            public Product getProduct() {
-                return product;
-            }
-
-            private void setDiscount(double discount) {
-                totalPrice -= discount;
-                discountValues.set(0, discount);
-            }
-
-            public void setBpo(String bpo) {
-                this.bpo = bpo;
-            }
-
-            public PaymentMode getPaymentMode() {
-                return paymentMode;
-            }
         }
     }
 
-    public static class Status {
 
-        @JsonProperty("status")
-        private String status;
+    // Administration --------------------------------------------
+    public static final class ClaroChip {
 
-        @JsonProperty("orderProcess")
-        private List<OrderProcess> orderProcess;
+        @JsonProperty("activationCode")
+        private String activationCode;
 
-        private Status() {}
+        @JsonProperty("claroChipType")
+        private ChipType claroChipType;
+
+        @JsonProperty("iccIdSim")
+        private String iccIdSim;
+
+        @JsonProperty("qrCdode")
+        private String qrCdode;
+
+        @JsonProperty("technology")
+        private String technology;
+
+        private ClaroChip() {}
 
         //########################################
 
-        public static class OrderProcess {
+        public ChipType getChipType() {
+            return claroChipType;
+        }
 
-            @JsonProperty("processDefinitionName")
-            private String processDefinitionName;
-
-            @JsonProperty("state")
-            private String state;
-
-            @JsonProperty("taskLogs")
-            private List<TaskLog> taskLogs;
-
-            private OrderProcess() {}
-
-            //########################################
-
-            public static class TaskLog {
-
-                @JsonProperty("actionId")
-                private String actionId;
-
-                @JsonProperty("startDate")
-                private String startDate;
-
-                @JsonProperty("endDate")
-                private String endDate;
-
-                @JsonProperty("returnCode")
-                private String returnCode;
-
-                private TaskLog() {}
-
-                //########################################
-            }
+        public void setChipType(ChipType chip) {
+            claroChipType = chip;
         }
     }
 
-    public static class SubOrder {
+    public static final class ClaroClube {
+
+        @JsonProperty("awardPoints")
+        private int awardPoints;
+
+        @JsonProperty("discountValue")
+        private double discountValue;
+
+        @JsonProperty("isClaroClubeApplied")
+        private boolean isClaroClubeApplied;
+
+        @JsonProperty("redeemId")
+        private String redeemId;
+
+        @JsonProperty("redeemed")
+        private boolean redeemed;
+
+        @JsonProperty("refund")
+        private boolean refund;
+
+        @JsonProperty("reserved")
+        private boolean reserved;
+
+        @JsonProperty("used")
+        private boolean used;
+
+        private ClaroClube() {}
+
+        //########################################
+
+        public int getAwardPoints() {
+            return awardPoints;
+        }
+
+        public double getDiscountValue() {
+            return discountValue;
+        }
+
+        public void setDiscountValue(double discountValue) {
+            this.discountValue = discountValue;
+        }
+
+        public boolean isClaroClubeApplied() {
+            return isClaroClubeApplied;
+        }
+
+        public void setClaroClubeApplied(boolean claroClubeApplied) {
+            isClaroClubeApplied = claroClubeApplied;
+        }
+
+        public String getRedeemId() {
+            return redeemId;
+        }
+
+        public boolean isRedeemed() {
+            return redeemed;
+        }
+
+        public boolean isRefund() {
+            return refund;
+        }
+
+        public boolean isReserved() {
+            return reserved;
+        }
+
+        public boolean isUsed() {
+            return used;
+        }
+    }
+
+    public static final class ClaroSapResponse {
+
+        @JsonProperty("center")
+        private String center;
+
+        @JsonProperty("invoiceNumber")
+        private String invoiceNumber;
+
+        @JsonProperty("nfeNumber")
+        private String nfeNumber;
+
+        @JsonProperty("salesOrg")
+        private String salesOrg;
+
+        @JsonProperty("sapOrderId")
+        private String sapOrderId;
+
+        @JsonProperty("sapStatusHistory")
+        private List<SapStatusHistory> sapStatusHistory;
+
+        private ClaroSapResponse() {}
+
+        //########################################
+
+        public static class SapStatusHistory {
+
+            @JsonProperty("date")
+            private String date;
+
+            @JsonProperty("id")
+            private String id;
+
+            @JsonProperty("description")
+            private String description;
+
+            @JsonProperty("orderType")
+            private String orderType;
+
+            private SapStatusHistory() {}
+
+            //########################################
+        }
+    }
+
+    public static final class SubOrder {
 
         @JsonProperty("status")
         private String status;
