@@ -49,13 +49,12 @@ public class PlpAparelhosPage {
 
         //Valida preço "por apenas"
         WebElement campaignPrice = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../div[2]/dl/dd", device.getCode()));
-        //TODO bug API ECCMAUT-806 validateElementText(device.getFormattedCampaignPrice(false), campaignPrice);
+        validateElementText(device.getFormattedCampaignPrice(true), campaignPrice);
 
         //Valida parcelamento
         WebElement installments = driverWeb.findByXpath(String.format("//*[@id='btn-eu-quero-%s']/../div[2]/dl/dt[2]", device.getCode()));
-        String installmentsStr = String.format("%dx de %s", device.getInstallmentQuantity(), StringUtils.normalizeSpace(device.getFormattedInstallmentPrice()));
-        //TODO bug API ECCMAUT-806 assertTrue("Quantidade de parcelas e valor diferente do configurado", StringUtils.normalizeSpace(installments.getText()).contains(installmentsStr));
-        assertTrue("Parcelamento não exibido no card", installments.isDisplayed());
+        String installmentsRef = String.format("em até %dx de %s sem juros", device.getInstallmentQuantity(), device.getFormattedInstallmentPrice());
+        validateElementText(installmentsRef, installments);
     }
 
     public void clicaBotaoEuQuero(String id) {

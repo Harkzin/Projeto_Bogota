@@ -112,7 +112,7 @@ public class DadosPessoaisPage {
         chipEsimExpress = driverWeb.findElement(expressParent + eSimChip, "xpath");
 
         //Entrega
-        entregaConvencional = driverWeb.findElement("rdn-entrega-convencional", "id");
+        entregaConvencional = driverWeb.findElement("rdn-0", "id"); //TODO Bug merge RL22 "rdn-entrega-convencional", "id");
         entregaExpressa = driverWeb.findElement("rdn-entrega-expressa", "id");
 
         WebElement usarMesmoEnderecoCobranca = driverWeb.findElement("endereco-cobranca_checkbox", "id");
