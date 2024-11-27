@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.DadosPessoaisPage;
 import web.models.CartOrder;
 
+import static web.support.utils.Constants.ChipType.*;
 import static web.support.utils.Constants.DeliveryMode.*;
 
 public class DadosPessoaisSteps {
@@ -67,7 +68,7 @@ public class DadosPessoaisSteps {
 
     @E("o usuário seleciona o tipo de sim [Esim]")
     public void selecionaEsim() {
-        cart.setEsimChip(true);
+        cart.getClaroChip().setChipType(ESIM);
         dadosPessoaisPage.selecionarEsim(cart.getDeliveryMode());
     }
 

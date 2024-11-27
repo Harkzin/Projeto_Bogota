@@ -24,12 +24,7 @@ public class FormaPagamentoSteps {
 
     @Entao("será direcionado para a tela [Forma de Pagamento]")
     public void validarPaginaFormaPagamento() {
-        formaPagamentoPage.validarPaginaFormaPagamento();
-    }
-
-    @Entao("será direcionado para a tela [Forma de Pagamento] de acessórios")
-    public void validarPaginaFormaPagamentoAcessorios() {
-        formaPagamentoPage.validarPaginaFormaPagamentoAcessorios();
+        formaPagamentoPage.validarPaginaFormaPagamento(cart);
     }
 
     @Quando("o usuário adicionar o cupom {string} e clicar no botão [Aplicar]")
@@ -41,8 +36,21 @@ public class FormaPagamentoSteps {
 
     @Entao("o Aparelho receberá o desconto do cupom")
     public void validarDescontoCupom() {
-        formaPagamentoPage.validarAplicarCupom(cart.getAppliedCoupon());
-        //TODO ECCMAUT-351 comumPage.validarResumoCompraAparelho(cart);
+        formaPagamentoPage.validarCupomAplicado(cart.getAppliedCoupon());
+        comumPage.validarResumoCompraAparelho(cart);
+    }
+
+    @Quando("o usuário habilitar o desconto Claro Clube")
+    public void usarClaroClube() {
+        //Caso possua muita pontuação, o desconto máximo será o próprio valor do Aparelho (pagamento 100% Claro Clube)
+        cart.getClaroClube().setClaroClubeApplied(true);
+        cart.getClaroClube().setDiscountValue(Math.min(cart.getUser().getClaroClubBalance(), cart.getEntry(cart.getDevice().getCode()).getTotalPrice()));
+        formaPagamentoPage.clicarUsarClaroClube();
+    }
+
+    @Entao("o Aparelho receberá o desconto da pontuação")
+    public void validarDescontoClaroClube() {
+        comumPage.validarResumoCompraAparelho(cart);
     }
 
     @Quando("o usuário clicar no botão [Adicionar cartão de crédito]")

@@ -1,16 +1,15 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import massasController.ConsultaCPFMSISDN;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.support.utils.DriverWeb;
-import org.junit.Assert;
 
 import java.util.UUID;
 
+import static org.junit.Assert.*;
 import static web.support.utils.Constants.*;
 import static web.support.utils.Constants.ProcessType.ACQUISITION;
 import static web.support.utils.Constants.ProcessType.PORTABILITY;
@@ -74,14 +73,14 @@ public class CarrinhoPage {
         cpfMigracao = driverWeb.findElement("txt-cpf-migracao", "id");
 
         driverWeb.waitElementVisible(telefoneMigracao, 1);
-        Assert.assertTrue(cpfMigracao.isDisplayed());
+        assertTrue(cpfMigracao.isDisplayed());
 
         if (!isDeviceCart) {
-            Assert.assertEquals(telefoneMigracao.getAttribute("value"), "");
-            Assert.assertEquals(cpfMigracao.getAttribute("value"), "");
+            assertEquals(telefoneMigracao.getAttribute("value"), "");
+            assertEquals(cpfMigracao.getAttribute("value"), "");
         } else {
             //TODO - Nos fluxos de Base com Aparelho, os campos são preenchidos com os dados do cliente
-            Assert.assertFalse(telefoneMigracao.isEnabled());
+            assertFalse(telefoneMigracao.isEnabled());
         }
     }
 
@@ -90,10 +89,10 @@ public class CarrinhoPage {
         cpfPortabilidade = driverWeb.findElement("txt-cpf-portabilidade", "id");
 
         driverWeb.waitElementVisible(telefonePortabilidade, 1);
-        Assert.assertTrue(cpfPortabilidade.isDisplayed());
+        assertTrue(cpfPortabilidade.isDisplayed());
 
-        Assert.assertEquals(telefonePortabilidade.getAttribute("value"), "");
-        Assert.assertEquals(cpfPortabilidade.getAttribute("value"), "");
+        assertEquals(telefonePortabilidade.getAttribute("value"), "");
+        assertEquals(cpfPortabilidade.getAttribute("value"), "");
     }
 
     private void validarCamposAquisicao() {
@@ -102,11 +101,11 @@ public class CarrinhoPage {
         cpfAquisicao = driverWeb.findElement("txt-cpf-aquisicao", "id");
 
         driverWeb.waitElementVisible(dddAquisicao, 1);
-        Assert.assertTrue(telefoneContatoAquisicao.isDisplayed());
-        Assert.assertTrue(cpfAquisicao.isDisplayed());
+        assertTrue(telefoneContatoAquisicao.isDisplayed());
+        assertTrue(cpfAquisicao.isDisplayed());
 
-        Assert.assertEquals(telefoneContatoAquisicao.getAttribute("value"), "");
-        Assert.assertEquals(cpfAquisicao.getAttribute("value"), "");
+        assertEquals(telefoneContatoAquisicao.getAttribute("value"), "");
+        assertEquals(cpfAquisicao.getAttribute("value"), "");
     }
 
     private void validarCampoEmail(boolean isDeviceCart) {
@@ -115,7 +114,7 @@ public class CarrinhoPage {
         driverWeb.waitElementVisible(email, 1);
 
         if (!isDeviceCart) {
-            Assert.assertEquals(email.getAttribute("value"), "");
+            assertEquals(email.getAttribute("value"), "");
         } else {
             //TODO - Caso esteja preenchido, validar que o email é igual ao do cadastro do cliente (backoffice).
         }
@@ -132,28 +131,28 @@ public class CarrinhoPage {
             fluxoAquisicao = driverWeb.findElement("rdn-aquisicao", "id");
 
             if (url.endsWith("cart")) { //cart planos normal
-                Assert.assertNotNull(fluxoBase);
-                Assert.assertNotNull(fluxoPortabilidade);
-                Assert.assertNotNull(fluxoAquisicao);
+                assertNotNull(fluxoBase);
+                assertNotNull(fluxoPortabilidade);
+                assertNotNull(fluxoAquisicao);
             } else if (url.contains("targetCampaign=migra")) { //cart rentab base
                 //TODO Cart_processType = ?
-                Assert.assertNotNull(fluxoBase);
-                Assert.assertNull(fluxoPortabilidade);
-                Assert.assertNull(fluxoAquisicao);
+                assertNotNull(fluxoBase);
+                assertNull(fluxoPortabilidade);
+                assertNull(fluxoAquisicao);
                 validarCamposBase(false);
                 validarCampoEmail(false);
             } else if (url.contains("targetCampaign=portin")) { //cart rentab port
                 cartOrder.setProcessType(PORTABILITY);
-                Assert.assertNull(fluxoBase);
-                Assert.assertNotNull(fluxoPortabilidade);
-                Assert.assertNull(fluxoAquisicao);
+                assertNull(fluxoBase);
+                assertNotNull(fluxoPortabilidade);
+                assertNull(fluxoAquisicao);
                 validarCamposPortabilidade();
                 validarCampoEmail(false);
             } else { //cart rentab aquisição (targetCampaign=gross)
                 cartOrder.setProcessType(ACQUISITION);
-                Assert.assertNull(fluxoBase);
-                Assert.assertNull(fluxoPortabilidade);
-                Assert.assertNotNull(fluxoAquisicao);
+                assertNull(fluxoBase);
+                assertNull(fluxoPortabilidade);
+                assertNotNull(fluxoAquisicao);
                 validarCamposAquisicao();
                 validarCampoEmail(false);
             }
@@ -267,7 +266,7 @@ public class CarrinhoPage {
         WebElement contentMessageError = driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
         driverWeb.waitElementVisible(contentMessageError, 10);
-        Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
+        assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 
     public void validarModalAvisoTrocaPlano() {
@@ -276,14 +275,19 @@ public class CarrinhoPage {
         confirma = driverWeb.findElement("//button[contains(.,'Confirma')]", "xpath"); //TODO Atualizar para id
         cancelar = driverWeb.findElement("//button[contains(.,'Cancela')]", "xpath"); //TODO Atualizar para id
 
-        Assert.assertTrue(confirma.isDisplayed());
-        Assert.assertTrue(cancelar.isDisplayed());
+        assertTrue(confirma.isDisplayed());
+        assertTrue(cancelar.isDisplayed());
     }
 
     public void clicarAvisoTrocaPlano() {
         driverWeb.javaScriptClick(confirma);
     }
-    
+
+    public String getCartGuid() {
+        driverWeb.actionPause(2000); //Aguarda promoção ser aplicada no cart (updatePlanCartPromotion())
+        return driverWeb.waitElementPresence("//*[@id='cart-dynatrace-guid']", 40).getAttribute("textContent");
+    }
+
     public void clicaBotaoContinuarComprando() {
         driverWeb.javaScriptClick("btn-continuar-comprando", "id");
     }
