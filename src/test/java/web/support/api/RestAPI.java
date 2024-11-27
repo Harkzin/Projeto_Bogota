@@ -273,4 +273,21 @@ public final class RestAPI {
 
         return jnode.path("data");
     }
+
+    public static HttpResponse<String> orderStatusRequest(String code) {
+        final HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(String.format("https://api.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/order/status/automation/%s", ambiente, code)))
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getEcommToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response;
+        try {
+            response = clientHttp.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+    }
 }
