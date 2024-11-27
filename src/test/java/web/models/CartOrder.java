@@ -1,16 +1,21 @@
 package web.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URIBuilder;
+import org.jsoup.HttpStatusException;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.models.product.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
+import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
-import static web.support.api.RestAPI.getProductDetails;
-import static web.support.api.RestAPI.objMapper;
 import static web.support.utils.Constants.InvoiceType.*;
 import static web.support.utils.Constants.PaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
@@ -22,16 +27,16 @@ public class CartOrder {
         positionsAndPrices = new PositionsAndPrices();
         payment = new Payment();
         delivery = new Delivery();
+        claroChip = new ClaroChip();
+        claroClube = new ClaroClube();
     }
 
-    private boolean eSIM;
     private boolean thab;
 
     private String planId;
     private String deviceId;
 
     public boolean isDebitPaymentFlow;
-    public boolean hasLoyalty = true;
     public boolean hasErrorPasso1 = false;
 
     private final Essential essential;
@@ -54,7 +59,7 @@ public class CartOrder {
 
     private int claroDdd;
 
-    private String allPromotionResults;
+    private Promotion allPromotionResults;
     private final List<String> appliedCouponCodes = new ArrayList<>();
     private String children;
     private String chosenPlan;
@@ -100,7 +105,7 @@ public class CartOrder {
         try {
             return objMapper.readValue(getProductDetails(id), cls);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando\n" + e);
+            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando (acessar Swagger).\n" + e);
         }
     }
 
@@ -131,24 +136,33 @@ public class CartOrder {
         this.planId = planId;
 
         PlanProduct plan = createProduct(planId, PlanProduct.class);
+        double planFullPrice = plan.getPrice();
+        double promoDiscount = 0D;
 
-        double promoDiscount;
-        if (isDeviceCart()) {
-            promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
-        } else {
-            promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
-            //TODO Atualizar para pegar o preço da API (preço da promo, ECCMAUT-888)
+        if (plan.getCategories().stream().noneMatch(c -> c.getCode().equals("prepago"))) {
+            if (isDeviceCart()) {
+                if (essential.processType != APARELHO_TROCA_APARELHO) {
+                    promoDiscount = getDevice().getPlanPromoDiscount(essential.processType, TICKET, null, true, claroDdd); //Default Boleto na PDP (ticket)
+                } else {
+                    planFullPrice = essential.user.getClaroSubscription().claroPlanPrice; //Preço vem da API de login, sem desconto de promoção
+                }
+            } else {
+                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
+            }
         }
 
-        positionsAndPrices.entries.add(new PositionsAndPrices.Entry(plan, 1, plan.getPrice(), promoDiscount));
+        PositionsAndPrices.Entry planEntry = new PositionsAndPrices.Entry(plan, 1, planFullPrice, promoDiscount);
+        planEntry.paymentMode = TICKET; //Pagamento default atual
+        positionsAndPrices.entries.add(planEntry);
     }
 
-    public void updatePlanForDevice(String planId) {
-        getDevice().setDevicePriceInfo(getEntry(deviceId).bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+    public void updatePlanAndDevicePrice(String planId) {
+        PositionsAndPrices.Entry deviceEntry = getEntry(deviceId);
 
-        double deviceCampaignPrice = getDevice().getCampaignPrice(true);
-        getEntry(deviceId).basePrice = deviceCampaignPrice;
-        getEntry(deviceId).totalPrice = deviceCampaignPrice;
+        getDevice().setDevicePriceInfo(deviceEntry.bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+        double price = getDevice().hasCampaignPrice() ? getDevice().getCampaignPrice(true) : getDevice().getPrice(); //Caso não exista linha de preço configurada = preço full
+        deviceEntry.basePrice = price;
+        deviceEntry.totalPrice = price;
 
         setPlan(planId);
     }
@@ -170,14 +184,6 @@ public class CartOrder {
             return appliedCouponCodes.get(0);
         }
         return null;
-    }
-
-    public void setEsimChip(boolean isEsim) {
-        eSIM = isEsim;
-    }
-
-    public boolean isEsim() {
-        return eSIM;
     }
 
     public void setThab() {
@@ -202,10 +208,6 @@ public class CartOrder {
 
     public void setProcessType(ProcessType processType) {
         essential.processType = processType;
-
-        if (isDeviceCart()) {
-            updatePlanForDevice(focusPlan);
-        }
     }
 
     public ProcessType getProcessType() {
@@ -252,47 +254,186 @@ public class CartOrder {
     public void setSelectedInvoiceType(InvoiceType invoiceType) {
         selectedInvoiceType = invoiceType;
 
-        getEntry(planId).totalPrice = getPlan().getPrice(isDebitPaymentFlow, invoiceType == PRINTED);
-        //TODO Pegar valor da API ECCMAUT-888
+        updatePlanCartPromotion();
     }
 
     public InvoiceType getSelectedInvoiceType() {
         return selectedInvoiceType;
     }
 
-    public void updatePlanEntryPaymentMode(PaymentMode paymentMode) {
-        getEntry(planId).paymentMode = paymentMode;
-        getEntry(planId).totalPrice = getPlan().getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED);
-        //TODO Pegar valor da API ECCMAUT-888
-    }
-
     public void setDDD(int ddd) {
         claroDdd = ddd;
     }
 
+    public void updatePlanCartPromotion() {
+        if (essential.processType != APARELHO_TROCA_APARELHO || !getEntry(deviceId).bpo.equals("PPV")) { //Fluxo Aparelhos [Manter o Plano sem Fid] não existe promo
+            try {
+                allPromotionResults = objMapper.readValue(getPlanCartPromotion(guid), Promotion.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+            PositionsAndPrices.Entry planEntry = getEntry(planId);
+            planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+            planEntry.paymentMode = allPromotionResults.paymentMethod;
+        }
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public boolean hasLoyalty() {
+        if (!isDeviceCart()) {
+            return allPromotionResults.loyalty;
+        } else {
+            return !getEntry(deviceId).bpo.equals("PPV"); //Para Aparelhos, a única opção sem fid é no fluxo de base [Manter o Plano sem Fid], campanha PPV
+        }
+    }
+
+    public void setRentabilizationCart(String url) {
+        URIBuilder urlRentab = new URIBuilder(urlAmbiente + url);
+        List<NameValuePair> params = urlRentab.getQueryParams();
+
+        Function<String, String> getValue = param ->
+            params.stream()
+                    .filter(p -> p.getName().equals(param))
+                    .findFirst().orElseThrow().getValue();
+
+        rentabilizationCoupon = getValue.apply("coupon");
+        setPlan(getValue.apply("offerPlanId"));
+        essential.processType = ProcessType.valueOf(getValue.apply("processType").toUpperCase());
+        getEntry(planId).paymentMode = PaymentMode.valueOf(getValue.apply("paymentMethod").toUpperCase());
+
+        if (params.stream().anyMatch(p -> p.getName().equals("invoiceType"))) {
+            selectedInvoiceType = InvoiceType.valueOf(getValue.apply("invoiceType").toUpperCase());
+        }
+
+        updatePlanCartPromotion();
+    }
+
+    public Promotion getPromotion() {
+        return allPromotionResults;
+    }
+
+    public ClaroChip getClaroChip() {
+        return claroChip;
+    }
+
+    public Essential.User getUser() {
+        return essential.user;
+    }
+
+    public void populateCustomerProductDetails() throws HttpStatusException {
+        JsonNode response = customerProductDetailsRequest(essential.user.claroTelephone);
+        JsonNode productNodeResponse = response.path("product");
+
+        //User
+        getUser().name = productNodeResponse.get("customerName").asText();
+        getUser().displayName = essential.user.name;
+        getUser().cpf = productNodeResponse.get("cpf").asText();
+
+        if (response.get("discountValue") != null) {
+            getUser().claroClubBalance = response.get("discountValue").asDouble();
+        }
+
+        //User.ClaroSubscription
+        JsonNode planPriceNodeResponse = productNodeResponse.path("planPrice");
+        getUser().claroSubscription = new Essential.User.ClaroSubscription();
+        getUser().claroSubscription.planTypePrice = planPriceNodeResponse.get("planTypePrice").asText();
+
+        if (!getUser().claroSubscription.planTypePrice.equals("PRE_PAGO")) {
+            getUser().claroSubscription.claroPlan = planPriceNodeResponse.get("id").asText();
+            getUser().claroSubscription.claroPlanName = planPriceNodeResponse.get("name").asText();
+            getUser().claroSubscription.claroPlanPrice = planPriceNodeResponse.get("planValue").asDouble();
+            getUser().claroSubscription.claroMonthlyPrice = productNodeResponse.get("netSubscriberValue").asDouble();
+            getUser().claroSubscription.customerMobileSubType = productNodeResponse.get("customerMobileSubType").asText();
+            getUser().claroSubscription.loyalty = response.get("loyalty") != null;
+
+            updatePlanAndDevicePrice(getUser().getClaroSubscription().getClaroPlan());
+        } else {
+            updatePlanAndDevicePrice(focusPlan); //Para cliente Pré será exibido apenas planos Controle, com o focusPlan setado por padrão (considerando que o plano foco é o primeiro Controle)
+        }
+
+        //Address
+        //TODO
+    }
+
+    public ClaroClube getClaroClube() {
+        return claroClube;
+    }
+
     public static class ClaroChip {
 
-        public String activationCode;
-        public String claroChipType;
-        public String iccIdSim;
-        public String qrCdode;
-        public String techlonogy;
+        private String activationCode;
+        private ChipType claroChipType;
+        private String iccIdSim;
+        private String qrCdode;
+        private String techlonogy;
 
         private ClaroChip() {}
+
+        public ChipType getChipType() {
+            return claroChipType;
+        }
+
+        public void setChipType(ChipType chip) {
+            claroChipType = chip;
+        }
     }
 
     public static class ClaroClube {
 
-        public int awardPoints;
-        public double discountValue;
-        public boolean isClaroClubeApplied;
-        public String redeemId;
-        public boolean redeemed;
-        public boolean refund;
-        public boolean reserved;
-        public boolean used;
-
         private ClaroClube() {}
+
+        private int awardPoints;
+        private double discountValue;
+        private boolean isClaroClubeApplied;
+        private String redeemId;
+        private boolean redeemed;
+        private boolean refund;
+        private boolean reserved;
+        private boolean used;
+
+        public int getAwardPoints() {
+            return awardPoints;
+        }
+
+        public double getDiscountValue() {
+            return discountValue;
+        }
+
+        public void setDiscountValue(double discountValue) {
+            this.discountValue = discountValue;
+        }
+
+        public boolean isClaroClubeApplied() {
+            return isClaroClubeApplied;
+        }
+
+        public void setClaroClubeApplied(boolean claroClubeApplied) {
+            isClaroClubeApplied = claroClubeApplied;
+        }
+
+        public String getRedeemId() {
+            return redeemId;
+        }
+
+        public boolean isRedeemed() {
+            return redeemed;
+        }
+
+        public boolean isRefund() {
+            return refund;
+        }
+
+        public boolean isReserved() {
+            return reserved;
+        }
+
+        public boolean isUsed() {
+            return used;
+        }
     }
 
     public static class ClaroSapResponse {
@@ -353,10 +494,10 @@ public class CartOrder {
 
     public static class Essential {
 
-        public String code;
-        public User user;
-        public String telephone;
-        public ProcessType processType;
+        private String code;
+        private final User user;
+        private String telephone;
+        private ProcessType processType;
 
         private Essential() {
             user = new Essential.User();
@@ -364,19 +505,151 @@ public class CartOrder {
 
         public static class User {
 
-            public String name;
-            public String displayName;
-            public String parentfullname;
-            public String claroTelephone;
-            public String telephone;
-            public String claroProvisionalTelephone;
-            public String birthdate;
-            public String cpf;
-            public String email;
-            public boolean optinWhatsapp;
-            public String type;
-
             private User() {}
+
+            private String name;
+            private String displayName;
+            private String parentfullname;
+            private String claroTelephone;
+            private String telephone;
+            private String claroProvisionalTelephone;
+            private String birthdate;
+            private String cpf;
+            private String email;
+            private boolean optinWhatsapp;
+            private String type;
+            private double claroClubBalance;
+            private ClaroSubscription claroSubscription;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getDisplayName() {
+                return displayName;
+            }
+
+            public void setDisplayName(String displayName) {
+                this.displayName = displayName;
+            }
+
+            public String getParentfullname() {
+                return parentfullname;
+            }
+
+            public void setParentfullname(String parentfullname) {
+                this.parentfullname = parentfullname;
+            }
+
+            public String getClaroTelephone() {
+                return claroTelephone;
+            }
+
+            public void setClaroTelephone(String claroTelephone) {
+                this.claroTelephone = claroTelephone;
+                telephone = claroTelephone;
+            }
+
+            public String getTelephone() {
+                return telephone;
+            }
+
+            public void setTelephone(String telephone) {
+                this.telephone = telephone;
+            }
+
+            public String getClaroProvisionalTelephone() {
+                return claroProvisionalTelephone;
+            }
+
+            public void setClaroProvisionalTelephone(String claroProvisionalTelephone) {
+                this.claroProvisionalTelephone = claroProvisionalTelephone;
+            }
+
+            public String getBirthdate() {
+                return birthdate;
+            }
+
+            public void setBirthdate(String birthdate) {
+                this.birthdate = birthdate;
+            }
+
+            public String getCpf() {
+                return cpf;
+            }
+
+            public void setCpf(String cpf) {
+                this.cpf = cpf;
+            }
+
+            public String getEmail() {
+                return email;
+            }
+
+            public void setEmail(String email) {
+                this.email = email;
+            }
+
+            public boolean isOptinWhatsapp() {
+                return optinWhatsapp;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public double getClaroClubBalance() {
+                return claroClubBalance;
+            }
+
+            public ClaroSubscription getClaroSubscription() {
+                return claroSubscription;
+            }
+
+            public static final class ClaroSubscription {
+
+                private ClaroSubscription() {}
+
+                private String claroPlan;
+                private String claroPlanName;
+                private double claroPlanPrice;
+                private double claroMonthlyPrice;
+                private String customerMobileSubType;
+                private boolean loyalty;
+                private String planTypePrice;
+
+                public String getClaroPlan() {
+                    return claroPlan;
+                }
+
+                public String getClaroPlanName() {
+                    return claroPlanName;
+                }
+
+                public double getClaroPlanPrice() {
+                    return claroPlanPrice;
+                }
+
+                public String getCustomerMobileSubType() {
+                    return customerMobileSubType;
+                }
+
+                public boolean isLoyalty() {
+                    return loyalty;
+                }
+
+                public String getPlanTypePrice() {
+                    return planTypePrice;
+                }
+
+                public double getClaroMonthlyPrice() {
+                    return claroMonthlyPrice;
+                }
+            }
         }
     }
 
@@ -506,6 +779,10 @@ public class CartOrder {
             public void setBpo(String bpo) {
                 this.bpo = bpo;
             }
+
+            public PaymentMode getPaymentMode() {
+                return paymentMode;
+            }
         }
     }
 
@@ -543,5 +820,52 @@ public class CartOrder {
         public String type;
 
         private SubOrder() {}
+    }
+
+    public static final class Promotion {
+
+        private Promotion() {}
+
+        @JsonProperty("code")
+        private String code;
+
+        @JsonProperty("dddList")
+        private List<Integer> dddList;
+
+        @JsonProperty("discountValue")
+        private int discountValue;
+
+        @JsonProperty("fixedDiscount")
+        private boolean fixedDiscount;
+
+        @JsonProperty("loyalty")
+        private boolean loyalty;
+
+        @JsonProperty("name")
+        private String name;
+
+        @JsonProperty("paymentMethod")
+        private PaymentMode paymentMethod;
+
+        @JsonProperty("priority")
+        private int priority;
+
+        @JsonProperty("processTypeList")
+        private List<String> processTypeList;
+
+        @JsonProperty("rentabilizationCampaign")
+        private boolean rentabilizationCampaign;
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean isRentabilization() {
+            return rentabilizationCampaign;
+        }
+
+        public int getDiscountValue() {
+            return discountValue;
+        }
     }
 }

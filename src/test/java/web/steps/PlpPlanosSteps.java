@@ -1,5 +1,6 @@
 package web.steps;
 
+import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PlpPlanosPage;
@@ -16,15 +17,15 @@ public class PlpPlanosSteps {
         this.cart = cart;
     }
 
-    @Quando("selecionar o plano de id: {string}")
+    @Entao("é direcionado para a PLP Controle")
+    public void validarPlpControle() {
+        plpPlanosPage.validarPlpControle();
+    }
+
+    @Quando("o usuário clicar no botão [Eu quero!] no card do plano {string} da PLP")
     public void selecionarPlano(String id) {
         cart.setPlan(id);
         plpPlanosPage.validarCardPlano(cart.getPlan(), cart.isDebitPaymentFlow);
-        plpPlanosPage.selecionarPlano(id);
-    }
-    
-    @Quando("o usuário clicar no botão [Eu quero!] do card do plano {string} na PLP")
-    public void selecionarPlanoPlp(String id) {
         plpPlanosPage.selecionarPlano(id);
     }
 }

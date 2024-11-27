@@ -2,19 +2,22 @@
 
 @Regressivo
 @Web
-Funcionalidade: ECCMAUT-529 - [Planos Base] Migração Pré Pago para Controle com impedimento por tempo de base
+Funcionalidade: ECCMAUT-529 - Migracao Pre para Controle - Impedimento por tempo de base
 
-  @Migracao
   @Controle
-  @MigracaoPreCtrlImpedidoTempoBase
-  Cenario: Migração Pré Pago para Controle com impedimento por tempo de base
+  @Migracao
+  @MigraPreCtrlImpedidoTempoBase
+  Cenario: Migracao Pre Pago para Controle - Impedimento por tempo de base
+
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Controle] do header
-    E o usuário clicar no botão [Eu quero!] do card do plano "17528" na PLP
-    Entao é direcionado para a tela de Carrinho
-      # Mas não deve haver alterações no valor e nem nas informações do Plano
+    Entao é direcionado para a PLP Controle
 
-    Quando seleciona a opção [Migração], para o fluxo de troca de Plano
+    Quando o usuário clicar no botão [Eu quero!] no card do plano "17536" da PLP
+    Entao é direcionado para a tela de Carrinho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
+    E seleciona a opção [Migração], para o fluxo de migração de plataforma
     E preenche os campos: [Telefone com DDD] "11991736381", [E-mail] e [CPF] "08039137888"
-    E o usuário clicar no botão [Eu quero!] do Carrinho
+
+    Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Entao será exibida a mensagem de erro: "O número informado não está ativo. Não fique sem falar, digite *552# em seu celular, e ative agora mesmo"

@@ -25,22 +25,18 @@ public class Hooks {
         ConsultaCPFMSISDN.restaurarStatusPosCenario(scenario, driverWeb.getDriver().getCurrentUrl(), cartOrder.hasErrorPasso1);
     }
 
-    @After(order = 2)
+    @After(order = 2, value = "@Web")
     public void printScreen(Scenario scenario) {
-        if (System.getProperty("api", "false").equals("false")) {
-            //Platform
-            scenario.attach(driverWeb.getPlatformName().toString(), "text/plain", "Platform");
+        //Platform
+        scenario.attach(driverWeb.getPlatformName().toString(), "text/plain", "Platform");
 
-            //Print
-            byte[] screenshot = (((TakesScreenshot) driverWeb.getDriver()).getScreenshotAs(OutputType.BYTES));
-            scenario.attach(screenshot, "image/png", "screenshot");
-        }
+        //Print
+        byte[] screenshot = (((TakesScreenshot) driverWeb.getDriver()).getScreenshotAs(OutputType.BYTES));
+        scenario.attach(screenshot, "image/png", "Screenshot");
     }
 
-    @After(order = 1)
+    @After(order = 1, value = "@Web")
     public void closeBrowser() {
-        if (System.getProperty("api", "false").equals("false")) {
-            driverWeb.getDriver().quit();
-        }
+        driverWeb.getDriver().quit();
     }
 }

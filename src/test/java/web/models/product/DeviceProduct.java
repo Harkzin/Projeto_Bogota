@@ -74,6 +74,10 @@ public final class DeviceProduct extends Product {
         }
     }
 
+    public boolean hasCampaignPrice() {
+        return devicePriceInfo.campaignPrice != null;
+    }
+
     public double getCampaignPrice(boolean withoutSIM) {
         if (withoutSIM) {
             return devicePriceInfo.campaignPriceWithoutSIM.value;
@@ -127,6 +131,10 @@ public final class DeviceProduct extends Product {
                 .filter(p -> p.loyalty == hasLoyalty && p.dddList.contains(ddd))
                 .findFirst().orElseThrow()
                 .discountValue;
+    }
+
+    public String getColor() {
+        return getDeviceAttribute(".cor").featureValues.get(0).value;
     }
 
     public static final class Stock {

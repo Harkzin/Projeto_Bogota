@@ -11,7 +11,7 @@ Funcionalidade: ECCMAUT-513 Troca Pos Aparelho Bloqueio Cliente Dependente
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
-    Então é direcionado para a tela PLP de Aparelho
+    Então é direcionado para a PLP de Aparelhos
 
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "000000000000018006"
     Então é direcionado para a PDP do Aparelho selecionado

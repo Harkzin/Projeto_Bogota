@@ -17,7 +17,7 @@ public class PlpAparelhosSteps {
         this.cart = cart;
     }
 
-    @Entao("é direcionado para a tela PLP de Aparelho")
+    @Entao("é direcionado para a PLP de Aparelhos")
     public void validarPLpAparelhos() {
         plpAparelhosPage.validarPlpAparelhos();
     }
