@@ -38,6 +38,7 @@ public class CarrinhoPage {
     private WebElement cpfPortabilidade;
     private WebElement telefoneContatoAquisicao;
     private WebElement cpfAquisicao;
+    private WebElement cpfReprovadoCrivo;
     private WebElement email;
     private WebElement celularAcessorios;
     private WebElement cpfAcessorios;
@@ -240,6 +241,11 @@ public class CarrinhoPage {
     public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
         driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+    }
+
+    public void inserirDadosReprovacaoScore(String telefone, String cpf) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfReprovadoCrivo,cpf);
     }
 
     public void inserirEmail() {
