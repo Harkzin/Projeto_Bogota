@@ -129,10 +129,10 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        Entry planEntry = cart.getEntry(cart.getPlan().getCode());
+        OrderEntry planEntry = cart.getEntry(cart.getPlan().getCode());
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
         boolean hasLoyalty = cart.hasLoyalty();
-        int depQtt = cart.hasDependent();
+        int depQtt = cart.dependentQuantity();
 
         String planContentParent;
         if (cart.isDeviceCart()) {
@@ -288,7 +288,7 @@ public class ComumPage {
     public void validarResumoCompraAparelho(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        Entry deviceEntry = cart.getEntry(cart.getDevice().getCode());
+        OrderEntry deviceEntry = cart.getEntry(cart.getDevice().getCode());
         DeviceProduct device = (DeviceProduct) deviceEntry.getProduct();
 
         boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
@@ -310,7 +310,7 @@ public class ComumPage {
         validateElementText("Envio: Grátis", driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-envio']/.."));
 
         //Desconto Cupom
-        if (cart.getAppliedCoupon() != null) {
+        if (cart.getAppliedCouponCodes() != null) {
             String voucherDiscountRef = formatPrice(deviceEntry.getDiscount());
             validateElementText("Desconto Cupom -R$ " + voucherDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }

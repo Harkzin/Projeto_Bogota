@@ -37,7 +37,7 @@ public final class Constants {
         }
     }
 
-    public enum DeliveryMode {
+    public enum ZoneDeliveryMode {
         CONVENTIONAL,
         EXPRESS
     }
@@ -49,7 +49,7 @@ public final class Constants {
         APP //App Minha Claro
     }
 
-    public enum PaymentMode {
+    public enum StandardPaymentMode {
         DEBITCARD,
         TICKET,
         PIX,
