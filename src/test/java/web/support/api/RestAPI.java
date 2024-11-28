@@ -29,7 +29,7 @@ public final class RestAPI {
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
     public static final ObjectMapper objMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
 
     private static void validateStatusCodeOk(String message, int status, String url) throws HttpStatusException {
         if (status != 200) {

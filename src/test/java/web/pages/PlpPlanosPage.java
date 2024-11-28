@@ -14,7 +14,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
-import static web.pages.ComumPage.validateElementText;
 
 @Component
 @ScenarioScope

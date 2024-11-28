@@ -1,5 +1,6 @@
 package web.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -66,7 +67,7 @@ public class CartOrder {
     @JsonProperty("abandonedCartOrder")
     private boolean abandonedCartOrder;
 
-    @JsonProperty("allPromotionResults")
+    @JsonIgnore
     private PromotionSourceRule allPromotionResults; //Modificado de RuleBasedPromotion para PromotionSourceRule
 
     @JsonProperty("appliedCouponCodes")
@@ -149,7 +150,7 @@ public class CartOrder {
     private String rentabilizationCoupon;
 
     @JsonProperty("selectedInvoiceType")
-    private InvoiceType selectedInvoiceType;
+    private InvoiceType selectedInvoiceTypes;
 
     @JsonProperty("subOrder")
     private SubOrder subOrder;
@@ -457,14 +458,15 @@ public class CartOrder {
 
 
     //selectedInvoiceType
-    public void setSelectedInvoiceType(InvoiceType invoiceType) {
-        selectedInvoiceType = invoiceType;
-
-        updatePlanCartPromotion();
+    public InvoiceType getSelectedInvoiceType() {
+        return selectedInvoiceTypes;
     }
 
-    public InvoiceType getSelectedInvoiceType() {
-        return selectedInvoiceType;
+    @JsonIgnore
+    public void setSelectedInvoiceType(InvoiceType invoiceType) {
+        selectedInvoiceTypes = invoiceType;
+
+        updatePlanCartPromotion();
     }
 
 
@@ -533,7 +535,7 @@ public class CartOrder {
                     planFullPrice = essential.user.getClaroSubscription().claroPlanPrice; //Preço vem da API de login, sem desconto de promoção
                 }
             } else {
-                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
+                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceTypes == PRINTED) - plan.getPrice();
             }
         }
 
@@ -672,7 +674,7 @@ public class CartOrder {
         getEntry(planId).paymentMode = StandardPaymentMode.valueOf(getValue.apply("paymentMethod").toUpperCase());
 
         if (params.stream().anyMatch(p -> p.getName().equals("invoiceType"))) {
-            selectedInvoiceType = InvoiceType.valueOf(getValue.apply("invoiceType").toUpperCase());
+            selectedInvoiceTypes = InvoiceType.valueOf(getValue.apply("invoiceType").toUpperCase());
         }
 
         updatePlanCartPromotion();
@@ -977,8 +979,9 @@ public class CartOrder {
 
         //########################################
 
-        public static class OrderEntry {
+        public static final class OrderEntry {
 
+            @JsonIgnore //TODO
             @JsonProperty("product")
             private Product product;
 
@@ -1358,31 +1361,31 @@ public class CartOrder {
         public static final class ClaroPaymentMethod {
 
             @JsonProperty("paymentMode")
-            private String paymentMode;
+            private StandardPaymentMode paymentMode;
 
             @JsonProperty("paymentMethodType")
-            private StandardPaymentMode paymentMethodType;
+            private String paymentMethodType;
 
             private ClaroPaymentMethod() {}
 
             //########################################
 
             //paymentMethodType
-            public StandardPaymentMode getPaymentMethodType() {
+            public String getPaymentMethodType() {
                 return paymentMethodType;
             }
 
-            public void setPaymentMethodType(StandardPaymentMode paymentMethodType) {
+            public void setPaymentMethodType(String paymentMethodType) {
                 this.paymentMethodType = paymentMethodType;
             }
 
 
             //paymentMode
-            public String getPaymentMode() {
+            public StandardPaymentMode getPaymentMode() {
                 return paymentMode;
             }
 
-            public void setPaymentMode(String paymentMode) {
+            public void setPaymentMode(StandardPaymentMode paymentMode) {
                 this.paymentMode = paymentMode;
             }
         }
@@ -1763,7 +1766,7 @@ public class CartOrder {
         private String center;
 
         @JsonProperty("invoiceNumber")
-        private String invoiceNumber;
+        private List<String> invoiceNumber;
 
         @JsonProperty("nfeNumber")
         private String nfeNumber;
@@ -1778,6 +1781,7 @@ public class CartOrder {
         private final List<SapStatusHistory> sapStatusHistory;
 
         private ClaroSapResponse() {
+            invoiceNumber = new ArrayList<>();
             sapStatusHistory = new ArrayList<>();
         }
 
@@ -1789,7 +1793,7 @@ public class CartOrder {
             return center;
         }
 
-        public String getInvoiceNumber() {
+        public List<String> getInvoiceNumber() {
             return invoiceNumber;
         }
 

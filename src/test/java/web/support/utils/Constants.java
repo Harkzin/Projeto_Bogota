@@ -16,7 +16,8 @@ public final class Constants {
         EXCHANGE,
         EXCHANGE_PROMO,
         MIGRATE,
-        PORTABILITY
+        PORTABILITY,
+        ACCESSORY
     }
 
     public enum Email {
@@ -52,6 +53,7 @@ public final class Constants {
     public enum StandardPaymentMode {
         DEBITCARD,
         TICKET,
+        CREDITCARD,
         PIX,
         VOUCHER,
         CLAROCLUBE
