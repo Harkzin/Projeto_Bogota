@@ -127,6 +127,11 @@ public class CustomizarFaturaSteps {
         customizarFaturaPage.clicarContinuar();
     }
 
+    @Entao("é exibiba a mensagem de erro: {string}")
+    public void validarMensagemDeErro(String mensagemExibida) {
+        customizarFaturaPage.validarMensagemDeErro(mensagemExibida);
+    }
+
     @E("clicar no botão [Ok, entendi]")
     public void oUsuarioClicaNoBotaoOkEntendi() {
         customizarFaturaPage.clickOkEntendi();

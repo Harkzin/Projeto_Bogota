@@ -38,7 +38,6 @@ public class CarrinhoPage {
     private WebElement cpfPortabilidade;
     private WebElement telefoneContatoAquisicao;
     private WebElement cpfAquisicao;
-    private WebElement cpfReprovadoCrivo;
     private WebElement email;
     private WebElement celularAcessorios;
     private WebElement cpfAcessorios;
@@ -245,7 +244,7 @@ public class CarrinhoPage {
 
     public void inserirDadosReprovacaoScore(String telefone, String cpf) {
         driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
-        driverWeb.sendKeys(cpfReprovadoCrivo,cpf);
+        driverWeb.sendKeys(cpfAquisicao,cpf);
     }
 
     public void inserirEmail() {
