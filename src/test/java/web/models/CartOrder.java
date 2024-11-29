@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.jsoup.HttpStatusException;
 import web.models.product.DeviceProduct;
+import web.models.product.GenericProduct;
 import web.models.product.PlanProduct;
 import web.models.product.Product;
 
@@ -26,8 +28,8 @@ public class CartOrder {
     private String planId;
     private String deviceId;
 
-    public boolean isDebitPaymentFlow;
-    public boolean hasErrorPasso1 = false;
+    public boolean isDebitPaymentFlow; //TODO
+    public boolean hasErrorPasso1 = false; //TODO
 
     // Essential -------------------------------------------------
     @JsonProperty("essential")
@@ -981,8 +983,8 @@ public class CartOrder {
 
         public static final class OrderEntry {
 
-            @JsonIgnore //TODO
             @JsonProperty("product")
+            @JsonDeserialize(as = GenericProduct.class)
             private Product product;
 
             @JsonProperty("quantity")
