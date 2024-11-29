@@ -345,7 +345,7 @@ public class ComumPage {
 
             //Tipo
             String simType = eSimFlow ? "eSIM" : "Chip Comum";
-            validateElementText(simType, driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']//div[not(contains(@class, 'modalEsim'))][2]/div/div/div[2]/div[1]/p"));
+            validateElementText(simType, driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']//div[not(contains(@class, 'modalEsim'))][2]/div/div/div[2]/div[1]"));
 
             //Valor
             String chipPrice = "Valor: " + (eSimFlow ? "Grátis" : "R$ 10,00");
