@@ -6,7 +6,7 @@ import web.pages.DadosPessoaisPage;
 import web.models.CartOrder;
 
 import static web.support.utils.Constants.ChipType.*;
-import static web.support.utils.Constants.DeliveryMode.*;
+import static web.support.utils.Constants.ZoneDeliveryMode.*;
 
 public class DadosPessoaisSteps {
 

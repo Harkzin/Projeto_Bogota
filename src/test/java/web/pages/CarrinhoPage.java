@@ -244,8 +244,8 @@ public class CarrinhoPage {
 
     public void inserirEmail() {
         String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-        cartOrder.setUserEmail(userEmail);
-        driverWeb.sendKeys(email, userEmail);
+        cartOrder.getUser().setEmail(userEmail);
+        driverWeb.sendKeys(this.email, userEmail);
     }
 
     public void clicarEuQuero() {

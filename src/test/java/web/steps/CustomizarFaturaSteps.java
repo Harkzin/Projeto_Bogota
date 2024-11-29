@@ -6,7 +6,7 @@ import web.pages.CustomizarFaturaPage;
 import web.models.CartOrder;
 
 import static web.support.utils.Constants.InvoiceType.*;
-import static web.support.utils.Constants.PaymentMode.*;
+import static web.support.utils.Constants.StandardPaymentMode.*;
 
 public class CustomizarFaturaSteps {
 

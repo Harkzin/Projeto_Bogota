@@ -11,8 +11,8 @@ import web.support.utils.DriverWeb;
 import java.util.function.BiConsumer;
 
 import static web.support.utils.Constants.*;
-import static web.support.utils.Constants.DeliveryMode.CONVENTIONAL;
-import static web.support.utils.Constants.DeliveryMode.EXPRESS;
+import static web.support.utils.Constants.ZoneDeliveryMode.CONVENTIONAL;
+import static web.support.utils.Constants.ZoneDeliveryMode.EXPRESS;
 
 @Component
 @ScenarioScope
@@ -97,7 +97,7 @@ public class DadosPessoaisPage {
         Assert.assertNotEquals("Preenchimento automático [cidade]", driverWeb.findElement("txt-cidade-endereco-entrega", "id").getAttribute("value"), "");
     }
 
-    public void validarTiposEntregaEChip(boolean showDeliveryModes, DeliveryMode deliveryMode, boolean isDeviceCart) {
+    public void validarTiposEntregaEChip(boolean showDeliveryModes, ZoneDeliveryMode deliveryMode, boolean isDeviceCart) {
         String conventionalParent = "//*[@id='conventional-parent']";
         String expressParent = "//*[@id='express-parent']";
 
@@ -182,7 +182,7 @@ public class DadosPessoaisPage {
         inserirDadosEndereco("txt-numero-endereco-entrega", "txt-complemento-endereco-entrega", numero, complemento);
     }
 
-    public void selecionarEsim(DeliveryMode deliveryMode) {
+    public void selecionarEsim(ZoneDeliveryMode deliveryMode) {
         if(deliveryMode == EXPRESS) {
             driverWeb.javaScriptClick(chipEsimExpress);
             driverWeb.waitElementInvisible(entregaExpressa, 1);
