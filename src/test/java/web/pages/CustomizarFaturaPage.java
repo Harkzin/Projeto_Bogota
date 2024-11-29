@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.support.utils.Constants.InvoiceType;
-import web.support.utils.Constants.PaymentMode;
+import web.support.utils.Constants.StandardPaymentMode;
 import web.support.utils.Constants.ProcessType;
 import web.support.utils.DriverWeb;
 
@@ -110,7 +110,7 @@ public class CustomizarFaturaPage {
         assertTrue(conta.isDisplayed());
     }
 
-    public void validarExibeMeiosPagamento(PaymentMode payment) { //Exibe nos fluxos: gross / base - cliente pagamento boleto / migra pré-ctrl
+    public void validarExibeMeiosPagamento(StandardPaymentMode payment) { //Exibe nos fluxos: gross / base - cliente pagamento boleto / migra pré-ctrl
         isDebitClient = false;
 
         switch (payment) {
