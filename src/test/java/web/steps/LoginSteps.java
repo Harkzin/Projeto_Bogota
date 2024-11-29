@@ -75,7 +75,7 @@ public class LoginSteps {
 
     @Quando("o usuário selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
-        cart.setUserEmail(email);
+        cart.getUser().setEmail(email);
         loginPage.selecionarCodigoEmail(email);
     }
 
@@ -86,7 +86,7 @@ public class LoginSteps {
 
     @E("preenche o campo [Digite o código recebido] com o token")
     public void preencherToken() {
-        loginPage.inserirTokenEmail(cart.getUserEmail());
+        loginPage.inserirTokenEmail(cart.getUser().getEmail());
     }
 
     @Quando("o usuário clicar no botão [Confirmar]")
