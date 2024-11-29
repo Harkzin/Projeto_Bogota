@@ -2,6 +2,7 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -326,6 +327,10 @@ public class CustomizarFaturaPage {
             case PRINTED -> driverWeb.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
         }
         driverWeb.actionPause(3000);
+    }
+
+    public void clearSessionInvoiceWhatsapp() {
+        ((JavascriptExecutor) driverWeb.getDriver()).executeScript("sessionStorage.removeItem('INVOICE-ClaroDebitPaymentInfo-WHATSAPP')");
     }
 
     public void preencherDadosBancarios() {

@@ -72,15 +72,15 @@ public class CustomizarFaturaSteps {
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
         cart.isDebitPaymentFlow = true;
-        cart.updatePlanCartPromotion();
         customizarFaturaPage.selecionarDebito();
+        cart.updatePlanCartPromotion();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
         cart.isDebitPaymentFlow = false;
-        cart.updatePlanCartPromotion();
         customizarFaturaPage.selecionarBoleto();
+        cart.updatePlanCartPromotion();
     }
 
     @E("preenche os dados bancários")
@@ -90,26 +90,27 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar o método de recebimento da fatura [WhatsApp]")
     public void selecionarFaturaWhatsApp() {
-        cart.setSelectedInvoiceType(WHATSAPP);
+        customizarFaturaPage.clearSessionInvoiceWhatsapp();
         customizarFaturaPage.selecionarTipoFatura(WHATSAPP, cart.isDebitPaymentFlow);
+        cart.setSelectedInvoiceType(WHATSAPP);
     }
 
     @Entao("o usuário selecionar o método de recebimento da fatura [App Minha Claro]")
     public void selecionarFaturaAppMinhaClaro() {
-        cart.setSelectedInvoiceType(APP);
         customizarFaturaPage.selecionarTipoFatura(APP, cart.isDebitPaymentFlow);
+        cart.setSelectedInvoiceType(APP);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
-        cart.setSelectedInvoiceType(DIGITAL);
         customizarFaturaPage.selecionarTipoFatura(DIGITAL, cart.isDebitPaymentFlow);
+        cart.setSelectedInvoiceType(DIGITAL);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")
     public void selecionarFaturaCorreios() {
-        cart.setSelectedInvoiceType(PRINTED);
         customizarFaturaPage.selecionarTipoFatura(PRINTED, cart.isDebitPaymentFlow);
+        cart.setSelectedInvoiceType(PRINTED);
     }
 
     @E("seleciona a data de vencimento {string}")
