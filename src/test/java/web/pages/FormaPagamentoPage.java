@@ -48,6 +48,9 @@ public class FormaPagamentoPage {
 
     @FindBy(id = "btn-finalizar-pix")
     private WebElement finalizarPix;
+    @FindBy(id = "btn-tente-novamente")
+    private WebElement btnTenteNovamente;
+
 
     private WebElement cardName;
     private WebElement cardNumber;
@@ -56,7 +59,7 @@ public class FormaPagamentoPage {
     private WebElement cardConfirm;
 
     public void validarPaginaFormaPagamento(CartOrder cart) {
-        driverWeb.waitPageLoad("/payment-device-method", 60);
+        driverWeb.waitPageLoad("/payment-device-method", 80);
         driverWeb.actionPause(3000);
 
         PageFactory.initElements(driverWeb.getDriver(), this);
@@ -181,5 +184,13 @@ public class FormaPagamentoPage {
 
     public void clicarFinalizarPix() {
         driverWeb.javaScriptClick(finalizarPix);
+    }
+
+    public void clicarTentarNovamente(){
+        driverWeb.javaScriptClick(btnTenteNovamente);
+    }
+
+    public void ValidarMensagemErroCartao(String msg) {
+        validateElementText(msg, driverWeb.findByXpath("//*[@id='root']//div[@class='text']"));
     }
 }
