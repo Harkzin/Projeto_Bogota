@@ -127,7 +127,7 @@ public class ComumPage {
     }
 
     public void validarResumoCompraPlano(CartOrder cart) {
-        driverWeb.actionPause(2000);
+        driverWeb.actionPause(2500);
 
         OrderEntry planEntry = cart.getEntry(cart.getPlan().getCode());
         PlanProduct plan = (PlanProduct) planEntry.getProduct();

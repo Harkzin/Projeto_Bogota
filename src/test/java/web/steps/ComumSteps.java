@@ -8,6 +8,8 @@ import web.pages.ComumPage;
 import web.models.CartOrder;
 
 import static web.support.utils.Constants.*;
+import static web.support.utils.Constants.StandardPaymentMode.DEBITCARD;
+import static web.support.utils.Constants.StandardPaymentMode.TICKET;
 
 public class ComumSteps {
 
@@ -47,8 +49,7 @@ public class ComumSteps {
 
     @E("o plano do carrinho será atualizado para o Plano Combo correspondente")
     public void atualizarParaPlanoCombo() {
-        cart.setPlan(planSingleToCombo.get(cart.getPlan().getCode()));
-        cart.isDebitPaymentFlow = false; //TODO Valor deve ser de acordo com o tipo de pagamento da linha combo
+        cart.updatePlanCartPromotion();
         comumPage.validarResumoCompraPlano(cart);
     }
 
