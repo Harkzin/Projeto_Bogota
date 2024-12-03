@@ -7,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.ComumPage;
 import web.models.CartOrder;
 
-import static web.support.utils.Constants.*;
-import static web.support.utils.Constants.StandardPaymentMode.DEBITCARD;
-import static web.support.utils.Constants.StandardPaymentMode.TICKET;
-
 public class ComumSteps {
 
     private final ComumPage comumPage;

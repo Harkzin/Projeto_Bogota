@@ -5,7 +5,6 @@ import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PdpPlanosPage;
 import web.models.CartOrder;
-import web.support.utils.Constants;
 
 import static web.support.utils.Constants.StandardPaymentMode.*;
 
