@@ -410,8 +410,8 @@ public class CustomizarFaturaPage {
     }
 
     public void validarMensagemDeErro(String mensagemExibida) {
-        WebElement mensagemErro = driverWeb.findElement("//*[contains(text(), 'Infelizmente')]", "xpath");
-        assertTrue(mensagemErro.getText().contains(mensagemExibida));
+        String mensagemErro = driverWeb.findElement("//*[contains(text(), 'Infelizmente não foi possível realizar seu pedido por esse canal.')]", "xpath").getText();
+        assertEquals(mensagemErro, mensagemExibida);
     }
 
     public void clickOkEntendi() {
