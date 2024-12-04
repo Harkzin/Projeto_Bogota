@@ -2,6 +2,7 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,10 +148,12 @@ public class CustomizarFaturaPage {
 
     private void findInvoiceTypeElements() {
         whatsappDebit = driverWeb.findById("rdn-whatsapp-debit");
+        appDebit = driverWeb.findById("rdn-app-debit");
         emailDebit = driverWeb.findById("rdn-digital-debit");
         correiosDebit = driverWeb.findById("rdn-printed-debit");
 
         whatsappTicket = driverWeb.findById("rdn-whatsapp-ticket");
+        appTicket = driverWeb.findById("rdn-app-ticket");
         emailTicket = driverWeb.findById("rdn-digital-ticket");
         correiosTicket = driverWeb.findById("rdn-printed-ticket");
     }
@@ -158,10 +161,12 @@ public class CustomizarFaturaPage {
     private void assertInvoiceDebit(boolean isDisplayed) {
         if (isDisplayed) {
             assertTrue("Exibe fatura WhatsApp debito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+            assertTrue("Exibe fatura App Minha Claro debito", appDebit.findElement(By.xpath("..")).isDisplayed());
             assertTrue("Exibe fatura E-mail debito", emailDebit.findElement(By.xpath("..")).isDisplayed());
             assertTrue("Exibe fatura Correios debito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
         } else {
             assertFalse("Nao exibe fatura WhatsApp debito", whatsappDebit.findElement(By.xpath("..")).isDisplayed());
+            assertFalse("Nao exibe fatura App Minha Claro debito", appDebit.findElement(By.xpath("..")).isDisplayed());
             assertFalse("Nao exibe fatura E-mail debito", emailDebit.findElement(By.xpath("..")).isDisplayed());
             assertFalse("Nao exibe fatura Correios debito", correiosDebit.findElement(By.xpath("..")).isDisplayed());
         }
@@ -170,10 +175,12 @@ public class CustomizarFaturaPage {
     private void assertInvoiceTicket(boolean isDisplayed) {
         if (isDisplayed) {
             assertTrue("Exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+            assertTrue("Exibe fatura App Minha Claro boleto", appTicket.findElement(By.xpath("..")).isDisplayed());
             assertTrue("Exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
             assertTrue("Exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
         } else {
             assertFalse("Nao exibe fatura WhatsApp boleto", whatsappTicket.findElement(By.xpath("..")).isDisplayed());
+            assertFalse("Nao exibe fatura App Minha Claro boleto", appTicket.findElement(By.xpath("..")).isDisplayed());
             assertFalse("Nao exibe fatura E-mail boleto", emailTicket.findElement(By.xpath("..")).isDisplayed());
             assertFalse("Nao exibe fatura Correios boleto", correiosTicket.findElement(By.xpath("..")).isDisplayed());
         }
@@ -187,12 +194,14 @@ public class CustomizarFaturaPage {
 
     private void assertInvoiceDebitNull() {
         assertNull("Nao deve existir no html", whatsappDebit);
+        assertNull("Nao deve existir no html", appDebit);
         assertNull("Nao deve existir no html", emailDebit);
         assertNull("Nao deve existir no html", correiosDebit);
     };
 
     private void assertInvoiceTicketNull() {
         assertNull("Nao deve existir no html", whatsappTicket);
+        assertNull("Nao deve existir no html", appTicket);
         assertNull("Nao deve existir no html", emailTicket);
         assertNull("Nao deve existir no html", correiosTicket);
     };
@@ -313,11 +322,15 @@ public class CustomizarFaturaPage {
     public void selecionarTipoFatura(InvoiceType invoiceType, boolean isDebitPaymentFlow) {
         switch (invoiceType) {
             case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
+            case APP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? appDebit : appTicket);
             case DIGITAL -> driverWeb.javaScriptClick(isDebitPaymentFlow ? emailDebit : emailTicket);
             case PRINTED -> driverWeb.javaScriptClick(isDebitPaymentFlow ? correiosDebit : correiosTicket);
-            case APP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? appDebit : appTicket);
         }
         driverWeb.actionPause(3000);
+    }
+
+    public void clearSessionInvoiceWhatsapp() {
+        ((JavascriptExecutor) driverWeb.getDriver()).executeScript("sessionStorage.removeItem('INVOICE-ClaroDebitPaymentInfo-WHATSAPP')");
     }
 
     public void preencherDadosBancarios() {
@@ -394,6 +407,11 @@ public class CustomizarFaturaPage {
 
     public void clicarContinuar() {
         driverWeb.javaScriptClick("btn-continuar", "id");
+    }
+
+    public void validarMensagemDeErro(String mensagemExibida) {
+        String mensagemErro = driverWeb.findElement("//*[contains(text(), 'Infelizmente não foi possível realizar seu pedido por esse canal.')]", "xpath").getText();
+        assertEquals(mensagemErro, mensagemExibida);
     }
 
     public void clickOkEntendi() {
