@@ -4,12 +4,18 @@ import api.models.request.*;
 import api.models.response.*;
 import io.cucumber.java.pt.Dado;
 import org.junit.Assert;
+import web.models.CartOrder;
 import web.support.utils.Constants;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.time.Duration.ofSeconds;
 import static web.support.api.RestAPI.*;
@@ -427,8 +433,8 @@ public class ApiSteps {
         }
 
         Assert.assertTrue(tokenObjectResponse.isSuccess());
-        Assert.assertEquals("Token enviado",tokenObjectResponse.getMessage());
-        Assert.assertNotNull( tokenObjectResponse.getValidateTokenTest());
+        Assert.assertEquals("Token enviado", tokenObjectResponse.getMessage());
+        Assert.assertNotNull(tokenObjectResponse.getValidateTokenTest());
         validateToken = tokenObjectResponse.getValidateTokenTest();
     }
 
@@ -447,7 +453,7 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .method("GET",HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
+                    .method("GET", HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
                     .build();
 
             tokenResponse = clientHttp.send(otpToken, HttpResponse.BodyHandlers.ofString());
@@ -458,7 +464,7 @@ public class ApiSteps {
         }
 
         Assert.assertTrue(tokenObjectResponse.isSuccess());
-        Assert.assertEquals("Token válido",tokenObjectResponse.getMessage());
+        Assert.assertEquals("Token válido", tokenObjectResponse.getMessage());
         Assert.assertFalse(tokenObjectResponse.isContingency());
     }
 
@@ -540,5 +546,111 @@ public class ApiSteps {
         } while (checkCpfDiretrix(cpf) != isDiretrix);
 
         return cpf;
+    }
+
+    @Dado("update-order-sap [ecommerceOrderId {string}] [status {string}]")
+    public void updateOrderSap(String ecomerorderid, String status) {
+        CartOrder cart;
+        LocalDate dataAtual = LocalDate.now();
+        LocalTime horaAtual = LocalTime.now();
+        DateTimeFormatter formatterDateMonthYear = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter formatterYearMonthDayHour = DateTimeFormatter.ofPattern(("yyyy-MM-dd'T'HH:mm:ssXXX"));
+        DateTimeFormatter formatterHourMinuteSec = DateTimeFormatter.ofPattern("HHmmss");
+
+        ZonedDateTime timeZone = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+
+        UpdateOrderSapRequest updateOrderSapRequest = new UpdateOrderSapRequest();
+        updateOrderSapRequest.setEcommerceOrderId("000003751017");
+        updateOrderSapRequest.setEcommerceEnv(Constants.ambiente);
+        updateOrderSapRequest.setStatusDate(timeZone.format(formatterYearMonthDayHour));
+        updateOrderSapRequest.setStatusTime(horaAtual.format(formatterHourMinuteSec));
+        //TODO sap order id na api
+        updateOrderSapRequest.setSapOrderId("0435587820");
+        updateOrderSapRequest.setSalesOrg("1100");
+        updateOrderSapRequest.setDistributionChannel("50");
+//        if (cart.isDeviceCart()) {
+//            updateOrderSapRequest.setType("ZECO");
+//        } else {
+//            updateOrderSapRequest.setType("ZBRI");
+//        }
+        updateOrderSapRequest.setType("ZBRI");
+        updateOrderSapRequest.setTypeDescription("Dev Doacao NF Pro");
+        updateOrderSapRequest.setSapRequesterClientCode("0024259158");
+        updateOrderSapRequest.setSapReceiverClientCode("0024259158");
+        updateOrderSapRequest.setCenter("11TL");
+        updateOrderSapRequest.setStatusDesc(status);
+        switch (status) {
+            case "Aguardando Impressão NF" -> updateOrderSapRequest.setStatus("820");
+            case "Aguardando Conf. de Entrega 1" -> updateOrderSapRequest.setStatus("880");
+            case "Finalizada" -> updateOrderSapRequest.setStatus("900");
+        }
+        updateOrderSapRequest.setOccurrenceDate(dataAtual.format(formatterDateMonthYear));
+        updateOrderSapRequest.setOccurrenceTime(horaAtual.format(formatterHourMinuteSec));
+        updateOrderSapRequest.setInvoiceDocument("1000001569");
+        updateOrderSapRequest.setInvoiceNumber("001627340");
+        updateOrderSapRequest.setInvoiceSeries("525");
+
+        final HttpResponse<String> updateOrderSapResponse;
+
+        try {
+            final HttpRequest updateOrderSap = HttpRequest.newBuilder()
+                    .uri(URI.create(baseURI + "/orders/update/sap"))
+                    .timeout(ofSeconds(15))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(updateOrderSapRequest)))
+                    .build();
+
+            updateOrderSapResponse = clientHttp.send(updateOrderSap, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, updateOrderSapResponse.statusCode());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Dado("update-order [ecommerceOrderId {string}], [sapOrderId {string}]")
+    public void updateOrder(String ecommerceOrderId, String sapOrderId) {
+        UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest();
+        //Id pedido no legado
+        updateOrderRequest.setId("12734422");
+        updateOrderRequest.setStatus("SUCESSO");
+        updateOrderRequest.setStatusDescription("2 - Ativação processada com sucesso");
+        updateOrderRequest.getOperation().setType("Ativacao");
+        updateOrderRequest.getOperation().setDescription("Ativação Claro Controle");
+        updateOrderRequest.getOperation().setLineSubtype("NORMAL");
+        updateOrderRequest.getOperation().setResidential(null);
+        //Codigo cliente
+        updateOrderRequest.getCustomer().setId("138553907");
+        //Band code
+        updateOrderRequest.getCustomer().setMobileBan("146153008");
+        updateOrderRequest.getThab().setLicenseFee("NAO");
+        updateOrderRequest.getThab().setDueDate(null);
+        updateOrderRequest.getDevices().setTelephoneNumber("11947890641");
+        updateOrderRequest.getDevices().setRowType("TITULAR");
+        updateOrderRequest.getDevices().setPortability(null);
+        updateOrderRequest.getDevices().setMobileSubscriberId("925545982");
+        updateOrderRequest.getDevices().getSapOrders().setOrderNumber("0435587820");
+        updateOrderRequest.getDevices().getSapOrders().setType("VENDA");
+        updateOrderRequest.getDevices().getSapOrders().setStatus("ENTREGUE");
+        updateOrderRequest.getDevices().getSapOrders().setIccid("89550532150035019668");
+        updateOrderRequest.getDevices().getSapOrders().setImei("359718723160192");
+        updateOrderRequest.setSimcard(null);
+
+        final HttpResponse<String> updateOrderSapResponse;
+
+        try {
+            final HttpRequest updateOrder = HttpRequest.newBuilder()
+                    .uri(URI.create(baseURI + "/orders/update/"))
+                    .timeout(ofSeconds(15))
+                    .header("Authorization", token)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(updateOrderRequest)))
+                    .build();
+
+            updateOrderSapResponse = clientHttp.send(updateOrder, HttpResponse.BodyHandlers.ofString());
+            Assert.assertEquals(200, updateOrderSapResponse.statusCode());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
