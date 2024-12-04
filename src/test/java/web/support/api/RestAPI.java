@@ -29,7 +29,7 @@ public final class RestAPI {
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
     public static final ObjectMapper objMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
 
     private static void validateStatusCodeOk(String message, int status, String url) throws HttpStatusException {
         if (status != 200) {
@@ -272,5 +272,22 @@ public final class RestAPI {
         }
 
         return jnode.path("data");
+    }
+
+    public static HttpResponse<String> orderStatusRequest(String code) {
+        final HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(String.format("https://api.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/order/status/automation/%s", ambiente, code)))
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getEcommToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response;
+        try {
+            response = clientHttp.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
     }
 }

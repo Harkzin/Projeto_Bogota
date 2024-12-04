@@ -129,10 +129,10 @@ public class ComumPage {
     public void validarResumoCompraPlano(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        Entry planEntry = cart.getEntry(cart.getPlan().getCode());
+        OrderEntry planEntry = cart.getEntry(cart.getPlan().getCode());
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
         boolean hasLoyalty = cart.hasLoyalty();
-        int depQtt = cart.hasDependent();
+        int depQtt = cart.dependentQuantity();
 
         String planContentParent;
         if (cart.isDeviceCart()) {
@@ -288,7 +288,7 @@ public class ComumPage {
     public void validarResumoCompraAparelho(CartOrder cart) {
         driverWeb.actionPause(2000);
 
-        Entry deviceEntry = cart.getEntry(cart.getDevice().getCode());
+        OrderEntry deviceEntry = cart.getEntry(cart.getDevice().getCode());
         DeviceProduct device = (DeviceProduct) deviceEntry.getProduct();
 
         boolean isGrossFlow = cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY;
@@ -310,7 +310,7 @@ public class ComumPage {
         validateElementText("Envio: Grátis", driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-envio']/.."));
 
         //Desconto Cupom
-        if (cart.getAppliedCoupon() != null) {
+        if (cart.getAppliedCouponCodes() != null) {
             String voucherDiscountRef = formatPrice(deviceEntry.getDiscount());
             validateElementText("Desconto Cupom -R$ " + voucherDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
@@ -345,7 +345,7 @@ public class ComumPage {
 
             //Tipo
             String simType = eSimFlow ? "eSIM" : "Chip Comum";
-            validateElementText(simType, driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']//div[not(contains(@class, 'modalEsim'))][2]/div/div/div[2]/div[1]/p"));
+            validateElementText(simType, driverWeb.findByXpath(deviceContentParent + "//*[@id='render-claro-cart-entry-content']//div[not(contains(@class, 'modalEsim'))][2]/div/div/div[2]/div[1]"));
 
             //Valor
             String chipPrice = "Valor: " + (eSimFlow ? "Grátis" : "R$ 10,00");

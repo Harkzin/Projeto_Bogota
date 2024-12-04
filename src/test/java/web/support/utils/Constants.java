@@ -16,7 +16,8 @@ public final class Constants {
         EXCHANGE,
         EXCHANGE_PROMO,
         MIGRATE,
-        PORTABILITY
+        PORTABILITY,
+        ACCESSORY
     }
 
     public enum Email {
@@ -37,7 +38,7 @@ public final class Constants {
         }
     }
 
-    public enum DeliveryMode {
+    public enum ZoneDeliveryMode {
         CONVENTIONAL,
         EXPRESS
     }
@@ -49,9 +50,10 @@ public final class Constants {
         APP //App Minha Claro
     }
 
-    public enum PaymentMode {
+    public enum StandardPaymentMode {
         DEBITCARD,
         TICKET,
+        CREDITCARD,
         PIX,
         VOUCHER,
         CLAROCLUBE

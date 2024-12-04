@@ -36,7 +36,7 @@ public class FormaPagamentoSteps {
 
     @Entao("o Aparelho receberá o desconto do cupom")
     public void validarDescontoCupom() {
-        formaPagamentoPage.validarCupomAplicado(cart.getAppliedCoupon());
+        formaPagamentoPage.validarCupomAplicado(cart.getAppliedCouponCodes());
         comumPage.validarResumoCompraAparelho(cart);
     }
 
