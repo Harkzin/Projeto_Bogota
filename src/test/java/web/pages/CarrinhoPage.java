@@ -242,6 +242,11 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
+    public void inserirDadosReprovacaoScore(String telefone, String cpf) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfAquisicao,cpf);
+    }
+
     public void inserirEmail() {
         String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
         cartOrder.getUser().setEmail(userEmail);
