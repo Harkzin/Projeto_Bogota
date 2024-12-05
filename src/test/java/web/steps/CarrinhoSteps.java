@@ -123,8 +123,9 @@ public class CarrinhoSteps {
 
     @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoAquisicao(String telefoneContato, String cpfAprovado, String cpfDiretrix) {
-        carrinhoPage.inserirEmail();
-        carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        cart.getUser().setTelephone(telefoneContato);
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+        cart.getUser().setCpf(carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix)));
     }
 
     @Entao("será exibida a mensagem de erro: {string}")

@@ -28,7 +28,6 @@ public class CartOrder {
     private String planId;
     private String deviceId;
 
-    public boolean isDebitPaymentFlow; //TODO
     public boolean hasErrorPasso1 = false; //TODO
 
     // Essential -------------------------------------------------
@@ -537,7 +536,7 @@ public class CartOrder {
                     planFullPrice = essential.user.getClaroSubscription().claroPlanPrice; //Preço vem da API de login, sem desconto de promoção
                 }
             } else {
-                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceTypes == PRINTED) - plan.getPrice();
+                promoDiscount = plan.getPrice(false, selectedInvoiceTypes == PRINTED) - plan.getPrice();
             }
         }
 
@@ -657,6 +656,7 @@ public class CartOrder {
 
             PositionsAndPrices.OrderEntry planEntry = getEntry(planId);
             planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+            planEntry.discountValues.set(0, (double) allPromotionResults.discountValue);
             planEntry.paymentMode = allPromotionResults.paymentMethod;
         }
     }

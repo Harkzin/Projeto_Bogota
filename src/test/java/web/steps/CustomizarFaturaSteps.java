@@ -46,12 +46,12 @@ public class CustomizarFaturaSteps {
 
     @Mas("não deve ser exibido as opções de pagamento")
     public void naoExibePagamento() {
-        cart.isDebitPaymentFlow = customizarFaturaPage.validarNaoExibeMeiosPagamento(cart.getProcessType()); //Valida e já atualiza o isDebitPaymentFlow
+        customizarFaturaPage.validarNaoExibeMeiosPagamento(cart.getProcessType());
     }
 
     @E("deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada")
     public void exibeRecebimentoFatura() {
-        customizarFaturaPage.validarExibeTiposFatura(cart.isDebitPaymentFlow, cart.isThab());
+        customizarFaturaPage.validarExibeTiposFatura(cart.isThab());
     }
 
     @Mas("não deve ser exibido os meios de recebimento da fatura")
@@ -61,7 +61,7 @@ public class CustomizarFaturaSteps {
 
     @E("deve ser exibido as datas de vencimento")
     public void exibeDatasVencimento() {
-        customizarFaturaPage.validarExibeDatas(cart.isDebitPaymentFlow);
+        customizarFaturaPage.validarExibeDatas();
     }
 
     @E("não deve ser exibido as datas de vencimento")
@@ -71,14 +71,12 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
-        cart.isDebitPaymentFlow = true;
         customizarFaturaPage.selecionarDebito();
         cart.updatePlanCartPromotion();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
-        cart.isDebitPaymentFlow = false;
         customizarFaturaPage.selecionarBoleto();
         cart.updatePlanCartPromotion();
     }
@@ -91,25 +89,25 @@ public class CustomizarFaturaSteps {
     @Quando("o usuário selecionar o método de recebimento da fatura [WhatsApp]")
     public void selecionarFaturaWhatsApp() {
         customizarFaturaPage.clearSessionInvoiceWhatsapp();
-        customizarFaturaPage.selecionarTipoFatura(WHATSAPP, cart.isDebitPaymentFlow);
+        customizarFaturaPage.selecionarTipoFatura(WHATSAPP);
         cart.setSelectedInvoiceType(WHATSAPP);
     }
 
     @Entao("o usuário selecionar o método de recebimento da fatura [App Minha Claro]")
     public void selecionarFaturaAppMinhaClaro() {
-        customizarFaturaPage.selecionarTipoFatura(APP, cart.isDebitPaymentFlow);
+        customizarFaturaPage.selecionarTipoFatura(APP);
         cart.setSelectedInvoiceType(APP);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
-        customizarFaturaPage.selecionarTipoFatura(DIGITAL, cart.isDebitPaymentFlow);
+        customizarFaturaPage.selecionarTipoFatura(DIGITAL);
         cart.setSelectedInvoiceType(DIGITAL);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")
     public void selecionarFaturaCorreios() {
-        customizarFaturaPage.selecionarTipoFatura(PRINTED, cart.isDebitPaymentFlow);
+        customizarFaturaPage.selecionarTipoFatura(PRINTED);
         cart.setSelectedInvoiceType(PRINTED);
     }
 
@@ -120,7 +118,7 @@ public class CustomizarFaturaSteps {
 
     @E("marca o checkbox de termos de aceite")
     public void marcarTermosDeAceite() {
-        customizarFaturaPage.aceitarTermos(cart.isDebitPaymentFlow);
+        customizarFaturaPage.aceitarTermos();
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos")

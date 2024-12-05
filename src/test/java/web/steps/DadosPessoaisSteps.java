@@ -26,6 +26,9 @@ public class DadosPessoaisSteps {
 
     @E("preenche os campos de dados pessoais: [Nome Completo] {string}, [Data de Nascimento] {string} e [Nome da Mãe] {string}")
     public void preencherDadosPessoais(String nome, String data, String nomeMae) {
+        cart.getUser().setName(nome);
+        cart.getUser().setBirthdate(data);
+        cart.getUser().setParentfullname(nomeMae);
         dadosPessoaisPage.inserirNome(nome);
         dadosPessoaisPage.inserirDataNascimento(data);
         dadosPessoaisPage.inserirNomeMae(nomeMae);
@@ -34,20 +37,24 @@ public class DadosPessoaisSteps {
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
         cart.setDeliveryMode(CONVENTIONAL);
-        dadosPessoaisPage.inserirCep(cep);
+        cart.getDeliveryAddress().setStreetnumber(numero);
+        cart.getDeliveryAddress().setBuilding(complemento);
+        dadosPessoaisPage.inserirCep(cep, cart.getDeliveryAddress());
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
         cart.setDeliveryMode(EXPRESS);
-        dadosPessoaisPage.inserirCep(cep);
+        cart.getDeliveryAddress().setStreetnumber(numero);
+        cart.getDeliveryAddress().setBuilding(complemento);
+        dadosPessoaisPage.inserirCep(cep, cart.getDeliveryAddress());
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(true, cart.getDeliveryMode(), cart.isDeviceCart());
+        dadosPessoaisPage.validarTiposEntregaEchip(true, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @E("o usuário desmarcar a opção [Usar o mesmo endereço de entrega]")
@@ -74,7 +81,7 @@ public class DadosPessoaisSteps {
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(false, cart.getDeliveryMode(), cart.isDeviceCart());
+        dadosPessoaisPage.validarTiposEntregaEchip(false, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @Então("será recarregada a página e exibida a mensagem de erro: {string}")
