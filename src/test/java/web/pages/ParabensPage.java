@@ -12,6 +12,7 @@ import web.support.utils.DriverWeb;
 import static org.junit.Assert.assertTrue;
 import static web.pages.ComumPage.formatPrice;
 import static web.pages.ComumPage.validateElementText;
+import static web.support.utils.Constants.*;
 import static web.support.utils.Constants.ProcessType.*;
 
 @Component
@@ -29,7 +30,7 @@ public class ParabensPage {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
         driverWeb.actionPause(2000);
 
-        Constants.ProcessType processType = cart.getProcessType();
+        ProcessType processType = cart.getProcessType();
 
         //Nome (Parabéns, {nome-cliente})
         if (!cart.isDeviceCart()) {
