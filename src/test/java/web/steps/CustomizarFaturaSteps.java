@@ -71,14 +71,14 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar a forma de pagamento [Débito]")
     public void selecionarPagamentoDebito() {
-        cart.updatePlanCartPromotion();
         customizarFaturaPage.selecionarDebito();
+        cart.updatePlanCartPromotion();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto]")
     public void selecionarPagamentoBoleto() {
-        cart.updatePlanCartPromotion();
         customizarFaturaPage.selecionarBoleto();
+        cart.updatePlanCartPromotion();
     }
 
     @E("preenche os dados bancários")
@@ -88,26 +88,27 @@ public class CustomizarFaturaSteps {
 
     @Quando("o usuário selecionar o método de recebimento da fatura [WhatsApp]")
     public void selecionarFaturaWhatsApp() {
-        cart.setSelectedInvoiceType(WHATSAPP);
+        customizarFaturaPage.clearSessionInvoiceWhatsapp();
         customizarFaturaPage.selecionarTipoFatura(WHATSAPP);
+        cart.setSelectedInvoiceType(WHATSAPP);
     }
 
     @Entao("o usuário selecionar o método de recebimento da fatura [App Minha Claro]")
     public void selecionarFaturaAppMinhaClaro() {
-        cart.setSelectedInvoiceType(APP);
         customizarFaturaPage.selecionarTipoFatura(APP);
+        cart.setSelectedInvoiceType(APP);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [E-mail]")
     public void selecionarFaturaEmail() {
-        cart.setSelectedInvoiceType(DIGITAL);
         customizarFaturaPage.selecionarTipoFatura(DIGITAL);
+        cart.setSelectedInvoiceType(DIGITAL);
     }
 
     @Quando("o usuário selecionar o método de recebimento da fatura [Correios]")
     public void selecionarFaturaCorreios() {
-        cart.setSelectedInvoiceType(PRINTED);
         customizarFaturaPage.selecionarTipoFatura(PRINTED);
+        cart.setSelectedInvoiceType(PRINTED);
     }
 
     @E("seleciona a data de vencimento {string}")
@@ -123,6 +124,11 @@ public class CustomizarFaturaSteps {
     @Quando("o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos")
     public void clicarContinuar() {
         customizarFaturaPage.clicarContinuar();
+    }
+
+    @Entao("é exibiba a mensagem de erro: {string}")
+    public void validarMensagemDeErro(String mensagemExibida) {
+        customizarFaturaPage.validarMensagemDeErro(mensagemExibida);
     }
 
     @E("clicar no botão [Ok, entendi]")

@@ -252,6 +252,11 @@ public class CarrinhoPage {
         return userEmail;
     }
 
+    public void inserirDadosReprovacaoScore(String telefone, String cpf) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfAquisicao, cpf);
+    }
+
     public void clicarEuQuero() {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
         try {
