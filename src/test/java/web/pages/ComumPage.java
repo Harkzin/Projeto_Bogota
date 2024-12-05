@@ -218,7 +218,7 @@ public class ComumPage {
                 String depQuantityRef = String.format("+ %d %s", depQtt, depQtt == 1 ? "dependente" : "dependentes");
                 validateElementText(depQuantityRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='dependentquantity']"));
 
-                String depPriceAndChipRef = String.format("R$ %s ( + %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
+                String depPriceAndChipRef = String.format("R$ %s (+ %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
                 validateElementText(depPriceAndChipRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='dependentprice']"));
             }
 
