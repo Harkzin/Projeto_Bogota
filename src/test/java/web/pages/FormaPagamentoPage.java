@@ -51,7 +51,6 @@ public class FormaPagamentoPage {
     @FindBy(id = "btn-tente-novamente")
     private WebElement btnTenteNovamente;
 
-
     private WebElement cardName;
     private WebElement cardNumber;
     private WebElement cardExpireDate;
