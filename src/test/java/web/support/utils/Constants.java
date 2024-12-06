@@ -16,7 +16,8 @@ public final class Constants {
         EXCHANGE,
         EXCHANGE_PROMO,
         MIGRATE,
-        PORTABILITY
+        PORTABILITY,
+        ACCESSORY
     }
 
     public enum Email {
@@ -37,7 +38,7 @@ public final class Constants {
         }
     }
 
-    public enum DeliveryMode {
+    public enum ZoneDeliveryMode {
         CONVENTIONAL,
         EXPRESS
     }
@@ -45,12 +46,14 @@ public final class Constants {
     public enum InvoiceType {
         WHATSAPP,
         DIGITAL, //E-mail
-        PRINTED //Correios
+        PRINTED, //Correios
+        APP //App Minha Claro
     }
 
-    public enum PaymentMode {
+    public enum StandardPaymentMode {
         DEBITCARD,
         TICKET,
+        CREDITCARD,
         PIX,
         VOUCHER,
         CLAROCLUBE
@@ -67,4 +70,9 @@ public final class Constants {
     );
 
     public static final double DEPENDENT_PRICE = 50D;
+
+    public enum ChipType {
+        SIM,
+        ESIM
+    }
 }

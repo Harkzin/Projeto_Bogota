@@ -18,14 +18,13 @@ public class PlpAparelhosSteps {
         this.cart = cart;
     }
 
-    @Entao("é direcionado para a tela PLP de Aparelho")
+    @Entao("é direcionado para a PLP de Aparelhos")
     public void validarPLpAparelhos() {
         plpAparelhosPage.validarPlpAparelhos();
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] do card do Aparelho {string}")
     public void clicarEuQuero(String id) {
-        cart.isDebitPaymentFlow = false;
         cart.setDeviceWithFocusPlan(id);
         plpAparelhosPage.validarCardAparelho(cart.getDevice(), cart.getPlan().getName());
         plpAparelhosPage.clicaBotaoEuQuero(id);

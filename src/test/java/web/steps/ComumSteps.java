@@ -2,6 +2,7 @@ package web.steps;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+<<<<<<< HEAD
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Mas;
@@ -9,6 +10,8 @@ import web.models.CartOrder;
 import web.pages.ComumPage;
 import static web.support.utils.Constants.planSingleToCombo;
 
+=======
+>>>>>>> Projeto_Bogota_o/stage-bogota
 public class ComumSteps {
 
     private final ComumPage comumPage;
@@ -55,8 +58,12 @@ public class ComumSteps {
 
     @E("o plano do carrinho será atualizado para o Plano Combo correspondente")
     public void atualizarParaPlanoCombo() {
-        cart.setPlan(planSingleToCombo.get(cart.getPlan().getCode()));
-        cart.isDebitPaymentFlow = false; //TODO Valor deve ser de acordo com o tipo de pagamento da linha combo
+        cart.updatePlanCartPromotion();
+        comumPage.validarResumoCompraPlano(cart);
+    }
+
+    @Entao("é direcionado para a tela de Carrinho com a oferta")
+    public void validarResumoRentab() {
         comumPage.validarResumoCompraPlano(cart);
     }
 }

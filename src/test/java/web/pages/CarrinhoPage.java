@@ -1,5 +1,6 @@
 package web.pages;
 
+<<<<<<< HEAD
 import java.util.UUID;
 
 import org.junit.Assert;
@@ -9,6 +10,21 @@ import org.springframework.stereotype.Component;
 
 import io.cucumber.spring.ScenarioScope;
 import web.models.CartOrder;
+=======
+import io.cucumber.spring.ScenarioScope;
+import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import web.models.CartOrder;
+import web.support.utils.DriverWeb;
+
+import java.util.UUID;
+
+import static org.junit.Assert.*;
+import static web.support.utils.Constants.*;
+import static web.support.utils.Constants.ProcessType.ACQUISITION;
+import static web.support.utils.Constants.ProcessType.PORTABILITY;
+>>>>>>> Projeto_Bogota_o/stage-bogota
 import static web.support.api.RestAPI.checkCpfDiretrix;
 import static web.support.api.RestAPI.getCpf;
 import web.support.utils.Constants.ProcessType;
@@ -59,19 +75,29 @@ public class CarrinhoPage {
         return cpf;
     }
 
+    private String getCpfForPixFlow() {
+        String cpf;
+
+        do {
+            cpf = getCpfForPlanFlow(true, false);
+        } while (!cpf.matches(".*1$"));
+
+        return cpf;
+    }
+
     private void validarCamposBase(boolean isDeviceCart) {
         telefoneMigracao = driverWeb.findElement("txt-telefone-migracao", "id");
         cpfMigracao = driverWeb.findElement("txt-cpf-migracao", "id");
 
         driverWeb.waitElementVisible(telefoneMigracao, 1);
-        Assert.assertTrue(cpfMigracao.isDisplayed());
+        assertTrue(cpfMigracao.isDisplayed());
 
         if (!isDeviceCart) {
-            Assert.assertEquals(telefoneMigracao.getAttribute("value"), "");
-            Assert.assertEquals(cpfMigracao.getAttribute("value"), "");
+            assertEquals(telefoneMigracao.getAttribute("value"), "");
+            assertEquals(cpfMigracao.getAttribute("value"), "");
         } else {
             //TODO - Nos fluxos de Base com Aparelho, os campos são preenchidos com os dados do cliente
-            Assert.assertFalse(telefoneMigracao.isEnabled());
+            assertFalse(telefoneMigracao.isEnabled());
         }
     }
 
@@ -80,10 +106,10 @@ public class CarrinhoPage {
         cpfPortabilidade = driverWeb.findElement("txt-cpf-portabilidade", "id");
 
         driverWeb.waitElementVisible(telefonePortabilidade, 1);
-        Assert.assertTrue(cpfPortabilidade.isDisplayed());
+        assertTrue(cpfPortabilidade.isDisplayed());
 
-        Assert.assertEquals(telefonePortabilidade.getAttribute("value"), "");
-        Assert.assertEquals(cpfPortabilidade.getAttribute("value"), "");
+        assertEquals(telefonePortabilidade.getAttribute("value"), "");
+        assertEquals(cpfPortabilidade.getAttribute("value"), "");
     }
 
     private void validarCamposAquisicao() {
@@ -92,11 +118,11 @@ public class CarrinhoPage {
         cpfAquisicao = driverWeb.findElement("txt-cpf-aquisicao", "id");
 
         driverWeb.waitElementVisible(dddAquisicao, 1);
-        Assert.assertTrue(telefoneContatoAquisicao.isDisplayed());
-        Assert.assertTrue(cpfAquisicao.isDisplayed());
+        assertTrue(telefoneContatoAquisicao.isDisplayed());
+        assertTrue(cpfAquisicao.isDisplayed());
 
-        Assert.assertEquals(telefoneContatoAquisicao.getAttribute("value"), "");
-        Assert.assertEquals(cpfAquisicao.getAttribute("value"), "");
+        assertEquals(telefoneContatoAquisicao.getAttribute("value"), "");
+        assertEquals(cpfAquisicao.getAttribute("value"), "");
     }
 
     private void validarCampoEmail(boolean isDeviceCart) {
@@ -105,7 +131,7 @@ public class CarrinhoPage {
         driverWeb.waitElementVisible(email, 1);
 
         if (!isDeviceCart) {
-            Assert.assertEquals(email.getAttribute("value"), "");
+            assertEquals(email.getAttribute("value"), "");
         } else {
             //TODO - Caso esteja preenchido, validar que o email é igual ao do cadastro do cliente (backoffice).
         }
@@ -122,28 +148,28 @@ public class CarrinhoPage {
             fluxoAquisicao = driverWeb.findElement("rdn-aquisicao", "id");
 
             if (url.endsWith("cart")) { //cart planos normal
-                Assert.assertNotNull(fluxoBase);
-                Assert.assertNotNull(fluxoPortabilidade);
-                Assert.assertNotNull(fluxoAquisicao);
+                assertNotNull(fluxoBase);
+                assertNotNull(fluxoPortabilidade);
+                assertNotNull(fluxoAquisicao);
             } else if (url.contains("targetCampaign=migra")) { //cart rentab base
                 //TODO Cart_processType = ?
-                Assert.assertNotNull(fluxoBase);
-                Assert.assertNull(fluxoPortabilidade);
-                Assert.assertNull(fluxoAquisicao);
+                assertNotNull(fluxoBase);
+                assertNull(fluxoPortabilidade);
+                assertNull(fluxoAquisicao);
                 validarCamposBase(false);
                 validarCampoEmail(false);
             } else if (url.contains("targetCampaign=portin")) { //cart rentab port
                 cartOrder.setProcessType(PORTABILITY);
-                Assert.assertNull(fluxoBase);
-                Assert.assertNotNull(fluxoPortabilidade);
-                Assert.assertNull(fluxoAquisicao);
+                assertNull(fluxoBase);
+                assertNotNull(fluxoPortabilidade);
+                assertNull(fluxoAquisicao);
                 validarCamposPortabilidade();
                 validarCampoEmail(false);
             } else { //cart rentab aquisição (targetCampaign=gross)
                 cartOrder.setProcessType(ACQUISITION);
-                Assert.assertNull(fluxoBase);
-                Assert.assertNull(fluxoPortabilidade);
-                Assert.assertNotNull(fluxoAquisicao);
+                assertNull(fluxoBase);
+                assertNull(fluxoPortabilidade);
+                assertNotNull(fluxoAquisicao);
                 validarCamposAquisicao();
                 validarCampoEmail(false);
             }
@@ -163,6 +189,8 @@ public class CarrinhoPage {
         celularAcessorios = driverWeb.findElement("txt-celular", "id");
         cpfAcessorios = driverWeb.findElement("txt-cpf", "id");
         emailAcessorios = driverWeb.findElement("txt-email", "id");
+        driverWeb.waitElementClickable(driverWeb.findElement("//*[@id='txt-resumo-do-pedido']/following-sibling::i", "xpath"), 10);
+        driverWeb.javaScriptClick(driverWeb.findElement("//*[@id='txt-resumo-do-pedido']/following-sibling::i", "xpath"));
     }
 
     public void inserirDadosCarrinhoAcessorios(String celular, String cpf, String email) {
@@ -211,19 +239,48 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
-        driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
-        driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+    public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public void inserirEmail() {
+    public void inserirDadosPortabilidadePix(String telefone) {
+        driverWeb.sendKeys(telefonePortabilidade, telefone);
+        driverWeb.sendKeys(cpfPortabilidade, getCpfForPixFlow());
+    }
+
+    public void inserirDadosAquisicaoPix(String telefone) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfAquisicao, getCpfForPixFlow());
+    }
+
+    public String inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
+        String cpf = getCpfForPlanFlow(cpfAprovado, cpfDiretrix);
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
+        driverWeb.sendKeys(cpfAquisicao, cpf);
+
+        return cpf;
+    }
+
+    public String inserirEmail() {
         String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-        cartOrder.setUserEmail(userEmail);
-        driverWeb.sendKeys(email, userEmail);
+        driverWeb.sendKeys(this.email, userEmail);
+
+        return userEmail;
+    }
+
+    public void inserirDadosReprovacaoScore(String telefone, String cpf) {
+        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
+        driverWeb.sendKeys(cpfAquisicao, cpf);
     }
 
     public void clicarEuQuero() {
         driverWeb.javaScriptClick("btn-eu-quero", "id");
+        try {
+            driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 10);
+            cartOrder.hasErrorPasso1 = true;
+        } catch (Exception ignored) {
+        }
     }
 
     public void clicarContinuar() {
@@ -232,10 +289,10 @@ public class CarrinhoPage {
 
     public void validaMsgErro(String msgExibida) {
         driverWeb.waitElementPresence("//*[@id='cboxLoadedContent']", 60);
-        WebElement contentMessageError =  driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
+        WebElement contentMessageError = driverWeb.findElement("//*[@id='cboxLoadedContent']/p", "xpath");
 
         driverWeb.waitElementVisible(contentMessageError, 10);
-        Assert.assertTrue(contentMessageError.getText().contains(msgExibida));
+        assertTrue(contentMessageError.getText().contains(msgExibida));
     }
 
     public void validarModalAvisoTrocaPlano() {
@@ -244,8 +301,8 @@ public class CarrinhoPage {
         confirma = driverWeb.findElement("//button[contains(.,'Confirma')]", "xpath"); //TODO Atualizar para id
         cancelar = driverWeb.findElement("//button[contains(.,'Cancela')]", "xpath"); //TODO Atualizar para id
 
-        Assert.assertTrue(confirma.isDisplayed());
-        Assert.assertTrue(cancelar.isDisplayed());
+        assertTrue(confirma.isDisplayed());
+        assertTrue(cancelar.isDisplayed());
     }
     public void validarMensagemNumeroNaoAtivo() {
         driverWeb.waitElementPresence("(//p[@class='cartMessage'][contains(text(),'O número informado não está ativo. Não fique sem f')])[2]", 10);
@@ -253,5 +310,14 @@ public class CarrinhoPage {
 
     public void clicarAvisoTrocaPlano() {
         driverWeb.javaScriptClick(confirma);
+    }
+
+    public String getCartGuid() {
+        driverWeb.actionPause(2000); //Aguarda promoção ser aplicada no cart (updatePlanCartPromotion())
+        return driverWeb.waitElementPresence("//*[@id='cart-dynatrace-guid']", 40).getAttribute("textContent");
+    }
+
+    public void clicaBotaoContinuarComprando() {
+        driverWeb.javaScriptClick("btn-continuar-comprando", "id");
     }
 }

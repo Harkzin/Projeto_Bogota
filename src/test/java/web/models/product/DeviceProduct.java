@@ -74,6 +74,10 @@ public final class DeviceProduct extends Product {
         }
     }
 
+    public boolean hasCampaignPrice() {
+        return devicePriceInfo.campaignPrice != null;
+    }
+
     public double getCampaignPrice(boolean withoutSIM) {
         if (withoutSIM) {
             return devicePriceInfo.campaignPriceWithoutSIM.value;
@@ -116,17 +120,21 @@ public final class DeviceProduct extends Product {
         return devicePriceInfo.price.formattedValue;
     }
 
-    public boolean isEsimOnly() {
-        return !getDeviceAttribute("features").featureValues.get(0).value.toLowerCase().contains("nanosim");
+    public String getSimType() {
+        return getDeviceAttribute("features").featureValues.get(0).value;
     }
 
-    public double getPlanPromoDiscount(ProcessType processType, PaymentMode paymentMode, InvoiceType invoiceType, boolean hasLoyalty, int ddd) {
+    public double getPlanPromoDiscount(ProcessType processType, StandardPaymentMode paymentMode, InvoiceType invoiceType, boolean hasLoyalty, int ddd) {
         return devicePriceInfo.potentialPromotions.stream()
                 .filter(p -> p.processTypeList.contains(processType) && p.paymentMethod == paymentMode)
-                .filter(p -> paymentMode == PaymentMode.TICKET || !p.invoiceList.contains(invoiceType))
+                .filter(p -> paymentMode == StandardPaymentMode.TICKET || !p.invoiceList.contains(invoiceType))
                 .filter(p -> p.loyalty == hasLoyalty && p.dddList.contains(ddd))
                 .findFirst().orElseThrow()
                 .discountValue;
+    }
+
+    public String getColor() {
+        return getDeviceAttribute(".cor").featureValues.get(0).value;
     }
 
     public static final class Stock {
@@ -240,7 +248,7 @@ public final class DeviceProduct extends Product {
             public PotentialPromotion.LoyaltyMessage loyaltyMessage;
 
             @JsonProperty("paymentMethod")
-            public PaymentMode paymentMethod;
+            public StandardPaymentMode paymentMethod;
 
             @JsonProperty("priority")
             public int priority;

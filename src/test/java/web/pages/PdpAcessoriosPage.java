@@ -1,6 +1,7 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.support.utils.DriverWeb;
@@ -16,12 +17,21 @@ public class PdpAcessoriosPage {
         this.driverWeb = driverWeb;
     }
 
-    public void validarPaginaPdpAcessorios(){
+    public void validarPaginaPdpAcessorios() {
         driverWeb.waitPageLoad("accessories", 10);
     }
 
-    public void clicarBotaoComprar(){
-        driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
+    public void selecionarQuantidadeAcessorios(String quantidade) {
+        Select quantidadeAcessorios = new Select(driverWeb.findElement("slc-qtde", "id"));
+        quantidadeAcessorios.selectByValue(quantidade);
+    }
+
+    public void clicarBotaoComprar(String acessorio) {
+        if (acessorio.equals("CARREGADOR DE PAREDE CONCEPT")) {
+            driverWeb.javaScriptClick("btn-eu-quero-000000000000062125", "id");
+        } else {
+            driverWeb.javaScriptClick("btn-eu-quero-000000000000062124", "id");
+        }
     }
 
 }
