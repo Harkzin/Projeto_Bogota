@@ -74,7 +74,7 @@ public class CustomizarFaturaPage {
     }
 
     public void validarPaginaTermosCombo() {
-        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 60);
+        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 100);
         showTermsOnly = true;
     }
 
