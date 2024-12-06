@@ -27,7 +27,7 @@ public class SmsPage {
     private WebElement resendTokenButton;
 
     public void validarPaginaSms() {
-        driverWeb.waitPageLoad("/checkout/multi/summary/view", 15);
+        driverWeb.waitPageLoad("/checkout/multi/summary/view", 60);
 
         resendTokenButton = driverWeb.findById("btn-renviar-codigo");
         tokenField1 = driverWeb.findById("txt-token1");

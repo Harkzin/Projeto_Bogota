@@ -27,7 +27,7 @@ public class SmsSteps {
         smsPage.inserirToken();
     }
 
-    @Quando("o usuário clicar no botão [Finalizar] da tela de SMS")
+    @Quando("o usuário clicar no botão [Finalizar]/[Continuar] da tela de SMS")
     public void clicarFinalizar() {
         smsPage.clicarFinalizar();
     }

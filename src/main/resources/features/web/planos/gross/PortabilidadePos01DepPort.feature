@@ -13,7 +13,7 @@ Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Portabilidade]
-    E preenche os campos: [Telefone a ser portado com DDD] "11910211960", [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
+    E preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? "true", CPF na diretrix? "false"]
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
@@ -25,7 +25,7 @@ Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Então é direcionado para a tela de Dependentes
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E adiciona o primeiro dependente, com numero "11910211960"
+    E adiciona o primeiro dependente, com numero de portabilidade
 
     Quando o usuário clicar no botão [Continuar] na tela de Dependentes
     Então é direcionado para a tela de Customizar Fatura
@@ -34,6 +34,9 @@ Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
 
@@ -41,9 +44,12 @@ Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
     Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar a forma de pagamento [Débito]
-    #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
@@ -56,8 +62,8 @@ Funcionalidade: ECCMAUT-970 - Portabilidade Pos - 01 Dependente
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de Parabéns
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
-    E o usuário clicar em [Ok, Entendi] no modal de token
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
+    E clica no botão [Ok, Entendi] do modal de alerta de token
     E os dados do pedido estão corretos

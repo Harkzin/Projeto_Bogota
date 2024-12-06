@@ -1,7 +1,6 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
 
 @Component
@@ -26,6 +26,8 @@ public class PdpPlanosPage {
     public PdpPlanosPage(DriverWeb driverWeb) {
         this.driverWeb = driverWeb;
     }
+
+    private boolean isDebitPaymentFlow;
 
     private WebElement debitPayment;
     private WebElement ticketPayment;
@@ -45,14 +47,14 @@ public class PdpPlanosPage {
         //Valida opções default
         validarDebito();
         validarFidelidade();
-        validarValorPlano(plan, true);
+        validarValorPlano(plan);
 
         //Valida resumo, caso configurado
         if (!plan.getSummary().isEmpty()) {
             WebElement summary = driverWeb.findElement("//*[@id='plan-name']/following-sibling::p[1]", "xpath");
 
-            Assert.assertTrue(summary.isDisplayed());
-            Assert.assertTrue(plan.getSummary().contains(summary.getText()));
+            assertTrue(summary.isDisplayed());
+            assertTrue(plan.getSummary().contains(summary.getText()));
         }
 
         //Valida descrição, caso configurado
@@ -61,7 +63,7 @@ public class PdpPlanosPage {
 
             descriptionElements.forEach(webElement -> { //Valida a exibição de cada parágrafo da descrição, pode haver um ou vários.
                 if (!webElement.getText().isEmpty()) {
-                    Assert.assertTrue("Texto de descrição é exibido", webElement.isDisplayed());
+                    assertTrue("Texto de descrição é exibido", webElement.isDisplayed());
                 }
             });
 
@@ -70,7 +72,7 @@ public class PdpPlanosPage {
                     .map(webElement -> webElement.getAttribute("outerHTML") + "\n")
                     .collect(Collectors.joining());
 
-            Assert.assertTrue(descriptionText.contains(plan.getDescription()));
+            assertTrue(descriptionText.contains(plan.getDescription()));
         }
 
         //Nome principal
@@ -79,9 +81,8 @@ public class PdpPlanosPage {
 
         //Nome nav (barra horizontal superior)
         showNav();
-        //WebElement planNameNav = driverWeb.findElement("//*[@id='plan-name-nav']/strong[1]", "xpath");
-        Assert.assertEquals(plan.getName(), planNameNav.getText());
-        Assert.assertTrue(planNameNav.isDisplayed());
+        assertEquals(plan.getName(), planNameNav.getText());
+        assertTrue(planNameNav.isDisplayed());
 
         validarAppsIlimitadosPdp(plan, true);
 
@@ -98,7 +99,7 @@ public class PdpPlanosPage {
             List<WebElement> extraPlayApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' extra-play ')]//img"));
 
-            validarMidiasPlano(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
+            validatePlanMedias(plan.getExtraPlayApps(), extraPlayApps, driverWeb);
         }
 
         //Valida serviços Claro, caso configurado
@@ -109,7 +110,7 @@ public class PdpPlanosPage {
             List<WebElement> claroServicesApps = planCharacteristics
                     .findElements(By.xpath("div[contains(@class, ' claro-services')]//img"));
 
-            validarServicosClaro(driverWeb, plan, claroServicesTitle, claroServicesApps);
+            validateClaroServices(plan, claroServicesTitle, claroServicesApps, driverWeb);
         }
     }
 
@@ -120,26 +121,30 @@ public class PdpPlanosPage {
     }
 
     private void validarDebito() {
-        Assert.assertTrue(debitPayment.isSelected());
-        Assert.assertFalse(ticketPayment.isSelected());
+        assertTrue(debitPayment.isSelected());
+        assertFalse(ticketPayment.isSelected());
     }
 
     private void validarFidelidade() {
-        Assert.assertTrue(loyalty.isSelected());
+        assertTrue(loyalty.isSelected());
     }
 
     public void selecionarDebito() {
+        isDebitPaymentFlow = true;
+
         driverWeb.javaScriptClick(debitPayment);
         validarDebito();
     }
 
     public void selecionarBoleto() {
+        isDebitPaymentFlow = false;
+
         driverWeb.javaScriptClick(ticketPayment);
-        Assert.assertTrue(ticketPayment.isSelected());
-        Assert.assertFalse(debitPayment.isSelected());
+        assertTrue(ticketPayment.isSelected());
+        assertFalse(debitPayment.isSelected());
     }
 
-    public void validarValorPlano(PlanProduct plan, boolean isDebit) {
+    public void validarValorPlano(PlanProduct plan) {
         //Valores do Front
         WebElement debitLoyalty = driverWeb.findElement("price-debit-loyalty", "id");
         WebElement ticketLoyalty = driverWeb.findElement("price-ticket-loyalty", "id");
@@ -157,13 +162,13 @@ public class PdpPlanosPage {
                 .getText()
                 .trim();
 
-        if (isDebit) {
+        if (isDebitPaymentFlow) {
             Consumer<WebElement> validateDebitLoyalty = webElement -> {
-                Assert.assertEquals(debitLoyaltyPrice, getPrice.apply(webElement));
+                assertEquals(debitLoyaltyPrice, getPrice.apply(webElement));
 
                 //Exibe apenas um dos preços
-                Assert.assertTrue(webElement.isDisplayed());
-                Assert.assertFalse(ticketLoyalty.isDisplayed());
+                assertTrue(webElement.isDisplayed());
+                assertFalse(ticketLoyalty.isDisplayed());
             };
 
             validateDebitLoyalty.accept(debitLoyalty);
@@ -171,11 +176,11 @@ public class PdpPlanosPage {
             validateDebitLoyalty.accept(debitLoyaltyNav);
         } else {
             Consumer<WebElement> validateTicketLoyalty = webElement -> {
-                Assert.assertEquals(ticketLoyaltyPrice, getPrice.apply(webElement));
+                assertEquals(ticketLoyaltyPrice, getPrice.apply(webElement));
 
                 //Exibe apenas um dos preços
-                Assert.assertFalse(debitLoyalty.isDisplayed());
-                Assert.assertTrue(webElement.isDisplayed());
+                assertFalse(debitLoyalty.isDisplayed());
+                assertTrue(webElement.isDisplayed());
             };
 
             validateTicketLoyalty.accept(ticketLoyalty);
@@ -196,7 +201,7 @@ public class PdpPlanosPage {
                 WebElement planAppsTitle = planAppsParent.findElement(By.xpath("div[1]/div"));
                 //Apps
                 List<WebElement> planApps = planAppsParent.findElements(By.xpath(".//img"));
-                validarAppsIlimitados(driverWeb, plan, planAppsTitle, planApps);
+                validatePlanApps(plan, planAppsTitle, planApps, driverWeb);
             } else {
                 driverWeb.waitElementInvisible(planAppsParent, 2);
             }
