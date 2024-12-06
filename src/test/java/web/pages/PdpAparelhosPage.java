@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
-import web.models.CartOrder.Essential.User.ClaroSubscription;
+import web.models.CartOrder.Essential.Customer.ClaroSubscription;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.Constants.ProcessType;
@@ -78,7 +78,7 @@ public class PdpAparelhosPage {
     private DeviceProduct device;
     private boolean userLogged;
 
-    private void validarInfosPlano(Entry planEntry) {
+    private void validarInfosPlano(OrderEntry planEntry) {
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
 
         //Nome - Card
@@ -205,7 +205,7 @@ public class PdpAparelhosPage {
 
     public void validarPdpAparelho(CartOrder cart) {
         this.device = cart.getDevice();
-        Entry planEntry = cart.getEntry(focusPlan);
+        OrderEntry planEntry = cart.getEntry(focusPlan);
 
         driverWeb.waitPageLoad(device.getCode(), 10);
         driverWeb.actionPause(3000);
@@ -430,7 +430,7 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarPlano(CartOrder cart) {
-        Entry planEntry = cart.getEntry(cart.getPlan().getCode());
+        OrderEntry planEntry = cart.getEntry(cart.getPlan().getCode());
         
         String planCode = planEntry.getProduct().getCode();
         WebElement selectPlan = driverWeb.findById("btn-selecionar-plano-" + planCode);

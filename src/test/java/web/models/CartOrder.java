@@ -1,12 +1,15 @@
 package web.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.jsoup.HttpStatusException;
 import web.models.product.DeviceProduct;
+import web.models.product.GenericProduct;
 import web.models.product.PlanProduct;
 import web.models.product.Product;
 
@@ -17,10 +20,144 @@ import java.util.function.Function;
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
 import static web.support.utils.Constants.InvoiceType.*;
-import static web.support.utils.Constants.PaymentMode.*;
+import static web.support.utils.Constants.StandardPaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
 
 public class CartOrder {
+
+    private String planId;
+    private String deviceId;
+
+    public boolean hasErrorPasso1 = false; //TODO
+
+    // Essential -------------------------------------------------
+    @JsonProperty("essential")
+    private final Essential essential;
+
+
+    // Positions and Prices --------------------------------------
+    @JsonProperty("positionsAndPrices")
+    private final PositionsAndPrices positionsAndPrices;
+
+
+    // Dependent -------------------------------------------------
+    @JsonProperty("dependentsInformation")
+    private final List<DependentsInformation> dependentsInformation;
+
+
+    // Payment and Delivery --------------------------------------
+    @JsonProperty("status")
+    private Status status;
+
+    @JsonProperty("payment")
+    private final Payment payment;
+
+    @JsonProperty("delivery")
+    private final Delivery delivery;
+
+
+    // Order History ---------------------------------------------
+    @JsonProperty("acceptFine")
+    private boolean acceptFine;
+
+
+    // Administration --------------------------------------------
+    @JsonProperty("creationtime")
+    private String creationtime;
+
+    @JsonProperty("abandonedCartOrder")
+    private boolean abandonedCartOrder;
+
+    @JsonIgnore
+    private PromotionSourceRule allPromotionResults; //Modificado de RuleBasedPromotion para PromotionSourceRule
+
+    @JsonProperty("appliedCouponCodes")
+    private final List<String> appliedCouponCodes;
+
+    @JsonProperty("children")
+    private String children;
+
+    @JsonProperty("chosenPlan")
+    private String chosenPlan;
+
+    @JsonProperty("claroChip")
+    private ClaroChip claroChip;
+
+    @JsonProperty("claroClube")
+    private ClaroClubeInfo claroClube;
+
+    @JsonProperty("claroDdd")
+    private int claroDdd;
+
+    @JsonProperty("claroLegacyOrderId")
+    private String claroLegacyOrderId;
+
+    @JsonProperty("claroSapResponse")
+    private ClaroSapResponse claroSapResponse;
+
+    @JsonProperty("comboMultiContract")
+    private CustomerContractResidential comboMultiContract;
+
+    @JsonProperty("contingencyStepOne")
+    private boolean contingencyStepOne;
+
+    @JsonProperty("dayInvoiceExpiration")
+    private String dayInvoiceExpiration;
+
+    //TODO eSimActivationUrl ?
+
+    @JsonProperty("eaTicket")
+    private String eaTicket;
+
+    //TODO eSimTermsAccept ?
+
+    @JsonProperty("eventId")
+    private String eventId;
+
+    @JsonProperty("gradePlan")
+    private String gradePlan;
+
+    @JsonProperty("guid")
+    private String guid;
+
+    @JsonProperty("isPreSale")
+    private boolean isPreSale;
+
+    @JsonProperty("isTheComboMultiFlowForProspectMovelCustomer")
+    private boolean isTheComboMultiFlowForProspectMovelCustomer;
+
+    @JsonProperty("journeyInformation")
+    private String journeyInformation;
+
+    @JsonProperty("minhaClaroOrder")
+    private boolean minhaClaroOrder;
+
+    @JsonProperty("offerRealized")
+    private boolean offerRealized;
+
+    @JsonProperty("offeredPlan")
+    private String offeredPlan;
+
+    @JsonProperty("orderTrackingUrl")
+    private String orderTrackingUrl;
+
+    @JsonProperty("passedByClearSale")
+    private boolean passedByClearSale;
+
+    @JsonProperty("portabilityClaroTicket")
+    private String portabilityClaroTicket;
+
+    @JsonProperty("rentabilizationCoupon")
+    private String rentabilizationCoupon;
+
+    @JsonProperty("selectedInvoiceType")
+    private InvoiceType selectedInvoiceTypes;
+
+    @JsonProperty("subOrder")
+    private SubOrder subOrder;
+
+    @JsonProperty("thab")
+    private boolean thab;
 
     public CartOrder() {
         essential = new Essential();
@@ -28,70 +165,337 @@ public class CartOrder {
         payment = new Payment();
         delivery = new Delivery();
         claroChip = new ClaroChip();
-        claroClube = new ClaroClube();
+        claroClube = new ClaroClubeInfo();
+
+        appliedCouponCodes = new ArrayList<>();
+        dependentsInformation = new ArrayList<>();
     }
 
-    private boolean thab;
 
-    private String planId;
-    private String deviceId;
+    //##################################################################################
+    // Getter - Setter #################################################################
 
-    public boolean isDebitPaymentFlow;
-    public boolean hasErrorPasso1 = false;
+    // Essential -------------------------------------------------
+    public Essential.Customer getUser() {
+        return essential.user;
+    } //Getter only
 
-    private final Essential essential;
-    private final PositionsAndPrices positionsAndPrices;
-    private Status status;
-    private final Payment payment;
-    private final Delivery delivery;
-    private ClaroChip claroChip;
-    private ClaroClube claroClube;
-    private ClaroSapResponse claroSapResponse;
-    private SubOrder subOrder;
 
-    private boolean abandonedCartOrder;
-    private boolean acceptFine;
-    private boolean contingencyStepOne;
-    private boolean isPreSale;
-    private boolean minhaClaroOrder;
-    private boolean offerRealized;
-    private boolean passedByClearSale;
-
-    private int claroDdd;
-
-    private Promotion allPromotionResults;
-    private final List<String> appliedCouponCodes = new ArrayList<>();
-    private String children;
-    private String chosenPlan;
-    private String claroLegacyOrderId;
-    private String creationtime;
-    private String dayInvoiceExpiration;
-    private final List<DependentsInformation> dependentsInformation = new ArrayList<>();
-    private String eaTicket;
-    private String eventId;
-    private String gradePlan;
-    private String guid;
-    private String journeyInformation;
-    private String offeredPlan;
-    private String orderTrackingUrl;
-    private String portabilityClaroTicket;
-    private String rentabilizationCoupon;
-
-    private InvoiceType selectedInvoiceType;
-
-    private Product getProduct(String id) {
-        return positionsAndPrices.entries.stream()
-                .map(e ->  e.product)
-                .filter(product -> product.getCode().equals(id))
-                .findFirst().orElseThrow();
+    //code
+    public String getCode() {
+        return essential.code;
     }
 
-    public DeviceProduct getDevice() {
-        return (DeviceProduct) getProduct(deviceId);
+    public void setCode(String code) {
+        essential.code = code;
     }
 
-    public PlanProduct getPlan() {
-        return (PlanProduct) getProduct(planId);
+
+    //telephone
+    public String getTelephone() {
+        return essential.telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        essential.telephone = telephone;
+    }
+
+
+    //processType
+    public void setProcessType(ProcessType processType) {
+        essential.processType = processType;
+    }
+
+    public ProcessType getProcessType() {
+        return essential.processType;
+    }
+
+
+    // Positions and Prices --------------------------------------
+    public List<PositionsAndPrices.OrderEntry> getEntries() {
+        return positionsAndPrices.entries;
+    } //Getter only
+
+    public List<String> getEntryGroups() {
+        return positionsAndPrices.entryGroups;
+    } //Getter only
+
+    public double getTotalPrice() {
+        return positionsAndPrices.totalPrice;
+    } //Getter only
+
+
+    // Payment and Delivery --------------------------------------
+        // Status
+    public String getStatus() {
+        return status.status;
+    } //Getter only
+
+    public List<Status.OrderProcess> getOrderProcess() {
+        return status.orderProcess;
+    } //Getter only
+
+        // Payment
+    public Address getPaymentAddress() {
+        return payment.paymentAddress;
+    } //Getter only
+
+    public Payment.ClaroPaymentInfo getPaymentInfo() {
+        return payment.paymentInfo;
+    } //Getter only
+
+    public List<Payment.ClaroPaymentMethod> getPaymentMethods() {
+        return payment.paymentMethods;
+    } //Getter only
+
+    //TODO devicePaymentInfo ?
+
+    public boolean isIframePaymentAcquirer() {
+        return payment.iframePaymentAcquirer;
+    } //Getter only
+
+    public String getIframePaymentResult() {
+        return payment.iframePaymentResult;
+    } //Getter only
+
+    public Payment.ClaroAuthenticationPaymentResponse getClaroAuthenticationPaymentResponse() {
+        return payment.claroAuthenticationPaymentResponse;
+    } //Getter only
+
+    public Payment.PixPaymentInfo getPixPaymentInfo() {
+        return payment.pixPaymentInfo;
+    } //Getter only
+
+        // Delivery
+    public Address getDeliveryAddress() {
+        return delivery.deliveryAddress;
+    }  //Getter only
+
+    public void setDeliveryMode(ZoneDeliveryMode deliveryMode) {
+        delivery.deliveryMode = deliveryMode;
+    }
+
+    public ZoneDeliveryMode getDeliveryMode() {
+        return delivery.deliveryMode;
+    }
+
+
+    // Order History ---------------------------------------------
+    public boolean isAcceptFine() {
+        return acceptFine;
+    }
+
+    public void setAcceptFine(boolean acceptFine) {
+        this.acceptFine = acceptFine;
+    }
+
+
+    // Administration --------------------------------------------
+    public boolean isAbandonedCartOrder() {
+        return abandonedCartOrder;
+    } //Getter only
+
+    public PromotionSourceRule getPromotion() { // allPromotionResults -> PromotionResult.promotion - child Order only
+        return allPromotionResults;
+    } //Getter only
+
+    public String getChildren() {
+        return children;
+    } //Getter only
+
+
+    //chosenPlan
+    public String getChosenPlan() {
+        return chosenPlan;
+    }
+
+    public void setChosenPlan(String chosenPlan) {
+        this.chosenPlan = chosenPlan;
+    }
+
+
+    public ClaroChip getClaroChip() {
+        return claroChip;
+    } //Getter only
+
+    public ClaroClubeInfo getClaroClube() {
+        return claroClube;
+    } //Getter only
+
+
+    //claroDdd
+    public int getClaroDdd() {
+        return claroDdd;
+    }
+
+    public void setClaroDdd(int ddd) {
+        claroDdd = ddd;
+    }
+
+
+    public String getClaroLegacyOrderId() {
+        return claroLegacyOrderId;
+    } //Getter only
+
+    //TODO claroPixClearSaleResponse ?
+
+    //TODO claroPixTransactionStatusResponse ?
+
+    public ClaroSapResponse getClaroSapResponse() {
+        return claroSapResponse;
+    } //Getter only
+
+    public CustomerContractResidential getComboMultiContract() {
+        return comboMultiContract;
+    } //Getter only
+
+
+    //contingencyStepOne
+    public boolean isContingencyStepOne() {
+        return contingencyStepOne;
+    }
+
+    public void setContingencyStepOne(boolean contingencyStepOne) {
+        this.contingencyStepOne = contingencyStepOne;
+    }
+
+
+    //dayInvoiceExpiration
+    public String getDayInvoiceExpiration() {
+        return dayInvoiceExpiration;
+    }
+
+    public void setDayInvoiceExpiration(String dayInvoiceExpiration) {
+        this.dayInvoiceExpiration = dayInvoiceExpiration;
+    }
+
+
+    public String getEaTicket() {
+        return eaTicket;
+    } //Getter only
+
+    public String getEventId() {
+        return eventId;
+    } //Getter only
+
+    public String getGradePlan() {
+        return gradePlan;
+    } //Getter only
+
+
+    //guid
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+
+    //isPreSale
+    public boolean isPreSale() {
+        return isPreSale;
+    }
+
+    public void setPreSale(boolean preSale) {
+        isPreSale = preSale;
+    }
+
+
+    //isTheComboMultiFlowForProspectMovelCustomer
+    public boolean isTheComboMultiFlowForProspectMovelCustomer() {
+        return isTheComboMultiFlowForProspectMovelCustomer;
+    }
+
+    public void setTheComboMultiFlowForProspectMovelCustomer(boolean isTheComboMultiFlowForProspectMovelCustomer) {
+        this.isTheComboMultiFlowForProspectMovelCustomer = isTheComboMultiFlowForProspectMovelCustomer;
+    }
+
+
+    //journeyInformation
+    public String getJourneyInformation() {
+        return journeyInformation;
+    }
+
+    public void setJourneyInformation(String journeyInformation) {
+        this.journeyInformation = journeyInformation;
+    }
+
+
+    //minhaClaroOrder
+    public boolean isMinhaClaroOrder() {
+        return minhaClaroOrder;
+    }
+
+    public void setMinhaClaroOrder(boolean minhaClaroOrder) {
+        this.minhaClaroOrder = minhaClaroOrder;
+    }
+
+
+    public boolean isOfferRealized() {
+        return offerRealized;
+    } //Getter only
+
+    public String getOfferedPlan() {
+        return offeredPlan;
+    } //Getter only
+
+    public String getOrderTrackingUrl() {
+        return orderTrackingUrl;
+    } //Getter only
+
+    public boolean isPassedByClearSale() {
+        return passedByClearSale;
+    } //Getter only
+
+    public String getPortabilityClaroTicket() {
+        return portabilityClaroTicket;
+    } //Getter only
+
+    public String getRentabilizationCoupon() {
+        return rentabilizationCoupon;
+    } //Getter only
+
+
+    //selectedInvoiceType
+    public InvoiceType getSelectedInvoiceType() {
+        return selectedInvoiceTypes;
+    }
+
+    @JsonIgnore
+    public void setSelectedInvoiceType(InvoiceType invoiceType) {
+        selectedInvoiceTypes = invoiceType;
+
+        updatePlanCartPromotion();
+    }
+
+
+    public SubOrder getSubOrder() {
+        return subOrder;
+    } //Getter only
+
+
+    //thab
+    public boolean isThab() {
+        return thab;
+    }
+
+    public void setThab() {
+        thab = true;
+    }
+
+
+    //##################################################################################
+    // Business Logic ##################################################################
+
+    //Product
+    private <T> T createProduct(String id, Class<T> cls) {
+        try {
+            return objMapper.readValue(getProductDetails(id), cls);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando (acessar Swagger).\n" + e);
+        }
     }
 
     private void removeProduct(String id) {
@@ -101,32 +505,17 @@ public class CartOrder {
                 .orElseThrow());
     }
 
-    private <T> T createProduct(String id, Class<T> cls) {
-        try {
-            return objMapper.readValue(getProductDetails(id), cls);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Verificar se a service [API] do ambiente esta funcionando (acessar Swagger).\n" + e);
-        }
+    private Product getProduct(String id) {
+        return positionsAndPrices.entries.stream()
+                .map(e ->  e.product)
+                .filter(product -> product.getCode().equals(id))
+                .findFirst().orElseThrow();
     }
 
-    public void setDeviceWithFocusPlan(String deviceId) {
-        if (!(this.deviceId == null)) {
-            removeProduct(this.deviceId);
-        }
-        this.deviceId = deviceId;
 
-        essential.processType = ACQUISITION; //Default atual PLP/PDP
-        String defaultCampaign = "APV"; //Default atual PLP/PDP
-
-        DeviceProduct device = createProduct(deviceId, DeviceProduct.class);
-        device.setDevicePriceInfo(defaultCampaign, focusPlan, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
-        double basePrice = device.getCampaignPrice(true);
-
-        PositionsAndPrices.Entry deviceEntry = new PositionsAndPrices.Entry(device, 1, basePrice, 0D);
-        deviceEntry.bpo = defaultCampaign;
-        positionsAndPrices.entries.add(deviceEntry);
-
-        setPlan(focusPlan);
+    //Plan
+    public PlanProduct getPlan() {
+        return (PlanProduct) getProduct(planId);
     }
 
     public void setPlan(String planId) {
@@ -147,17 +536,17 @@ public class CartOrder {
                     planFullPrice = essential.user.getClaroSubscription().claroPlanPrice; //Preço vem da API de login, sem desconto de promoção
                 }
             } else {
-                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceType == PRINTED) - plan.getPrice();
+                promoDiscount = plan.getPrice(false, selectedInvoiceTypes == PRINTED) - plan.getPrice();
             }
         }
 
-        PositionsAndPrices.Entry planEntry = new PositionsAndPrices.Entry(plan, 1, planFullPrice, promoDiscount);
+        PositionsAndPrices.OrderEntry planEntry = new PositionsAndPrices.OrderEntry(plan, 1, planFullPrice, promoDiscount);
         planEntry.paymentMode = TICKET; //Pagamento default atual
         positionsAndPrices.entries.add(planEntry);
     }
 
     public void updatePlanAndDevicePrice(String planId) {
-        PositionsAndPrices.Entry deviceEntry = getEntry(deviceId);
+        PositionsAndPrices.OrderEntry deviceEntry = getEntry(deviceId);
 
         getDevice().setDevicePriceInfo(deviceEntry.bpo, planId, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
         double price = getDevice().hasCampaignPrice() ? getDevice().getCampaignPrice(true) : getDevice().getPrice(); //Caso não exista linha de preço configurada = preço full
@@ -167,10 +556,30 @@ public class CartOrder {
         setPlan(planId);
     }
 
-    public PositionsAndPrices.Entry getEntry(String id) {
-        return positionsAndPrices.entries.stream()
-                .filter(e -> e.product.getCode().equals(id))
-                .findFirst().orElseThrow();
+
+    //Device
+    public DeviceProduct getDevice() {
+        return (DeviceProduct) getProduct(deviceId);
+    }
+
+    public void setDeviceWithFocusPlan(String deviceId) {
+        if (!(this.deviceId == null)) {
+            removeProduct(this.deviceId);
+        }
+        this.deviceId = deviceId;
+
+        essential.processType = ACQUISITION; //Default atual PLP/PDP
+        String defaultCampaign = "APV"; //Default atual PLP/PDP
+
+        DeviceProduct device = createProduct(deviceId, DeviceProduct.class);
+        device.setDevicePriceInfo(defaultCampaign, focusPlan, "1100"); //SalesOrg fixo para SP 11, sem regionalização implementada.
+        double basePrice = device.getCampaignPrice(true);
+
+        PositionsAndPrices.OrderEntry deviceEntry = new PositionsAndPrices.OrderEntry(device, 1, basePrice, 0D);
+        deviceEntry.bpo = defaultCampaign;
+        positionsAndPrices.entries.add(deviceEntry);
+
+        setPlan(focusPlan);
     }
 
     public void addVoucherForDevice(String voucher) {
@@ -179,59 +588,18 @@ public class CartOrder {
         appliedCouponCodes.add(voucher);
     }
 
-    public String getAppliedCoupon() {
-        if (!appliedCouponCodes.isEmpty()) {
-            return appliedCouponCodes.get(0);
-        }
-        return null;
-    }
 
-    public void setThab() {
-        thab = true;
-    }
-
-    public boolean isThab() {
-        return thab;
-    }
-
-    public boolean isDeviceCart() {
-        return !(deviceId == null);
-    }
-
-    public void setDeliveryMode(DeliveryMode deliveryMode) {
-        delivery.deliveryMode = deliveryMode;
-    }
-
-    public DeliveryMode getDeliveryMode() {
-        return delivery.deliveryMode;
-    }
-
-    public void setProcessType(ProcessType processType) {
-        essential.processType = processType;
-    }
-
-    public ProcessType getProcessType() {
-        return essential.processType;
-    }
-
-    public void setUserEmail(String email) {
-        essential.user.email = email;
-    }
-
-    public String getUserEmail() {
-        return essential.user.email;
-    }
-
-    public int hasDependent() {
+    //Dependent
+    public int dependentQuantity() {
         return dependentsInformation.size();
     }
 
     private void addDependent(String id, String msisdn, ProcessType processType) {
-        if (hasDependent() == 0) { //Cria entry caso seja o primeiro dependente
+        if (dependentQuantity() == 0) { //Cria entry caso seja o primeiro dependente
             Product dependente = createProduct("dependente", PlanProduct.class);
-            positionsAndPrices.entries.add(new PositionsAndPrices.Entry(dependente, 1, dependente.getPrice(), 0D));
+            positionsAndPrices.entries.add(new PositionsAndPrices.OrderEntry(dependente, 1, dependente.getPrice(), 0D));
         } else { //Atualiza a quantidade e preço na entry caso já tenha dependentes adicionados
-            PositionsAndPrices.Entry depEntry = getEntry("dependente");
+            PositionsAndPrices.OrderEntry depEntry = getEntry("dependente");
             depEntry.quantity++;
             depEntry.totalPrice += depEntry.basePrice;
         }
@@ -251,36 +619,16 @@ public class CartOrder {
         addDependent(id, msisdn, PORTABILITY);
     }
 
-    public void setSelectedInvoiceType(InvoiceType invoiceType) {
-        selectedInvoiceType = invoiceType;
 
-        updatePlanCartPromotion();
+    //Misc
+    public PositionsAndPrices.OrderEntry getEntry(String productId) {
+        return positionsAndPrices.entries.stream()
+                .filter(e -> e.product.getCode().equals(productId))
+                .findFirst().orElseThrow();
     }
 
-    public InvoiceType getSelectedInvoiceType() {
-        return selectedInvoiceType;
-    }
-
-    public void setDDD(int ddd) {
-        claroDdd = ddd;
-    }
-
-    public void updatePlanCartPromotion() {
-        if (essential.processType != APARELHO_TROCA_APARELHO || !getEntry(deviceId).bpo.equals("PPV")) { //Fluxo Aparelhos [Manter o Plano sem Fid] não existe promo
-            try {
-                allPromotionResults = objMapper.readValue(getPlanCartPromotion(guid), Promotion.class);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-
-            PositionsAndPrices.Entry planEntry = getEntry(planId);
-            planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
-            planEntry.paymentMode = allPromotionResults.paymentMethod;
-        }
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public boolean isDeviceCart() {
+        return !(deviceId == null);
     }
 
     public boolean hasLoyalty() {
@@ -288,6 +636,28 @@ public class CartOrder {
             return allPromotionResults.loyalty;
         } else {
             return !getEntry(deviceId).bpo.equals("PPV"); //Para Aparelhos, a única opção sem fid é no fluxo de base [Manter o Plano sem Fid], campanha PPV
+        }
+    }
+
+    public String getAppliedCouponCodes() { //Only 1 coupon
+        if (!appliedCouponCodes.isEmpty()) {
+            return appliedCouponCodes.get(0);
+        }
+        return null;
+    }
+
+    public void updatePlanCartPromotion() {
+        if (essential.processType != APARELHO_TROCA_APARELHO || !getEntry(deviceId).bpo.equals("PPV")) { //Fluxo Aparelhos [Manter o Plano sem Fid] não existe promo
+            try {
+                allPromotionResults = objMapper.readValue(getPlanCartPromotion(guid), PromotionSourceRule.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+            PositionsAndPrices.OrderEntry planEntry = getEntry(planId);
+            planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+            planEntry.discountValues.set(0, (double) allPromotionResults.discountValue);
+            planEntry.paymentMode = allPromotionResults.paymentMethod;
         }
     }
 
@@ -303,54 +673,44 @@ public class CartOrder {
         rentabilizationCoupon = getValue.apply("coupon");
         setPlan(getValue.apply("offerPlanId"));
         essential.processType = ProcessType.valueOf(getValue.apply("processType").toUpperCase());
-        getEntry(planId).paymentMode = PaymentMode.valueOf(getValue.apply("paymentMethod").toUpperCase());
+        getEntry(planId).paymentMode = StandardPaymentMode.valueOf(getValue.apply("paymentMethod").toUpperCase());
 
         if (params.stream().anyMatch(p -> p.getName().equals("invoiceType"))) {
-            selectedInvoiceType = InvoiceType.valueOf(getValue.apply("invoiceType").toUpperCase());
+            selectedInvoiceTypes = InvoiceType.valueOf(getValue.apply("invoiceType").toUpperCase());
         }
 
         updatePlanCartPromotion();
     }
 
-    public Promotion getPromotion() {
-        return allPromotionResults;
-    }
-
-    public ClaroChip getClaroChip() {
-        return claroChip;
-    }
-
-    public Essential.User getUser() {
-        return essential.user;
-    }
-
     public void populateCustomerProductDetails() throws HttpStatusException {
-        JsonNode response = customerProductDetailsRequest(essential.user.claroTelephone);
+        Essential.Customer user = essential.user;
+        JsonNode response = customerProductDetailsRequest(user.claroTelephone);
         JsonNode productNodeResponse = response.path("product");
 
         //User
-        getUser().name = productNodeResponse.get("customerName").asText();
-        getUser().displayName = essential.user.name;
-        getUser().cpf = productNodeResponse.get("cpf").asText();
+        user.name = productNodeResponse.get("customerName").asText();
+        user.displayName = essential.user.name;
+        user.cpf = productNodeResponse.get("cpf").asText();
 
         if (response.get("discountValue") != null) {
-            getUser().claroClubBalance = response.get("discountValue").asDouble();
+            user.claroClubBalance = response.get("discountValue").asDouble();
         }
 
         //User.ClaroSubscription
         JsonNode planPriceNodeResponse = productNodeResponse.path("planPrice");
-        getUser().claroSubscription = new Essential.User.ClaroSubscription();
-        getUser().claroSubscription.planTypePrice = planPriceNodeResponse.get("planTypePrice").asText();
+        user.claroSubscription = new Essential.Customer.ClaroSubscription();
+        Essential.Customer.ClaroSubscription claroSubscription = user.claroSubscription;
+        claroSubscription.planTypePrice = planPriceNodeResponse.get("planTypePrice").asText();
 
-        if (!getUser().claroSubscription.planTypePrice.equals("PRE_PAGO")) {
-            getUser().claroSubscription.claroPlan = planPriceNodeResponse.get("id").asText();
-            getUser().claroSubscription.claroPlanName = planPriceNodeResponse.get("name").asText();
-            getUser().claroSubscription.claroPlanPrice = planPriceNodeResponse.get("planValue").asDouble();
-            getUser().claroSubscription.claroMonthlyPrice = productNodeResponse.get("netSubscriberValue").asDouble();
-            getUser().claroSubscription.customerMobileSubType = productNodeResponse.get("customerMobileSubType").asText();
-            getUser().claroSubscription.loyalty = response.get("loyalty") != null;
+        if (!claroSubscription.planTypePrice.equals("PRE_PAGO")) {
+            claroSubscription.claroPlan = planPriceNodeResponse.get("id").asText();
+            claroSubscription.claroPlanName = planPriceNodeResponse.get("name").asText();
+            claroSubscription.claroPlanPrice = planPriceNodeResponse.get("planValue").asDouble();
+            claroSubscription.claroMonthlyPrice = productNodeResponse.get("netSubscriberValue").asDouble();
+            claroSubscription.customerMobileSubType = productNodeResponse.get("customerMobileSubType").asText();
+            claroSubscription.loyalty = response.get("loyalty") != null;
 
-            updatePlanAndDevicePrice(getUser().getClaroSubscription().getClaroPlan());
+            updatePlanAndDevicePrice(user.getClaroSubscription().getClaroPlan());
         } else {
             updatePlanAndDevicePrice(focusPlan); //Para cliente Pré será exibido apenas planos Controle, com o focusPlan setado por padrão (considerando que o plano foco é o primeiro Controle)
         }
@@ -359,168 +719,77 @@ public class CartOrder {
         //TODO
     }
 
-    public ClaroClube getClaroClube() {
-        return claroClube;
-    }
 
-    public static class ClaroChip {
+    //##################################################################################
+    // Inner Classes ###################################################################
 
-        private String activationCode;
-        private ChipType claroChipType;
-        private String iccIdSim;
-        private String qrCdode;
-        private String techlonogy;
+    // Essential -------------------------------------------------
+    public static final class Essential {
 
-        private ClaroChip() {}
-
-        public ChipType getChipType() {
-            return claroChipType;
-        }
-
-        public void setChipType(ChipType chip) {
-            claroChipType = chip;
-        }
-    }
-
-    public static class ClaroClube {
-
-        private ClaroClube() {}
-
-        private int awardPoints;
-        private double discountValue;
-        private boolean isClaroClubeApplied;
-        private String redeemId;
-        private boolean redeemed;
-        private boolean refund;
-        private boolean reserved;
-        private boolean used;
-
-        public int getAwardPoints() {
-            return awardPoints;
-        }
-
-        public double getDiscountValue() {
-            return discountValue;
-        }
-
-        public void setDiscountValue(double discountValue) {
-            this.discountValue = discountValue;
-        }
-
-        public boolean isClaroClubeApplied() {
-            return isClaroClubeApplied;
-        }
-
-        public void setClaroClubeApplied(boolean claroClubeApplied) {
-            isClaroClubeApplied = claroClubeApplied;
-        }
-
-        public String getRedeemId() {
-            return redeemId;
-        }
-
-        public boolean isRedeemed() {
-            return redeemed;
-        }
-
-        public boolean isRefund() {
-            return refund;
-        }
-
-        public boolean isReserved() {
-            return reserved;
-        }
-
-        public boolean isUsed() {
-            return used;
-        }
-    }
-
-    public static class ClaroSapResponse {
-
-        public String center;
-        public String invoiceNumber;
-        public String nfeNumber;
-        public String salesOrg;
-        public String sapOrderId;
-        public List<SapStatusHistory> sapStatusHistory;
-
-        private ClaroSapResponse() {}
-
-        public static class SapStatusHistory {
-
-            public String date;
-            public String id;
-            public String description;
-            public String orderType;
-
-            private SapStatusHistory() {}
-        }
-    }
-
-    public static class Delivery {
-
-        public DeliveryAddress deliveryAddress;
-        public DeliveryMode deliveryMode;
-
-        private Delivery() {
-            deliveryAddress = new Delivery.DeliveryAddress();
-        }
-
-        public static class DeliveryAddress {
-
-            public String streetname;
-            public String streetnumber;
-            public String building;
-            public String postalcode;
-            public String town;
-            public String stateCode;
-            public String neighbourhood;
-            public boolean shippingAddress;
-            public boolean billingAddress;
-
-            private DeliveryAddress() {}
-        }
-    }
-
-    public static class DependentsInformation {
-
-        public String id;
-        public String msisdn;
-        public ProcessType processTypeOfDependent;
-
-        private DependentsInformation() {}
-    }
-
-    public static class Essential {
-
+        @JsonProperty("code")
         private String code;
-        private final User user;
+
+        @JsonProperty("user")
+        private final Customer user;
+
+        @JsonProperty("telephone")
         private String telephone;
+
+        @JsonProperty("processType")
         private ProcessType processType;
 
         private Essential() {
-            user = new Essential.User();
+            user = new Customer();
         }
 
-        public static class User {
+        //########################################
 
-            private User() {}
+        public static final class Customer {
 
+            @JsonProperty("name")
             private String name;
+
+            @JsonProperty("displayName")
             private String displayName;
+
+            @JsonProperty("parentfullname")
             private String parentfullname;
+
+            @JsonProperty("claroTelephone")
             private String claroTelephone;
+
+            @JsonProperty("telephone")
             private String telephone;
+
+            @JsonProperty("claroProvisionalTelephone")
             private String claroProvisionalTelephone;
+
+            @JsonProperty("birthdate")
             private String birthdate;
+
+            @JsonProperty("cpf")
             private String cpf;
+
+            @JsonProperty("email")
             private String email;
+
+            @JsonProperty("optinWhatsapp")
             private boolean optinWhatsapp;
+
+            @JsonProperty("type")
             private String type;
+
+            @JsonProperty("claroClubBalance")
             private double claroClubBalance;
+
+            @JsonProperty("claroSubscription")
             private ClaroSubscription claroSubscription;
 
+            private Customer() {}
+
+            //########################################
+
+            //name
             public String getName() {
                 return name;
             }
@@ -529,6 +798,8 @@ public class CartOrder {
                 this.name = name;
             }
 
+
+            //displayName
             public String getDisplayName() {
                 return displayName;
             }
@@ -537,6 +808,8 @@ public class CartOrder {
                 this.displayName = displayName;
             }
 
+
+            //parentfullname
             public String getParentfullname() {
                 return parentfullname;
             }
@@ -545,6 +818,8 @@ public class CartOrder {
                 this.parentfullname = parentfullname;
             }
 
+
+            //claroTelephone
             public String getClaroTelephone() {
                 return claroTelephone;
             }
@@ -554,6 +829,8 @@ public class CartOrder {
                 telephone = claroTelephone;
             }
 
+
+            //telephone
             public String getTelephone() {
                 return telephone;
             }
@@ -562,14 +839,13 @@ public class CartOrder {
                 this.telephone = telephone;
             }
 
+
             public String getClaroProvisionalTelephone() {
                 return claroProvisionalTelephone;
-            }
+            } //Getter only
 
-            public void setClaroProvisionalTelephone(String claroProvisionalTelephone) {
-                this.claroProvisionalTelephone = claroProvisionalTelephone;
-            }
 
+            //birthdate
             public String getBirthdate() {
                 return birthdate;
             }
@@ -578,6 +854,8 @@ public class CartOrder {
                 this.birthdate = birthdate;
             }
 
+
+            //cpf
             public String getCpf() {
                 return cpf;
             }
@@ -586,6 +864,8 @@ public class CartOrder {
                 this.cpf = cpf;
             }
 
+
+            //email
             public String getEmail() {
                 return email;
             }
@@ -594,33 +874,57 @@ public class CartOrder {
                 this.email = email;
             }
 
+
+            //optinWhatsapp
             public boolean isOptinWhatsapp() {
                 return optinWhatsapp;
             }
 
+            public void setOptinWhatsapp(boolean optinWhatsapp) {
+                this.optinWhatsapp = optinWhatsapp;
+            }
+
+
             public String getType() {
                 return type;
-            }
+            } //Getter only
 
             public double getClaroClubBalance() {
                 return claroClubBalance;
-            }
+            } //Getter only
 
             public ClaroSubscription getClaroSubscription() {
                 return claroSubscription;
-            }
+            } //Getter only
+
+            //#####################################################
 
             public static final class ClaroSubscription {
 
+                @JsonProperty("claroPlan")
+                private String claroPlan;
+
+                @JsonProperty("claroPlanName")
+                private String claroPlanName;
+
+                @JsonProperty("claroPlanPrice")
+                private double claroPlanPrice;
+
+                @JsonProperty("claroMonthlyPrice")
+                private double claroMonthlyPrice;
+
+                @JsonProperty("customerMobileSubType")
+                private String customerMobileSubType;
+
+                @JsonProperty("loyalty")
+                private boolean loyalty;
+
+                @JsonProperty("planTypePrice")
+                private String planTypePrice;
+
                 private ClaroSubscription() {}
 
-                private String claroPlan;
-                private String claroPlanName;
-                private double claroPlanPrice;
-                private double claroMonthlyPrice;
-                private String customerMobileSubType;
-                private boolean loyalty;
-                private String planTypePrice;
+                //########################################
 
                 public String getClaroPlan() {
                     return claroPlan;
@@ -653,100 +957,63 @@ public class CartOrder {
         }
     }
 
-    public static class Payment {
 
-        public PaymentAddress paymentAddress;
-        public PaymentInfo paymentInfo;
-        public List<PaymentMethod> paymentMethods;
-        public boolean iframePaymentAcquirer;
-        public String iframePaymentResult;
-        public ClaroAuthenticationPaymentResponse claroAuthenticationPaymentResponse;
-        public PixPaymentInfo pixPaymentInfo;
+    // Positions and Prices --------------------------------------
+    public static final class PositionsAndPrices {
 
-        private Payment() {}
+        @JsonProperty("entries")
+        private List<OrderEntry> entries;
 
-        public static class PaymentAddress {
+        @JsonProperty("entryGroups")
+        private List<String> entryGroups;
 
-            public String streetname;
-            public String streetnumber;
-            public String building;
-            public String postalcode;
-            public String town;
-            public String stateCode;
-            public String neighbourhood;
-            public boolean shippingAddress;
-            public boolean billingAddress;
-
-            private PaymentAddress() {}
-        }
-
-        public static class PaymentInfo {
-
-            public String account;
-            public String agency;
-            public String bank;
-            public int expireDate;
-            public String invoiceType;
-
-            private PaymentInfo() {}
-        }
-
-        public static class PaymentMethod {
-
-            public String paymentMode;
-            public String paymentMethodType;
-
-            private PaymentMethod() {}
-        }
-
-        public static class ClaroAuthenticationPaymentResponse {
-
-            public String amount;
-            public String card;
-            public String flag;
-            public String numberInstallments;
-            public String responseDescription;
-
-            private ClaroAuthenticationPaymentResponse() {}
-        }
-
-        public static class PixPaymentInfo {
-
-            public String txId;
-            public String value;
-
-            private PixPaymentInfo() {}
-        }
-    }
-
-    public static class PositionsAndPrices {
-
-        public List<Entry> entries;
-        public List<String> entryGroups;
-        public double totalPrice;
+        @JsonProperty("totalPrice")
+        private double totalPrice;
 
         private PositionsAndPrices() {
             entries = new ArrayList<>();
             entryGroups = new ArrayList<>();
         }
 
-        public static class Entry {
+        //########################################
 
+        //Getters e Setters direto na CartOrder
+
+        //########################################
+
+        public static final class OrderEntry {
+
+            @JsonProperty("product")
+            @JsonDeserialize(as = GenericProduct.class)
             private Product product;
+
+            @JsonProperty("quantity")
             private int quantity;
+
+            @JsonProperty("basePrice")
             private double basePrice;
+
+            @JsonProperty("totalPrice")
             private double totalPrice;
+
+            @JsonProperty("discountValues")
             private final List<Double> discountValues = new ArrayList<>();
 
+            @JsonProperty("entryNumber")
             private int entryNumber;
 
-            private PaymentMode paymentMode;
+            @JsonProperty("paymentMode")
+            private StandardPaymentMode paymentMode;
+
+            @JsonProperty("bpo")
             private String bpo;
+
+            @JsonProperty("status")
             private String status;
 
-            private Entry() {}
+            private OrderEntry() {}
 
-            private Entry(Product product, int quantity, double basePrice, double discount) {
+            private OrderEntry(Product product, int quantity, double basePrice, double discount) {
                 this.product = product;
                 this.quantity = quantity;
                 this.basePrice = basePrice;
@@ -755,20 +1022,28 @@ public class CartOrder {
                 totalPrice = basePrice - discount;
             }
 
-            public double getBasePrice() {
-                return basePrice;
-            }
-
-            public double getTotalPrice() {
-                return totalPrice;
-            }
-
-            public double getDiscount() {
-                return discountValues.get(0);
-            }
+            //########################################
 
             public Product getProduct() {
                 return product;
+            } //Getter only
+
+            public int getQuantity() {
+                return quantity;
+            } //Getter only
+
+            public double getBasePrice() {
+                return basePrice;
+            } //Getter only
+
+            public double getTotalPrice() {
+                return totalPrice;
+            } //Getter only
+
+
+            //discountValues
+            public double getDiscount() {
+                return discountValues.get(0);
             }
 
             private void setDiscount(double discount) {
@@ -776,55 +1051,886 @@ public class CartOrder {
                 discountValues.set(0, discount);
             }
 
+            public List<Double> getDiscountValues() {
+                return discountValues;
+            } //Getter only
+
+
+            public int getEntryNumber() {
+                return entryNumber;
+            } //Getter only
+
+
+            //bpo
+            public String getBpo() {
+                return bpo;
+            }
+
             public void setBpo(String bpo) {
                 this.bpo = bpo;
             }
 
-            public PaymentMode getPaymentMode() {
+
+            //paymentMode
+            public StandardPaymentMode getPaymentMode() {
                 return paymentMode;
             }
+
+            public void setPaymentMode(StandardPaymentMode paymentMode) {
+                this.paymentMode = paymentMode;
+            }
+
+
+            public String getStatus() {
+                return status;
+            } //Getter only
         }
     }
 
-    public static class Status {
 
-        public String status;
-        public List<OrderProcess> orderProcess;
+    // Dependent -------------------------------------------------
+    public static final class DependentsInformation {
 
-        private Status() {}
+        @JsonProperty("id")
+        private String id;
+
+        @JsonProperty("msisdn")
+        private String msisdn;
+
+        @JsonProperty("processTypeOfDependent")
+        private ProcessType processTypeOfDependent;
+
+        private DependentsInformation() {}
+
+        //########################################
+
+        //Getters only
+
+        public String getId() {
+            return id;
+        }
+
+        public String getMsisdn() {
+            return msisdn;
+        }
+
+        public ProcessType getProcessTypeOfDependent() {
+            return processTypeOfDependent;
+        }
+    }
+
+
+    // Payment and Delivery --------------------------------------
+    public static final class Status {
+
+        @JsonProperty("status")
+        private String status;
+
+        @JsonProperty("orderProcess")
+        private List<OrderProcess> orderProcess;
+
+        private Status() {
+            orderProcess = new ArrayList<>();
+        }
+
+        //########################################
+
+        //Getters e Setters direto na CartOrder
+
+        //########################################
 
         public static class OrderProcess {
 
-            public String processDefinitionName;
-            public String state;
-            public List<TaskLog> taskLogs;
+            @JsonProperty("processDefinitionName")
+            private String processDefinitionName;
 
-            private OrderProcess() {}
+            @JsonProperty("state")
+            private String state;
 
-            public static class TaskLog {
+            @JsonProperty("taskLogs")
+            private List<ProcessTaskLog> taskLogs;
 
-                public String actionId;
-                public String startDate;
-                public String endDate;
-                public String returnCode;
+            private OrderProcess() {
+                taskLogs = new ArrayList<>();
+            }
 
-                private TaskLog() {}
+            //########################################
+
+            //Getters only
+
+            public String getProcessDefinitionName() {
+                return processDefinitionName;
+            }
+
+            public String getState() {
+                return state;
+            }
+
+            public List<ProcessTaskLog> getTaskLogs() {
+                return taskLogs;
+            }
+
+            //########################################
+
+            public static final class ProcessTaskLog {
+
+                @JsonProperty("actionId")
+                private String actionId;
+
+                @JsonProperty("startDate")
+                private String startDate;
+
+                @JsonProperty("endDate")
+                private String endDate;
+
+                @JsonProperty("returnCode")
+                private String returnCode;
+
+                private ProcessTaskLog() {}
+
+                //########################################
+
+                //Getters only
+
+                public String getActionId() {
+                    return actionId;
+                }
+
+                public String getEndDate() {
+                    return endDate;
+                }
+
+                public String getReturnCode() {
+                    return returnCode;
+                }
+
+                public String getStartDate() {
+                    return startDate;
+                }
             }
         }
     }
 
-    public static class SubOrder {
+    public static final class Payment {
 
-        public String status;
-        public String statusDescription;
-        public String type;
+        @JsonProperty("paymentAddress")
+        private final Address paymentAddress;
 
-        private SubOrder() {}
+        @JsonProperty("paymentInfo")
+        private final ClaroPaymentInfo paymentInfo;
+
+        @JsonProperty("paymentMethods")
+        private final List<ClaroPaymentMethod> paymentMethods;
+
+        @JsonProperty("iframePaymentAcquirer")
+        private boolean iframePaymentAcquirer;
+
+        @JsonProperty("iframePaymentResult")
+        private String iframePaymentResult;
+
+        @JsonProperty("claroAuthenticationPaymentResponse")
+        private final ClaroAuthenticationPaymentResponse claroAuthenticationPaymentResponse;
+
+        @JsonProperty("pixPaymentInfo")
+        private final PixPaymentInfo pixPaymentInfo;
+
+        private Payment() {
+            paymentAddress = new Address();
+            paymentInfo = new ClaroPaymentInfo();
+            paymentMethods = new ArrayList<>();
+            claroAuthenticationPaymentResponse = new ClaroAuthenticationPaymentResponse();
+            pixPaymentInfo = new PixPaymentInfo();
+        }
+
+        //########################################
+
+        //Getters only
+
+        public ClaroAuthenticationPaymentResponse getClaroAuthenticationPaymentResponse() {
+            return claroAuthenticationPaymentResponse;
+        }
+
+        public boolean isIframePaymentAcquirer() {
+            return iframePaymentAcquirer;
+        }
+
+        public String getIframePaymentResult() {
+            return iframePaymentResult;
+        }
+
+        public Address getPaymentAddress() {
+            return paymentAddress;
+        }
+
+        public ClaroPaymentInfo getPaymentInfo() {
+            return paymentInfo;
+        }
+
+        public List<ClaroPaymentMethod> getPaymentMethods() {
+            return paymentMethods;
+        }
+
+        public PixPaymentInfo getPixPaymentInfo() {
+            return pixPaymentInfo;
+        }
+
+        //########################################
+
+        public static final class ClaroPaymentInfo {
+
+            @JsonProperty("account")
+            private String account;
+
+            @JsonProperty("agency")
+            private String agency;
+
+            @JsonProperty("bank")
+            private String bank;
+
+            @JsonProperty("expireDate")
+            private int expireDate;
+
+            @JsonProperty("expireDateSelected")
+            private int expireDateSelected;
+
+            @JsonProperty("invoiceType")
+            private String invoiceType;
+
+            private ClaroPaymentInfo() {}
+
+            //########################################
+
+            //ClaroDebitPaymentInfo.account
+            public String getAccount() {
+                return account;
+            }
+
+            public void setAccount(String account) {
+                this.account = account;
+            }
+
+
+            //ClaroDebitPaymentInfo.agency
+            public String getAgency() {
+                return agency;
+            }
+
+            public void setAgency(String agency) {
+                this.agency = agency;
+            }
+
+
+            //ClaroDebitPaymentInfo.bank
+            public String getBank() {
+                return bank;
+            }
+
+            public void setBank(String bank) {
+                this.bank = bank;
+            }
+
+
+            //expireDate
+            public int getExpireDate() {
+                return expireDate;
+            }
+
+            public void setExpireDate(int expireDate) {
+                this.expireDate = expireDate;
+            }
+
+
+            //expireDateSelected
+            public int getExpireDateSelected() {
+                return expireDateSelected;
+            }
+
+            public void setExpireDateSelected(int expireDateSelected) {
+                this.expireDateSelected = expireDateSelected;
+            }
+
+
+            //invoiceType
+            public String getInvoiceType() {
+                return invoiceType;
+            }
+
+            public void setInvoiceType(String invoiceType) {
+                this.invoiceType = invoiceType;
+            }
+        }
+
+        public static final class ClaroPaymentMethod {
+
+            @JsonProperty("paymentMode")
+            private StandardPaymentMode paymentMode;
+
+            @JsonProperty("paymentMethodType")
+            private String paymentMethodType;
+
+            private ClaroPaymentMethod() {}
+
+            //########################################
+
+            //paymentMethodType
+            public String getPaymentMethodType() {
+                return paymentMethodType;
+            }
+
+            public void setPaymentMethodType(String paymentMethodType) {
+                this.paymentMethodType = paymentMethodType;
+            }
+
+
+            //paymentMode
+            public StandardPaymentMode getPaymentMode() {
+                return paymentMode;
+            }
+
+            public void setPaymentMode(StandardPaymentMode paymentMode) {
+                this.paymentMode = paymentMode;
+            }
+        }
+
+        public static final class ClaroAuthenticationPaymentResponse {
+
+            @JsonProperty("card")
+            private String card;
+
+            @JsonProperty("flag")
+            private String flag;
+
+            @JsonProperty("numberInstallments")
+            private String numberInstallments;
+
+            @JsonProperty("responseDescription")
+            private String responseDescription;
+
+            @JsonProperty("totalAmount")
+            private String totalAmount;
+
+            private ClaroAuthenticationPaymentResponse() {}
+
+            //########################################
+
+            //card
+            public String getCard() {
+                return card;
+            }
+
+            public void setCard(String card) {
+                this.card = card;
+            }
+
+
+            //flag
+            public String getFlag() {
+                return flag;
+            }
+
+            public void setFlag(String flag) {
+                this.flag = flag;
+            }
+
+
+            //numberInstallments
+            public String getNumberInstallments() {
+                return numberInstallments;
+            }
+
+            public void setNumberInstallments(String numberInstallments) {
+                this.numberInstallments = numberInstallments;
+            }
+
+
+            public String getResponseDescription() {
+                return responseDescription;
+            } //Getter only
+
+            public String getTotalAmount() {
+                return totalAmount;
+            } //Getter only
+        }
+
+        public static final class PixPaymentInfo {
+
+            @JsonProperty("txId")
+            private String txId;
+
+            @JsonProperty("value")
+            private String value;
+
+            private PixPaymentInfo() {}
+
+            //########################################
+
+            //Getters only
+
+            public String getTxId() {
+                return txId;
+            }
+
+            public String getValue() {
+                return value;
+            }
+        }
     }
 
-    public static final class Promotion {
+    public static final class Delivery {
 
-        private Promotion() {}
+        @JsonProperty("deliveryAddress")
+        private Address deliveryAddress;
+
+        @JsonProperty("deliveryMode")
+        private ZoneDeliveryMode deliveryMode;
+
+        private Delivery() {
+            deliveryAddress = new Address();
+        }
+
+        //########################################
+
+        public Address getDeliveryAddress() {
+            return deliveryAddress;
+        } //Getter only
+
+
+        //deliveryMode
+        public ZoneDeliveryMode getDeliveryMode() {
+            return deliveryMode;
+        }
+
+        public void setDeliveryMode(ZoneDeliveryMode deliveryMode) {
+            this.deliveryMode = deliveryMode;
+        }
+    }
+
+    public static final class Address {
+
+        @JsonProperty("streetname")
+        private String streetname;
+
+        @JsonProperty("streetnumber")
+        private String streetnumber;
+
+        @JsonProperty("building")
+        private String building;
+
+        @JsonProperty("postalcode")
+        private String postalcode;
+
+        @JsonProperty("town")
+        private String town;
+
+        @JsonProperty("stateCode")
+        private String stateCode;
+
+        @JsonProperty("neighbourhood")
+        private String neighbourhood;
+
+        @JsonProperty("shippingAddress")
+        private boolean shippingAddress;
+
+        @JsonProperty("billingAddress")
+        private boolean billingAddress;
+
+        private Address() {}
+
+        //########################################
+
+        //billingAddress
+        public boolean isBillingAddress() {
+            return billingAddress;
+        }
+
+        public void setBillingAddress(boolean billingAddress) {
+            this.billingAddress = billingAddress;
+        }
+
+
+        //building
+        public String getBuilding() {
+            return building;
+        }
+
+        public void setBuilding(String building) {
+            this.building = building;
+        }
+
+
+        //neighbourhood
+        public String getNeighbourhood() {
+            return neighbourhood;
+        }
+
+        public void setNeighbourhood(String neighbourhood) {
+            this.neighbourhood = neighbourhood;
+        }
+
+
+        //postalcode
+        public String getPostalcode() {
+            return postalcode;
+        }
+
+        public void setPostalcode(String postalcode) {
+            this.postalcode = postalcode;
+        }
+
+
+        //shippingAddress
+        public boolean isShippingAddress() {
+            return shippingAddress;
+        }
+
+        public void setShippingAddress(boolean shippingAddress) {
+            this.shippingAddress = shippingAddress;
+        }
+
+
+        //stateCode
+        public String getStateCode() {
+            return stateCode;
+        }
+
+        public void setStateCode(String stateCode) {
+            this.stateCode = stateCode;
+        }
+
+
+        //streetname
+        public String getStreetname() {
+            return streetname;
+        }
+
+        public void setStreetname(String streetname) {
+            this.streetname = streetname;
+        }
+
+
+        //streetnumber
+        public String getStreetnumber() {
+            return streetnumber;
+        }
+
+        public void setStreetnumber(String streetnumber) {
+            this.streetnumber = streetnumber;
+        }
+
+
+        //town
+        public String getTown() {
+            return town;
+        }
+
+        public void setTown(String town) {
+            this.town = town;
+        }
+    }
+
+
+    // Administration --------------------------------------------
+    public static final class ClaroChip {
+
+        @JsonProperty("activationCode")
+        private String activationCode;
+
+        @JsonProperty("claroChipType")
+        private ChipType claroChipType;
+
+        @JsonProperty("iccIdSim")
+        private String iccIdSim;
+
+        @JsonProperty("qrCdode")
+        private String qrCdode;
+
+        @JsonProperty("technology")
+        private String technology;
+
+        private ClaroChip() {}
+
+        //########################################
+
+        public String getActivationCode() {
+            return activationCode;
+        } //Getter only
+
+
+        //claroChipType
+        public ChipType getChipType() {
+            return claroChipType;
+        }
+
+        public void setChipType(ChipType chip) {
+            claroChipType = chip;
+        }
+
+
+        public String getIccIdSim() {
+            return iccIdSim;
+        } //Getter only
+
+        public String getQrCdode() {
+            return qrCdode;
+        } //Getter only
+
+        public String getTechnology() {
+            return technology;
+        } //Getter only
+    }
+
+    public static final class ClaroClubeInfo {
+
+        @JsonProperty("awardPoints")
+        private int awardPoints;
+
+        @JsonProperty("cancelled")
+        private boolean cancelled;
+
+        @JsonProperty("discountValue")
+        private double discountValue;
+
+        @JsonProperty("isClaroClubeApplied")
+        private boolean isClaroClubeApplied;
+
+        @JsonProperty("redeemId")
+        private String redeemId;
+
+        @JsonProperty("redeemed")
+        private boolean redeemed;
+
+        @JsonProperty("refund")
+        private boolean refund;
+
+        @JsonProperty("reserved")
+        private boolean reserved;
+
+        @JsonProperty("used")
+        private boolean used;
+
+        private ClaroClubeInfo() {}
+
+        //########################################
+
+        public int getAwardPoints() {
+            return awardPoints;
+        } //Getter only
+
+        public boolean isCancelled() {
+            return cancelled;
+        } //Getter only
+
+
+        //discountValue
+        public double getDiscountValue() {
+            return discountValue;
+        }
+
+        public void setDiscountValue(double discountValue) {
+            this.discountValue = discountValue;
+        }
+
+
+        //isClaroClubeApplied
+        public boolean isClaroClubeApplied() {
+            return isClaroClubeApplied;
+        }
+
+        public void setClaroClubeApplied(boolean claroClubeApplied) {
+            isClaroClubeApplied = claroClubeApplied;
+        }
+
+
+        public String getRedeemId() {
+            return redeemId;
+        }  //Getter only
+
+        public boolean isRedeemed() {
+            return redeemed;
+        }  //Getter only
+
+        public boolean isRefund() {
+            return refund;
+        } //Getter only
+
+        public boolean isReserved() {
+            return reserved;
+        } //Getter only
+
+        public boolean isUsed() {
+            return used;
+        } //Getter only
+    }
+
+    public static final class ClaroSapResponse {
+
+        @JsonProperty("center")
+        private String center;
+
+        @JsonProperty("invoiceNumber")
+        private List<String> invoiceNumber;
+
+        @JsonProperty("nfeNumber")
+        private String nfeNumber;
+
+        @JsonProperty("salesOrg")
+        private String salesOrg;
+
+        @JsonProperty("sapOrderId")
+        private String sapOrderId;
+
+        @JsonProperty("sapStatusHistory")
+        private final List<SapStatusHistory> sapStatusHistory;
+
+        private ClaroSapResponse() {
+            invoiceNumber = new ArrayList<>();
+            sapStatusHistory = new ArrayList<>();
+        }
+
+        //########################################
+
+        //Getters only
+
+        public String getCenter() {
+            return center;
+        }
+
+        public List<String> getInvoiceNumber() {
+            return invoiceNumber;
+        }
+
+        public String getNfeNumber() {
+            return nfeNumber;
+        }
+
+        public String getSalesOrg() {
+            return salesOrg;
+        }
+
+        public String getSapOrderId() {
+            return sapOrderId;
+        }
+
+        public List<SapStatusHistory> getSapStatusHistory() {
+            return sapStatusHistory;
+        }
+
+        //########################################
+
+        public static class SapStatusHistory {
+
+            @JsonProperty("date")
+            private String date;
+
+            @JsonProperty("id")
+            private String id;
+
+            @JsonProperty("description")
+            private String description;
+
+            @JsonProperty("orderType")
+            private String orderType;
+
+            private SapStatusHistory() {}
+
+            //########################################
+
+            //Getters only
+
+            public String getDate() {
+                return date;
+            }
+
+            public String getDescription() {
+                return description;
+            }
+
+            public String getId() {
+                return id;
+            }
+
+            public String getOrderType() {
+                return orderType;
+            }
+        }
+    }
+
+    public static final class CustomerContractResidential {
+
+        @JsonProperty("contractId")
+        private String contractId;
+
+        @JsonProperty("document")
+        private String document;
+
+        @JsonProperty("postCode")
+        private String postCode;
+
+        private CustomerContractResidential() {}
+
+        //########################################
+
+        //contractId
+        public String getContractId() {
+            return contractId;
+        }
+
+        public void setContractId(String contractId) {
+            this.contractId = contractId;
+        }
+
+
+        //document
+        public String getDocument() {
+            return document;
+        }
+
+        public void setDocument(String document) {
+            this.document = document;
+        }
+
+
+        //postCode
+        public String getPostCode() {
+            return postCode;
+        }
+
+        public void setPostCode(String postCode) {
+            this.postCode = postCode;
+        }
+    }
+
+    public static final class SubOrder {
+
+        @JsonProperty("status")
+        private String status;
+
+        @JsonProperty("statusDescription")
+        private String statusDescription;
+
+        @JsonProperty("type")
+        private String type;
+
+        private SubOrder() {}
+
+        //########################################
+
+        //Getters only
+
+        public String getStatus() {
+            return status;
+        }
+
+        public String getStatusDescription() {
+            return statusDescription;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    public static final class PromotionSourceRule {
 
         @JsonProperty("code")
         private String code;
@@ -845,7 +1951,7 @@ public class CartOrder {
         private String name;
 
         @JsonProperty("paymentMethod")
-        private PaymentMode paymentMethod;
+        private StandardPaymentMode paymentMethod;
 
         @JsonProperty("priority")
         private int priority;
@@ -855,6 +1961,12 @@ public class CartOrder {
 
         @JsonProperty("rentabilizationCampaign")
         private boolean rentabilizationCampaign;
+
+        private PromotionSourceRule() {}
+
+        //########################################
+
+        //Getters only
 
         public String getName() {
             return name;

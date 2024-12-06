@@ -14,7 +14,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 import static web.pages.ComumPage.*;
-import static web.pages.ComumPage.validateElementText;
 
 @Component
 @ScenarioScope
@@ -27,12 +26,13 @@ public class PlpPlanosPage {
         this.driverWeb = driverWeb;
     }
 
+    private boolean isDebitPaymentFlow;
+
     public void validarPlpControle() {
         driverWeb.waitPageLoad("controle", 10);
     }
 
-    //TODO Não testado, nenhum cenário passa pela PLP em 13/06/2024.
-    public void validarCardPlano(PlanProduct plan, boolean isDebitPaymentFlow) {
+    public void validarCardPlano(PlanProduct plan) {
         //TODO Atualizar seletores quando forem criados
         WebElement cardParent = driverWeb.findElement("//*[@id='addToCartForm" + plan.getCode() + "']/../preceding-sibling::div[contains(@class, 'top-card')]/div", "xpath");
 
@@ -90,5 +90,17 @@ public class PlpPlanosPage {
 
     public void selecionarPlano(String id) {
         driverWeb.javaScriptClick("btn-eu-quero-" + id, "id");
+    }
+
+    public void selecionarDebito() {
+        isDebitPaymentFlow = true;
+
+        //TODO
+    }
+
+    public void selecionarBoleto() {
+        isDebitPaymentFlow = false;
+
+        //TODO
     }
 }
