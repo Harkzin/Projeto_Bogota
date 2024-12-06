@@ -113,7 +113,8 @@ public class ParabensPage {
         if (processType == ACQUISITION || processType == PORTABILITY) { //TODO Para fluxos de base atualmente não há de onde obter os dados de endereço
             //Endereço de Entrega
             CartOrder.Address addr = cart.getDeliveryAddress();
-            String address = String.format("Endereço de entrega %s, %s - %s - %s - %s %s CEP %s", addr.getStreetname(), addr.getStreetnumber(), addr.getBuilding(), addr.getNeighbourhood(), addr.getTown(), addr.getStateCode(), addr.getPostalcode().replaceAll("(\\d{5})(\\d{3})", "$1-$2"));
+            String building = (addr.getBuilding() == null) || (addr.getBuilding().isEmpty()) ? "" : " - " + addr.getBuilding();
+            String address = String.format("Endereço de entrega %s, %s%s - %s - %s %s CEP %s", addr.getStreetname(), addr.getStreetnumber(), building, addr.getNeighbourhood(), addr.getTown(), addr.getStateCode(), addr.getPostalcode().replaceAll("(\\d{5})(\\d{3})", "$1-$2"));
 
             WebElement deliveryText = driverWeb.findByXpath("//*[@id='txt-end-entrega']/..");
             driverWeb.javaScriptScrollTo(deliveryText);
