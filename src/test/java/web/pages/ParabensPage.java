@@ -26,9 +26,6 @@ public class ParabensPage {
     }
 
     public void validarPaginaParabens(CartOrder cart) {
-        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
-        driverWeb.actionPause(2000);
-
         ProcessType processType = cart.getProcessType();
 
         //Nome (Parabéns, {nome-cliente})
@@ -40,7 +37,11 @@ public class ParabensPage {
         //Plano escolhido
         if (!cart.isDeviceCart() && processType != PORTABILITY && processType != ACCESSORY) {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
+        } else if(processType == PORTABILITY) {
+            clicarOkEntendiModal();
+            validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
+
 
         //Número pedido
         WebElement orderNumber = driverWeb.findById("txt-pedido");
@@ -63,7 +64,7 @@ public class ParabensPage {
         //validateElementText(cart.getUser().getTelephone() , driverWeb.findById(""));
 
         //Nome
-        validateElementText("Nome " + cart.getUser().getName() , driverWeb.findById("msg-informacao-nome"));
+        validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
 
         //CPF
         String formattedCpf = cart.getUser().getCpf().replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
@@ -134,6 +135,8 @@ public class ParabensPage {
     }
 
     public void clicarOkEntendiModal() {
+        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
+        driverWeb.actionPause(2000);
         driverWeb.javaScriptClick("btn-entendi-modal-abr", "id");
     }
 }
