@@ -2,17 +2,23 @@ package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
+import java.util.List;
+import java.util.stream.IntStream;
+
 import static org.junit.Assert.assertTrue;
 import static web.pages.ComumPage.formatPrice;
 import static web.pages.ComumPage.validateElementText;
 import static web.support.utils.Constants.*;
 import static web.support.utils.Constants.ProcessType.*;
+import static web.support.utils.Constants.StatusSuccessPage.*;
+import static web.support.utils.Constants.ZoneDeliveryMode.*;
 
 @Component
 @ScenarioScope
@@ -25,6 +31,22 @@ public class ParabensPage {
         this.driverWeb = driverWeb;
     }
 
+    private void validateStatus(List<WebElement> statusList, CartOrder cart) {
+        boolean isDeviceCart = cart.isDeviceCart();
+        ZoneDeliveryMode deliveryMode = cart.getDeliveryMode();
+
+        List<String> statusListRef = switch (cart.getProcessType()) {
+            case ACQUISITION -> isDeviceCart ? ACQUISITION_DEVICE.getStatusList() : (deliveryMode == CONVENTIONAL ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList());
+            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO -> isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
+            case PORTABILITY -> isDeviceCart ? PORTABILITY_DEVICE.getStatusList() : PORTABILITY_PLAN.getStatusList();
+            case ACCESSORY -> StatusSuccessPage.ACCESSORY.getStatusList();
+        };
+
+        IntStream.range(0, statusListRef.size()).forEachOrdered(i ->
+                validateElementText(statusListRef.get(i), statusList.get(i))
+        );
+    }
+
     public void validarPaginaParabens(CartOrder cart) {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
         driverWeb.actionPause(2000);
@@ -32,13 +54,43 @@ public class ParabensPage {
         ProcessType processType = cart.getProcessType();
 
         //Nome (Parabéns, {nome-cliente})
-        if (!cart.isDeviceCart()) {
-            String name = String.format("Parabéns, %s!", StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase()));
-            validateElementText(name, driverWeb.findById("txt-parabens"));
+        String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
+        String successText = String.format("Parabéns, %s!", customerName);
+        validateElementText(successText, driverWeb.findById("txt-parabens"));
+
+        //Previsão de entrega (Aparelhos)
+        if (cart.isDeviceCart()) {
+            WebElement deliveryDate = driverWeb.findByXpath("//*[@id='txt-parabens']/following-sibling::div[2]/p");
+            assertTrue(deliveryDate.isDisplayed());
+            assertTrue(StringUtils.normalizeSpace(deliveryDate.getText()).matches("Previsão de entrega: \\d{2} de [a-zç]+ de \\d{4}"));
+        }
+
+        //Status pedido
+        if (cart.isDeviceCart()) { //Aparelhos (modal)
+            WebElement statusModal = driverWeb.findByXpath("//*[@class='mdn-Row']/div[1]/div[2]/div/div");
+
+            //Abre modal
+            driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@class='mdn-Row']/div[1]/div[2]/button"));
+            driverWeb.waitElementVisible(statusModal, 2);
+            driverWeb.actionPause(1000);
+
+            //Título modal
+            validateElementText("Status do pedido", statusModal.findElement(By.xpath(".//h1")));
+
+            //Status
+            List<WebElement> statusList = driverWeb.findElements("//*[@class='mdn-Row']/div[1]/div[2]/div/div/div[3]/div//p", "xpath");
+            validateStatus(statusList, cart);
+
+            //Fecha modal
+            driverWeb.javaScriptClick(statusModal.findElement(By.tagName("button")));
+            driverWeb.waitElementInvisible(statusModal, 2);
+        } else { //Planos
+            List<WebElement> statusListPlan = driverWeb.findElements("//*[@id='txt-sucesso-pedido']/../following-sibling::div[1]//*[contains(@class, 'mdn-Heading')]", "xpath");
+            validateStatus(statusListPlan, cart);
         }
 
         //Plano escolhido
-        if (!cart.isDeviceCart() && processType != PORTABILITY && processType != ACCESSORY) {
+        if (!cart.isDeviceCart() && processType != PORTABILITY && processType != ProcessType.ACCESSORY) {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
@@ -49,9 +101,7 @@ public class ParabensPage {
         WebElement orderNumber = driverWeb.findById("txt-pedido");
         assertTrue(orderNumber.isDisplayed());
 
-        //TODO inconsistência entre S6 e prod
-        //Status pedido
-
+        // Informações do pedido ########################################################
         //Abre Accordion - Informações do pedido
         driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='acr-expandir-informacao']/.."));
         driverWeb.actionPause(1000);
@@ -69,8 +119,10 @@ public class ParabensPage {
         validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
 
         //CPF
+        WebElement cpf = driverWeb.findById("msg-informacao-cpf");
         String formattedCpf = cart.getUser().getCpf().replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
-        validateElementText("CPF " + formattedCpf, driverWeb.findById("msg-informacao-cpf"));
+        driverWeb.javaScriptScrollTo(cpf);
+        validateElementText("CPF " + formattedCpf, cpf);
 
         //Forma de pagamento
         String paymentMode = switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
@@ -81,7 +133,7 @@ public class ParabensPage {
         };
         validateElementText("Forma de pagamento " + paymentMode, driverWeb.findById("msg-informacao-pagamento"));
 
-        if (cart.getProcessType() != ACCESSORY) {
+        if (cart.getProcessType() != ProcessType.ACCESSORY) {
             //Número de Protocolo
             validateElementText("Número de Protocolo Aguarde enquanto o seu número de Protocolo está sendo gerado", driverWeb.findById("txt-numero-protocolo"));
 
@@ -109,14 +161,16 @@ public class ParabensPage {
             }
         }
 
-        //Abre Accordion - Endereço de entrega
+        // Endereço de entrega ##########################################################
+        //Abre Accordion
         driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='acr-expandir-endereco']/.."));
         driverWeb.actionPause(1000);
 
         if (processType == ACQUISITION || processType == PORTABILITY) { //TODO Para fluxos de base atualmente não há de onde obter os dados de endereço
             //Endereço de Entrega
             CartOrder.Address addr = cart.getDeliveryAddress();
-            String address = String.format("Endereço de entrega %s, %s - %s - %s - %s %s CEP %s", addr.getStreetname(), addr.getStreetnumber(), addr.getBuilding(), addr.getNeighbourhood(), addr.getTown(), addr.getStateCode(), addr.getPostalcode().replaceAll("(\\d{5})(\\d{3})", "$1-$2"));
+            String building = (addr.getBuilding() == null) || (addr.getBuilding().isEmpty()) ? "" : " - " + addr.getBuilding();
+            String address = String.format("Endereço de entrega %s, %s%s - %s - %s %s CEP %s", addr.getStreetname(), addr.getStreetnumber(), building, addr.getNeighbourhood(), addr.getTown(), addr.getStateCode(), addr.getPostalcode().replaceAll("(\\d{5})(\\d{3})", "$1-$2"));
 
             WebElement deliveryText = driverWeb.findByXpath("//*[@id='txt-end-entrega']/..");
             driverWeb.javaScriptScrollTo(deliveryText);

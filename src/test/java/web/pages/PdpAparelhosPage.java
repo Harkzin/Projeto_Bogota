@@ -397,6 +397,7 @@ public class PdpAparelhosPage {
     }
 
     public void selecionarMudarMeuPlano() {
+        driverWeb.waitElementVisible(paiMudarMeuPlano, 20);
         driverWeb.javaScriptClick(mudarMeuPlano);
         driverWeb.waitElementVisible(driverWeb.waitElementPresence("//*[@id='slc-plataforma-plano']", 4), 5);
     }

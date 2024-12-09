@@ -62,6 +62,7 @@ public class CustomizarFaturaPage {
 
     public void validarPaginaCustomizarFatura() {
         driverWeb.waitPageLoad("/checkout/multi/payment-method", 60);
+        driverWeb.actionPause(2000);
 
         abaDebito = driverWeb.findElement("tab-debito", "id");
         abaBoleto = driverWeb.findElement("tab-boleto", "id");
@@ -74,7 +75,7 @@ public class CustomizarFaturaPage {
     }
 
     public void validarPaginaTermosCombo() {
-        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 60);
+        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 100);
         showTermsOnly = true;
     }
 
