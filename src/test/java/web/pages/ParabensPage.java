@@ -58,6 +58,13 @@ public class ParabensPage {
         String successText = String.format("Parabéns, %s!", customerName);
         validateElementText(successText, driverWeb.findById("txt-parabens"));
 
+        //Previsão de entrega (Aparelhos)
+        if (cart.isDeviceCart()) {
+            WebElement deliveryDate = driverWeb.findByXpath("//*[@id='txt-parabens']/following-sibling::div[2]/p");
+            assertTrue(deliveryDate.isDisplayed());
+            assertTrue(StringUtils.normalizeSpace(deliveryDate.getText()).matches("Previsão de entrega: \\d{2} de [a-zç]+ de \\d{4}"));
+        }
+
         //Status pedido
         if (cart.isDeviceCart()) { //Aparelhos (modal)
             WebElement statusModal = driverWeb.findByXpath("//*[@class='mdn-Row']/div[1]/div[2]/div/div");
