@@ -47,10 +47,7 @@ public class ParabensPage {
         );
     }
 
-    public void validarPaginaParabens(CartOrder cart) {
-        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
-        driverWeb.actionPause(2000);
-
+    public void validarDados(CartOrder cart){
         ProcessType processType = cart.getProcessType();
 
         //Nome (Parabéns, {nome-cliente})
@@ -92,7 +89,10 @@ public class ParabensPage {
         //Plano escolhido
         if (!cart.isDeviceCart() && processType != PORTABILITY && processType != ProcessType.ACCESSORY) {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
+        } else if (processType == PORTABILITY) {
+            validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
+
 
         //Número pedido
         WebElement orderNumber = driverWeb.findById("txt-pedido");
@@ -113,7 +113,7 @@ public class ParabensPage {
         //validateElementText(cart.getUser().getTelephone() , driverWeb.findById(""));
 
         //Nome
-        validateElementText("Nome " + cart.getUser().getName() , driverWeb.findById("msg-informacao-nome"));
+        validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
 
         //CPF
         WebElement cpf = driverWeb.findById("msg-informacao-cpf");
@@ -172,6 +172,15 @@ public class ParabensPage {
             WebElement deliveryText = driverWeb.findByXpath("//*[@id='txt-end-entrega']/..");
             driverWeb.javaScriptScrollTo(deliveryText);
             validateElementText(address, deliveryText);
+        }
+    }
+
+    public void validarPaginaParabens(CartOrder cart) {
+        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
+        driverWeb.actionPause(2000);
+
+        if(cart.getProcessType() != PORTABILITY){
+            validarDados(cart);
         }
     }
 
