@@ -1,5 +1,6 @@
 package web.support.utils;
 
+import java.util.List;
 import java.util.Map;
 
 public final class Constants {
@@ -74,5 +75,26 @@ public final class Constants {
     public enum ChipType {
         SIM,
         ESIM
+    }
+
+    public enum StatusSuccessPage { //TODO adicionar demais fluxos
+        ACQUISITION_PLAN(List.of("Pedido realizado", "Pedido em análise", "Pedido aprovado e em separação", "Pedido a caminho", "Pedido entregue", "Pedido concluído")),
+        ACQUISITION_PLAN_EXPRESS(List.of("Pedido realizado", "Pedido em análise", "Pedido aprovado e em separação", "Pedido concluído")),
+        ACQUISITION_DEVICE(List.of("Pedido recebido", "Pedido em análise", "Pedido aprovado e em separação", "Pedido faturado", "Pedido em transporte", "Pedido entregue e ativado")),
+        MIGRATE_EXCHANGE_PLAN(List.of()),
+        MIGRATE_EXCHANGE_DEVICE(List.of()),
+        PORTABILITY_PLAN(List.of()),
+        PORTABILITY_DEVICE(List.of()),
+        ACCESSORY(List.of());
+
+        private final List<String> statusList;
+
+        StatusSuccessPage(List<String> statusList) {
+            this.statusList = statusList;
+        }
+
+        public List<String> getStatusList() {
+            return this.statusList;
+        }
     }
 }

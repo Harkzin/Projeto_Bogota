@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.ComumPage;
 import web.models.CartOrder;
 
+import static web.support.utils.Constants.planSingleToCombo;
+
 public class ComumSteps {
 
     private final ComumPage comumPage;
@@ -45,6 +47,7 @@ public class ComumSteps {
 
     @E("o plano do carrinho será atualizado para o Plano Combo correspondente")
     public void atualizarParaPlanoCombo() {
+        cart.setPlan(planSingleToCombo.get(cart.getPlan().getCode()));
         cart.updatePlanCartPromotion();
         comumPage.validarResumoCompraPlano(cart);
     }
