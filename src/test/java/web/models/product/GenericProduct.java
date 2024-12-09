@@ -1,3 +1,3 @@
 package web.models.product;
 
-public class GenericProduct extends Product {}
+public final class GenericProduct extends Product {}

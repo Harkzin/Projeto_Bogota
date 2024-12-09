@@ -88,7 +88,7 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns
+    E clica no botão [Ok, Entendi] do modal de alerta de token
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
-    E clica no botão [Ok, Entendi] do modal de alerta de token
     E os dados do pedido estão corretos
