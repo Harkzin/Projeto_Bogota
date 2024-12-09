@@ -26,6 +26,9 @@ public class ParabensPage {
     }
 
     public void validarPaginaParabens(CartOrder cart) {
+        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
+        driverWeb.actionPause(2000);
+
         ProcessType processType = cart.getProcessType();
 
         //Nome (Parabéns, {nome-cliente})
@@ -134,8 +137,6 @@ public class ParabensPage {
     }
 
     public void clicarOkEntendiModal() {
-        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
-        driverWeb.actionPause(2000);
         driverWeb.javaScriptClick("btn-entendi-modal-abr", "id");
     }
 }
