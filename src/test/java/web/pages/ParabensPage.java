@@ -47,10 +47,7 @@ public class ParabensPage {
         );
     }
 
-    public void validarPaginaParabens(CartOrder cart) {
-        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
-        driverWeb.actionPause(2000);
-
+    public void validarDados(CartOrder cart){
         ProcessType processType = cart.getProcessType();
 
         //Nome (Parabéns, {nome-cliente})
@@ -175,6 +172,15 @@ public class ParabensPage {
             WebElement deliveryText = driverWeb.findByXpath("//*[@id='txt-end-entrega']/..");
             driverWeb.javaScriptScrollTo(deliveryText);
             validateElementText(address, deliveryText);
+        }
+    }
+
+    public void validarPaginaParabens(CartOrder cart) {
+        driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
+        driverWeb.actionPause(2000);
+
+        if(cart.getProcessType() != PORTABILITY){
+            validarDados(cart);
         }
     }
 

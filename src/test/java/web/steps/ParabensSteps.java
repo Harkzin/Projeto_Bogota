@@ -31,6 +31,7 @@ public class ParabensSteps {
     @E("clica no botão [Ok, Entendi] do modal de alerta de token")
     public void ClicarOkEntendi() {
         parabensPage.clicarOkEntendiModal();
+        parabensPage.validarDados(cart);
     }
 
     @Entao("os dados do pedido estão corretos")

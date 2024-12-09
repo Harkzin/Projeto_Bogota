@@ -87,8 +87,8 @@ Funcionalidade: ECCMAUT-1171 - Portabilidade Controle com Aparelho - eSIM
     E preenche os dados do cartão: [Nome] "ECOMM ACCEPT", [Número] "2223000250000004", [Data de validade] "0135", [CVV] "123" e [Parcelas] "1"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
-    E clica no botão [Ok, Entendi] do modal de alerta de token
     Entao é direcionado para a tela de Parabéns
+    E clica no botão [Ok, Entendi] do modal de alerta de token
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
