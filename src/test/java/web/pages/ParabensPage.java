@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import static web.pages.ComumPage.formatPrice;
 import static web.pages.ComumPage.validateElementText;
 import static web.support.utils.Constants.*;
+import static web.support.utils.Constants.ChipType.ESIM;
 import static web.support.utils.Constants.ProcessType.*;
 import static web.support.utils.Constants.StatusSuccessPage.*;
 import static web.support.utils.Constants.ZoneDeliveryMode.*;
@@ -47,8 +48,14 @@ public class ParabensPage {
         );
     }
 
-    public void validarDados(CartOrder cart){
+    public void validarDados(CartOrder cart) {
         ProcessType processType = cart.getProcessType();
+
+        //Valida mensagem esim
+        //TODO mudar para id apos mapeamento
+        if (cart.getClaroChip().getChipType() == ESIM) {
+            driverWeb.findElement("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p", "xpath").getText().equals("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.");
+        }
 
         //Nome (Parabéns, {nome-cliente})
         String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
@@ -179,7 +186,7 @@ public class ParabensPage {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
         driverWeb.actionPause(2000);
 
-        if(cart.getProcessType() != PORTABILITY){
+        if (cart.getProcessType() != PORTABILITY) {
             validarDados(cart);
         }
     }
