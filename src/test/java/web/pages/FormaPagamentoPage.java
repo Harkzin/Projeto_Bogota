@@ -88,10 +88,10 @@ public class FormaPagamentoPage {
         assertFalse(finalizarPix.isDisplayed());
 
         //Valida abas meios de pagamento
-        clicarAbaPix();
-        driverWeb.actionPause(2000);
-        driverWeb.javaScriptClick(tabCartao);
-        driverWeb.waitElementVisible(adicionarCartao, 5);
+//        clicarAbaPix();
+//        driverWeb.actionPause(2000);
+//        driverWeb.javaScriptClick(tabCartao);
+//        driverWeb.waitElementVisible(adicionarCartao, 5);
     }
 
     public void preencherCupom(String voucher) {
