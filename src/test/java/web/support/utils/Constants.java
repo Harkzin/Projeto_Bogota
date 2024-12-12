@@ -84,7 +84,7 @@ public final class Constants {
         MIGRATE_EXCHANGE_PLAN(List.of()),
         MIGRATE_EXCHANGE_DEVICE(List.of()),
         PORTABILITY_PLAN(List.of("Pedido realizado", "Pedido em análise", "Pedido aprovado e em separação", "Pedido a caminho", "Pedido entregue", "Linha provisória ativada", "Portabilidade concluída")),
-        PORTABILITY_DEVICE(List.of()),
+        PORTABILITY_DEVICE(List.of("Pedido recebido", "Pedido em análise", "Pedido aprovado e em seperação", "Pedido faturado", "Pedido em transporte", "Pedido entregue e ativado")),
         ACCESSORY(List.of());
 
         private final List<String> statusList;
