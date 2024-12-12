@@ -56,11 +56,12 @@ public class ParabensPage {
         //TODO mudar para id apos mapeamento
         if (cart.getClaroChip().getChipType() == ESIM) {
             if (cart.isDeviceCart()) {
-                String claroEsim = driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[5]/div[2]/p").getText();
-                assertEquals("Assim que o seu pedido for entregue, você receberá o código do eSIM por e-mail. Além disso, você terá acesso às instruções passo a passo para habilitar o eSIM em Entrar > Acompanhar Pedidos eSIM > Gerenciar eSIM", claroEsim);
+                validateElementText("Assim que o seu pedido for entregue, você receberá o código do eSIM por e-mail. Além disso, você terá acesso às instruções passo a passo para habilitar o eSIM em Entrar > Acompanhar Pedidos eSIM > Gerenciar eSIM",
+                        driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[5]/div[2]/p"));
             }
             else {
-                driverWeb.findElement("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p", "xpath").getText().equals("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.");
+                validateElementText("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.",
+                        driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p"));
             }
         }
 
@@ -136,13 +137,13 @@ public class ParabensPage {
         validateElementText("CPF " + formattedCpf, cpf);
 
         //Forma de pagamento
-//        String paymentMode = switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
-//            case TICKET -> "Boleto";
-//            case DEBITCARD -> "Débito automático";
-//            case CREDITCARD -> "Crédito";
-//            default -> "error";
-//        };
-//        validateElementText("Forma de pagamento " + paymentMode, driverWeb.findById("msg-informacao-pagamento"));
+        String paymentMode = switch (cart.getEntry(cart.getPlan().getCode()).getPaymentMode()) {
+            case TICKET -> "Boleto";
+            case DEBITCARD -> "Débito automático";
+            case CREDITCARD -> "Crédito";
+            default -> "error";
+        };
+        validateElementText("Forma de pagamento " + paymentMode, driverWeb.findById("msg-informacao-pagamento"));
 
         if (cart.getProcessType() != ProcessType.ACCESSORY) {
             //Número de Protocolo
@@ -155,9 +156,9 @@ public class ParabensPage {
             //validateElementText(String.format("Vencimento da fatura Dia %s de cada mês", cart.getPaymentInfo().getExpireDateSelected()), driverWeb.findById("msg-informacao-vencimento"));
 
             //Valor do plano
-//            WebElement planPrice = driverWeb.findById("msg-informacao-valor");
-//            driverWeb.javaScriptScrollTo(planPrice);
-//            validateElementText(String.format("Valor do plano R$ %s/mês", formatPrice(cart.getEntry(cart.getPlan().getCode()).getTotalPrice())), planPrice);
+            WebElement planPrice = driverWeb.findById("msg-informacao-valor");
+            driverWeb.javaScriptScrollTo(planPrice);
+            validateElementText(String.format("Valor do plano R$ %s/mês", formatPrice(cart.getEntry(cart.getPlan().getCode()).getTotalPrice())), planPrice);
 
             //Dependentes
             if (cart.dependentQuantity() > 0) {
