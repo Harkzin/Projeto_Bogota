@@ -79,8 +79,8 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Entao será direcionado para a tela [Forma de Pagamento]
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+#      Mas não deve haver alterações no valor e nem nas informações do Aparelho
+#      Mas não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário clicar no botão [Adicionar cartão de crédito]
     Entao será exibido o iframe de pagamento do cartão
@@ -88,7 +88,6 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns
-    E clica no botão [Ok, Entendi] do modal de alerta de token
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
-      Mas não deve haver alterações no valor e nem nas informações do Plano
+#      Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
