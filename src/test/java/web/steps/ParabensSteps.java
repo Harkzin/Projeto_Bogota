@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.ParabensPage;
 import web.models.CartOrder;
 
-
 public class ParabensSteps {
 
     private final ParabensPage parabensPage;
@@ -32,9 +31,5 @@ public class ParabensSteps {
     public void ClicarOkEntendi() {
         parabensPage.clicarOkEntendiModal();
         parabensPage.validarDados(cart);
-    }
-
-    @Entao("os dados do pedido estão corretos")
-    public void validarDadosPedido() {
     }
 }

@@ -8,6 +8,7 @@ import web.pages.SmsPage;
 import web.models.CartOrder;
 
 public class SmsSteps {
+
     private final SmsPage smsPage;
     private final CartOrder cart;
 

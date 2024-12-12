@@ -104,9 +104,9 @@ public class ParabensPage {
         driverWeb.actionPause(1000);
 
         //Número do pedido
-        WebElement orderNumberWithZeros = driverWeb.findById("txt-numero-pedido");
-        validateElementText("Número do pedido " + StringUtils.leftPad(orderNumber.getText(), 12, "0"), orderNumberWithZeros);
-        cart.setCode(orderNumberWithZeros.getText());
+        String orderNumberWithZeros = StringUtils.leftPad(orderNumber.getText(), 12, "0");
+        validateElementText("Número do pedido " + orderNumberWithZeros, driverWeb.findById("txt-numero-pedido"));
+        cart.setCode(orderNumberWithZeros);
 
         //TODO não aparece em S6
         //Número de contato
