@@ -316,7 +316,7 @@ public class ComumPage {
         }
 
         //Desconto Claro Clube
-        if (cart.getClaroClube().isClaroClubeApplied()) {
+        if (cart.getClaroClube().isUsed()) {
             String claroClubDiscountRef = formatPrice(cart.getClaroClube().getDiscountValue());
             validateElementText("Desconto Claro clube -R$ " + claroClubDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
@@ -325,7 +325,7 @@ public class ComumPage {
         double totalPrice = deviceEntry.getTotalPrice();
         if (commonChipFlow) {
             totalPrice += 10D;
-        } else if (cart.getClaroClube().isClaroClubeApplied()) {
+        } else if (cart.getClaroClube().isUsed()) {
             totalPrice -= cart.getClaroClube().getDiscountValue();
         }
         validateElementText("Total: R$ " + formatPrice(totalPrice), driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-valor-total']/.."));

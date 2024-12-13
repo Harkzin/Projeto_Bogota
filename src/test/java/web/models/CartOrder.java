@@ -1746,15 +1746,9 @@ public class CartOrder {
         }
 
 
-        //isClaroClubeApplied
         public boolean isClaroClubeApplied() {
             return isClaroClubeApplied;
-        }
-
-        public void setClaroClubeApplied(boolean claroClubeApplied) {
-            isClaroClubeApplied = claroClubeApplied;
-        }
-
+        } //Getter only
 
         public String getRedeemId() {
             return redeemId;
@@ -1772,9 +1766,15 @@ public class CartOrder {
             return reserved;
         } //Getter only
 
+
+        //used
         public boolean isUsed() {
             return used;
-        } //Getter only
+        }
+
+        public void setUsed(boolean used) {
+            this.used = used;
+        }
     }
 
     public static final class ClaroSapResponse {

@@ -22,7 +22,9 @@ import static java.time.Duration.*;
 import static web.models.CartOrder.Status.OrderProcess.*;
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
+import static web.support.utils.Constants.ChipType.*;
 import static web.support.utils.Constants.GradePlan.*;
+import static web.support.utils.Constants.StandardPaymentMode.*;
 
 public class ValidateOrderSteps {
 
@@ -122,8 +124,18 @@ public class ValidateOrderSteps {
             orderProcess.add(new ProcessTaskLog("checkHasCredit", "OTHER_PAYMENT"));
         } else {
             switch (cart.getEntry(cart.getDevice().getCode()).getPaymentMode()) {
-                case CREDITCARD -> orderProcess.add(new ProcessTaskLog("checkHasCredit","CREDIT")); //TODO
-                case PIX -> orderProcess.add(new ProcessTaskLog("checkHasCredit","PIX")); //TODO
+                case CREDITCARD -> orderProcess.addAll(List.of(
+                        new ProcessTaskLog("checkHasCredit","CREDIT"),
+                        new ProcessTaskLog("verifyAuthenticationPayment", "SUCCEEDED"),
+                        new ProcessTaskLog("authorizationPayment", "OK"),
+                        new ProcessTaskLog("paymentRequestFraudStatus", "OK")
+                ));
+                case PIX -> orderProcess.addAll(List.of(
+                        new ProcessTaskLog("checkHasCredit","PIX"),
+                        new ProcessTaskLog("verifyPixPayment","WAIT"),
+                        new ProcessTaskLog("waitingPixPayment","OK")
+                        //TODO
+                ));
                 case VOUCHER, CLAROCLUBE -> orderProcess.add(new ProcessTaskLog("checkHasCredit","OTHER_PAYMENT"));
             }
         }
@@ -139,23 +151,27 @@ public class ValidateOrderSteps {
             multiComboReturn = "MULTICOMBOWITHDEVICE";
         } else if (cart.isEasyControlFlow()) {
             multiComboReturn = "EASYCONTROL";
+        } else if (cart.isDeviceCart() && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == PIX) {
+            multiComboReturn = "PIX";
         } else {
             multiComboReturn = "NOMULTICOMBO";
         }
         orderProcess.add(new ProcessTaskLog("multiCombo", multiComboReturn));
 
-        //wentThroughFraudAnalysis (clearSale)
-        if (multiComboReturn.equals("NOMULTICOMBO") || multiComboReturn.equals("MULTICOMBOWITHDEVICE")) {
-            if (cart.getGradePlan() == DOWNGRADE) { //TODO
-                orderProcess.add(new ProcessTaskLog("wentThroughFraudAnalysis", "SUCCEEDED"));
-            } else {
-                orderProcess.addAll(List.of(
-                        new ProcessTaskLog("wentThroughFraudAnalysis", "FAILED"),
-                        new ProcessTaskLog("clearSaleAuthentication", "OK"),
-                        new ProcessTaskLog("clearSaleRequest", "OK"),
-                        new ProcessTaskLog("waitClearSaleNotification", "OK"),
-                        new ProcessTaskLog("clearSaleRequestFraudStatus", "APA_APP")
-                ));
+        if (multiComboReturn.matches("NOMULTICOMBO|MULTICOMBOWITHDEVICE|PIX")) {
+            //wentThroughFraudAnalysis (clearSale)
+            if (!multiComboReturn.equals("PIX")) {
+                if (cart.getGradePlan() == DOWNGRADE) { //TODO
+                    orderProcess.add(new ProcessTaskLog("wentThroughFraudAnalysis", "SUCCEEDED"));
+                } else {
+                    orderProcess.addAll(List.of(
+                            new ProcessTaskLog("wentThroughFraudAnalysis", "FAILED"),
+                            new ProcessTaskLog("clearSaleAuthentication", "OK"),
+                            new ProcessTaskLog("clearSaleRequest", "OK"),
+                            new ProcessTaskLog("waitClearSaleNotification", "OK"),
+                            new ProcessTaskLog("clearSaleRequestFraudStatus", "APA_APP")
+                    ));
+                }
             }
 
             //identificarDadosFaturamento (STEP_5)
@@ -174,33 +190,51 @@ public class ValidateOrderSteps {
         );
 
         //gerarPedidoVenda (STEP_6)
+        String gerarPedidoVendaReturn = "";
         if (!cart.isDeviceCart()) {
             switch (cart.getProcessType()) {
                 case ACQUISITION -> {
+                    gerarPedidoVendaReturn = "ACQUISITION";
                     orderProcess.add(new ProcessTaskLog("gerarPedidoVenda", "ACQUISITION"));
-                    orderProcess.addAll(generateSalesOrdersAuthentication);
                 }
-                case MIGRATE, EXCHANGE, EXCHANGE_PROMO -> orderProcess.addAll(List.of(
-                        new ProcessTaskLog("gerarPedidoVenda", "MIGRATION"),
-                        new ProcessTaskLog("updateOrderStatusActivationProceeding", "OK"),
-                        new ProcessTaskLog("awaitMigrationReturn", "OK"),
-                        new ProcessTaskLog("receiveOrderStatus", "SUCCEEDED"),
-                        new ProcessTaskLog("updateOrderStatusActMigCompleted", "OK"),
-                        new ProcessTaskLog("sendSMSCompletionEmail", "OK")
-                ));
+                case MIGRATE, EXCHANGE, EXCHANGE_PROMO -> {
+                    gerarPedidoVendaReturn = "MIGRATION";
+                    orderProcess.addAll(List.of(
+                            new ProcessTaskLog("gerarPedidoVenda", "MIGRATION"),
+                            new ProcessTaskLog("updateOrderStatusActivationProceeding", "OK"),
+                            new ProcessTaskLog("awaitMigrationReturn", "OK"),
+                            new ProcessTaskLog("receiveOrderStatus", "SUCCEEDED"),
+                            new ProcessTaskLog("updateOrderStatusActMigCompleted", "OK"),
+                            new ProcessTaskLog("sendSMSCompletionEmail", "OK")
+                            //END
+                    ));
+                }
                 case PORTABILITY -> {
+                    gerarPedidoVendaReturn = "PORTABILITY";
                     orderProcess.addAll(List.of(
                             new ProcessTaskLog("gerarPedidoVenda", "PORTABILITY"),
                             new ProcessTaskLog("awaitSimplifiedActivation", "OK"),
                             new ProcessTaskLog("simplifiedActivation", "OK")
                     ));
-
-                    orderProcess.addAll(generateSalesOrdersAuthentication);
                 }
             }
         } else {
+            gerarPedidoVendaReturn = "DEVICE";
             orderProcess.add(new ProcessTaskLog("gerarPedidoVenda", "DEVICE"));
+        }
 
+        if (gerarPedidoVendaReturn.matches("ACQUISITION|PORTABILITY")) {
+            //verifyEsimFlow
+            if (cart.getClaroChip().getChipType() == ESIM) {
+                orderProcess.addAll(List.of(
+                        new ProcessTaskLog("verifyEsimFlow", "OK"),
+                        new ProcessTaskLog("sendApprovedOrderEmail", "WAIT")
+                ));
+            } else {
+                orderProcess.add(new ProcessTaskLog("verifyEsimFlow", "NOK"));
+                orderProcess.addAll(generateSalesOrdersAuthentication);
+            }
+        } else if (gerarPedidoVendaReturn.equals("DEVICE")) {
             //checkPreSale
             if (cart.isPreSale()) {
                 orderProcess.addAll(List.of(
@@ -211,38 +245,45 @@ public class ValidateOrderSteps {
                 orderProcess.add(new ProcessTaskLog("checkPreSale", "NOK"));
             }
 
-            //paymentVerification
-            List<ProcessTaskLog> paymentVerification = new ArrayList<>();
-            StandardPaymentMode devicePaymentMode = cart.getEntry(cart.getDevice().getCode()).getPaymentMode();
-
-            switch (devicePaymentMode) {
-                case CREDITCARD -> paymentVerification.addAll(List.of(
-                        new ProcessTaskLog("paymentVerification", "CREDIT"),
-                        new ProcessTaskLog("performPaymentAuthentication", "SUCCEEDED"),
-                        new ProcessTaskLog("performPayment", "SUCCEEDED")
-                ));
-                case VOUCHER -> paymentVerification.add(new ProcessTaskLog("paymentVerification", "VOUCHER"));
-                default ->
-                        throw new IllegalStateException("Unexpected value: " + devicePaymentMode);
+            //claroClubeValidation
+            String claroClubeValidationReturn;
+            if (!cart.getClaroClube().isUsed()) {
+                if (cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == PIX) {
+                    claroClubeValidationReturn = "PIX";
+                    orderProcess.add(new ProcessTaskLog("claroClubeValidation", claroClubeValidationReturn));
+                } else {
+                    claroClubeValidationReturn = "OK";
+                    orderProcess.add(new ProcessTaskLog("claroClubeValidation", claroClubeValidationReturn));
+                }
+            } else {
+                claroClubeValidationReturn = "NOK";
+                orderProcess.add(new ProcessTaskLog("claroClubeValidation", claroClubeValidationReturn));
             }
 
-            //claroClubeValidation
-            if (cart.getClaroClube().isClaroClubeApplied()) {
-                orderProcess.add(new ProcessTaskLog("claroClubeValidation", "OK"));
-                orderProcess.addAll(paymentVerification);
+            //redeemClaroClubePoints //TODO clube 100% = ?
+            String redeemClaroClubePointsReturn;
+            if (claroClubeValidationReturn.equals("NOK") && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == PIX) {
+                redeemClaroClubePointsReturn = "SUCCEEDED_PAID_FULLY";
+                orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", redeemClaroClubePointsReturn));
             } else {
-                orderProcess.add(new ProcessTaskLog("claroClubeValidation", "NOK"));
+                redeemClaroClubePointsReturn = "SUCCEEDED_PAID_PARTIALLY";
+                orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", redeemClaroClubePointsReturn));
+            }
 
-                //redeemClaroClubePoints
-                if (cart.getClaroClube().getDiscountValue() == cart.getEntry(cart.getDevice().getCode()).getTotalPrice()) {
-                    orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", "SUCCEEDED_PAID_FULLY"));
-                } else {
-                    orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", "SUCCEEDED_PAID_PARTIALLY"));
-                    orderProcess.addAll(paymentVerification);
+            //paymentVerification
+            if (claroClubeValidationReturn.equals("OK") || redeemClaroClubePointsReturn.equals("SUCCEEDED_PAID_PARTIALLY")) {
+                if (cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == CREDITCARD) {
+                    orderProcess.addAll(List.of(
+                            new ProcessTaskLog("paymentVerification", "CREDIT"),
+                            new ProcessTaskLog("performPaymentAuthentication", "SUCCEEDED"),
+                            new ProcessTaskLog("performPayment", "SUCCEEDED")
+                    ));
+                } else if (cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == VOUCHER) {
+                    orderProcess.add(new ProcessTaskLog("paymentVerification", "VOUCHER"));
                 }
             }
 
-            //identifyFlowAfterPedidoVenda
+            //identifyFlowAfterPedidoVenda //TODO
         }
 
         return orderProcess;
