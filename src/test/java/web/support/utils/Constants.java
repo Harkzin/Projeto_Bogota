@@ -97,4 +97,11 @@ public final class Constants {
             return this.statusList;
         }
     }
+
+    public enum GradePlan {
+        DOWNGRADE,
+        INDEFINIDO,
+        SIDEGRADE,
+        UPGRADE
+    }
 }

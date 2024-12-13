@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
+import static web.support.utils.Constants.GradePlan.*;
 import static web.support.utils.Constants.InvoiceType.*;
 import static web.support.utils.Constants.StandardPaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
@@ -115,7 +116,7 @@ public class CartOrder {
     private String eventId;
 
     @JsonProperty("gradePlan")
-    private String gradePlan;
+    private GradePlan gradePlan;
 
     @JsonProperty("guid")
     private String guid;
@@ -169,6 +170,8 @@ public class CartOrder {
 
         appliedCouponCodes = new ArrayList<>();
         dependentsInformation = new ArrayList<>();
+
+        gradePlan = INDEFINIDO;
     }
 
 
@@ -228,7 +231,7 @@ public class CartOrder {
     // Payment and Delivery --------------------------------------
         // Status
     public String getStatus() {
-        return status.status;
+        return status.status.toUpperCase();
     } //Getter only
 
     public List<Status.OrderProcess> getOrderProcess() {
@@ -378,7 +381,7 @@ public class CartOrder {
         return eventId;
     } //Getter only
 
-    public String getGradePlan() {
+    public GradePlan getGradePlan() {
         return gradePlan;
     } //Getter only
 
@@ -629,6 +632,14 @@ public class CartOrder {
 
     public boolean isDeviceCart() {
         return !(deviceId == null);
+    }
+
+    public boolean isComboFlow() {
+        return planSingleToCombo.containsValue(planId);
+    }
+
+    public boolean isEasyControlFlow() {
+        return getPlan().getCategories().stream().anyMatch(c -> c.getCode().equals("controle_facil"));
     }
 
     public boolean hasLoyalty() {
@@ -1186,7 +1197,11 @@ public class CartOrder {
                 @JsonProperty("returnCode")
                 private String returnCode;
 
-                private ProcessTaskLog() {}
+                @JsonIgnore
+                public ProcessTaskLog(String actionId, String returnCode) {
+                    this.actionId = actionId;
+                    this.returnCode = returnCode;
+                }
 
                 //########################################
 
