@@ -54,7 +54,13 @@ public class ParabensPage {
         //Valida mensagem esim
         //TODO mudar para id apos mapeamento
         if (cart.getClaroChip().getChipType() == ESIM) {
-            driverWeb.findElement("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p", "xpath").getText().equals("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.");
+            if (cart.isDeviceCart()) {
+                validateElementText("Assim que o seu pedido for entregue, você receberá o código do eSIM por e-mail. Além disso, você terá acesso às instruções passo a passo para habilitar o eSIM em Entrar > Acompanhar Pedidos eSIM > Gerenciar eSIM",
+                        driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[5]/div[2]/p"));
+            } else {
+                validateElementText("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.",
+                        driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p"));
+            }
         }
 
         //Nome (Parabéns, {nome-cliente})
