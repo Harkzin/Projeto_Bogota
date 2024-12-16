@@ -1197,6 +1197,8 @@ public class CartOrder {
                 @JsonProperty("returnCode")
                 private String returnCode;
 
+                private ProcessTaskLog() {}
+
                 @JsonIgnore
                 public ProcessTaskLog(String actionId, String returnCode) {
                     this.actionId = actionId;
