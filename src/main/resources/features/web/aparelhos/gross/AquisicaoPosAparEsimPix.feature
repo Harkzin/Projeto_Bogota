@@ -35,43 +35,43 @@ Funcionalidade: ECCMAUT-1170 - Aquisicao Pos com Aparelho - eSIM - Pix
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Entao é direcionado para a tela de Customizar Fatura
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-      Mas não deve haver alterações no valor e nem nas informações do Plano
-    E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
-    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
-
-    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
-    Entao não deve haver alterações no valor e nem nas informações do Plano
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-
-    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
-    Entao não deve haver alterações no valor e nem nas informações do Plano
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-
-    Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    Entao não deve haver alterações no valor e nem nas informações do Plano
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+    #  Mas não deve haver alterações no valor e nem nas informações do Plano
+    #E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
+    #E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    #E deve ser exibido as datas de vencimento
+#
+    #Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    #Entao não deve haver alterações no valor e nem nas informações do Plano
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+#
+    #Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    #Entao não deve haver alterações no valor e nem nas informações do Plano
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+#
+    #Quando o usuário selecionar o método de recebimento da fatura [Correios]
+    #Entao não deve haver alterações no valor e nem nas informações do Plano
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+#
     Quando o usuário selecionar a forma de pagamento [Débito]
-    Entao o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    E deve ser exibido as datas de vencimento
+    #Entao o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+    #E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+    #E deve ser exibido as datas de vencimento
+#
+    #Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    #Entao não deve haver alterações no valor e nem nas informações do Plano
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+#
+    #Quando o usuário selecionar o método de recebimento da fatura [E-mail]
+    #Entao não deve haver alterações no valor e nem nas informações do Plano
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
+#
+    #Quando o usuário selecionar o método de recebimento da fatura [Correios]
+    #Entao o valor do Plano será atualizado no Resumo da compra para fatura impressa
+    #  Mas não deve haver alterações no valor e nem nas informações do Aparelho
 
-    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
-    Entao não deve haver alterações no valor e nem nas informações do Plano
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-
-    Quando o usuário selecionar o método de recebimento da fatura [E-mail]
-    Entao não deve haver alterações no valor e nem nas informações do Plano
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-
-    Quando o usuário selecionar o método de recebimento da fatura [Correios]
-    Entao o valor do Plano será atualizado no Resumo da compra para fatura impressa
-      Mas não deve haver alterações no valor e nem nas informações do Aparelho
-
-    Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
+    #Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
     Entao o valor do Plano será atualizado no Resumo da compra para fatura digital
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
     E preenche os dados bancários
