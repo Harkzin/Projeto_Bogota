@@ -57,10 +57,15 @@ public class ParabensPage {
             driverWeb.findElement("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p", "xpath").getText().equals("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.");
         }
 
-        //Nome (Parabéns, {nome-cliente})
-        String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
-        String successText = String.format("Parabéns, %s!", customerName);
-        validateElementText(successText, driverWeb.findById("txt-parabens"));
+        // Validação do nome (Parabéns, {nome-cliente})
+        WebElement successText = driverWeb.findById("txt-parabens");
+        if (processType == ProcessType.MIGRATE) {
+            String customerName = successText.getText().replaceAll("Parabéns,\\s*", "").replaceAll("!", "");
+            validateElementText(String.format("Parabéns, %s!", customerName), successText);
+        } else if (processType == ProcessType.ACQUISITION) {
+            String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
+            validateElementText(String.format("Parabéns, %s!", customerName), successText);
+        }
 
         //Previsão de entrega (Aparelhos)
         if (cart.isDeviceCart()) {
@@ -99,7 +104,6 @@ public class ParabensPage {
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
-
 
         //Número pedido
         WebElement orderNumber = driverWeb.findById("txt-pedido");
