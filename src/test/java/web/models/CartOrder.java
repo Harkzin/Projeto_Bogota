@@ -231,7 +231,7 @@ public class CartOrder {
     // Payment and Delivery --------------------------------------
         // Status
     public String getStatus() {
-        return status.status.toUpperCase();
+        return status.status;
     } //Getter only
 
     public List<Status.OrderProcess> getOrderProcess() {

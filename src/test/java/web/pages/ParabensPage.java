@@ -93,7 +93,6 @@ public class ParabensPage {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
 
-
         //Número pedido
         WebElement orderNumber = driverWeb.findById("txt-pedido");
         assertTrue(orderNumber.isDisplayed());

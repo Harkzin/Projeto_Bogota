@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.models.CartOrder;
 
 import java.net.http.HttpResponse;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,29 +50,40 @@ public class ValidateOrderSteps {
 
     @E("os dados do pedido estão corretos")
     public void validateOrder() {
-        FluentWait<CartOrder> wait = new FluentWait<>(order)
+        Clock clock = Clock.systemDefaultZone();
+
+        FluentWait<CartOrder> wait = new FluentWait<>(order, clock, Sleeper.SYSTEM_SLEEPER)
                 .withTimeout(ofSeconds(VALIDATE_ORDER_TIMEOUT))
                 .pollingEvery(ofSeconds(GET_ORDER_UPDATE_INTERVAL));
+
+        String finalStatus = getFinalStatus();
+        logger.debug("Expected order final status: {}", finalStatus);
 
         orderProcessRef = getExpectedOrderProcess();
         logger.debug("Expected order-process:{}", orderProcessRef.stream().map(p -> String.format("\nactionId: %s | returnCode: %s", p.getActionId(), p.getReturnCode())).collect(Collectors.joining()));
 
+        //###########################################################################################################################
         logger.info("------------------------------------------------------------------------");
         logger.info("Validate order: START");
         logger.info("------------------------------------------------------------------------");
 
+        Instant timeout = clock.instant().plusSeconds(VALIDATE_ORDER_TIMEOUT);
+
         wait.until(o -> {
             order = refreshOrder();
-            logger.info("Current order status: {} | Next update in {}s", order.getStatus(), GET_ORDER_UPDATE_INTERVAL);
+            Duration remainigTime = Duration.ofSeconds(clock.instant().until(timeout, ChronoUnit.SECONDS));
+            String remainingTimeStr = String.format("%dm%ds", remainigTime.toMinutesPart(), remainigTime.toSecondsPart());
+            logger.info("Current order status: {} | Next update in: {}s | Remaining time until timeout: {}", order.getStatus(), GET_ORDER_UPDATE_INTERVAL, remainingTimeStr);
 
             //order-process
             validateOrderProcess();
 
             //TODO chamar novas validações aqui
 
-            return order.getStatus().equals("AWAITING_INVOICE");
+            return order.getStatus().equals(finalStatus);
         });
 
+        //###########################################################################################################################
         logger.info("------------------------------------------------------------------------");
         logger.info("Validate order: END");
         logger.info("------------------------------------------------------------------------");
@@ -298,6 +313,14 @@ public class ValidateOrderSteps {
         }
 
         return orderProcess;
+    }
+
+    private String getFinalStatus() {
+        return switch (cart.getProcessType()) {
+            case ACQUISITION, PORTABILITY, APARELHO_TROCA_APARELHO, ACCESSORY -> "ORDER_COMPLETED";
+            case MIGRATE, EXCHANGE -> cart.isDeviceCart() ? "ORDER_COMPLETED" : "Activation_migration_completed";
+            case EXCHANGE_PROMO -> "Activation_migration_completed";
+        };
     }
 
     private void validateOrderProcess() {
