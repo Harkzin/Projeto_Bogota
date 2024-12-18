@@ -64,10 +64,12 @@ public class ParabensPage {
             }
         }
 
-        //Nome (Parabéns, {nome-cliente})
-        String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
-        String successText = String.format("Parabéns, %s!", customerName);
-        validateElementText(successText, driverWeb.findById("txt-parabens"));
+        //Nome (Parabéns, {nome-cliente}) //TODO Para fluxos de base atualmente não há de onde obter o nome do cliente
+        if (processType == ACQUISITION || processType == PORTABILITY || processType == ProcessType.ACCESSORY) {
+            String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
+            String successText = String.format("Parabéns, %s!", customerName);
+            validateElementText(successText, driverWeb.findById("txt-parabens"));
+        }
 
         //Previsão de entrega (Aparelhos)
         if (cart.isDeviceCart()) {
@@ -105,8 +107,9 @@ public class ParabensPage {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
+        } else if (cart.isDeviceCart() || processType == ProcessType.ACCESSORY) {
+            validateElementText("Sua solicitação foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
-
 
         //Número pedido
         WebElement orderNumber = driverWeb.findById("txt-pedido");
@@ -126,8 +129,10 @@ public class ParabensPage {
         //Número de contato
         //validateElementText(cart.getUser().getTelephone() , driverWeb.findById(""));
 
-        //Nome
-        validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
+        //Nome //TODO Para fluxos de base atualmente não há de onde obter o nome do cliente
+        if (cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY || cart.getProcessType() == ProcessType.ACCESSORY) {
+            validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
+        }
 
         //CPF
         WebElement cpf = driverWeb.findById("msg-informacao-cpf");
