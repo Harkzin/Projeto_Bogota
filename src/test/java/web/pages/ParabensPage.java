@@ -210,16 +210,14 @@ public class ParabensPage {
         WebElement statusButton = driverWeb.findByXpath("//*[@class='mdn-Container']/div[1]/button");
         List<WebElement> statusList = driverWeb.findElements("//*[contains(@class, 'c_linha-do-tempo-text')]", "xpath");
 
-
-
-        assertEquals("Solicitação recebida com sucesso!",msgSucesso.getText());
+        validateElementText("Solicitação recebida com sucesso!", msgSucesso);
         assertTrue(numeroPedido.isDisplayed());
 
-        //status
+        //Status pedido
         driverWeb.javaScriptClick(statusButton);
         validateStatus(statusList, cart);
 
-
+        //Pix
         validateElementText(String.format("Pague R$ %s por Pix para garantir sua compra", formatPrice(cart.getEntry(cart.getDevice().getCode()).getTotalPrice())), valorTotal);
         driverWeb.waitElementVisible(temporizadorPix, 10);
         assertTrue(qrCodePix.isDisplayed());
