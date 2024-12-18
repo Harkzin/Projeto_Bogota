@@ -202,13 +202,26 @@ public class ParabensPage {
         }
     }
 
-    public void validarPaginaParabensPix() {
+    public void validarPaginaParabensPix(CartOrder cart) {
         driverWeb.waitPageLoad("/checkout/orderConfirmation", 60);
         //TODO Validar valor do pix é o mesmo valor do aparelho
         WebElement qrCodePix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[2]/img");
         WebElement temporizadorPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/div[3]/div[1]/p");
         WebElement copiarCodigoPix = driverWeb.findByXpath("//*[@id='pix-payment-instructions']/div[2]/div[1]/ul/li[1]/button");
+        WebElement msgSucesso = driverWeb.findById("txt-solicitacao-sucesso");
+        WebElement numeroPedido = driverWeb.findByXpath("//*[@id='numero-pedido']//..");
+        WebElement valorTotal = driverWeb.findByXpath("//*[@*='valor-total']/..");
+        WebElement statusButton = driverWeb.findByXpath("//*[@class='mdn-Container']/div[1]/button");
+        List<WebElement> statusList = driverWeb.findElements("//*[contains(@class, 'c_linha-do-tempo-text')]", "xpath");
 
+        validateElementText("Solicitação recebida com sucesso!", msgSucesso);
+
+        //Status pedido
+        driverWeb.javaScriptClick(statusButton);
+        validateStatus(statusList, cart);
+
+        //Pix
+        validateElementText(String.format("Pague R$ %s por Pix para garantir sua compra", formatPrice(cart.getEntry(cart.getDevice().getCode()).getTotalPrice())), valorTotal);
         driverWeb.waitElementVisible(temporizadorPix, 10);
         assertTrue(qrCodePix.isDisplayed());
         assertTrue(copiarCodigoPix.isDisplayed());

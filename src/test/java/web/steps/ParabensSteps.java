@@ -25,7 +25,7 @@ public class ParabensSteps {
 
     @Entao("é direcionado para a tela de Parabéns Pix")
     public void validarPaginaParabensPix() {
-        parabensPage.validarPaginaParabensPix();
+        parabensPage.validarPaginaParabensPix(cart);
     }
 
     @E("clica no botão [Ok, Entendi] do modal de alerta de token")
