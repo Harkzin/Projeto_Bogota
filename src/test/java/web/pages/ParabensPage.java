@@ -37,8 +37,10 @@ public class ParabensPage {
         ZoneDeliveryMode deliveryMode = cart.getDeliveryMode();
 
         List<String> statusListRef = switch (cart.getProcessType()) {
-            case ACQUISITION -> isDeviceCart ? ACQUISITION_DEVICE.getStatusList() : (deliveryMode == CONVENTIONAL ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList());
-            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO -> isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
+            case ACQUISITION ->
+                    isDeviceCart ? ACQUISITION_DEVICE.getStatusList() : (deliveryMode == CONVENTIONAL ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList());
+            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO ->
+                    isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
             case PORTABILITY -> isDeviceCart ? PORTABILITY_DEVICE.getStatusList() : PORTABILITY_PLAN.getStatusList();
             case ACCESSORY -> StatusSuccessPage.ACCESSORY.getStatusList();
         };
@@ -103,6 +105,8 @@ public class ParabensPage {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
+        } else if (processType == MIGRATE) {
+            validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         }
 
         //Número pedido
