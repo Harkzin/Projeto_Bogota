@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -18,6 +19,7 @@ import static web.pages.ComumPage.validateElementText;
 import static web.support.utils.Constants.*;
 import static web.support.utils.Constants.ChipType.ESIM;
 import static web.support.utils.Constants.ProcessType.*;
+import static web.support.utils.Constants.StandardPaymentMode.*;
 import static web.support.utils.Constants.StatusSuccessPage.*;
 import static web.support.utils.Constants.ZoneDeliveryMode.*;
 
@@ -36,12 +38,21 @@ public class ParabensPage {
         boolean isDeviceCart = cart.isDeviceCart();
         ZoneDeliveryMode deliveryMode = cart.getDeliveryMode();
 
-        List<String> statusListRef = switch (cart.getProcessType()) {
-            case ACQUISITION -> isDeviceCart ? ACQUISITION_DEVICE.getStatusList() : (deliveryMode == CONVENTIONAL ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList());
-            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO -> isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
-            case PORTABILITY -> isDeviceCart ? PORTABILITY_DEVICE.getStatusList() : PORTABILITY_PLAN.getStatusList();
-            case ACCESSORY -> StatusSuccessPage.ACCESSORY.getStatusList();
-        };
+        List<String> statusListRef;
+
+        switch (cart.getProcessType()) {
+            case ACQUISITION -> {
+                if (cart.isDeviceCart()) {
+                    statusListRef = (cart.getEntry(cart.getDevice().getCode()).getPaymentMode()) == PIX ? ACQUISITION_DEVICE_PIX.getStatusList() : ACQUISITION_DEVICE.getStatusList();
+                } else {
+                    statusListRef = (deliveryMode == CONVENTIONAL) ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList();
+                }
+            }
+            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO -> statusListRef = isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
+            case PORTABILITY -> statusListRef = isDeviceCart ? PORTABILITY_DEVICE.getStatusList() : PORTABILITY_PLAN.getStatusList();
+            case ACCESSORY -> statusListRef = StatusSuccessPage.ACCESSORY.getStatusList();
+            default -> throw new RuntimeException("Unexpected processType value");
+        }
 
         IntStream.range(0, statusListRef.size()).forEachOrdered(i ->
                 validateElementText(statusListRef.get(i), statusList.get(i))
