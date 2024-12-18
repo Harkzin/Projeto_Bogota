@@ -37,10 +37,8 @@ public class ParabensPage {
         ZoneDeliveryMode deliveryMode = cart.getDeliveryMode();
 
         List<String> statusListRef = switch (cart.getProcessType()) {
-            case ACQUISITION ->
-                    isDeviceCart ? ACQUISITION_DEVICE.getStatusList() : (deliveryMode == CONVENTIONAL ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList());
-            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO ->
-                    isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
+            case ACQUISITION -> isDeviceCart ? ACQUISITION_DEVICE.getStatusList() : (deliveryMode == CONVENTIONAL ? ACQUISITION_PLAN.getStatusList() : ACQUISITION_PLAN_EXPRESS.getStatusList());
+            case MIGRATE, EXCHANGE, EXCHANGE_PROMO, APARELHO_TROCA_APARELHO -> isDeviceCart ? MIGRATE_EXCHANGE_DEVICE.getStatusList() : MIGRATE_EXCHANGE_PLAN.getStatusList();
             case PORTABILITY -> isDeviceCart ? PORTABILITY_DEVICE.getStatusList() : PORTABILITY_PLAN.getStatusList();
             case ACCESSORY -> StatusSuccessPage.ACCESSORY.getStatusList();
         };
