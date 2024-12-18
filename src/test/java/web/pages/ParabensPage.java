@@ -59,14 +59,11 @@ public class ParabensPage {
             driverWeb.findElement("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p", "xpath").getText().equals("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.");
         }
 
-        // Validação do nome (Parabéns, {nome-cliente})
-        WebElement successText = driverWeb.findById("txt-parabens");
-        if (processType == ProcessType.MIGRATE) {
-            String customerName = successText.getText().replaceAll("Parabéns,\\s*", "").replaceAll("!", "");
-            validateElementText(String.format("Parabéns, %s!", customerName), successText);
-        } else if (processType == ProcessType.ACQUISITION) {
+        //Nome (Parabéns, {nome-cliente}) //TODO Para fluxos de base atualmente não há de onde obter o nome do cliente
+        if (processType == ACQUISITION || processType == PORTABILITY || processType == ProcessType.ACCESSORY) {
             String customerName = StringUtils.capitalize(cart.getUser().getName().split(" ")[0].toLowerCase());
-            validateElementText(String.format("Parabéns, %s!", customerName), successText);
+            String successText = String.format("Parabéns, %s!", customerName);
+            validateElementText(successText, driverWeb.findById("txt-parabens"));
         }
 
         //Previsão de entrega (Aparelhos)
@@ -105,8 +102,8 @@ public class ParabensPage {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
-        } else if (processType == MIGRATE) {
-            validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
+        } else if (cart.isDeviceCart() || processType == ProcessType.ACCESSORY) {
+            validateElementText("Sua solicitação foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
 
         //Número pedido
@@ -127,8 +124,10 @@ public class ParabensPage {
         //Número de contato
         //validateElementText(cart.getUser().getTelephone() , driverWeb.findById(""));
 
-        //Nome
-        validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
+        //Nome //TODO Para fluxos de base atualmente não há de onde obter o nome do cliente
+        if (cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY || cart.getProcessType() == ProcessType.ACCESSORY) {
+            validateElementText("Nome " + cart.getUser().getName(), driverWeb.findById("msg-informacao-nome"));
+        }
 
         //CPF
         WebElement cpf = driverWeb.findById("msg-informacao-cpf");
