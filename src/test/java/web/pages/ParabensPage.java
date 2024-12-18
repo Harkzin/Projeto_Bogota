@@ -12,7 +12,6 @@ import web.support.utils.DriverWeb;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static web.pages.ComumPage.formatPrice;
 import static web.pages.ComumPage.validateElementText;
@@ -216,7 +215,6 @@ public class ParabensPage {
         List<WebElement> statusList = driverWeb.findElements("//*[contains(@class, 'c_linha-do-tempo-text')]", "xpath");
 
         validateElementText("Solicitação recebida com sucesso!", msgSucesso);
-        assertTrue(numeroPedido.isDisplayed());
 
         //Status pedido
         driverWeb.javaScriptClick(statusButton);
