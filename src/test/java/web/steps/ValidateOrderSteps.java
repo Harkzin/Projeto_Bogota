@@ -27,6 +27,7 @@ import static web.models.CartOrder.Status.OrderProcess.*;
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.ChipType.*;
 import static web.support.utils.Constants.GradePlan.*;
+import static web.support.utils.Constants.ProcessType.*;
 import static web.support.utils.Constants.StandardPaymentMode.*;
 
 public class ValidateOrderSteps {
@@ -57,7 +58,7 @@ public class ValidateOrderSteps {
                 .pollingEvery(ofSeconds(GET_ORDER_UPDATE_INTERVAL));
 
         String finalStatus = getFinalStatus();
-        logger.debug("Expected order final status: {}", finalStatus);
+        logger.info("Expected order final status: {}", finalStatus);
 
         orderProcessRef = getExpectedOrderProcess();
         logger.debug("Expected order-process:{}", orderProcessRef.stream().map(p -> String.format("\nactionId: %s | returnCode: %s", p.getActionId(), p.getReturnCode())).collect(Collectors.joining()));
@@ -205,14 +206,6 @@ public class ValidateOrderSteps {
             ));
         }
 
-        //generateSalesOrdersAuthentication
-        List<ProcessTaskLog> generateSalesOrdersAuthentication = List.of(
-                new ProcessTaskLog("generateSalesOrdersAuthentication", "SUCCEEDED"),
-                new ProcessTaskLog("generateSalesOrders", "SUCCEEDED"),
-                new ProcessTaskLog("awaitGenerateSalesOrdersReturn", "OK"),
-                new ProcessTaskLog("checkMessageType", "WAIT")
-        );
-
         //gerarPedidoVenda (STEP_6)
         String gerarPedidoVendaReturn = "";
         if (!cart.isDeviceCart()) {
@@ -258,7 +251,6 @@ public class ValidateOrderSteps {
                 ));
             } else {
                 orderProcess.add(new ProcessTaskLog("verifyEsimFlow", "NOK"));
-                orderProcess.addAll(generateSalesOrdersAuthentication);
             }
         } else { //DEVICE
             //checkPreSale
@@ -287,11 +279,11 @@ public class ValidateOrderSteps {
             }
 
             //redeemClaroClubePoints //TODO clube 100% = ?
-            String redeemClaroClubePointsReturn;
+            String redeemClaroClubePointsReturn = "";
             if (claroClubeValidationReturn.equals("NOK") && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == PIX) {
                 redeemClaroClubePointsReturn = "SUCCEEDED_PAID_FULLY";
                 orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", redeemClaroClubePointsReturn));
-            } else {
+            } else if(claroClubeValidationReturn.equals("NOK") && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() != PIX) {
                 redeemClaroClubePointsReturn = "SUCCEEDED_PAID_PARTIALLY";
                 orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", redeemClaroClubePointsReturn));
             }
@@ -309,8 +301,25 @@ public class ValidateOrderSteps {
                 }
             }
 
-            //identifyFlowAfterPedidoVenda //TODO
+            //identifyFlowAfterPedidoVenda
+            if (cart.getProcessType() == PORTABILITY) {
+                orderProcess.addAll(List.of(
+                        new ProcessTaskLog("identifyFlowAfterPedidoVenda", "PORTABILITY"),
+                        new ProcessTaskLog("awaitSimplifiedActivation", "OK"), //TODO
+                        new ProcessTaskLog("simplifiedActivation", "OK_ABR")
+                ));
+            } else {
+                orderProcess.add(new ProcessTaskLog("identifyFlowAfterPedidoVenda", "SAP"));
+            }
         }
+
+        //generateSalesOrdersAuthentication
+        orderProcess.addAll(List.of(
+                new ProcessTaskLog("generateSalesOrdersAuthentication", "SUCCEEDED"),
+                new ProcessTaskLog("generateSalesOrders", "SUCCEEDED"),
+                new ProcessTaskLog("awaitGenerateSalesOrdersReturn", "OK"),
+                new ProcessTaskLog("checkMessageType", "WAIT")
+        ));
 
         return orderProcess;
     }
