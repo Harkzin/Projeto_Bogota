@@ -64,10 +64,10 @@ public class ParabensPage {
 
         //Status pedido
         if (cart.isDeviceCart()) { //Aparelhos (modal)
-            WebElement statusModal = driverWeb.findByXpath("//*[@class='mdn-Row']/div[1]/div[2]/div/div");
+            WebElement statusModal = driverWeb.findById("status-modal");
 
             //Abre modal
-            driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@class='mdn-Row']/div[1]/div[2]/button"));
+            driverWeb.javaScriptClick(driverWeb.findById("btn-open-status-modal"));
             driverWeb.waitElementVisible(statusModal, 2);
             driverWeb.actionPause(1000);
 
@@ -79,7 +79,7 @@ public class ParabensPage {
             validateStatus(statusList, cart);
 
             //Fecha modal
-            driverWeb.javaScriptClick(statusModal.findElement(By.tagName("button")));
+            driverWeb.javaScriptClick(driverWeb.findById("btn-close-status-modal"));
             driverWeb.waitElementInvisible(statusModal, 2);
         } else { //Planos
             List<WebElement> statusListPlan = driverWeb.findElements("//*[@id='txt-sucesso-pedido']/../following-sibling::div[1]//*[contains(@class, 'mdn-Heading')]", "xpath");
@@ -99,7 +99,7 @@ public class ParabensPage {
 
         // Informações do pedido ########################################################
         //Abre Accordion - Informações do pedido
-        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='acr-expandir-informacao']/.."));
+        driverWeb.javaScriptClick(driverWeb.findById("acr-expandir-informacao"));
         driverWeb.actionPause(1000);
 
         //Número do pedido
@@ -125,7 +125,7 @@ public class ParabensPage {
             case TICKET -> "Boleto";
             case DEBITCARD -> "Débito automático";
             case CREDITCARD -> "Crédito";
-            default -> "error";
+            default -> throw new RuntimeException("Unexpected paymentMode value");
         };
         validateElementText("Forma de pagamento " + paymentMode, driverWeb.findById("msg-informacao-pagamento"));
 
@@ -159,7 +159,7 @@ public class ParabensPage {
 
         // Endereço de entrega ##########################################################
         //Abre Accordion
-        driverWeb.javaScriptClick(driverWeb.findByXpath("//*[@id='acr-expandir-endereco']/.."));
+        driverWeb.javaScriptClick(driverWeb.findById("acr-expandir-endereco"));
         driverWeb.actionPause(1000);
 
         if (processType == ACQUISITION || processType == PORTABILITY) { //TODO Para fluxos de base atualmente não há de onde obter os dados de endereço
@@ -168,7 +168,7 @@ public class ParabensPage {
             String building = (addr.getBuilding() == null) || (addr.getBuilding().isEmpty()) ? "" : " - " + addr.getBuilding();
             String address = String.format("Endereço de entrega %s, %s%s - %s - %s %s CEP %s", addr.getStreetname(), addr.getStreetnumber(), building, addr.getNeighbourhood(), addr.getTown(), addr.getStateCode(), addr.getPostalcode().replaceAll("(\\d{5})(\\d{3})", "$1-$2"));
 
-            WebElement deliveryText = driverWeb.findByXpath("//*[@id='txt-end-entrega']/..");
+            WebElement deliveryText = driverWeb.findById("txt-end-entrega");
             driverWeb.javaScriptScrollTo(deliveryText);
             validateElementText(address, deliveryText);
         }
