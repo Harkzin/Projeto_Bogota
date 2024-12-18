@@ -106,11 +106,7 @@ public class ParabensPage {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
-<<<<<<< HEAD
         } else if (cart.isDeviceCart() || processType == ProcessType.ACCESSORY) {
-=======
-        } else if (cart.isDeviceCart() && (processType == APARELHO_TROCA_APARELHO || processType == ACQUISITION)) {
->>>>>>> 0777b8778ed23f745a9c314019790a7f9576a762
             validateElementText("Sua solicitação foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
 
