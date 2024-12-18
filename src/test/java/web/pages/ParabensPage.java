@@ -54,7 +54,13 @@ public class ParabensPage {
         //Valida mensagem esim
         //TODO mudar para id apos mapeamento
         if (cart.getClaroChip().getChipType() == ESIM) {
-            driverWeb.findElement("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p", "xpath").getText().equals("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.");
+            if (cart.isDeviceCart()) {
+                validateElementText("Assim que o seu pedido for entregue, você receberá o código do eSIM por e-mail. Além disso, você terá acesso às instruções passo a passo para habilitar o eSIM em Entrar > Acompanhar Pedidos eSIM > Gerenciar eSIM",
+                        driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[5]/div[2]/p"));
+            } else {
+                validateElementText("Assim que o seu pedido for aprovado, você receberá o código do eSIM por e-mail. Além disso, na página Acompanhe seu Pedido, você terá acesso às instruções passo a passo para habilitar o eSIM.",
+                        driverWeb.findByXpath("/html/body/main/div[3]/div/div[2]/div/div/div/div/div[1]/div[4]/div[2]/p"));
+            }
         }
 
         //Nome (Parabéns, {nome-cliente}) //TODO Para fluxos de base atualmente não há de onde obter o nome do cliente
@@ -100,7 +106,11 @@ public class ParabensPage {
             validateElementText(String.format("Sua solicitação para adquirir o %s foi recebida com sucesso!", cart.getPlan().getName()), driverWeb.findById("txt-sucesso-plano"));
         } else if (processType == PORTABILITY) {
             validateElementText("Sua solicitação para trazer seu número para Claro foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
+<<<<<<< HEAD
         } else if (cart.isDeviceCart() || processType == ProcessType.ACCESSORY) {
+=======
+        } else if (cart.isDeviceCart() && (processType == APARELHO_TROCA_APARELHO || processType == ACQUISITION)) {
+>>>>>>> 0777b8778ed23f745a9c314019790a7f9576a762
             validateElementText("Sua solicitação foi recebida com sucesso!", driverWeb.findById("txt-sucesso-plano"));
         }
 
