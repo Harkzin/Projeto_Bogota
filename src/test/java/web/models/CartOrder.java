@@ -167,6 +167,7 @@ public class CartOrder {
         delivery = new Delivery();
         claroChip = new ClaroChip();
         claroClube = new ClaroClubeInfo();
+        claroSapResponse = new ClaroSapResponse();
 
         appliedCouponCodes = new ArrayList<>();
         dependentsInformation = new ArrayList<>();
@@ -1799,6 +1800,8 @@ public class CartOrder {
         @JsonProperty("sapStatusHistory")
         private final List<SapStatusHistory> sapStatusHistory;
 
+        private String status;
+
         private ClaroSapResponse() {
             invoiceNumber = new ArrayList<>();
             sapStatusHistory = new ArrayList<>();
@@ -1830,6 +1833,15 @@ public class CartOrder {
 
         public List<SapStatusHistory> getSapStatusHistory() {
             return sapStatusHistory;
+        }
+
+        //status
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
 
         //########################################

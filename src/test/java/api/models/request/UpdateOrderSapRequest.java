@@ -170,7 +170,6 @@ public class UpdateOrderSapRequest {
         private String iccid;
         @JsonProperty("imei")
         private String imei;
-        ;
 
         public void setSeq(String seq) {
             this.seq = seq;

@@ -1,5 +1,6 @@
 package web.support.api;
 
+import api.models.request.UpdateOrderSapRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import web.support.utils.Constants;
 import web.support.utils.Constants.Email;
 
 import java.net.http.HttpClient;
@@ -30,6 +32,8 @@ public final class RestAPI {
     public static final ObjectMapper objMapper = new ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true);
+
+    private static final String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
 
     private static void validateStatusCodeOk(String message, int status, String url) throws HttpStatusException {
         if (status != 200) {
@@ -289,5 +293,26 @@ public final class RestAPI {
             throw new RuntimeException(e);
         }
         return response;
+    }
+
+    public static HttpResponse<String> updateOrderSap(UpdateOrderSapRequest updateOrderSapRequest) {
+        String body;
+        try {
+            body = objMapper.writeValueAsString(updateOrderSapRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        final HttpRequest updateOrderSap = HttpRequest.newBuilder()
+                .uri(URI.create(baseURI + "/orders/update/sap"))
+                .timeout(ofSeconds(15))
+                .header("Authorization", getEcommToken())
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build();
+        try {
+            return clientHttp.send(updateOrderSap, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
