@@ -32,7 +32,7 @@ public class CustomizarFaturaPage {
         this.cart = cart;
     }
 
-    private boolean isComboFlow;
+    private boolean isDebitPaymentFlow;
     private boolean isDebitClient;
     private boolean showTermsOnly;
 
@@ -47,6 +47,7 @@ public class CustomizarFaturaPage {
     private WebElement appDebit;
     private WebElement emailDebit;
     private WebElement correiosDebit;
+
     private WebElement whatsappTicket;
     private WebElement appTicket;
     private WebElement emailTicket;
@@ -61,6 +62,7 @@ public class CustomizarFaturaPage {
 
     public void validarPaginaCustomizarFatura() {
         driverWeb.waitPageLoad("/checkout/multi/payment-method", 60);
+        driverWeb.actionPause(2000);
 
         abaDebito = driverWeb.findElement("tab-debito", "id");
         abaBoleto = driverWeb.findElement("tab-boleto", "id");
@@ -73,8 +75,7 @@ public class CustomizarFaturaPage {
     }
 
     public void validarPaginaTermosCombo() {
-        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 60);
-        isComboFlow = true;
+        driverWeb.waitPageLoad("checkout/multi/terms-and-conditions", 100);
         showTermsOnly = true;
     }
 
@@ -130,18 +131,16 @@ public class CustomizarFaturaPage {
         assertTrue(abaDebito.findElement(By.tagName("div")).isDisplayed());
     }
 
-    public boolean validarNaoExibeMeiosPagamento(ProcessType processType) { //Fluxos: base - cliente já é débito, combo ou THAB
+    public void validarNaoExibeMeiosPagamento(ProcessType processType) { //Fluxos: base - cliente já é débito, combo ou THAB
         isDebitClient = true; //TODO caso combo = ?
 
-        if (processType == MIGRATE) { //Só existe (oculto), caso seja fluxo migração
+        if (processType == MIGRATE) { //Só existe (oculto) caso seja fluxo migração
             assertFalse(abaDebito.isDisplayed());
         } else {
             assertNull(abaDebito);
         }
 
         assertNull(abaBoleto);
-
-        return !cart.isThab() && !isComboFlow; //TODO combo funcionará apenas boleto
     }
 
     //###################################################################
@@ -206,7 +205,7 @@ public class CustomizarFaturaPage {
         assertNull("Nao deve existir no html", correiosTicket);
     };
 
-    public void validarExibeTiposFatura(boolean isDebitPaymentFlow, boolean isThab) { //Fluxo gross, fluxo base com fatura impressa, migra pré-ctrl e thab
+    public void validarExibeTiposFatura(boolean isThab) { //Fluxo gross, fluxo base com fatura impressa, migra pré-ctrl e thab
         findInvoiceTypeElements();
 
         if (isDebitPaymentFlow) {
@@ -252,7 +251,7 @@ public class CustomizarFaturaPage {
         datasTicket = driverWeb.findById("datas-vencimento-ticket");
     }
 
-    public void validarExibeDatas(boolean isDebitPaymentFlow) { //Fluxo gross ou base em migra pré-ctrl e ctrl-pós
+    public void validarExibeDatas() { //Fluxo gross ou base em migra pré-ctrl e ctrl-pós
         findDateElements();
         WebElement datas;
 
@@ -303,6 +302,8 @@ public class CustomizarFaturaPage {
     //###################################################################
 
     public void selecionarDebito() {
+        isDebitPaymentFlow = true;
+
         driverWeb.javaScriptClick(abaDebito.findElement(By.tagName("div")));
         assertTrue(abaDebito.findElement(By.tagName("input")).isSelected());
         assertFalse(abaBoleto.findElement(By.tagName("input")).isSelected());
@@ -312,6 +313,8 @@ public class CustomizarFaturaPage {
     }
 
     public void selecionarBoleto() {
+        isDebitPaymentFlow = false;
+
         driverWeb.javaScriptClick(abaBoleto.findElement(By.tagName("div")));
         assertTrue(abaBoleto.findElement(By.tagName("input")).isSelected());
         assertFalse(abaDebito.findElement(By.tagName("input")).isSelected());
@@ -319,7 +322,7 @@ public class CustomizarFaturaPage {
         driverWeb.actionPause(3000);
     }
 
-    public void selecionarTipoFatura(InvoiceType invoiceType, boolean isDebitPaymentFlow) {
+    public void selecionarTipoFatura(InvoiceType invoiceType) {
         switch (invoiceType) {
             case WHATSAPP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? whatsappDebit : whatsappTicket);
             case APP -> driverWeb.javaScriptClick(isDebitPaymentFlow ? appDebit : appTicket);
@@ -390,7 +393,7 @@ public class CustomizarFaturaPage {
         //TODO
     }
 
-    public void aceitarTermos(boolean isDebitPaymentFlow) {
+    public void aceitarTermos() {
         String termsSelector;
         if (showTermsOnly) { //Fluxo combo ou Aparelhos (Manter o Plano) - Tela de termos
             termsSelector = "chk-termos";

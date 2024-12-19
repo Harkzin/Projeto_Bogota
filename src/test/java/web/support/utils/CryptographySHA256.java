@@ -3,20 +3,17 @@ package web.support.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
 
 public class CryptographySHA256 {
     private MessageDigest messageDigest;
     private Base64 encoder;
     private static CryptographySHA256 instance;
-    private Logger logger = Logger.getLogger(this.getClass());
 
     private CryptographySHA256() {
         try {
             this.messageDigest = MessageDigest.getInstance("SHA-256");
             this.encoder = new Base64();
         } catch (NoSuchAlgorithmException var2) {
-            this.logger.error(var2);
         }
 
     }

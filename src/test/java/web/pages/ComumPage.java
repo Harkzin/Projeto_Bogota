@@ -127,7 +127,7 @@ public class ComumPage {
     }
 
     public void validarResumoCompraPlano(CartOrder cart) {
-        driverWeb.actionPause(2000);
+        driverWeb.actionPause(2500);
 
         OrderEntry planEntry = cart.getEntry(cart.getPlan().getCode());
         PlanProduct plan = (PlanProduct) planEntry.getProduct();
@@ -218,7 +218,7 @@ public class ComumPage {
                 String depQuantityRef = String.format("+ %d %s", depQtt, depQtt == 1 ? "dependente" : "dependentes");
                 validateElementText(depQuantityRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='dependentquantity']"));
 
-                String depPriceAndChipRef = String.format("R$ %s ( + %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
+                String depPriceAndChipRef = String.format("R$ %s (+ %d %s)", formatPrice(depQtt * DEPENDENT_PRICE), depQtt, depQtt == 1 ? "chip para dependente" : "chips para dependentes");
                 validateElementText(depPriceAndChipRef, driverWeb.findByXpath(planContentParent + "//*[@data-plan-content='dependentprice']"));
             }
 
@@ -316,7 +316,7 @@ public class ComumPage {
         }
 
         //Desconto Claro Clube
-        if (cart.getClaroClube().isClaroClubeApplied()) {
+        if (cart.getClaroClube().isUsed()) {
             String claroClubDiscountRef = formatPrice(cart.getClaroClube().getDiscountValue());
             validateElementText("Desconto Claro clube -R$ " + claroClubDiscountRef, driverWeb.findByXpath(deviceContentParent + "/div/div[1]/div/div[3]"));
         }
@@ -325,7 +325,7 @@ public class ComumPage {
         double totalPrice = deviceEntry.getTotalPrice();
         if (commonChipFlow) {
             totalPrice += 10D;
-        } else if (cart.getClaroClube().isClaroClubeApplied()) {
+        } else if (cart.getClaroClube().isUsed()) {
             totalPrice -= cart.getClaroClube().getDiscountValue();
         }
         validateElementText("Total: R$ " + formatPrice(totalPrice), driverWeb.findByXpath(deviceContentParent + "//*[@id='txt-valor-total']/.."));

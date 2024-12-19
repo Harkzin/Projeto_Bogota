@@ -63,6 +63,6 @@ Funcionalidade: ECCMAUT-155 - Portabilidade Controle - Entrega Expressa - Endere
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de Parabéns
-      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E clica no botão [Ok, Entendi] do modal de alerta de token
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos

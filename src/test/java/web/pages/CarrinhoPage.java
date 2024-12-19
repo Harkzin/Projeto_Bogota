@@ -222,35 +222,40 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public void inserirDadosPortabilidadeBilAberto(String telefone, boolean cpfAprovado, boolean cpfDiretrix) {
+    public String inserirDadosPortabilidadePix(String telefone) {
+        String cpf = getCpfForPixFlow();
         driverWeb.sendKeys(telefonePortabilidade, telefone);
-        driverWeb.sendKeys(cpfPortabilidade, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverWeb.sendKeys(cpfPortabilidade, cpf);
+
+        return cpf;
     }
 
-    public void inserirDadosPortabilidadePix(String telefone) {
-        driverWeb.sendKeys(telefonePortabilidade, telefone);
-        driverWeb.sendKeys(cpfPortabilidade, getCpfForPixFlow());
-    }
-
-    public void inserirDadosAquisicaoPix(String telefone) {
+    public String inserirDadosAquisicaoPix(String telefone) {
+        String cpf = getCpfForPixFlow();
         driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
-        driverWeb.sendKeys(cpfAquisicao, getCpfForPixFlow());
+        driverWeb.sendKeys(cpfAquisicao, cpf);
+
+        return cpf;
     }
 
-    public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
+    public String inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
+        String cpf = getCpfForPlanFlow(cpfAprovado, cpfDiretrix);
         driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
-        driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
+        driverWeb.sendKeys(cpfAquisicao, cpf);
+
+        return cpf;
+    }
+
+    public String inserirEmail() {
+        String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
+        driverWeb.sendKeys(this.email, userEmail);
+
+        return userEmail;
     }
 
     public void inserirDadosReprovacaoScore(String telefone, String cpf) {
         driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
-        driverWeb.sendKeys(cpfAquisicao,cpf);
-    }
-
-    public void inserirEmail() {
-        String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-        cartOrder.getUser().setEmail(userEmail);
-        driverWeb.sendKeys(this.email, userEmail);
+        driverWeb.sendKeys(cpfAquisicao, cpf);
     }
 
     public void clicarEuQuero() {
