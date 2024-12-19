@@ -57,7 +57,7 @@ public class FormaPagamentoPage {
 
     public void validarPaginaFormaPagamento(CartOrder cart) {
         driverWeb.waitPageLoad("/payment-device-method", 60);
-        driverWeb.actionPause(3000);
+        driverWeb.actionPause(2000);
 
         PageFactory.initElements(driverWeb.getDriver(), this);
 
