@@ -36,7 +36,7 @@ public class FormaPagamentoSteps {
 
     @Entao("o Aparelho receberá o desconto do cupom")
     public void validarDescontoCupom() {
-        formaPagamentoPage.validarCupomAplicado(cart.getAppliedCouponCodes());
+        formaPagamentoPage.validarCupomAplicado(cart.getAppliedCoupon());
         comumPage.validarResumoCompraAparelho(cart);
     }
 
@@ -79,7 +79,10 @@ public class FormaPagamentoSteps {
     }
 
     @E("clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]")
-    public void clicarFinalizar() {
-        formaPagamentoPage.clicarFinalizarPix();
+    public void clicarFinalizar() {formaPagamentoPage.clicarFinalizarPix();
+    }
+// Adicionado para a estoria ECCMAUT198
+    @E("clicar no botão [Continuar] da tela [Forma de Pagamento]")
+    public void clicarContinuar() {formaPagamentoPage.clicarContinuar();
     }
 }

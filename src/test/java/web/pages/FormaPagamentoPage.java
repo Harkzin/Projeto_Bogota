@@ -49,6 +49,10 @@ public class FormaPagamentoPage {
     @FindBy(id = "btn-finalizar-pix")
     private WebElement finalizarPix;
 
+//    Adicionando botão continuar para ECCMAUT198
+    @FindBy(xpath = "/html/body/main/div[2]/div/div[3]/div/div[1]/form[1]/div[1]/button")
+    private WebElement Continuar;
+
     private WebElement cardName;
     private WebElement cardNumber;
     private WebElement cardExpireDate;
@@ -181,5 +185,9 @@ public class FormaPagamentoPage {
 
     public void clicarFinalizarPix() {
         driverWeb.javaScriptClick(finalizarPix);
+    }
+
+    public void clicarContinuar() {
+        driverWeb.javaScriptClick(Continuar);
     }
 }

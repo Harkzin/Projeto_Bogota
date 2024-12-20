@@ -237,24 +237,15 @@ public class CarrinhoPage {
         driverWeb.sendKeys(cpfAquisicao, getCpfForPixFlow());
     }
 
-    public String inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
-        String cpf = getCpfForPlanFlow(cpfAprovado, cpfDiretrix);
+    public void inserirDadosAquisicao(String telefoneContato, boolean cpfAprovado, boolean cpfDiretrix) {
         driverWeb.sendKeys(telefoneContatoAquisicao, telefoneContato);
-        driverWeb.sendKeys(cpfAquisicao, cpf);
-
-        return cpf;
+        driverWeb.sendKeys(cpfAquisicao, getCpfForPlanFlow(cpfAprovado, cpfDiretrix));
     }
 
-    public String inserirEmail() {
+    public void inserirEmail() {
         String userEmail = UUID.randomUUID().toString().replace("-", "") + "@mailsac.com";
-        driverWeb.sendKeys(this.email, userEmail);
-
-        return userEmail;
-    }
-
-    public void inserirDadosReprovacaoScore(String telefone, String cpf) {
-        driverWeb.sendKeys(telefoneContatoAquisicao, telefone);
-        driverWeb.sendKeys(cpfAquisicao, cpf);
+        cartOrder.setUserEmail(userEmail);
+        driverWeb.sendKeys(email, userEmail);
     }
 
     public void clicarEuQuero() {

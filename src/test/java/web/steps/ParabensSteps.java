@@ -20,20 +20,26 @@ public class ParabensSteps {
 
     @Entao("é direcionado para a tela de Parabéns")
     public void validarPaginaParabens() {
-        parabensPage.validarPaginaParabens(cart);
+        parabensPage.validarPaginaParabens();
     }
 
     @Entao("é direcionado para a tela de Parabéns Pix")
     public void validarPaginaParabensPix() {
         parabensPage.validarPaginaParabensPix();
     }
+//  Criado para atender a estoria ECCMAUT198
+    @Entao("é direcionado para a tela de Parabéns Claro Clube")
+    public void validarPaginaParabensClaroClube() {
+        parabensPage.validarPaginaParabensClaroClube();
+    }
 
     @E("clica no botão [Ok, Entendi] do modal de alerta de token")
     public void ClicarOkEntendi() {
-        parabensPage.clicarOkEntendiModal();
+        parabensPage.clicarOkEntendi();
     }
 
     @Entao("os dados do pedido estão corretos")
     public void validarDadosPedido() {
+        parabensPage.validarCamposPedido();
     }
 }
