@@ -52,7 +52,6 @@ public class ValidateOrderSteps {
     private List<ProcessTaskLog> orderProcessRef;
     private int currentActionRefIndex = 0;
 
-//    private final boolean sapFlow = isSapFlow();
     private boolean sapFlow = false;
 
     @E("os dados do pedido estão corretos")
