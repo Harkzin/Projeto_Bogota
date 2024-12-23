@@ -25,7 +25,7 @@ public class PlpPlanosSteps {
     @Quando("o usuário clicar no botão [Eu quero!] no card do plano {string} da PLP")
     public void selecionarPlano(String id) {
         cart.setPlan(id);
-        plpPlanosPage.validarCardPlano(cart.getPlan(), cart.isDebitPaymentFlow);
+        plpPlanosPage.validarCardPlano(cart.getPlan());
         plpPlanosPage.selecionarPlano(id);
     }
 }

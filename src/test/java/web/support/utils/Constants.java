@@ -1,5 +1,6 @@
 package web.support.utils;
 
+import java.util.List;
 import java.util.Map;
 
 public final class Constants {
@@ -74,5 +75,34 @@ public final class Constants {
     public enum ChipType {
         SIM,
         ESIM
+    }
+
+    public enum StatusSuccessPage { //TODO adicionar demais fluxos
+        ACQUISITION_PLAN(List.of("Pedido realizado", "Pedido em análise", "Pedido aprovado e em separação", "Pedido a caminho", "Pedido entregue", "Pedido concluído")),
+        ACQUISITION_PLAN_EXPRESS(List.of("Pedido realizado", "Pedido em análise", "Pedido aprovado e em separação", "Pedido concluído")),
+        ACQUISITION_DEVICE(List.of("Pedido recebido", "Pedido em análise", "Pedido aprovado e em separação", "Pedido faturado", "Pedido em transporte", "Pedido entregue e ativado")),
+        ACQUISITION_DEVICE_PIX(List.of("Pedido recebido", "Aguardando pagamento por PIX", "Pedido aprovado e em separação", "Pedido faturado", "Pedido em transporte", "Pedido entregue e ativado")),
+        MIGRATE_EXCHANGE_PLAN(List.of("Pedido realizado", "Pedido em análise", "Ativação do Plano")),
+        MIGRATE_EXCHANGE_DEVICE(List.of("Pedido recebido", "Pedido em análise", "Pedido aprovado e em separação", "Pedido faturado", "Pedido em transporte", "Pedido entregue e ativado")),
+        PORTABILITY_PLAN(List.of("Pedido realizado", "Pedido em análise", "Pedido aprovado e em separação", "Pedido a caminho", "Pedido entregue", "Linha provisória ativada", "Portabilidade concluída")),
+        PORTABILITY_DEVICE(List.of("Pedido recebido", "Pedido em análise", "Pedido aprovado e em seperação", "Pedido faturado", "Pedido em transporte", "Pedido entregue e ativado")),
+        ACCESSORY(List.of());
+
+        private final List<String> statusList;
+
+        StatusSuccessPage(List<String> statusList) {
+            this.statusList = statusList;
+        }
+
+        public List<String> getStatusList() {
+            return this.statusList;
+        }
+    }
+
+    public enum GradePlan {
+        DOWNGRADE,
+        INDEFINIDO,
+        SIDEGRADE,
+        UPGRADE
     }
 }

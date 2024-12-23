@@ -100,19 +100,19 @@ public class CarrinhoSteps {
     @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoPortabilidade(String telefone, String cpfAprovado, String cpfDiretrix) {
         carrinhoPage.inserirEmail();
-        carrinhoPage.inserirDadosPortabilidadeBilAberto(telefone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        carrinhoPage.inserirDadosPortabilidade(telefone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
     }
 
     @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] para Pix")
     public void preencherCamposCarrinhoPortabilidadePix(String telefone) {
         carrinhoPage.inserirEmail();
-        carrinhoPage.inserirDadosPortabilidadePix(telefone);
+        cart.getUser().setCpf(carrinhoPage.inserirDadosPortabilidadePix(telefone));
     }
 
     @E("preenche os campos: [Celular] {string}, [E-mail] e [CPF] para Pix")
     public void preencherCamposCarrinhoAquisicaoPix(String telefone) {
         carrinhoPage.inserirEmail();
-        carrinhoPage.inserirDadosAquisicaoPix(telefone);
+        cart.getUser().setCpf(carrinhoPage.inserirDadosAquisicaoPix(telefone));
     }
 
     @E("preenche os campos: [Celular] {string}, [E-mail] e [CPF] {string} reprovado no crivo")
@@ -123,8 +123,9 @@ public class CarrinhoSteps {
 
     @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoAquisicao(String telefoneContato, String cpfAprovado, String cpfDiretrix) {
-        carrinhoPage.inserirEmail();
-        carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        cart.getUser().setTelephone(telefoneContato);
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+        cart.getUser().setCpf(carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix)));
     }
 
     @Entao("será exibida a mensagem de erro: {string}")

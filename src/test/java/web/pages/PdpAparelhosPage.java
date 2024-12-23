@@ -1,7 +1,7 @@
 package web.pages;
 
 import io.cucumber.spring.ScenarioScope;
-import org.apache.logging.log4j.util.TriConsumer;
+import org.apache.commons.lang3.function.TriConsumer;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

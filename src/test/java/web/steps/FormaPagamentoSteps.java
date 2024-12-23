@@ -43,7 +43,7 @@ public class FormaPagamentoSteps {
     @Quando("o usuário habilitar o desconto Claro Clube")
     public void usarClaroClube() {
         //Caso possua muita pontuação, o desconto máximo será o próprio valor do Aparelho (pagamento 100% Claro Clube)
-        cart.getClaroClube().setClaroClubeApplied(true);
+        cart.getClaroClube().setUsed(true);
         cart.getClaroClube().setDiscountValue(Math.min(cart.getUser().getClaroClubBalance(), cart.getEntry(cart.getDevice().getCode()).getTotalPrice()));
         formaPagamentoPage.clicarUsarClaroClube();
     }
@@ -68,6 +68,11 @@ public class FormaPagamentoSteps {
         formaPagamentoPage.validarIframe();
     }
 
+    @E("o usuário clicar no botão [Tentar Novamente] da tela de [Forma Pagamento]")
+    public void preencherDadosCartao() {
+        formaPagamentoPage.clicarTentarNovamente();
+    }
+
     @E("preenche os dados do cartão: [Nome] {string}, [Número] {string}, [Data de validade] {string}, [CVV] {string} e [Parcelas] {string}")
     public void preencherDadosCartao(String name, String number, String date, String cvv, String installments) {
         formaPagamentoPage.preencherDadosCartao(name, number, date, cvv, installments);
@@ -76,6 +81,11 @@ public class FormaPagamentoSteps {
     @Quando("o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]")
     public void clicarConfirmarCartao() {
         formaPagamentoPage.clicarConfirmarCartao();
+    }
+
+    @Quando("será exibido a mensagem de erro {string}")
+    public void ValidarMensagemErroCartao(String msg) {
+        formaPagamentoPage.ValidarMensagemErroCartao(msg);
     }
 
     @E("clicar no botão [Finalizar pedido com Pix] da tela [Forma de Pagamento]")

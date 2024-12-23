@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.PdpPlanosPage;
 import web.models.CartOrder;
 
+import static web.support.utils.Constants.StandardPaymentMode.*;
+
 public class PdpPlanosSteps {
 
     private final PdpPlanosPage pdpPlanosPage;
@@ -24,19 +26,19 @@ public class PdpPlanosSteps {
 
     @Quando("o usuário selecionar a forma de pagamento [Débito] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoDebito() {
-        cart.isDebitPaymentFlow = true;
+        cart.getEntry(cart.getPlan().getCode()).setPaymentMode(DEBITCARD);
         pdpPlanosPage.selecionarDebito();
     }
 
     @Quando("o usuário selecionar a forma de pagamento [Boleto] na PDP") //"na PDP" para diferenciar com o step da Customizar Fatura
     public void selecionarPagamentoBoleto() {
-        cart.isDebitPaymentFlow = false;
+        cart.getEntry(cart.getPlan().getCode()).setPaymentMode(TICKET);
         pdpPlanosPage.selecionarBoleto();
     }
 
     @Entao("o valor do plano é atualizado")
     public void validarValorPlano() {
-        pdpPlanosPage.validarValorPlano(cart.getPlan(), cart.isDebitPaymentFlow);
+        pdpPlanosPage.validarValorPlano(cart.getPlan());
     }
 
     @Quando("o usuário clicar no botão [Eu quero!] da PDP")

@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.*;
+import static web.support.utils.Constants.GradePlan.*;
 import static web.support.utils.Constants.InvoiceType.*;
 import static web.support.utils.Constants.StandardPaymentMode.*;
 import static web.support.utils.Constants.ProcessType.*;
@@ -28,7 +29,6 @@ public class CartOrder {
     private String planId;
     private String deviceId;
 
-    public boolean isDebitPaymentFlow; //TODO
     public boolean hasErrorPasso1 = false; //TODO
 
     // Essential -------------------------------------------------
@@ -116,7 +116,7 @@ public class CartOrder {
     private String eventId;
 
     @JsonProperty("gradePlan")
-    private String gradePlan;
+    private GradePlan gradePlan;
 
     @JsonProperty("guid")
     private String guid;
@@ -170,6 +170,8 @@ public class CartOrder {
 
         appliedCouponCodes = new ArrayList<>();
         dependentsInformation = new ArrayList<>();
+
+        gradePlan = INDEFINIDO;
     }
 
 
@@ -379,7 +381,7 @@ public class CartOrder {
         return eventId;
     } //Getter only
 
-    public String getGradePlan() {
+    public GradePlan getGradePlan() {
         return gradePlan;
     } //Getter only
 
@@ -537,7 +539,7 @@ public class CartOrder {
                     planFullPrice = essential.user.getClaroSubscription().claroPlanPrice; //Preço vem da API de login, sem desconto de promoção
                 }
             } else {
-                promoDiscount = plan.getPrice(isDebitPaymentFlow, selectedInvoiceTypes == PRINTED) - plan.getPrice();
+                promoDiscount = plan.getPrice(false, selectedInvoiceTypes == PRINTED) - plan.getPrice();
             }
         }
 
@@ -632,6 +634,14 @@ public class CartOrder {
         return !(deviceId == null);
     }
 
+    public boolean isComboFlow() {
+        return planSingleToCombo.containsValue(planId);
+    }
+
+    public boolean isEasyControlFlow() {
+        return getPlan().getCategories().stream().anyMatch(c -> c.getCode().equals("controle_facil"));
+    }
+
     public boolean hasLoyalty() {
         if (!isDeviceCart()) {
             return allPromotionResults.loyalty;
@@ -657,6 +667,7 @@ public class CartOrder {
 
             PositionsAndPrices.OrderEntry planEntry = getEntry(planId);
             planEntry.totalPrice = getPlan().getPrice() - allPromotionResults.discountValue;
+            planEntry.discountValues.set(0, (double) allPromotionResults.discountValue);
             planEntry.paymentMode = allPromotionResults.paymentMethod;
         }
     }
@@ -1187,6 +1198,12 @@ public class CartOrder {
                 private String returnCode;
 
                 private ProcessTaskLog() {}
+
+                @JsonIgnore
+                public ProcessTaskLog(String actionId, String returnCode) {
+                    this.actionId = actionId;
+                    this.returnCode = returnCode;
+                }
 
                 //########################################
 
@@ -1731,15 +1748,9 @@ public class CartOrder {
         }
 
 
-        //isClaroClubeApplied
         public boolean isClaroClubeApplied() {
             return isClaroClubeApplied;
-        }
-
-        public void setClaroClubeApplied(boolean claroClubeApplied) {
-            isClaroClubeApplied = claroClubeApplied;
-        }
-
+        } //Getter only
 
         public String getRedeemId() {
             return redeemId;
@@ -1757,9 +1768,15 @@ public class CartOrder {
             return reserved;
         } //Getter only
 
+
+        //used
         public boolean isUsed() {
             return used;
-        } //Getter only
+        }
+
+        public void setUsed(boolean used) {
+            this.used = used;
+        }
     }
 
     public static final class ClaroSapResponse {
