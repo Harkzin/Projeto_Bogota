@@ -20,14 +20,14 @@ Funcionalidade: ECCMAUT-204 Troca Pos Aparelho Aceite multa Dependente
     E preenche o campo [Seu numero Claro] com "11947890908"
 
     Quando clicar no botão [Acessar] do popover
-    #Entao é exibido as opções e informações para cliente claro
+    Entao é exibido as opções e informações para cliente claro
     E seleciona [Mudar meu plano]
     E seleciona a plataforma [Claro Pós]
     E seleciona o plano "17524"
 
     Quando o usuário clicar no botão [Comprar] da PDP do Aparelho
     Entao é direcionado para a tela de Carrinho
-      #Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      Mas não deve haver alterações no valor e nem nas informações do Aparelho
     Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche os campos: [E-mail] e [CPF] "69726368847"
 
@@ -36,7 +36,7 @@ Funcionalidade: ECCMAUT-204 Troca Pos Aparelho Aceite multa Dependente
 
     Quando o usuário clicar no botão [Concordo] da tela de multa
     Então é direcionado para a tela de Customizar Fatura
-    Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E não deve ser exibido as datas de vencimento
