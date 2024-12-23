@@ -58,8 +58,8 @@ public class FormaPagamentoPage {
     private WebElement cardConfirm;
 
     public void validarPaginaFormaPagamento(CartOrder cart) {
-        driverWeb.waitPageLoad("/payment-device-method", 80);
-        driverWeb.actionPause(3000);
+        driverWeb.waitPageLoad("/payment-device-method", 60);
+        driverWeb.actionPause(2000);
 
         PageFactory.initElements(driverWeb.getDriver(), this);
 
