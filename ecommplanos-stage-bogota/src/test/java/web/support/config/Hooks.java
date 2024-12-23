@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.models.CartOrder;
 import web.support.utils.DriverWeb;
 
-public class Hooks {
+public class  Hooks {
 
     private final DriverWeb driverWeb;
     private final CartOrder cartOrder;

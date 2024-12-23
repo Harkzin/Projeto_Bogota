@@ -98,6 +98,6 @@ public class ReadequacaoPage  {
     }
 
     public void clicarEuQueroControleFacil() {
-        driverWeb.javaScriptClick("//button[@type='submit' and @class='button button-primary' and contains(@onclick, 'ACC.claroGlobal.loading.show')]", "xpath");
+        driverWeb.javaScriptClick("//button[@type='submit' and @class='button button-primary' and contains(@onclick, 'ACC.claroGlobal.loading.show()')]", "xpath");
     }
 }

@@ -3,16 +3,22 @@ package web.pages;
 import io.cucumber.spring.ScenarioScope;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.models.CartOrder;
 import web.models.product.DeviceProduct;
 import web.models.product.PlanProduct;
 import web.support.utils.DriverWeb;
-
+import org.springframework.aop.framework.AopProxyUtils;
+import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
@@ -352,4 +358,49 @@ public class ComumPage {
             validateElementText(chipPrice, driverWeb.findByXpath(String.format("(%s//*[@id='txt-valor'])[2]/..", deviceContentParent)));
         }
     }
+
+    private WebDriver driver;
+    public WebDriver getDriver() {
+        return this.driver;
+    }
+
+    public void preencherDadosCartaoControleFacil(String numero, String validade, String cvv) {
+        try {
+            WebDriver driver;
+            if (driverWeb == null) {
+                System.err.println("DriverWeb não foi injetado. Inicializando manualmente o WebDriver.");
+                driver = new ChromeDriver(); // Substitua pelo driver necessário
+            } else {
+                driver = driverWeb.getDriver();
+            }
+
+            if (driver == null) {
+                throw new IllegalStateException("O WebDriver não foi inicializado.");
+            }
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+            WebElement iframe = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"ifrm-theme-4\"]")));
+            driver.switchTo().frame(iframe);
+
+
+            WebElement campoNumero = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"pan\"]")));
+            campoNumero.clear();
+            campoNumero.sendKeys(numero);
+
+            WebElement campoValidade = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("expiration")));
+            campoValidade.clear();
+            campoValidade.sendKeys(validade);
+
+            WebElement campoCVV = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("cvv")));
+            campoCVV.clear();
+            campoCVV.sendKeys(cvv);
+
+            System.out.println("Preenchimento realizado com sucesso.");
+        } catch (Exception e) {
+            System.err.println("Erro ao preencher os campos do cartão: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
+

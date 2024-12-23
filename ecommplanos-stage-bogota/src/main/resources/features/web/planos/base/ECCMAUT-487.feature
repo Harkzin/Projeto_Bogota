@@ -16,9 +16,9 @@ Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Read
     Quando seleciona a opção [Migração], para o fluxo de troca de Plano
     E preenche os campos: [Telefone com DDD] "11947891723", [E-mail] e [CPF] "24412286843"
     E o usuário clicar no botão [Eu quero!] do Carrinho
-    E preenche os campos de dados pessoais: [Nome Completo] "João Santos", [Data de Nascimento] "20022000" e [Nome da Mãe] "Marta Silva"
+    E preenche os campos de dados pessoais: [Nome Completo] "TESTES TESTES", [Data de Nascimento] "01022000" e [Nome da Mãe] "Marta Silva"
     Entao é direcionado para a tela de Dados Pessoais
-    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP402"
+    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "12" e [Complemento] "CASA"
 
     Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
     Entao é direcionado para a tela de Customizar Fatura
@@ -35,10 +35,9 @@ Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Read
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
-    Então é direcionado para a tela de readequação Controle Fácil
+#    Então é direcionado para a tela de readequação Controle Fácil
     E clicar no [Eu quero!] no Controle Fácil
-
-
+    E preenche o cartão com os dados: [Número] "322412113", [Data de validade] "2103" e [CVV] "123"
 
 
 

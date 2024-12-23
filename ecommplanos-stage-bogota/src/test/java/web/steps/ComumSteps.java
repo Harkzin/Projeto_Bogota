@@ -56,4 +56,9 @@ public class ComumSteps {
     public void validarResumoRentab() {
         comumPage.validarResumoCompraPlano(cart);
     }
+
+    @E("preenche o cartão com os dados: [Número] {string}, [Data de validade] {string} e [CVV] {string}")
+    public void preencherDadosCartao(String numero, String validade, String cvv) {
+        comumPage.preencherDadosCartaoControleFacil(numero, validade, cvv);
+    }
 }
