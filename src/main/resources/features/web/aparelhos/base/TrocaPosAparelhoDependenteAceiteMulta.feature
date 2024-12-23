@@ -40,30 +40,30 @@ Funcionalidade: ECCMAUT-204 Troca Pos Aparelho Aceite multa Dependente
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E não deve ser exibido as datas de vencimento
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
     Entao não deve haver alterações no valor e nem nas informações do Plano
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
     Então não deve haver alterações no valor e nem nas informações do Plano
-#
+
     Quando o usuário selecionar a forma de pagamento [Débito]
     Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E não deve ser exibido as datas de vencimento
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
     Entao não deve haver alterações no valor e nem nas informações do Plano
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [Correios]
     Então o valor do Plano será atualizado no Resumo da compra para fatura impressa
-#
+
     Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
     Então o valor do Plano será atualizado no Resumo da compra para fatura digital
     E preenche os dados bancários
@@ -75,14 +75,14 @@ Funcionalidade: ECCMAUT-204 Troca Pos Aparelho Aceite multa Dependente
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Entao será direcionado para a tela [Forma de Pagamento]
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E o usuário clicar no botão [Adicionar cartão de crédito]
     E será exibido o iframe de pagamento do cartão
     E preenche os dados do cartão: [Nome] "ECCMAUT MIGRA PRE CTRL", [Número] "5435215759584731", [Data de validade] "0135", [CVV] "123" e [Parcelas] "2"
 
     Quando o usuário clicar no botão [Confirmar] do iframe do cartão da tela [Forma de Pagamento]
     Entao é direcionado para a tela de Parabéns
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Aparelho
-      #ECCMAUT-351 Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Aparelho
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
