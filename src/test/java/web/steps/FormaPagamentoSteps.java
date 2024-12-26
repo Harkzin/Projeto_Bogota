@@ -43,7 +43,7 @@ public class FormaPagamentoSteps {
     @Quando("o usuário habilitar o desconto Claro Clube")
     public void usarClaroClube() {
         //Caso possua muita pontuação, o desconto máximo será o próprio valor do Aparelho (pagamento 100% Claro Clube)
-        cart.getClaroClube().setClaroClubeApplied(true);
+        cart.getClaroClube().setUsed(true);
         cart.getClaroClube().setDiscountValue(Math.min(cart.getUser().getClaroClubBalance(), cart.getEntry(cart.getDevice().getCode()).getTotalPrice()));
         formaPagamentoPage.clicarUsarClaroClube();
     }
