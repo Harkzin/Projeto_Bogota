@@ -1,0 +1,13 @@
+# BrowserStack Files
+browserstack.err
+performance-report.csv
+
+# IntelliJ project files
+/.idea
+.idea
+*.iml
+
+# Folders
+/out
+/target
+/logs
