@@ -33,8 +33,8 @@ public class DriverWeb {
     public DriverWeb() {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
-            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");
-            String maximized = System.getProperty("maximized", "false");
+            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "false");
+            String maximized = System.getProperty("maximized", "true");
 
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();
