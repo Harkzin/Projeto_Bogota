@@ -35,8 +35,9 @@ public class Hooks {
         scenario.attach(screenshot, "image/png", "Screenshot");
     }
 
-     @After(order = 1, value = "@Web")
+   /*   @After(order = 1, value = "@Web")
     public void closeBrowser() {
         driverWeb.getDriver().quit();
-    }      
+    } 
+        */     
 }
