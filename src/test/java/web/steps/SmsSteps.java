@@ -35,7 +35,7 @@ public class SmsSteps {
 
     @E("preenche o campo [Código de verificação] com o token recebido para fluxo [Controle Fácil]")
     public void preencherTokenControleFacil() {
-        smsPage.inserirTokenControleFacil(cart.getTelephone());
+        smsPage.inserirTokenControleFacil(cart.getUser().getClaroTelephone());
     }
 
     @Quando("o usuário clicar no botão [Finalizar]/[Continuar] da tela de SMS")
