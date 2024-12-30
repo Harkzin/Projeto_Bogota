@@ -28,6 +28,16 @@ public class SmsSteps {
         smsPage.inserirToken();
     }
 
+    @Entao("é direcionado para a tela de SMS para o fluxo [Controle Fácil]")
+    public void validarPaginaSmsControleFacil() {
+        smsPage.validarPaginaSmsControleFacil();
+    }
+
+    @E("preenche o campo [Código de verificação] com o token recebido para fluxo [Controle Fácil] do [msisdn] {string}")
+    public void preencherTokenControleFacil(String msisdn) {
+        smsPage.inserirTokenControleFacil(msisdn);
+    }
+
     @Quando("o usuário clicar no botão [Finalizar]/[Continuar] da tela de SMS")
     public void clicarFinalizar() {
         smsPage.clicarFinalizar();
