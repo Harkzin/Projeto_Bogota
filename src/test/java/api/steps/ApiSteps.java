@@ -427,8 +427,8 @@ public class ApiSteps {
         }
 
         Assert.assertTrue(tokenObjectResponse.isSuccess());
-        Assert.assertEquals("Token enviado",tokenObjectResponse.getMessage());
-        Assert.assertNotNull( tokenObjectResponse.getValidateTokenTest());
+        Assert.assertEquals("Token enviado", tokenObjectResponse.getMessage());
+        Assert.assertNotNull(tokenObjectResponse.getValidateTokenTest());
         validateToken = tokenObjectResponse.getValidateTokenTest();
     }
 
@@ -447,7 +447,7 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .method("GET",HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
+                    .method("GET", HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
                     .build();
 
             tokenResponse = clientHttp.send(otpToken, HttpResponse.BodyHandlers.ofString());
@@ -458,7 +458,7 @@ public class ApiSteps {
         }
 
         Assert.assertTrue(tokenObjectResponse.isSuccess());
-        Assert.assertEquals("Token válido",tokenObjectResponse.getMessage());
+        Assert.assertEquals("Token válido", tokenObjectResponse.getMessage());
         Assert.assertFalse(tokenObjectResponse.isContingency());
     }
 
