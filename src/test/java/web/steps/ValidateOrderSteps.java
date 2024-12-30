@@ -1,5 +1,9 @@
 package web.steps;
 
+<<<<<<< HEAD
+=======
+import mock.sap.UpdateOrderSapRequest;
+>>>>>>> claro/stage-bogota
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -12,17 +16,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.models.CartOrder;
+<<<<<<< HEAD
 
 import java.net.http.HttpResponse;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+=======
+import web.models.CartOrder.ClaroSapResponse.SapStatusHistory;
+import web.support.utils.Constants;
+
+import java.net.http.HttpResponse;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+>>>>>>> claro/stage-bogota
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.time.Duration.*;
+<<<<<<< HEAD
+=======
+import static org.junit.Assert.assertEquals;
+>>>>>>> claro/stage-bogota
 import static web.models.CartOrder.Status.OrderProcess.*;
 import static web.support.api.RestAPI.*;
 import static web.support.utils.Constants.ChipType.*;
@@ -49,6 +66,11 @@ public class ValidateOrderSteps {
     private List<ProcessTaskLog> orderProcessRef;
     private int currentActionRefIndex = 0;
 
+<<<<<<< HEAD
+=======
+    private boolean sapFlow = false;
+
+>>>>>>> claro/stage-bogota
     @E("os dados do pedido estão corretos")
     public void validateOrder() {
         Clock clock = Clock.systemDefaultZone();
@@ -70,6 +92,10 @@ public class ValidateOrderSteps {
 
         Instant timeout = clock.instant().plusSeconds(VALIDATE_ORDER_TIMEOUT);
 
+<<<<<<< HEAD
+=======
+        sapFlow = isSapFlow();
+>>>>>>> claro/stage-bogota
         wait.until(o -> {
             order = refreshOrder();
             Duration remainigTime = Duration.ofSeconds(clock.instant().until(timeout, ChronoUnit.SECONDS));
@@ -80,6 +106,12 @@ public class ValidateOrderSteps {
             validateOrderProcess();
 
             //TODO chamar novas validações aqui
+<<<<<<< HEAD
+=======
+            if (sapFlow && order.getOrderProcess().stream().filter(op -> op.getProcessDefinitionName().equals("order-process")).findFirst().orElseThrow().getTaskLogs().stream().anyMatch(a -> a.getActionId().equals("checkMessageType"))) {
+                mockSapEcc();
+            }
+>>>>>>> claro/stage-bogota
 
             return order.getStatus().equals(finalStatus);
         });
@@ -150,18 +182,31 @@ public class ValidateOrderSteps {
         } else {
             switch (cart.getEntry(cart.getDevice().getCode()).getPaymentMode()) {
                 case CREDITCARD -> orderProcess.addAll(List.of(
+<<<<<<< HEAD
                         new ProcessTaskLog("checkHasCredit","CREDIT"),
+=======
+                        new ProcessTaskLog("checkHasCredit", "CREDIT"),
+>>>>>>> claro/stage-bogota
                         new ProcessTaskLog("verifyAuthenticationPayment", "SUCCEEDED"),
                         new ProcessTaskLog("authorizationPayment", "OK"),
                         new ProcessTaskLog("paymentRequestFraudStatus", "OK")
                 ));
                 case PIX -> orderProcess.addAll(List.of(
+<<<<<<< HEAD
                         new ProcessTaskLog("checkHasCredit","PIX"),
                         new ProcessTaskLog("verifyPixPayment","WAIT"),
                         new ProcessTaskLog("waitingPixPayment","OK")
                         //TODO
                 ));
                 case VOUCHER, CLAROCLUBE -> orderProcess.add(new ProcessTaskLog("checkHasCredit","OTHER_PAYMENT"));
+=======
+                        new ProcessTaskLog("checkHasCredit", "PIX"),
+                        new ProcessTaskLog("verifyPixPayment", "WAIT"),
+                        new ProcessTaskLog("waitingPixPayment", "OK")
+                        //TODO
+                ));
+                case VOUCHER, CLAROCLUBE -> orderProcess.add(new ProcessTaskLog("checkHasCredit", "OTHER_PAYMENT"));
+>>>>>>> claro/stage-bogota
             }
         }
 
@@ -283,7 +328,11 @@ public class ValidateOrderSteps {
             if (claroClubeValidationReturn.equals("NOK") && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() == PIX) {
                 redeemClaroClubePointsReturn = "SUCCEEDED_PAID_FULLY";
                 orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", redeemClaroClubePointsReturn));
+<<<<<<< HEAD
             } else if(claroClubeValidationReturn.equals("NOK") && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() != PIX) {
+=======
+            } else if (claroClubeValidationReturn.equals("NOK") && cart.getEntry(cart.getDevice().getCode()).getPaymentMode() != PIX) {
+>>>>>>> claro/stage-bogota
                 redeemClaroClubePointsReturn = "SUCCEEDED_PAID_PARTIALLY";
                 orderProcess.add(new ProcessTaskLog("redeemClaroClubePoints", redeemClaroClubePointsReturn));
             }
@@ -354,4 +403,76 @@ public class ValidateOrderSteps {
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+    private boolean isSapFlow(){
+        if (cart.isDeviceCart() || (!cart.isDeviceCart() && !cart.getProcessType().toString().matches("MIGRATE|EXCHANGE|EXCHANGE_PROMO"))) {
+            cart.getClaroSapResponse().setStatus("090");
+            return true;
+        }
+        return false;
+    }
+
+    private void mockSapEcc() {
+        List<SapStatusHistory> statusList = order.getClaroSapResponse().getSapStatusHistory();
+        String cartSapStatus = cart.getClaroSapResponse().getStatus();
+        boolean isLast = statusList.stream().anyMatch(s -> s.getId().equals(cartSapStatus));
+
+        if (order.getStatus().matches("AWAITING_INVOICE|ORDER_BILLED") && isLast && !cartSapStatus.equals("900")) {
+            UpdateOrderSapRequest updateOrderSapRequest = new UpdateOrderSapRequest();
+            LocalDate dataAtual = LocalDate.now();
+            LocalTime horaAtual = LocalTime.now();
+            DateTimeFormatter formatterDateMonthYear = DateTimeFormatter.ofPattern("yyyyMMdd");
+            DateTimeFormatter formatterYearMonthDayHour = DateTimeFormatter.ofPattern(("yyyy-MM-dd'T'HH:mm:ssXXX"));
+            DateTimeFormatter formatterHourMinuteSec = DateTimeFormatter.ofPattern("HHmmss");
+
+            ZonedDateTime timeZone = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
+
+            updateOrderSapRequest.setEcommerceOrderId(cart.getCode());
+            updateOrderSapRequest.setEcommerceEnv(Constants.ambiente);
+            updateOrderSapRequest.setStatusDate(timeZone.format(formatterYearMonthDayHour));
+            updateOrderSapRequest.setStatusTime(horaAtual.format(formatterHourMinuteSec));
+            updateOrderSapRequest.setSapOrderId(order.getClaroSapResponse().getSapOrderId());
+            updateOrderSapRequest.setSalesOrg("1100");
+            updateOrderSapRequest.setDistributionChannel("50");
+            if (cart.isDeviceCart()) {
+                updateOrderSapRequest.setType("ZECO");
+                updateOrderSapRequest.setCenter("1195");
+            } else {
+                updateOrderSapRequest.setType("ZBRI");
+                updateOrderSapRequest.setCenter("11TL");
+            }
+            updateOrderSapRequest.setTypeDescription("Dev Doacao NF Pro");
+            updateOrderSapRequest.setSapRequesterClientCode("0024259158");
+            updateOrderSapRequest.setSapReceiverClientCode("0024259158");
+            switch (cart.getClaroSapResponse().getStatus()) {
+                case "090" -> {
+                    updateOrderSapRequest.setStatus("820");
+                    updateOrderSapRequest.setStatusDesc("Aguardando Impressão NF");
+                    cart.getClaroSapResponse().setStatus("820");
+                }
+                case "820" -> {
+                    String status = cart.isDeviceCart() ? "880" : "900";
+                    updateOrderSapRequest.setStatus(status);
+                    updateOrderSapRequest.setStatusDesc(cart.isDeviceCart() ? "Aguardando Conf. de Entrega 1" : "Finalizada");
+                    cart.getClaroSapResponse().setStatus(status);
+                }
+                case "880" -> {
+                    updateOrderSapRequest.setStatus("900");
+                    updateOrderSapRequest.setStatusDesc("Finalizada");
+                    cart.getClaroSapResponse().setStatus("900");
+                }
+            }
+            updateOrderSapRequest.setOccurrenceDate(dataAtual.format(formatterDateMonthYear));
+            updateOrderSapRequest.setOccurrenceTime(horaAtual.format(formatterHourMinuteSec));
+            updateOrderSapRequest.setInvoiceDocument("1000001569");
+            updateOrderSapRequest.setInvoiceNumber("001627340");
+            updateOrderSapRequest.setInvoiceSeries("525");
+
+            HttpResponse<String> updateOrderSapResponse = updateOrderSap(updateOrderSapRequest);
+            assertEquals(updateOrderSapResponse.statusCode(), 200);
+        }
+    }
+>>>>>>> claro/stage-bogota
 }

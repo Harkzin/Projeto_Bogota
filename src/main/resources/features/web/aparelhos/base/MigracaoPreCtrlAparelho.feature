@@ -103,4 +103,3 @@ Funcionalidade: ECCMAUT-199 - Migracao Pre para Controle com Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Aparelho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
-

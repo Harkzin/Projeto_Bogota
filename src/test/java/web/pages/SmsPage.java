@@ -5,6 +5,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import web.support.token.WoaToken;
 import web.support.utils.DriverWeb;
 
 import static org.junit.Assert.*;
@@ -24,6 +25,8 @@ public class SmsPage {
     private WebElement tokenField2;
     private WebElement tokenField3;
     private WebElement tokenField4;
+    private WebElement tokenField5;
+    private WebElement tokenField6;
     private WebElement resendTokenButton;
 
     public void validarPaginaSms() {
@@ -52,6 +55,38 @@ public class SmsPage {
         driverWeb.sendKeys(tokenField2, String.valueOf(token.charAt(1)));
         driverWeb.sendKeys(tokenField3, String.valueOf(token.charAt(2)));
         driverWeb.sendKeys(tokenField4, String.valueOf(token.charAt(3)));
+    }
+
+    public void validarPaginaSmsControleFacil(){
+        driverWeb.waitPageLoad("offer-plan/controle-facil/order", 60);
+
+        resendTokenButton = driverWeb.findById("btn-renviar-codigo");
+        tokenField1 = driverWeb.findById("txt-token1");
+        tokenField2 = driverWeb.findById("txt-token2");
+        tokenField3 = driverWeb.findById("txt-token3");
+        tokenField4 = driverWeb.findById("txt-token4");
+        tokenField5 = driverWeb.findById("txt-token5");
+        tokenField6 = driverWeb.findById("txt-token6");
+
+        assertEquals(tokenField1.getAttribute("value"), "");
+        assertEquals(tokenField2.getAttribute("value"), "");
+        assertEquals(tokenField3.getAttribute("value"), "");
+        assertEquals(tokenField4.getAttribute("value"), "");
+        assertEquals(tokenField5.getAttribute("value"), "");
+        assertEquals(tokenField6.getAttribute("value"), "");
+        assertTrue(resendTokenButton.isDisplayed());
+        assertFalse(resendTokenButton.isEnabled());
+    }
+
+    public void inserirTokenControleFacil(String msisdn){
+        String token = WoaToken.getToken(msisdn);
+
+        driverWeb.sendKeys(tokenField1, String.valueOf(token.charAt(0)));
+        driverWeb.sendKeys(tokenField2, String.valueOf(token.charAt(1)));
+        driverWeb.sendKeys(tokenField3, String.valueOf(token.charAt(2)));
+        driverWeb.sendKeys(tokenField4, String.valueOf(token.charAt(3)));
+        driverWeb.sendKeys(tokenField5, String.valueOf(token.charAt(4)));
+        driverWeb.sendKeys(tokenField6, String.valueOf(token.charAt(5)));
     }
 
     public void clicarFinalizar() {
