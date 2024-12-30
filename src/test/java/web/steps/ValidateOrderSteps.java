@@ -1,6 +1,6 @@
 package web.steps;
 
-import api.models.request.UpdateOrderSapRequest;
+import mock.sap.UpdateOrderSapRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;

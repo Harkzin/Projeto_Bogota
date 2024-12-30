@@ -1,5 +1,5 @@
 
-package api.models.request;
+package mock.ativacao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -17,18 +17,25 @@ public class UpdateOrderRequest {
 
     @JsonProperty("id")
     private String id;
+
     @JsonProperty("status")
     private String status;
+
     @JsonProperty("statusDescription")
     private String statusDescription;
+
     @JsonProperty("operation")
     private Operation operation = new Operation();
+
     @JsonProperty("customer")
     private Customer customer = new Customer();
+
     @JsonProperty("thab")
     private Thab thab = new Thab();
+
     @JsonProperty("devices")
     private Devices devices = new Devices();
+
     @JsonProperty("simcard")
     private String simcard;
 
@@ -75,10 +82,13 @@ public class UpdateOrderRequest {
 
         @JsonProperty("type")
         private String type;
+
         @JsonProperty("description")
         private String description;
+
         @JsonProperty("lineSubtype")
         private String lineSubtype;
+
         @JsonProperty("residential")
         private String residential;
 
@@ -108,6 +118,7 @@ public class UpdateOrderRequest {
 
         @JsonProperty("id")
         private String id;
+
         @JsonProperty("mobileBan")
         private String mobileBan;
 
@@ -129,6 +140,7 @@ public class UpdateOrderRequest {
 
         @JsonProperty("licenseFee")
         private String licenseFee;
+
         @JsonProperty("dueDate")
         private String dueDate;
 
@@ -155,14 +167,19 @@ public class UpdateOrderRequest {
 
         @JsonProperty("telephoneNumber")
         private String telephoneNumber;
+
         @JsonProperty("rowType")
         private String rowType;
+
         @JsonProperty("portability")
         private String portability;
+
         @JsonProperty("mobileSubscriberId")
         private String mobileSubscriberId;
+
         @JsonProperty("sapOrders")
         private SapOrders sapOrders = new SapOrders();
+
         @JsonProperty("simcard")
         private String simcard;
 
@@ -203,12 +220,16 @@ public class UpdateOrderRequest {
 
         @JsonProperty("orderNumber")
         private String orderNumber;
+
         @JsonProperty("type")
         private String type;
+
         @JsonProperty("status")
         private String status;
+
         @JsonProperty("iccid")
         private String iccid;
+
         @JsonProperty("imei")
         private String imei;
 

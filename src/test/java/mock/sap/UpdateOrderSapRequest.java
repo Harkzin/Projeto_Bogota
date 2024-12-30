@@ -1,5 +1,5 @@
 
-package api.models.request;
+package mock.sap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -31,44 +31,64 @@ public class UpdateOrderSapRequest {
 
     @JsonProperty("ecommerceOrderId")
     private String ecommerceOrderId;
+
     @JsonProperty("ecommerceEnv")
     private String ecommerceEnv;
+
     @JsonProperty("statusDate")
     private String statusDate;
+
     @JsonProperty("statusTime")
     private String statusTime;
+
     @JsonProperty("sapOrderId")
     private String sapOrderId;
+
     @JsonProperty("salesOrg")
     private String salesOrg;
+
     @JsonProperty("distributionChannel")
     private String distributionChannel;
+
     @JsonProperty("type")
     private String type;
+
     @JsonProperty("typeDescription")
     private String typeDescription;
+
     @JsonProperty("sapRequesterClientCode")
     private String sapRequesterClientCode;
+
     @JsonProperty("sapReceiverClientCode")
     private String sapReceiverClientCode;
+
     @JsonProperty("center")
     private String center;
+
     @JsonProperty("status")
     private String status;
+
     @JsonProperty("statusDesc")
     private String statusDesc;
+
     @JsonProperty("occurrenceDate")
     private String occurrenceDate;
+
     @JsonProperty("occurrenceTime")
     private String occurrenceTime;
+
     @JsonProperty("invoiceDocument")
     private String invoiceDocument;
+
     @JsonProperty("invoiceNumber")
     private String invoiceNumber;
+
     @JsonProperty("invoiceSeries")
     private String invoiceSeries;
+
     @JsonProperty("item")
     private Item item = new Item();
+
     @JsonProperty("nfeNumber")
     private String nfeNumber;
 
@@ -166,8 +186,10 @@ public class UpdateOrderSapRequest {
 
         @JsonProperty("seq")
         private String seq;
+
         @JsonProperty("iccid")
         private String iccid;
+
         @JsonProperty("imei")
         private String imei;
 
