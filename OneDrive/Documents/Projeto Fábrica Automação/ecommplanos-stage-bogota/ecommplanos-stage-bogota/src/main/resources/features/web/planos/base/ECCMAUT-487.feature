@@ -25,8 +25,8 @@ Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Read
 
 #   Mas não deve haver alterações no valor e nem nas informações do Plano Controle
 #   E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
-#   E o usuário clicar no botão [Boleto] da pagina Costumizar Fatura
     E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
+
 #   E o usuário clicar no botão [Débito] da pagina Costumizar Fatura
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
 #   Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
@@ -35,7 +35,6 @@ Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Read
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
-    #Entao é direcionado para a tela de readequação Controle Fácil
     E clicar no [Eu quero!] no Controle Fácil
     E preenche o cartão com os dados: [Número] "322412113", [Data de validade] "2103" e [CVV] "123"
     #Entao é direcionado para a tela de Parabéns
