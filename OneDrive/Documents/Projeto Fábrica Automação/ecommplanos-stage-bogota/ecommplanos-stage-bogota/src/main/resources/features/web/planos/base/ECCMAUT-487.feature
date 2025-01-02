@@ -3,7 +3,7 @@
 
 Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Readequação Controle Fácil Espelhado | CPF Score Zerado
 
-  @Migracao @PrePago @Controle @ReadequacaoControleFacilEspelhado
+  @Migracao @PrePago @Controle @100%ClaroClube
   Cenario: Migração Pré para Controle - Readequação Controle Fácil Espelhado | CPF Score Zerado
 
     Dado que o usuário acesse a Loja Online
@@ -35,10 +35,12 @@ Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Read
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
-#    Então é direcionado para a tela de readequação Controle Fácil
+    #Entao é direcionado para a tela de readequação Controle Fácil
     E clicar no [Eu quero!] no Controle Fácil
     E preenche o cartão com os dados: [Número] "322412113", [Data de validade] "2103" e [CVV] "123"
-   # Entao é direcionado para a tela de Parabéns
+    #Entao é direcionado para a tela de Parabéns
+    #E clica no botão [Ok, Entendi] do modal de alerta de token
+    #Entao os dados do pedido estão corretos
 
 
 

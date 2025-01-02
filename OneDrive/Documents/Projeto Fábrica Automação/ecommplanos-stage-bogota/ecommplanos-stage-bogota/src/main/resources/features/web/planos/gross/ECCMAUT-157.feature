@@ -14,7 +14,7 @@ Funcionalidade: ECCMAUT-157 - Portabilidade Controle Fácil - Crédito Reprovado
 
     E seleciona a opção [Portabilidade]
     E preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? "false", CPF na diretrix? "true"]
-#    E preenche os campos: [Telefone com DDD] "11999255317", [E-mail] e [CPF] "50982503822"
+    #E preenche os campos: [Telefone com DDD] "11999255317", [E-mail] e [CPF] "50982503822"
     E o usuário clicar no botão [Eu quero!] do Carrinho
     E preenche os campos de dados pessoais: [Nome Completo] "TESTES TESTES", [Data de Nascimento] "01022000" e [Nome da Mãe] "Marta Silva"
     Entao é direcionado para a tela de Dados Pessoais
@@ -29,8 +29,8 @@ Funcionalidade: ECCMAUT-157 - Portabilidade Controle Fácil - Crédito Reprovado
     E marca o checkbox de termos de aceite
 
     Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
-#    Entao é direcionado para a tela de readequação Controle Fácil
-#    Quando o usuário selecionar o plano de controle antecipado ofertado
+    Entao é direcionado para a tela de readequação Controle Fácil
+    Quando o usuário selecionar o plano de controle antecipado ofertado
 #
 #
 #
