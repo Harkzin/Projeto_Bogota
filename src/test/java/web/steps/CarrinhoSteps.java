@@ -1,18 +1,15 @@
 package web.steps;
 
+import io.cucumber.java.pt.*;
+import massasController.ConsultaCPFMSISDN;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Quando;
-import web.models.CartOrder;
 import web.pages.CarrinhoPage;
-import static web.support.utils.Constants.ProcessType.ACQUISITION;
-import static web.support.utils.Constants.ProcessType.EXCHANGE;
-import static web.support.utils.Constants.ProcessType.EXCHANGE_PROMO;
-import static web.support.utils.Constants.ProcessType.MIGRATE;
-import static web.support.utils.Constants.ProcessType.PORTABILITY;
+import web.models.CartOrder;
+
+import java.util.AbstractMap.SimpleEntry;
+
+import static massasController.ConsultaCPFMSISDN.consultarDadosBase;
+import static web.support.utils.Constants.ProcessType.*;
 
 public class CarrinhoSteps {
 
@@ -25,14 +22,18 @@ public class CarrinhoSteps {
         this.cart = cart;
     }
 
-    @Dado("que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização {string}")
+    @Dado("que o usuário acesse a URL parametrizada para a oferta de rentabilização {string}")
     public void acessarUrlCarrinho(String url) {
         carrinhoPage.acessarUrlRentabCarrinho(url);
+        cart.setGuid(carrinhoPage.getCartGuid());
+        cart.setRentabilizationCart(url);
         carrinhoPage.validarPaginaCarrinho();
     }
 
     @Entao("é direcionado para a tela de Carrinho")
     public void validarCarrinho() {
+        cart.setGuid(carrinhoPage.getCartGuid());
+        cart.updatePlanCartPromotion();
         carrinhoPage.validarPaginaCarrinho();
     }
 
@@ -68,26 +69,82 @@ public class CarrinhoSteps {
 
     @E("preenche os campos: [Telefone com DDD] {string}, [E-mail] e [CPF] {string}")
     public void preencherCamposCarrinhoBase(String telefone, String cpf) {
-        carrinhoPage.inserirEmail();
+        cart.getUser().setTelephone(telefone);
+        cart.getUser().setClaroTelephone(telefone);
+        cart.getUser().setCpf(cpf);
         carrinhoPage.inserirDadosBase(telefone, cpf);
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+    }
+
+    @E("preenche os campos: [Telefone com DDD] {string} {string} {string} comboMulti {string}, [E-mail] e [CPF] multaServico {string} multaAparelho {string} claroClube {string} crivo {string}")
+    public void preencheOsCamposTelefoneComDDDEMailECPF(String segmento, String formaPagamento, String formaEnvio, String combo, String multaServico, String multaAparelho, String claroClube, String crivo) {
+        SimpleEntry<String, String> dadosBase = consultarDadosBase(segmento, formaPagamento, formaEnvio, combo, multaServico, multaAparelho, claroClube, crivo);
+
+        cart.getUser().setTelephone(dadosBase.getKey());
+        cart.getUser().setClaroTelephone(dadosBase.getKey());
+        cart.getUser().setCpf(dadosBase.getValue());
+        carrinhoPage.inserirDadosBase(dadosBase.getKey(), dadosBase.getValue());
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
     }
 
     @E("preenche os campos: [E-mail] e [CPF] {string}")
-    public void preencherCamposCarrinhoBaseAparelho(String cpf) {
-        carrinhoPage.inserirEmail();
+    public void preencherCamposCarrinhoBasePreAparelho(String cpf) {
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+        cart.getUser().setCpf(cpf);
         carrinhoPage.inserirDadosBase(cpf);
+    }
+
+    @E("preenche o campo [E-mail]")
+    public void preencherEmailCarrinhoBaseAparelho() {
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
     }
 
     @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoPortabilidade(String telefone, String cpfAprovado, String cpfDiretrix) {
-        carrinhoPage.inserirEmail();
+        cart.getUser().setTelephone(telefone);
+        cart.getUser().setClaroTelephone(telefone);
         carrinhoPage.inserirDadosPortabilidade(telefone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+    }
+
+    @E("preenche os campos: [Telefone a ser portado com DDD] Portabilidade, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
+    public void preencherCamposCarrinhoPortabilidadeMassas(String cpfAprovado, String cpfDiretrix) {
+        String telephone = ConsultaCPFMSISDN.consultarDadosPortabilidade();
+
+        cart.getUser().setTelephone(telephone);
+        cart.getUser().setClaroTelephone(telephone);
+        carrinhoPage.inserirDadosPortabilidade(telephone, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+    }
+
+    @E("preenche os campos: [Telefone a ser portado com DDD] {string}, [E-mail] e [CPF] para Pix")
+    public void preencherCamposCarrinhoPortabilidadePix(String telefone) {
+        cart.getUser().setTelephone(telefone);
+        cart.getUser().setClaroTelephone(telefone);
+        cart.getUser().setCpf(carrinhoPage.inserirDadosPortabilidadePix(telefone));
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+    }
+
+    @E("preenche os campos: [Celular] {string}, [E-mail] e [CPF] para Pix")
+    public void preencherCamposCarrinhoAquisicaoPix(String telefone) {
+        cart.getUser().setTelephone(telefone);
+        cart.getUser().setCpf(carrinhoPage.inserirDadosAquisicaoPix(telefone));
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
+    }
+
+    @E("preenche os campos: [Celular] {string}, [E-mail] e [CPF] {string} reprovado no crivo")
+    public void preencheCamposCarrinhoAquisicaoCpfReprovado(String telefone, String cpf) {
+        cart.getUser().setTelephone(telefone);
+        cart.getUser().setCpf(cpf);
+        carrinhoPage.inserirDadosReprovacaoScore(telefone, cpf);
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
     }
 
     @E("preenche os campos: [Celular de contato] {string}, [E-mail] e [CPF] [CPF aprovado na clearSale? {string}, CPF na diretrix? {string}]")
     public void preencherCamposCarrinhoAquisicao(String telefoneContato, String cpfAprovado, String cpfDiretrix) {
-        carrinhoPage.inserirEmail();
-        carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix));
+        cart.getUser().setTelephone(telefoneContato);
+        cart.getUser().setCpf(carrinhoPage.inserirDadosAquisicao(telefoneContato, Boolean.parseBoolean(cpfAprovado), Boolean.parseBoolean(cpfDiretrix)));
+        cart.getUser().setEmail(carrinhoPage.inserirEmail());
     }
 
     @Entao("será exibida a mensagem de erro: {string}")
@@ -97,11 +154,13 @@ public class CarrinhoSteps {
 
     @Quando("o usuário clicar no botão [Eu quero!] do Carrinho")
     public void clicarEuQuero() {
+        cart.updatePlanCartPromotion();
         carrinhoPage.clicarEuQuero();
     }
 
     @Quando("o usuário clicar no botão [Continuar] do Carrinho")
     public void clicarContinuar() {
+        cart.updatePlanCartPromotion();
         carrinhoPage.clicarContinuar();
     }
 
@@ -109,11 +168,7 @@ public class CarrinhoSteps {
     public void validarModalAvisoTrocaPlano() {
         carrinhoPage.validarModalAvisoTrocaPlano();
     }
-    @Entao("exibe a mensagem: O número informado não está ativo")
-    public void validarMensagemNumeroNaoAtivo() {
-        carrinhoPage.validarMensagemNumeroNaoAtivo();
-    }
-
+    
     @Quando("o usuário clicar no botão [Confirmar] do modal [Aviso Troca de Plano]")
     public void clicarEmAvisoTrocaPlano() {
         carrinhoPage.clicarAvisoTrocaPlano();
@@ -126,11 +181,20 @@ public class CarrinhoSteps {
 
     @E("preenche os campos: [Telefone com DDD] {string}, [CPF] {string} e [E-mail] {string} para acessórios")
     public void preencherCamposCarrinhoAcessorios(String telefone, String cpf, String email) {
+        cart.setProcessType(ACCESSORY);
+        cart.getUser().setTelephone(telefone);
+        cart.getUser().setEmail(email);
+        cart.getUser().setCpf(cpf);
         carrinhoPage.inserirDadosCarrinhoAcessorios(telefone, cpf, email);
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Carrinho de Acessórios")
     public void clicarContinuarAcessorios() {
         carrinhoPage.clicaBotaoContinuarAcessorios();
+    }
+
+    @Quando("clicar no botão [Continuar comprando]")
+    public void clicarBotaoContinuarComprando() {
+        carrinhoPage.clicaBotaoContinuarComprando();
     }
 }

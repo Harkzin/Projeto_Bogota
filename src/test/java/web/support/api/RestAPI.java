@@ -1,12 +1,17 @@
 package web.support.api;
 
+import mock.ativacao.UpdateOrderRequest;
+import mock.sap.UpdateOrderSapRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import web.support.utils.Constants;
 import web.support.utils.Constants.Email;
 
 import java.net.http.HttpClient;
@@ -24,12 +29,19 @@ public final class RestAPI {
     private RestAPI() {}
 
     public static final HttpClient clientHttp = HttpClient.newHttpClient();
-
     private static final String MAILSAC_KEY = "k_YKJeUgIItKTd03DqOGRFAPty89C2gXR6zLLw39";
-
-    public static final ObjectMapper objMapper = new ObjectMapper()
+    public static final JsonMapper jsonMapper = JsonMapper.builder()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+            .build();
+
+    private static final String baseURI = "https://api.cokecxf-commercec1-" + Constants.ambiente + "-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro";
+
+    private static void validateStatusCodeOk(String message, int status, String url) throws HttpStatusException {
+        if (status != 200) {
+            throw new HttpStatusException("Erro na API de Login. Response Body=" + message, status, url);
+        }
+    }
 
     public static String getCpf() {
         final HttpRequest getCpfRequest = HttpRequest.newBuilder()
@@ -62,7 +74,7 @@ public final class RestAPI {
                 .build();
 
         try {
-            String token = objMapper.readTree(clientHttp.send(diretrixTokenRequest, HttpResponse.BodyHandlers.ofString()).body())
+            String token = jsonMapper.readTree(clientHttp.send(diretrixTokenRequest, HttpResponse.BodyHandlers.ofString()).body())
                     .get("access_token")
                     .asText();
 
@@ -75,7 +87,7 @@ public final class RestAPI {
                     .build();
 
             HttpResponse<String> response = clientHttp.send(diretrixRequest, HttpResponse.BodyHandlers.ofString());
-            JsonNode node = objMapper.readTree(response.body());
+            JsonNode node = jsonMapper.readTree(response.body());
 
             return response.statusCode() != 422 || !node.at("/error").get("detailedMessage").asText().equalsIgnoreCase("CPF não encontrado"); //CPF na Diretrix? = true, fora da Diretrix? = false, para testes deve ser false.
         } catch (IOException | InterruptedException e) {
@@ -94,7 +106,7 @@ public final class RestAPI {
         List<JsonNode> messageList;
 
         try {
-            messageList = objMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {});
+            messageList = jsonMapper.readValue(clientHttp.send(getMessages, HttpResponse.BodyHandlers.ofString()).body(), new TypeReference<>() {});
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -152,7 +164,7 @@ public final class RestAPI {
         try {
             while (true) { //Delay para chamadas consecutivas
                 if (System.currentTimeMillis() >= startTime) {
-                    response = objMapper.readTree(clientHttp.send(getAccount, HttpResponse.BodyHandlers.ofString()).body());
+                    response = jsonMapper.readTree(clientHttp.send(getAccount, HttpResponse.BodyHandlers.ofString()).body());
                     break;
                 }
             }
@@ -185,7 +197,7 @@ public final class RestAPI {
                 .build();
 
         try {
-            return objMapper.readTree(clientHttp.send(ecommTokenRequest, HttpResponse.BodyHandlers.ofString()).body()).get("access_token").asText();
+            return jsonMapper.readTree(clientHttp.send(ecommTokenRequest, HttpResponse.BodyHandlers.ofString()).body()).get("access_token").asText();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -201,6 +213,127 @@ public final class RestAPI {
 
         try {
             return clientHttp.send(devicePriceInfoRequest, HttpResponse.BodyHandlers.ofString()).body();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getPlanCartPromotion(String guid) {
+        final HttpRequest planCartPromotionRequest = HttpRequest.newBuilder()
+                .uri(URI.create(String.format("https://api.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/cart/promotions/automation/%s", ambiente, guid)))
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getEcommToken())
+                .GET()
+                .build();
+
+        try {
+            String response = clientHttp.send(planCartPromotionRequest, HttpResponse.BodyHandlers.ofString()).body();
+            return jsonMapper.readTree(response).get("promotion").get(0).toString();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String getApigeeToken(String basic) {
+        final HttpRequest apigeeTokenRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://test.apigw.claro.com.br/oauth2/v1/token"))
+                .timeout(ofSeconds(10))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Authorization", "Basic " + basic)
+                .POST(HttpRequest.BodyPublishers.ofString("grant_type=client_credentials"))
+                .build();
+
+        try {
+            String response = clientHttp.send(apigeeTokenRequest, HttpResponse.BodyHandlers.ofString()).body();
+            return jsonMapper.readTree(response).get("access_token").asText();
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Verificar conexao com a VPN (local) ou liberacao de acesso (Jenkins/Bstack).\n" + e);
+        }
+    }
+
+    public static JsonNode customerProductDetailsRequest(String msisdn) throws HttpStatusException {
+        final HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://test.apigw.claro.com.br/mobile/v1/customers/productdetails")) //Necessário VPN (local) ou liberação de acesso (Jenkins/Bstack)
+                .timeout(ofSeconds(15))
+                .header("Authorization", "Bearer " + getApigeeToken("V09Dc0xwNmZwMmNWdVpQWkZvVklqQTJNZUFWdnpuR2k6M1pUbzdmT0hvZGZ6R3BDRg=="))
+                .header("Accept", "application/json")
+                .header("X-QueryString", "msisdn=" + msisdn)
+                .GET()
+                .build();
+
+        HttpResponse<String> response;
+        try {
+            response = clientHttp.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        validateStatusCodeOk(response.body(), response.statusCode(), response.uri().toASCIIString());
+
+        JsonNode jnode;
+        try {
+            jnode = jsonMapper.readTree(response.body());
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return jnode.path("data");
+    }
+
+    public static HttpResponse<String> orderStatusRequest(String code) {
+        final HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(String.format("https://api.cokecxf-commercec1-%s-public.model-t.cc.commerce.ondemand.com/clarowebservices/v2/claro/order/status/automation/%s", ambiente, code)))
+                .timeout(ofSeconds(10))
+                .header("Authorization", "Bearer " + getEcommToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response;
+        try {
+            response = clientHttp.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+    }
+
+    public static HttpResponse<String> updateOrderSap(UpdateOrderSapRequest updateOrderSapRequest) {
+        String body;
+        try {
+            body = jsonMapper.writeValueAsString(updateOrderSapRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        final HttpRequest updateOrderSap = HttpRequest.newBuilder()
+                .uri(URI.create(baseURI + "/orders/update/sap"))
+                .timeout(ofSeconds(15))
+                .header("Authorization", getEcommToken())
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build();
+        try {
+            return clientHttp.send(updateOrderSap, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static HttpResponse<String> updateOrder(UpdateOrderRequest updateOrderRequest) {
+        String body;
+        try {
+            body = jsonMapper.writeValueAsString(updateOrderRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        final HttpRequest updateOrder = HttpRequest.newBuilder()
+                .uri(URI.create(baseURI + "/orders/update/"))
+                .timeout(ofSeconds(15))
+                .header("Authorization", getEcommToken())
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .build();
+        try {
+            return clientHttp.send(updateOrder, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -1,13 +1,12 @@
 package web.steps;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
-import web.models.CartOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.HomePage;
+import web.models.CartOrder;
 
 public class HomeSteps {
 
@@ -22,7 +21,7 @@ public class HomeSteps {
 
     @Dado("que o usuário acesse a Loja Online")
     public void AcessarLojaOnline() {
-        cart.setDDD(11); //Default SP 11 para geolocation bloqueada.
+        cart.setClaroDdd(11); //Default SP 11 para geolocation bloqueada.
         homePage.acessarLojaHome();
     }
 
@@ -41,12 +40,10 @@ public class HomeSteps {
     @Quando("o usuário clicar na opção [Controle] do header")
     public void acessarPlpControle() {
         homePage.acessarPlpControle();
-        //TODO
     }
 
     @Quando("o usuário clicar na opção [Pós] do header")
     public void acessarPlpPos() {
-        homePage.acessarPlpPos();
         //TODO
     }
 
@@ -64,7 +61,7 @@ public class HomeSteps {
     @Quando("o usuário clicar no botão [Mais detalhes] do plano {string}")
     public void acessarPdpPlano(String id) {
         cart.setPlan(id);
-        homePage.validarCardPlano(cart.getPlan(), true);
+        homePage.validarCardPlano(cart.getPlan(), false);
         homePage.acessarPdpPlano(id);
     }
 

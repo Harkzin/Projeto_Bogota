@@ -1,21 +1,9 @@
 package web.support.utils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Duration;
-import static java.time.Duration.ofSeconds;
-import java.util.List;
-
+import io.cucumber.spring.ScenarioScope;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.jsoup.nodes.Document;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.InvalidArgumentException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Platform;
-import static org.openqa.selenium.Platform.IOS;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -24,11 +12,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Component;
-
-import io.cucumber.spring.ScenarioScope;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import static web.support.api.RestAPI.getEmailMessage;
 import web.support.utils.Constants.Email;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Duration;
+import java.util.List;
+
+import static java.time.Duration.ofSeconds;
+import static org.openqa.selenium.Platform.IOS;
+import static web.support.api.RestAPI.getEmailMessage;
 
 @Component
 @ScenarioScope
@@ -40,8 +33,8 @@ public class DriverWeb {
     public DriverWeb() {
         if (System.getProperty("api", "false").equals("false")) {
             String browserstack = System.getProperty("browserstack", "false");
-            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "false");
-            String maximized = System.getProperty("maximized", "true");
+            String headless = browserstack.equals("true") ? "false" : System.getProperty("headless", "true");
+            String maximized = System.getProperty("maximized", "false");
 
             WebDriverManager.chromedriver().setup();
             ChromeOptions chromeOptions = new ChromeOptions();

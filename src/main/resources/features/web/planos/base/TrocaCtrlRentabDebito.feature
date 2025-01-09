@@ -9,26 +9,25 @@ Funcionalidade: ECCMAUT-259 - Troca Controle - Rentabilizacao - Debito
   @Controle
   @TrocaCtrlRentabDebito
   Cenario: Troca Controle - Rentabilizacao - Debito
-    Dado que o usuário acesse a URL parametrizada de carrinho para a oferta de rentabilização "https://accstorefront.cokecxf-commercec1-s5-public.model-t.cc.commerce.ondemand.com/claro/pt/offer-plan/externalUri?offerPlanId=17536&coupon=65ae9c93a4ff011bb9e85d12ca567058c73f23dece9b43974ab86c2c927f933f&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
-    E preenche os campos: [Telefone com DDD] "11947726224", [E-mail] e [CPF] "93041484803"
+
+    Dado que o usuário acesse a URL parametrizada para a oferta de rentabilização "/claro/pt/offer-plan/externalUri?offerPlanId=17528&coupon=cd3593b3dba52709ae89ae5aa1db8dbf61993f1047e42a2d3d942e9b77c2885b&msisdn=msisdn&targetCampaign=migra&paymentMethod=debitcard&loyalty=true&invoiceType=DIGITAL&processType=MIGRATE"
+    Então é direcionado para a tela de Carrinho com a oferta
+    E preenche os campos: [Telefone com DDD] "Controle" "Debito" "E-mail" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "na"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Customizar Fatura
-      #Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E não deve ser exibido as opções de pagamento
     E não deve ser exibido os meios de recebimento da fatura
     E não deve ser exibido as datas de vencimento
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de SMS
-      #Mas não deve haver alterações no valor e nem nas informações do Plano
+      Mas não deve haver alterações no valor e nem nas informações do Plano
     E preenche o campo [Código de verificação] com o token recebido
 
     Quando o usuário clicar no botão [Finalizar] da tela de SMS
     Então é direcionado para a tela de Parabéns
-      #Mas não deve haver alterações no valor e nem nas informações do Plano
+      #ECCMAUT-1416 Mas não deve haver alterações no valor e nem nas informações do Plano
     E os dados do pedido estão corretos
-
-
-  # Steps desabilitadas para cenários rentab. API para consulta das informações da promoção rentab com bug.

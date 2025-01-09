@@ -2,7 +2,6 @@ package web.steps;
 
 import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.LoginPage;
@@ -24,12 +23,12 @@ public class LoginSteps {
         loginPage.validarPaginaLogin();
     }
 
-    @Entao("é direcionado para a tela de opções minha conta")
-    public void eDirecionadoParaATelaDeMinhaConta() {
+    @Entao("é direcionado para a tela Minha Conta")
+    public void validarPaginaMinhaConta() {
         loginPage.validarPaginaMinhaConta();
     }
 
-    @Então("será exibida a mensagem {string}")
+    @Entao("será exibida a mensagem {string}")
     public void seraExibidaAMensagem(String mensagemClube) {
         loginPage.validarMensagemSaldoClaroClube(mensagemClube);
     }
@@ -37,6 +36,11 @@ public class LoginSteps {
     @Quando("o usuário clicar na opção [Acompanhar pedidos]")
     public void oUsuarioClicarNaOpcaoAcompanharPedidos() {
         loginPage.clicarAcompanharPedidos();
+    }
+
+    @Quando("o usuário clicar na opção [Acompanhar pedidos eSIM]")
+    public void oUsuarioClicarNaOpcaoAcompanharPedidosEsim(){
+        loginPage.clicarAcompanharPedidosEsim();
     }
 
     @Quando("o usuário clicar na opção [Claro clube]")
@@ -47,8 +51,13 @@ public class LoginSteps {
     @Entao("é direcionado para a tela de login com CPF")
     public void eDirecionadoParaATelaDeAcompanhamentoDoUsuario() {
         loginPage.validarPaginaLoginCpf();
-
     }
+
+    @Entao("é direcionado para a tela de login eSIM com CPF")
+    public void eDirecionadoParaATelaDeAcompanharPedido(){
+        loginPage.validarPaginaLoginEsimCPF();
+    }
+
     @E("preenche o campo [CPF] {string}")
     public void preencheOCampoCPFComOCPF(String cpf) {
         loginPage.preencheCPF(cpf);
@@ -64,9 +73,9 @@ public class LoginSteps {
         loginPage.validarPaginaLoginToken();
     }
 
-    @E("selecionar a opção [Receber código por e-mail] no e-mail {string}")
+    @Quando("o usuário selecionar a opção [Receber código por e-mail] no e-mail {string}")
     public void selecionaAOpcaoReceberCodigoPorEMail(String email) {
-        cart.setUserEmail(email);
+        cart.getUser().setEmail(email);
         loginPage.selecionarCodigoEmail(email);
     }
 
@@ -77,7 +86,7 @@ public class LoginSteps {
 
     @E("preenche o campo [Digite o código recebido] com o token")
     public void preencherToken() {
-        loginPage.inserirTokenEmail(cart.getUserEmail());
+        loginPage.inserirTokenEmail(cart.getUser().getEmail());
     }
 
     @Quando("o usuário clicar no botão [Confirmar]")
@@ -85,10 +94,31 @@ public class LoginSteps {
         loginPage.clicarBotaoConfirmar();
     }
 
-    @Então("é direcionado para a tela Meus Pedidos")
+    @Entao("é direcionado para a tela Meus Pedidos")
     public void eDirecionadoParaATelaMeusPedidos() {
         loginPage.validarPaginaMeusPedidos();
     }
+
+    @Entao("é direcionado para a tela Gerenciar eSIM")
+    public void eDirecionadoParaATelaMinhaContaESim() {
+        loginPage.validarPaginaGrenciarESim();
+    }
+
+    @Quando("o usuário clicar no botão [Ativar eSIM]")
+    public void clicarGerenciarESim() {
+        loginPage.clicarBotaoAtivarESim();
+    }
+
+    @Entao("é direcionado para a tela de Ativar eSIM")
+    public void eDirecionadoParaATelaAtivarESim() {
+        loginPage.validarPaginaAtivarESim();
+    }
+
+    @E("o usuário selecionar a opção [Gerenciar eSIM]")
+    public void selecionarOpcaoGerenciarESim() {
+        loginPage.clicarGerenciarESim();
+    }
+
     @E("acessar o pedido mais recente, clicando no Número do pedido dele")
     public void acessarOPedidoMaisRecenteClicandoNoNumeroDoPedidoDele() {
         loginPage.acessarPedidoRecente();

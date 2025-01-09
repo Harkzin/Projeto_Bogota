@@ -46,7 +46,7 @@ public class ApiSteps {
         try {
             final HttpResponse<String> tokenResponse = clientHttp.send(getToken, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, tokenResponse.statusCode());
-            token = "Bearer " + objMapper.readTree(tokenResponse.body()).get("access_token").asText();
+            token = "Bearer " + jsonMapper.readTree(tokenResponse.body()).get("access_token").asText();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +66,7 @@ public class ApiSteps {
         try {
             cartNewResponse = clientHttp.send(createCart, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, cartNewResponse.statusCode());
-            cartNewObjectResponse = objMapper.readValue(cartNewResponse.body(), CartNewResponse.class);
+            cartNewObjectResponse = jsonMapper.readValue(cartNewResponse.body(), CartNewResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -98,7 +98,7 @@ public class ApiSteps {
         try {
             addPlanOfferResponse = clientHttp.send(addOfferPlan, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, addPlanOfferResponse.statusCode());
-            addPlanOfferObjectResponse = objMapper.readValue(addPlanOfferResponse.body(), AddOfferPlanResponse.class);
+            addPlanOfferObjectResponse = jsonMapper.readValue(addPlanOfferResponse.body(), AddOfferPlanResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -127,12 +127,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(identificarClienteRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(identificarClienteRequest)))
                     .build();
 
             identificarClienteResponse = clientHttp.send(identificarCliente, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, identificarClienteResponse.statusCode());
-            identificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
+            identificarClienteObjectResponse = jsonMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -161,12 +161,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(identificarClienteRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(identificarClienteRequest)))
                     .build();
 
             identificarClienteResponse = clientHttp.send(identificarCliente, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, identificarClienteResponse.statusCode());
-            identificarClienteObjectResponse = objMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
+            identificarClienteObjectResponse = jsonMapper.readValue(identificarClienteResponse.body(), CheckoutStepIdentificarClienteResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -194,12 +194,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPersonalInfoRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepPersonalInfoRequest)))
                     .build();
 
             personalInfoResponse = clientHttp.send(personalInfo, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, personalInfoResponse.statusCode());
-            personalInfoObjectResponse = objMapper.readValue(personalInfoResponse.body(), CheckoutStepPersonalInfoResponse.class);
+            personalInfoObjectResponse = jsonMapper.readValue(personalInfoResponse.body(), CheckoutStepPersonalInfoResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -223,12 +223,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .method("GET", HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepAddressRequest)))
+                    .method("GET", HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepAddressRequest)))
                     .build();
 
             addressResponse = clientHttp.send(address, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, addressResponse.statusCode());
-            addressObjectResponse = objMapper.readValue(addressResponse.body(), CheckoutStepAddressResponse.class);
+            addressObjectResponse = jsonMapper.readValue(addressResponse.body(), CheckoutStepAddressResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -279,12 +279,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepAddressRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepAddressRequest)))
                     .build();
 
             addressResponse = clientHttp.send(address, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, addressResponse.statusCode());
-            addressObjectResponse = objMapper.readValue(addressResponse.body(), CheckoutStepAddressResponse.class);
+            addressObjectResponse = jsonMapper.readValue(addressResponse.body(), CheckoutStepAddressResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -309,12 +309,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPaymentsRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepPaymentsRequest)))
                     .build();
 
             paymentsResponse = clientHttp.send(payments, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, paymentsResponse.statusCode());
-            paymentsObjectResponse = objMapper.readValue(paymentsResponse.body(), CheckoutStepPaymentsResponse.class);
+            paymentsObjectResponse = jsonMapper.readValue(paymentsResponse.body(), CheckoutStepPaymentsResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -355,12 +355,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepPaymentRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepPaymentRequest)))
                     .build();
 
             paymentResponse = clientHttp.send(payment, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, paymentResponse.statusCode());
-            paymentObjectResponse = objMapper.readValue(paymentResponse.body(), CheckoutStepPaymentResponse.class);
+            paymentObjectResponse = jsonMapper.readValue(paymentResponse.body(), CheckoutStepPaymentResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -384,12 +384,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepValidateCreditRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepValidateCreditRequest)))
                     .build();
 
             validateCreditResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, validateCreditResponse.statusCode());
-            validateCreditObjectResponse = objMapper.readValue(validateCreditResponse.body(), CheckoutStepValidateCreditResponse.class);
+            validateCreditObjectResponse = jsonMapper.readValue(validateCreditResponse.body(), CheckoutStepValidateCreditResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -416,19 +416,19 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepTokenRequest)))
                     .build();
 
             tokenResponse = clientHttp.send(otpToken, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, tokenResponse.statusCode());
-            tokenObjectResponse = objMapper.readValue(tokenResponse.body(), CheckoutStepTokenResponse.class);
+            tokenObjectResponse = jsonMapper.readValue(tokenResponse.body(), CheckoutStepTokenResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         Assert.assertTrue(tokenObjectResponse.isSuccess());
-        Assert.assertEquals("Token enviado",tokenObjectResponse.getMessage());
-        Assert.assertNotNull( tokenObjectResponse.getValidateTokenTest());
+        Assert.assertEquals("Token enviado", tokenObjectResponse.getMessage());
+        Assert.assertNotNull(tokenObjectResponse.getValidateTokenTest());
         validateToken = tokenObjectResponse.getValidateTokenTest();
     }
 
@@ -447,18 +447,18 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .method("GET",HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepTokenRequest)))
+                    .method("GET",HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepTokenRequest)))
                     .build();
 
             tokenResponse = clientHttp.send(otpToken, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, tokenResponse.statusCode());
-            tokenObjectResponse = objMapper.readValue(tokenResponse.body(), CheckoutStepTokenResponse.class);
+            tokenObjectResponse = jsonMapper.readValue(tokenResponse.body(), CheckoutStepTokenResponse.class);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         Assert.assertTrue(tokenObjectResponse.isSuccess());
-        Assert.assertEquals("Token válido",tokenObjectResponse.getMessage());
+        Assert.assertEquals("Token válido", tokenObjectResponse.getMessage());
         Assert.assertFalse(tokenObjectResponse.isContingency());
     }
 
@@ -476,12 +476,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepOrderRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepOrderRequest)))
                     .build();
 
             orderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, orderResponse.statusCode());
-            orderObjectResponse = objMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
+            orderObjectResponse = jsonMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
             // Log com número do pedido para posterior validação no BKO
             System.out.println("Numero do pedido: " + orderObjectResponse.getOrdercode());
         } catch (IOException | InterruptedException e) {
@@ -511,12 +511,12 @@ public class ApiSteps {
                     .timeout(ofSeconds(15))
                     .header("Authorization", token)
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(objMapper.writeValueAsString(checkoutStepOrderRequest)))
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonMapper.writeValueAsString(checkoutStepOrderRequest)))
                     .build();
 
             orderResponse = clientHttp.send(validateCredit, HttpResponse.BodyHandlers.ofString());
             Assert.assertEquals(200, orderResponse.statusCode());
-            orderObjectResponse = objMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
+            orderObjectResponse = jsonMapper.readValue(orderResponse.body(), CheckoutStepOrderResponse.class);
             // Log com número do pedido para posterior validação no BKO
             System.out.println("Numero do pedido: " + orderObjectResponse.getOrdercode());
         } catch (IOException | InterruptedException e) {

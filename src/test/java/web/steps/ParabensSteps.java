@@ -1,11 +1,10 @@
 package web.steps;
 
 import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
+import io.cucumber.java.pt.Entao;
 import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.ParabensPage;
 import web.models.CartOrder;
-
 
 public class ParabensSteps {
 
@@ -18,18 +17,19 @@ public class ParabensSteps {
         this.cart = cart;
     }
 
-    @Então("é direcionado para a tela de Parabéns")
+    @Entao("é direcionado para a tela de Parabéns")
     public void validarPaginaParabens() {
-        parabensPage.validarPaginaParabens();
+        parabensPage.validarPaginaParabens(cart);
     }
 
-    @E("o usuário clicar em [Ok, Entendi] no modal de token")
+    @Entao("é direcionado para a tela de Parabéns Pix")
+    public void validarPaginaParabensPix() {
+        parabensPage.validarPaginaParabensPix(cart);
+    }
+
+    @E("clica no botão [Ok, Entendi] do modal de alerta de token")
     public void ClicarOkEntendi() {
-        parabensPage.clicarOkEntendi();
-    }
-
-    @Então("os dados do pedido estão corretos")
-    public void validarDadosPedido() {
-        parabensPage.validarCamposPedido();
+        parabensPage.clicarOkEntendiModal();
+        parabensPage.validarDados(cart);
     }
 }

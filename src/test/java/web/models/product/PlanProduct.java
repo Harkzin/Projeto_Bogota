@@ -13,6 +13,27 @@ public final class PlanProduct extends Product {
     @JsonProperty("loyaltyClaroPrices")
     private List<LoyaltyClaroPrice> loyaltyClaroPrices;
 
+    @JsonProperty("dataBonusForPlan")
+    private DataBonusForPlan dataBonusForPlan;
+
+    @JsonProperty("dependentQuantity")
+    private int dependentQuantity;
+
+    @JsonProperty("passports")
+    private List<Passport> passports;
+
+    private boolean hasAttribute(String code) {
+        if (classifications != null) {
+            return classifications.stream()
+                    .filter(c -> c.code.contains("serviceplanclassification"))
+                    .findFirst().orElseThrow()
+                    .features.stream()
+                    .anyMatch(feature -> feature.code.contains(code));
+        } else {
+            return false;
+        }
+    }
+
     private Classification.Feature getAttributes(String code) {
         return classifications.stream()
                 .filter(classification -> classification.code.contains("serviceplanclassification"))
@@ -53,7 +74,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasPlanApps() {
-        return hasAttribute("serviceplanclassification", "planapps");
+        return hasAttribute("planapps");
     }
 
     public String getPlanAppsTitle() {
@@ -65,11 +86,11 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasExtraPlayApps() {
-        return hasAttribute("serviceplanclassification", "planextraplayapps");
+        return hasAttribute("planextraplayapps");
     }
 
     public boolean hasExtraPlayTitle() {
-        return hasAttribute("serviceplanclassification", "clarotitleextraplay");
+        return hasAttribute("clarotitleextraplay");
     }
 
     public String getExtraPlayTitle() {
@@ -81,7 +102,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasClaroServices() {
-        return hasAttribute("serviceplanclassification", "claroservicespdp");
+        return hasAttribute("claroservicespdp");
     }
 
     public String getClaroServicesTitle() {
@@ -93,7 +114,7 @@ public final class PlanProduct extends Product {
     }
 
     public boolean hasPlanPortability() {
-        return hasAttribute("serviceplanclassification", "planportability");
+        return hasAttribute("planportability");
     }
 
     public List<String> getPlanPortability() {
@@ -102,6 +123,26 @@ public final class PlanProduct extends Product {
                 .stream()
                 .map(featureValue -> featureValue.value)
                 .collect(Collectors.toList());
+    }
+
+    public int getDependentQuantity() {
+        return dependentQuantity;
+    }
+
+    public boolean hasBonus() {
+        return dataBonusForPlan.values != null;
+    }
+
+    public List<String> getDataBonus() {
+        return dataBonusForPlan.values.stream().map(v -> String.format("%sGB %s", v.value, v.key)).collect(Collectors.toList());
+    }
+
+    public boolean hasPassport() {
+        return passports != null;
+    }
+
+    public List<Passport> getPassports() {
+        return passports;
     }
 
     public static final class ClaroPaymentModePrice {
@@ -130,5 +171,78 @@ public final class PlanProduct extends Product {
 
         @JsonProperty("value")
         double value;
+    }
+
+    public static final class DataBonusForPlan {
+
+        private DataBonusForPlan() {}
+
+        @JsonProperty("total")
+        public int total;
+
+        @JsonProperty("values")
+        public List<Value> values;
+
+        public static final class Value {
+
+            @JsonProperty("key")
+            public String key;
+
+            @JsonProperty("value")
+            public int value;
+        }
+    }
+
+    public static final class Passport {
+
+        private Passport() {}
+
+        @JsonProperty("description")
+        private String description;
+
+        @JsonProperty("passportTraffics")
+        private List<PassportTraffic> passportTraffics;
+
+        public String getDescription() {
+            return description;
+        }
+
+        public List<PassportTraffic> getPassportTraffics() {
+            return passportTraffics;
+        }
+
+        public static final class PassportTraffic {
+
+            private PassportTraffic() {}
+
+            @JsonProperty("country")
+            private Country country;
+
+            public Country getCountry() {
+                return country;
+            }
+
+            public static final class Country {
+
+                private Country() {}
+
+                @JsonProperty("altText")
+                private String altText;
+
+                @JsonProperty("url")
+                private String url;
+
+                public String getAltText() {
+                    return altText;
+                }
+
+                public String getUrl() {
+                    return url;
+                }
+
+            }
+
+        }
+
     }
 }

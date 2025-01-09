@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
 
-@SuppressWarnings("UnusedDeclaration")
 public abstract class Product {
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @JsonProperty("classifications")
     protected List<Classification> classifications;
 
@@ -29,13 +27,8 @@ public abstract class Product {
     @JsonProperty("url")
     protected String url;
 
-    protected boolean hasAttribute(String classification, String code) {
-        return classifications.stream()
-                .filter(c -> c.code.contains(classification))
-                .findFirst().orElseThrow()
-                .features.stream()
-                .anyMatch(feature -> feature.code.contains(code));
-    }
+    @JsonProperty("categories")
+    protected List<Category> categories;
 
     public String getDescription() {
         return description;
@@ -63,6 +56,10 @@ public abstract class Product {
 
     public String getFormattedPrice() {
         return price.formattedValue;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
     }
 
     public static class Classification {
@@ -123,5 +120,17 @@ public abstract class Product {
 
         @JsonProperty("value")
         double value;
+    }
+
+    public static final class Category {
+
+        private Category() {}
+
+        @JsonProperty("code")
+        private String code;
+
+        public String getCode() {
+            return code;
+        }
     }
 }

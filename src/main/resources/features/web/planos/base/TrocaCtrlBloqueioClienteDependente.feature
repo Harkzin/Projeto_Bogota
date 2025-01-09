@@ -2,6 +2,7 @@
 
 @Regressivo
 @Web
+@CenarioBloqueio
 Funcionalidade: ECCMAUT-301 - Bloqueio cliente Dependente
 
   @Controle

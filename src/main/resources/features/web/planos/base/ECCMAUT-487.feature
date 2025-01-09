@@ -1,47 +1,48 @@
 # language: pt
-@Regressivo @Web
+@Regressivo
+@Web
 
-Funcionalidade: ECCMAUT-145 - Migração Pré para Controle - Readequação Controle Fácil (Crédito Reprovado Passo 3)
+Funcionalidade: ECCMAUT-487 - [Planos Base] Migração Pré para Controle - Readequação Controle Fácil Espelhado | CPF Score Zerado
 
-  @Migracao @PrePago @ReadequacaoControleFacil
-  Cenario: Migração Pré para Controle - Readequação Controle Fácil (Crédito Reprovado Passo 3)
+  @Migracao
+  @Controle
+  @ReadequaçãoControleFácilEspelhado
+  Cenario: Migração Pré para Controle - Readequação Controle Fácil Espelhado | CPF Score Zerado
 
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Controle] do header
-    E o usuário clicar no botão [Eu quero!] do card do plano "17216" na PLP Controle
+    E o usuário clicar no botão [Eu quero!] no card do plano "17528" da PLP
     Entao é direcionado para a tela de Carrinho
 
       # Mas não deve haver alterações no valor e nem nas informações do Plano Controle
-      
+
     Quando seleciona a opção [Migração], para o fluxo de troca de Plano
-    E preenche os campos: [Telefone com DDD] "11947729413", [E-mail] e [CPF] "00000031070"
+    E preenche os campos: [Telefone com DDD] "11947891723", [E-mail] e [CPF] "24412286843"
     E o usuário clicar no botão [Eu quero!] do Carrinho
+    E preenche os campos de dados pessoais: [Nome Completo] "TESTES TESTES", [Data de Nascimento] "01022000" e [Nome da Mãe] "Marta Silva"
+    Entao é direcionado para a tela de Dados Pessoais
+    E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "12" e [Complemento] "CASA"
 
+    Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
+    Entao é direcionado para a tela de Customizar Fatura
 
+#   Mas não deve haver alterações no valor e nem nas informações do Plano Controle
+#   E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
+    E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
 
-    # Entao é direcionado para a tela de Dados Pessoais
-    # E preenche os campos de endereço: [CEP] convencional "01001001", [Número] "65" e [Complemento] "AP402"
+#   E o usuário clicar no botão [Débito] da pagina Costumizar Fatura
+    E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
+#   Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
+#   Quando preenche os dados bancários
+    E deve ser exibido as datas de vencimento
+    E marca o checkbox de termos de aceite
 
-    # Quando o usuário clicar no botão [Continuar] da tela de Dados Pessoais
-    # Entao é direcionado para a tela de Customizar Fatura
-
-    #   # Mas não deve haver alterações no valor e nem nas informações do Plano Controle
-
-    # E deve ser exibido as opções de pagamento, com a opção [Débito] selecionada
-    # E o usuário clicar no botão [Boleto] da pagina Costumizar Fatura
-    # E deve ser exibido as opções de pagamento, com a opção [Boleto] selecionada
-    # E o usuário clicar no botão [Débito] da pagina Costumizar Fatura
-    #   # E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
-    #   #   Quando o usuário selecionar o método de recebimento da fatura [WhatsApp]
-    # Quando preenche os dados bancários
-    # E deve ser exibido as datas de vencimento
-    # E marca o checkbox de termos de aceite
-    
-    # Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
-    
-
-
-
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
+    E clicar no [Eu quero!] no Controle Fácil
+    E preenche o cartão com os dados: [Número] "322412113", [Data de validade] "2103" e [CVV] "123"
+    #Entao é direcionado para a tela de Parabéns
+    #E clica no botão [Ok, Entendi] do modal de alerta de token
+    #Entao os dados do pedido estão corretos
 
 
 

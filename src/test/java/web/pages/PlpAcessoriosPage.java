@@ -21,10 +21,10 @@ public class PlpAcessoriosPage {
     }
 
     public void validarTodasOfertas() {
-        driverWeb.javaScriptClick("//*[@class='styles_item__8HZ_B styles_selected__M9eZM']", "xpath");
+        driverWeb.javaScriptClick("//p[contains(text(), 'Todas as Ofertas')]/../div", "xpath");
     }
 
-    public void clicarBotaoComprar() {
-        driverWeb.javaScriptClick("/html/body/div/div/div[2]/div[4]/div[2]/div[2]/div[2]/div/div[2]/div/div[2]/button", "xpath");
+    public void clicarBotaoComprar(String acessorio) {
+    driverWeb.javaScriptClick("btn-comprar-" + acessorio, "id");
     }
 }

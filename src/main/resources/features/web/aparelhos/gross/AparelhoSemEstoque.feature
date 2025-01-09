@@ -8,7 +8,7 @@ Funcionalidade: ECCMAUT-517 - Aquisicao Controle Aparelho Sem Estoque
   Cenario: Aquisicao Controle Aparelho Sem Estoque
     Dado que o usuário acesse a Loja Online
     Quando o usuário clicar na opção [Celulares] do header
-    Então é direcionado para a tela PLP de Aparelho
+    Então é direcionado para a PLP de Aparelhos
 
     Quando o usuário clicar no botão [Eu quero!] do card do Aparelho "000000000000018061"
     Então é direcionado para a PDP do Aparelho selecionado

@@ -6,8 +6,8 @@ import org.springframework.context.annotation.*;
 
 import web.models.CartOrder;
 
-@CucumberContextConfiguration
 @SuppressWarnings("UnusedDeclaration")
+@CucumberContextConfiguration
 public final class CucumberSpringConfiguration {
 
     @TestConfiguration

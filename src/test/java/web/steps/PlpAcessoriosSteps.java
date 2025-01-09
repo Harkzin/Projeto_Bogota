@@ -25,8 +25,8 @@ public class PlpAcessoriosSteps {
         plpAcessoriosPage.validarTodasOfertas();
     }
 
-    @Quando("o usuário clicar no botão [Comprar] no produto [CARREGADOR DE PAREDE CONCEPT]")
-    public void clicarComprar() {
-        plpAcessoriosPage.clicarBotaoComprar();
+    @Quando("o usuário clicar no botão [Comprar] no produto [ACESSÓRIO] {string}")
+    public void clicarComprar(String acessorio) {
+        plpAcessoriosPage.clicarBotaoComprar(acessorio);
     }
 }

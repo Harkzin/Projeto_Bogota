@@ -8,6 +8,7 @@ import web.pages.SmsPage;
 import web.models.CartOrder;
 
 public class SmsSteps {
+
     private final SmsPage smsPage;
     private final CartOrder cart;
 
@@ -27,7 +28,17 @@ public class SmsSteps {
         smsPage.inserirToken();
     }
 
-    @Quando("o usuário clicar no botão [Finalizar] da tela de SMS")
+    @Entao("é direcionado para a tela de SMS para o fluxo [Controle Fácil]")
+    public void validarPaginaSmsControleFacil() {
+        smsPage.validarPaginaSmsControleFacil();
+    }
+
+    @E("preenche o campo [Código de verificação] com o token recebido para fluxo [Controle Fácil]")
+    public void preencherTokenControleFacil() {
+        smsPage.inserirTokenControleFacil(cart.getUser().getClaroTelephone());
+    }
+
+    @Quando("o usuário clicar no botão [Finalizar][Continuar] da tela de SMS")
     public void clicarFinalizar() {
         smsPage.clicarFinalizar();
     }

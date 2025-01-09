@@ -13,7 +13,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
     Então é direcionado para a tela de Carrinho
       Mas não deve haver alterações no valor e nem nas informações do Plano
     E seleciona a opção [Migração], para o fluxo de migração de plataforma
-    E preenche os campos: [Telefone com DDD] "11947726232", [E-mail] e [CPF] "96687136801"
+    E preenche os campos: [Telefone com DDD] "Pre" "null" "null" comboMulti "false", [E-mail] e [CPF] multaServico "false" multaAparelho "false" claroClube "false" crivo "Thab"
 
     Quando o usuário clicar no botão [Eu quero!] do Carrinho
     Então é direcionado para a tela de Dados Pessoais
@@ -29,6 +29,9 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
 
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
+
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
 
@@ -36,9 +39,12 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
     Então não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar a forma de pagamento [Débito]
-    #MOM-2021 Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
+    Então o valor do Plano e o método de pagamento serão atualizados no Resumo da compra para Débito
     E deve ser exibido os meios de recebimento da fatura, com a opção [WhatsApp] selecionada
     E deve ser exibido as datas de vencimento
+
+    Quando o usuário selecionar o método de recebimento da fatura [App Minha Claro]
+    Entao não deve haver alterações no valor e nem nas informações do Plano
 
     Quando o usuário selecionar o método de recebimento da fatura [E-mail]
     Então não deve haver alterações no valor e nem nas informações do Plano
@@ -51,7 +57,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
     E preenche os dados bancários
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de readequação THAB
 
     Quando o usuário selecionar o plano de controle antecipado ofertado
@@ -65,7 +71,7 @@ Funcionalidade: ECCMAUT-227 - Migracao Pre - Readequacao THAB
     Então não deve haver alterações no valor e nem nas informações do Plano
     E marca o checkbox de termos de aceite
 
-    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura | Termos
+    Quando o usuário clicar no botão [Continuar] da tela de Customizar Fatura - Termos
     Então é direcionado para a tela de SMS
     E preenche o campo [Código de verificação] com o token recebido
 

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import web.pages.DadosPessoaisPage;
 import web.models.CartOrder;
 
-import static web.support.utils.Constants.DeliveryMode.*;
+import static web.support.utils.Constants.ChipType.*;
+import static web.support.utils.Constants.ProcessType.*;
+import static web.support.utils.Constants.ZoneDeliveryMode.*;
 
 public class DadosPessoaisSteps {
 
@@ -18,13 +20,19 @@ public class DadosPessoaisSteps {
         this.cart = cart;
     }
 
-    @Então("é direcionado para a tela de Dados Pessoais")
+    @Entao("é direcionado para a tela de Dados Pessoais")
     public void validarPaginaDadosPessoais() {
         dadosPessoaisPage.validarPaginaDadosPessoais();
+        if (cart.getProcessType() != MIGRATE) {
+            cart.getClaroChip().setChipType(SIM);
+        }
     }
 
     @E("preenche os campos de dados pessoais: [Nome Completo] {string}, [Data de Nascimento] {string} e [Nome da Mãe] {string}")
     public void preencherDadosPessoais(String nome, String data, String nomeMae) {
+        cart.getUser().setName(nome);
+        cart.getUser().setBirthdate(data);
+        cart.getUser().setParentfullname(nomeMae);
         dadosPessoaisPage.inserirNome(nome);
         dadosPessoaisPage.inserirDataNascimento(data);
         dadosPessoaisPage.inserirNomeMae(nomeMae);
@@ -33,20 +41,24 @@ public class DadosPessoaisSteps {
     @E("preenche os campos de endereço: [CEP] convencional {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaConvencional(String cep, String numero, String complemento) {
         cart.setDeliveryMode(CONVENTIONAL);
-        dadosPessoaisPage.inserirCep(cep);
+        cart.getDeliveryAddress().setStreetnumber(numero);
+        cart.getDeliveryAddress().setBuilding(complemento);
+        dadosPessoaisPage.inserirCep(cep, cart.getDeliveryAddress());
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("preenche os campos de endereço: [CEP] expressa {string}, [Número] {string} e [Complemento] {string}")
     public void preencherCamposEnderecoEntregaExpressa(String cep, String numero, String complemento) {
         cart.setDeliveryMode(EXPRESS);
-        dadosPessoaisPage.inserirCep(cep);
+        cart.getDeliveryAddress().setStreetnumber(numero);
+        cart.getDeliveryAddress().setBuilding(complemento);
+        dadosPessoaisPage.inserirCep(cep, cart.getDeliveryAddress());
         dadosPessoaisPage.inserirDadosEnderecoEntrega(numero, complemento);
     }
 
     @E("deve ser exibido os tipos de entrega")
     public void exibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(true, cart.getDeliveryMode(), cart.isDeviceCart());
+        dadosPessoaisPage.validarTiposEntregaEchip(true, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
     @E("o usuário desmarcar a opção [Usar o mesmo endereço de entrega]")
@@ -65,24 +77,33 @@ public class DadosPessoaisSteps {
         dadosPessoaisPage.inserirDadosEnderecoCobranca(numero, complemento);
     }
 
-    @E("o usuário seleciona o tipo de sim [Esim]")
-    public void selecionaEsim() {
-        cart.setEsimChip(true);
-        dadosPessoaisPage.selecionarEsim(cart.getDeliveryMode());
+    @E("seleciona o tipo de chip [Comum]")
+    public void selecionarChipComum() {
+        cart.getClaroChip().setChipType(SIM);
+        dadosPessoaisPage.selecionarChipComum(cart.getDeliveryMode());
+    }
+
+    @E("seleciona o tipo de chip [Esim]")
+    public void selecionarChipEsim() {
+        cart.getClaroChip().setChipType(ESIM);
+        dadosPessoaisPage.selecionarChipEsim(cart.getDeliveryMode());
     }
 
     @Mas("não deve ser exibido os tipos de entrega")
     public void naoExibirEntrega() {
-        dadosPessoaisPage.validarTiposEntregaEChip(false, cart.getDeliveryMode(), cart.isDeviceCart());
+        dadosPessoaisPage.validarTiposEntregaEchip(false, cart.getDeliveryMode(), cart.isDeviceCart());
     }
 
-    @Então("será recarregada a página e exibida a mensagem de erro: {string}")
+    @Entao("será recarregada a página e exibida a mensagem de erro: {string}")
     public void exibirFraseBloqueioCep(String mensagem) {
         dadosPessoaisPage.validarPaginaDadosPessoaisBloqueioCep(mensagem);
     }
 
     @Quando("o usuário clicar no botão [Continuar] da tela de Dados Pessoais")
     public void clicarContinuar() {
+        if (cart.getProcessType() == ACQUISITION || cart.getProcessType() == PORTABILITY) {
+            cart.addChip();
+        }
         dadosPessoaisPage.clicarContinuar();
     }
 }

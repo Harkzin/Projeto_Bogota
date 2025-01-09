@@ -30,38 +30,38 @@ public class DependentesPage {
 
 
     private final Map<Integer,String> mapBtnConfirmarDependente = Map.of(
-            1, "//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
-            2, "//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]",
-            3, "//ul[@id='js-dependentList']//button//span[contains(text(),'Confirmar')]"
+            1, "//*[@data-automation='lista-dependente']//*[@data-automation='btn-confirmar-dep']",
+            2, "(//*[@data-automation='lista-dependente']//button)[4][@data-automation='btn-confirmar-dep']",
+            3, "(//*[@data-automation='lista-dependente']//button)[6][@data-automation='btn-confirmar-dep']"
     ) ;
     private final Map<Integer,String> mapBtnExcluir = Map.of(
-            1, "//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')]",
-            2, "(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[2]",
-            3, "(//ul[@id='js-dependentList']//button//span[contains(text(),'Excluir')])[3]"
+            1, "//*[@data-automation='lista-dependente']//*[@data-automation='btn-excluir-dep']",
+            2, "(//*[@data-automation='lista-dependente']//button)[3][@data-automation='btn-excluir-dep']",
+            3, "(//*[@data-automation='lista-dependente']//button)[5][@data-automation='btn-excluir-dep']"
     );
     private final Map<Integer,String> mapAbaNumeroNovo = Map.of(
-            1, "//ul[@id='js-dependentList']//li[contains(text(),'Novo número')]",
-            2, "(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[2]",
-            3, "(//ul[@id='js-dependentList']//li[contains(text(),'Novo número')])[3]"
+            1, "//*[@data-automation='lista-dependente']//*[@data-automation='tab-novo-numero-dep']",
+            2, "(//*[@data-automation='lista-dependente']//ul)[2]//*[@data-automation='tab-novo-numero-dep']",
+            3, "(//*[@data-automation='lista-dependente']//ul)[3]//*[@data-automation='tab-novo-numero-dep']"
     );
     private final Map<Integer,String> mapAbaPortabilidade = Map.of(
-            1, "//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')]",
-            2, "(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[2]",
-            3, "(//ul[@id='js-dependentList']//li[contains(text(),'Portabilidade')])[3]"
+            1, "//*[@data-automation='lista-dependente']//*[@data-automation='tab-portabilidade-dep']",
+            2, "(//*[@data-automation='lista-dependente']//ul)[2]//*[@data-automation='tab-portabilidade-dep']",
+            3, "(//*[@data-automation='lista-dependente']//ul)[3]//*[@data-automation='tab-portabilidade-dep']"
     );
 
     private final Map<Integer,String> mapCampoTelefonePortabilidade = Map.of(
-            1, "txt-telefone-dep0",
-            2, "txt-telefone-dep2",
-            3, "txt-telefone-dep3"
+            1, "//*[@data-automation='lista-dependente']//*[@data-automation='txt-telefone-dep']",
+            2, "(//*[@data-automation='lista-dependente']//input)[2][@data-automation='txt-telefone-dep']",
+            3, "(//*[@data-automation='lista-dependente']//input)[3][@data-automation='txt-telefone-dep']"
     );
 
     public void validarPaginaDependentes() {
         driverWeb.waitPageLoad("/dependents/claroDependents", 15);
-        btnAdicionarDependente = driverWeb.findElement("//button[contains(text(),'Adicionar Dependente')]","xpath");
-        btnSeguirSemDependente = driverWeb.findElement("//button[contains(text(),'Seguir sem dependentes')]","xpath");
+        btnAdicionarDependente = driverWeb.findElement("btn-adicionar-dep","id");
+        btnSeguirSemDependente = driverWeb.findElement("btn-seguir-sem-dep","id");
 
-        Assert.assertTrue(driverWeb.findElement("//span[@class='mdn-Icon-comunidade mdn-Icon--md steps-icon']","xpath").isDisplayed());
+        Assert.assertTrue(driverWeb.findElement("//span[@class='mdn-Icon-comunidade mdn-Icon--md steps-icon']", "xpath").isDisplayed());
         Assert.assertTrue(btnAdicionarDependente.isDisplayed());
         Assert.assertTrue(btnSeguirSemDependente.isDisplayed());
     }
@@ -71,18 +71,18 @@ public class DependentesPage {
     }
 
     public void clicarAdicionarDependente(int dependente) {
-        driverWeb.javaScriptClick("//div[@class='mdn-Row']//div//button", "xpath");
+        driverWeb.javaScriptClick(btnAdicionarDependente);
         validarBotoesDependente(dependente);
     }
 
     private void validarBotoesDependente(int dependente) {
-        abaPortabilidade = driverWeb.findElement(mapAbaPortabilidade.get(dependente),"xpath");
+        abaPortabilidade = driverWeb.findElement(mapAbaPortabilidade.get(dependente), "xpath");
         btnConfirmarDependente = driverWeb.findElement(mapBtnConfirmarDependente.get(dependente), "xpath");
-        abaNumeroNovo = driverWeb.findElement(mapAbaNumeroNovo.get(dependente),"xpath");
+        abaNumeroNovo = driverWeb.findElement(mapAbaNumeroNovo.get(dependente), "xpath");
         btnExcluir = driverWeb.findElement(mapBtnExcluir.get(dependente), "xpath");
-        txtTelefonePortabilidade = driverWeb.findElement(mapCampoTelefonePortabilidade.get(dependente),"id");
+        txtTelefonePortabilidade = driverWeb.findElement(mapCampoTelefonePortabilidade.get(dependente),"xpath");
 
-        driverWeb.waitElementVisible(abaPortabilidade,10);
+        driverWeb.waitElementVisible(abaPortabilidade, 10);
         Assert.assertTrue(abaNumeroNovo.isDisplayed());
         Assert.assertTrue(abaPortabilidade.isDisplayed());
         Assert.assertTrue(abaPortabilidade.getAttribute("class").contains("active"));
@@ -91,12 +91,12 @@ public class DependentesPage {
     }
 
     public void inserirNumeroDependentes(String numero) {
-        driverWeb.sendKeys(txtTelefonePortabilidade,numero);
+        driverWeb.sendKeys(txtTelefonePortabilidade, numero);
     }
 
     public void clicarConfirmarDependente() {
         driverWeb.javaScriptClick(btnConfirmarDependente);
-        driverWeb.waitElementInvisible(btnConfirmarDependente,10);
+        driverWeb.waitElementInvisible(btnConfirmarDependente, 10);
         //TODO validação de valores finais, adicionais e unitário de dependentes (conversar com Gustavo)
     }
 
@@ -105,11 +105,10 @@ public class DependentesPage {
     }
 
     public void clicarAdicionarOutroDependente(int dependente) {
-        driverWeb.javaScriptClick("//div[@class='addingMoreDependent']//button","xpath");
-        validarBotoesDependente(dependente);
+        driverWeb.javaScriptClick("//*[@data-automation='btn-adicionar-mais-dep']","xpath");
     }
 
     public void clicarContinuar() {
-        driverWeb.javaScriptClick("//div[@class='js-dependentContent-items']//button[contains(text(),'Continuar')]","xpath");
+        driverWeb.javaScriptClick("btn-continuar","id");
     }
 }
